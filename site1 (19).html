@@ -1217,6 +1217,14 @@ footer {
 
 
 <script>
+  function toggleSynopsis(id, btn) {
+  const synopsis = document.getElementById(id);
+  const isOpen = synopsis.classList.contains('open');
+  synopsis.classList.toggle('open');
+  btn.setAttribute('aria-expanded', !isOpen);
+  btn.querySelector('.acc-icon').textContent = isOpen ? '＋' : '－';
+  btn.querySelector('.acc-label').textContent = isOpen ? 'あらすじを読む' : '閉じる';
+}
 /* ── メンバースライダー ── */
 (function() {
   function initSlider() {
