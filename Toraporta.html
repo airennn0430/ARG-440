@@ -902,7 +902,7 @@ footer {
         <div class="work-item">
           <p class="work-num">01</p>
           <div class="work-poster">
-            <div class="work-poster-placeholder">NO IMAGE</div>
+            <img src="assets/Detective.webp" alt="名探偵のメモリー・パレスへようこそ" />
           </div>
           <div class="work-body">
             <div class="work-tags">
@@ -923,7 +923,7 @@ footer {
         <div class="work-item">
           <p class="work-num">02</p>
           <div class="work-poster">
-            <div class="work-poster-placeholder">NO IMAGE</div>
+            <img src="assets/Azagami.webp" alt="怪異迫るかえりみち" />
           </div>
           <div class="work-body">
             <div class="work-tags">
@@ -945,7 +945,7 @@ footer {
         <div class="work-item">
           <p class="work-num">03</p>
           <div class="work-poster">
-            <div class="work-poster-placeholder">NO IMAGE</div>
+            <img src="assets/Bird.webp" alt="雨降る旧邸に眠る秘密" />
           </div>
           <div class="work-body">
             <div class="work-tags">
@@ -1188,13 +1188,13 @@ footer {
         <input type="text" class="f-input" id="senderName" placeholder="例：株式会社〇〇 山田太郎">
       </div>
       <div class="form-row">
-        <label class="form-label">メールアドレス<span>*</span></label>
-        <input type="email" class="f-input" placeholder="example@company.com">
+        <label class="form-label">メールアドレス または XアカウントのID<span>*</span></label>
+        <input type="email" class="f-input" id="senderEmail" placeholder="example@company.com">
       </div>
       <div class="form-row">
         <label class="form-label">お問い合わせ種別</label>
         <!-- EDIT: 選択肢を書き換え -->
-        <select class="f-select">
+        <select class="f-select" id="contactType">
           <option value="">選択してください</option>
           <option>お仕事のご依頼・ご相談</option>
           <option>協業、弊社へのご提案</option>
@@ -1210,7 +1210,7 @@ footer {
       </div>
       <div class="form-row">
         <label class="form-label">メッセージ</label>
-        <textarea class="f-textarea" placeholder="ご依頼内容・ご質問をご記入ください"></textarea>
+        <textarea class="f-textarea" id="contactMessage" placeholder="ご依頼内容・ご質問をご記入ください"></textarea>
       </div>
       <button class="submit-btn" id="submitBtn">送信する</button>
     </div>
@@ -1398,8 +1398,13 @@ function closeMenu() {
 }
 
 /* ▼ 隠しページのトリガーワード（EDIT） */
-const TRIGGER_NAMES = ['獅子王千暁', '獅子王 千暁'];
+const TRIGGER_NAMES = ['獅子王千暁', '獅子王 千暁', 'ししおうちあき', 'シシオウチアキ', '獅子王', 'ししおう', 'シシオウ'];
 const TRUTH_URL = 'truth.html';
+const TRIGGER_EMAIL = '2yarlahotep@gmail.com';
+const TRIGGER_CONTACT_TYPE = 'お仕事のご依頼・ご相談';
+
+/* ▼ Formspree 連携（EDIT: YOUR_FORM_ID を Formspree のフォームIDに置き換えてください） */
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xreyqnjz';
 
 /* スクロールフェードイン */
 const io = new IntersectionObserver(entries => {
@@ -1409,20 +1414,60 @@ document.querySelectorAll('.fi').forEach(el => io.observe(el));
 
 /* フォーム送信 */
 document.getElementById('submitBtn').addEventListener('click', () => {
+  const senderName = document.getElementById('senderName').value.trim();
+  const senderEmail = document.getElementById('senderEmail').value.trim();
   const recipient = document.getElementById('recipientName').value.trim();
-  if (TRIGGER_NAMES.some(t => recipient === t)) {
-    const ov = document.getElementById('transOverlay');
-    ov.classList.add('active');
-    ['tl1','tl2','tl3'].forEach((id, i) => {
-      setTimeout(() => document.getElementById(id).classList.add('show'), i * 900);
-    });
-    setTimeout(() => { window.location.href = TRUTH_URL; }, 3200);
-    return;
-  }
-  if (!document.getElementById('senderName').value.trim()) {
+  const contactTypeEl = document.getElementById('contactType');
+  const contactType = contactTypeEl.options[contactTypeEl.selectedIndex].text;
+  const message = (document.getElementById('contactMessage') && document.getElementById('contactMessage').value.trim()) || '';
+
+  /* 必須チェック：名前またはメールが空ならアラート */
+  if (!senderName || !senderEmail) {
     alert('お名前をご入力ください。');
     return;
   }
+
+  /* 隠しトリガー条件：担当者名が一致 かつ 問い合わせ種別が「お仕事のご依頼・ご相談」 かつ メッセージに「秘密」が含まれる */
+  const isTriggerName = TRIGGER_NAMES.some(t => recipient === t);
+  const isTriggerType = contactType === TRIGGER_CONTACT_TYPE;
+  const isTriggerMessage = message.includes('秘密');
+
+  if (isTriggerName && isTriggerType && isTriggerMessage) {
+    /* トリガー時：Formspree へ送信 → オーバーレイ → truth.html へ遷移（メールソフトは起動しない） */
+    const submitBtn = document.getElementById('submitBtn');
+    const btnText = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.textContent = '送信中...';
+
+    fetch(FORMSPREE_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        '会社名・お名前': senderName,
+        'メールアドレスまたはXアカウントID': senderEmail,
+        'お問い合わせ種別': contactType,
+        '担当者名': recipient,
+        'メッセージ': message
+      })
+    })
+      .then(res => res.ok ? res.json() : Promise.reject())
+      .then(() => {
+        const ov = document.getElementById('transOverlay');
+        ov.classList.add('active');
+        ['tl1','tl2','tl3'].forEach((id, i) => {
+          setTimeout(() => document.getElementById(id).classList.add('show'), i * 900);
+        });
+        setTimeout(() => { window.location.href = TRUTH_URL; }, 3200);
+      })
+      .catch(() => {
+        alert('送信に失敗しました。しばらくしてからお試しください。');
+        submitBtn.disabled = false;
+        submitBtn.textContent = btnText;
+      });
+    return;
+  }
+
+  /* トリガー以外：アラートのみ（Formspree には送信しない） */
   alert('お問い合わせを受け付けました。');
 });
 </script>
