@@ -422,8 +422,22 @@ footer {
 @media (max-width: 768px) {
   nav { padding: 0 24px; }
   .nav-toggle { display: flex; }
-  nav ul { display: none; }
-  nav ul.open { display: flex; flex-direction: column; position: fixed; inset: 64px 0 0; background: var(--white); padding-top: 40px; gap: 28px; z-index: 99; overflow-y: auto; align-items: center; list-style: none; }
+  nav ul {
+    display: none;
+    position: fixed;
+    inset: 64px 0 0;
+    background: var(--white);
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 40px 24px 32px;
+    gap: 28px;
+    z-index: 9999;
+    overflow-y: auto;
+    list-style: none;
+    min-height: calc(100vh - 64px);
+  }
+  nav ul.open { display: flex; }
   .schedule-hero, .filter-wrap, .cards-wrap, .section-head { padding-left: 24px; padding-right: 24px; }
   .schedule-hero { flex-direction: column; align-items: flex-start; padding-top: 100px; }
   .schedule-hero-right { max-width: 100%; }
@@ -667,12 +681,45 @@ footer {
     });
   });
 
+  // ── ハンバーガーメニュー（Toraporta と同等挙動） ──
+  function toggleMenu() {
+    var menu = document.getElementById('navMenu');
+    var btn  = document.getElementById('navToggle');
+    if (!menu || !btn) return;
+
+    var willOpen = !menu.classList.contains('open');
+    menu.classList.toggle('open', willOpen);
+    btn.classList.toggle('open', willOpen);
+
+    if (window.innerWidth <= 768) {
+      menu.style.display = willOpen ? 'flex' : 'none';
+    } else {
+      menu.style.display = '';
+    }
+  }
+  function closeMenu() {
+    var menu = document.getElementById('navMenu');
+    var btn  = document.getElementById('navToggle');
+    if (!menu || !btn) return;
+
+    menu.classList.remove('open');
+    btn.classList.remove('open');
+
+    if (window.innerWidth <= 768) {
+      menu.style.display = 'none';
+    } else {
+      menu.style.display = '';
+    }
+  }
+
   var navToggle = document.getElementById('navToggle');
   var navMenu = document.getElementById('navMenu');
   if (navToggle && navMenu) {
-    navToggle.addEventListener('click', function() {
-      navToggle.classList.toggle('open');
-      navMenu.classList.toggle('open');
+    // ボタンでメニュー開閉
+    navToggle.addEventListener('click', toggleMenu);
+    // メニュー内リンクをタップしたらメニューを閉じる
+    navMenu.querySelectorAll('a').forEach(function(link) {
+      link.addEventListener('click', closeMenu);
     });
   }
 })();

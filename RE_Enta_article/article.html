@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>【インタビュー】タイトルが入ります | リエンタ</title>
+  <!-- RE_Enta_article 用インタビュー記事テンプレート（article-detail.html ベース） -->
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Outfit:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=AB+Country+Road&display=swap');
+
+:root {
+  --bg:       #fffffe;
+  --headline: #094067;
+  --para:     #5f6c7b;
+  --btn:      #3da9fc;
+  --btn-text: #fffffe;
+  --stroke:   #094067;
+  --highlight:#3da9fc;
+  --secondary:#90b4ce;
+  --tertiary: #ef4565;
+  --surface:  #f0f7ff;
+  --border:   #dce8f2;
+  --white:    #fffffe;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--para);
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 400;
+  line-height: 1.8;
+  overflow-x: hidden;
+}
+
+img { max-width: 100%; display: block; }
+a { text-decoration: none; color: inherit; }
+
+/* HEADER */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 1px 12px rgba(9,64,103,.06);
+}
+.header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 40px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+}
+.site-logo {
+  display: flex;
+  align-items: center;
+  color: var(--headline);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.logo-img {
+  height: 36px;
+  width: auto;
+  display: block;
+}
+.logo-fallback {
+  font-family: 'Outfit', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--headline);
+  letter-spacing: .04em;
+  display: none;
+}
+
+.global-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  list-style: none;
+}
+.global-nav a {
+  display: block;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: .06em;
+  color: var(--headline);
+  border-radius: 4px;
+  transition: background .2s, color .2s;
+}
+.global-nav a:hover { background: var(--surface); color: var(--btn); }
+.global-nav a.disabled {
+  color: var(--secondary);
+  pointer-events: none;
+}
+.header-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 7px 16px;
+  font-size: 13px;
+  color: var(--para);
+  cursor: pointer;
+  transition: border-color .2s;
+  white-space: nowrap;
+}
+.header-search:hover { border-color: var(--btn); }
+.header-search svg { flex-shrink: 0; }
+
+/* BREADCRUMB */
+.breadcrumb-bar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+.breadcrumb-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 10px 40px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.breadcrumb-item {
+  font-size: 12px;
+  color: var(--para);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.breadcrumb-item a {
+  color: var(--btn);
+  transition: opacity .2s;
+}
+.breadcrumb-item a:hover { opacity: .75; }
+.breadcrumb-sep {
+  color: var(--secondary);
+  font-size: 11px;
+}
+.breadcrumb-item.current { color: var(--para); font-weight: 500; }
+
+/* LAYOUT */
+.page-wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 48px 40px 80px;
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 48px;
+  align-items: start;
+}
+
+/* ARTICLE MAIN */
+.article-main {}
+
+.article-categories {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.cat-badge {
+  display: inline-block;
+  background: var(--headline);
+  color: var(--white);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  padding: 4px 12px;
+  border-radius: 2px;
+}
+.cat-badge.sub {
+  background: var(--surface);
+  color: var(--btn);
+  border: 1px solid var(--btn);
+  font-weight: 500;
+}
+.tag-chip {
+  display: inline-block;
+  background: transparent;
+  color: var(--secondary);
+  font-size: 11px;
+  letter-spacing: .06em;
+  padding: 3px 10px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  transition: border-color .2s, color .2s;
+  cursor: pointer;
+}
+.tag-chip:hover { border-color: var(--btn); color: var(--btn); }
+
+.article-title {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: clamp(22px, 3.2vw, 34px);
+  font-weight: 600;
+  color: var(--headline);
+  line-height: 1.5;
+  letter-spacing: .04em;
+  margin-bottom: 16px;
+}
+
+.article-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 16px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 32px;
+}
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--para);
+  letter-spacing: .04em;
+}
+.meta-item svg { color: var(--secondary); flex-shrink: 0; }
+.meta-author {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.meta-author-avatar {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--btn);
+  flex-shrink: 0;
+}
+.meta-divider {
+  width: 1px; height: 16px;
+  background: var(--border);
+}
+
+.share-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 32px;
+}
+.share-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--headline);
+  letter-spacing: .08em;
+  margin-right: 4px;
+}
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 7px 14px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: background .2s, border-color .2s, color .2s;
+  background: var(--white);
+  color: var(--para);
+}
+.share-btn:hover { background: var(--surface); border-color: var(--btn); color: var(--btn); }
+
+.article-eyecatch {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: linear-gradient(135deg, var(--surface) 0%, var(--border) 100%);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.eyecatch-placeholder {
+  text-align: center;
+}
+.eyecatch-placeholder p {
+  font-size: 13px;
+  color: var(--secondary);
+  letter-spacing: .08em;
+}
+.eyecatch-placeholder .eyecatch-icon {
+  font-size: 36px;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.interviewee-profile {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--btn);
+  border-radius: 0 8px 8px 0;
+  padding: 24px;
+  margin-bottom: 40px;
+}
+.interviewee-avatar {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  background: var(--border);
+  border: 3px solid var(--white);
+  box-shadow: 0 0 0 2px var(--secondary);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  color: var(--secondary);
+  overflow: hidden;
+}
+.interviewee-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--btn);
+  margin-bottom: 6px;
+}
+.interviewee-name {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--headline);
+  letter-spacing: .06em;
+  margin-bottom: 4px;
+}
+.interviewee-name ruby rt { font-size: .5em; letter-spacing: .1em; }
+.interviewee-role {
+  font-size: 13px;
+  color: var(--btn);
+  font-weight: 500;
+  letter-spacing: .04em;
+  margin-bottom: 10px;
+}
+.interviewee-bio {
+  font-size: 13px;
+  color: var(--para);
+  line-height: 1.85;
+}
+
+.article-body {
+  font-size: 15px;
+  line-height: 2;
+  color: var(--para);
+}
+.article-body p { margin-bottom: 24px; }
+.article-body h2 {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--headline);
+  letter-spacing: .04em;
+  line-height: 1.5;
+  margin: 48px 0 20px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--headline);
+  position: relative;
+}
+.article-body h2::after {
+  content: '';
+  position: absolute;
+  left: 0; bottom: -2px;
+  width: 60px; height: 2px;
+  background: var(--btn);
+}
+.article-body h3 {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--headline);
+  letter-spacing: .04em;
+  margin: 36px 0 16px;
+  padding-left: 14px;
+  border-left: 3px solid var(--btn);
+}
+
+.qa-block {
+  margin: 32px 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.qa-q {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  background: var(--headline);
+  color: var(--white);
+  padding: 18px 24px;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.7;
+}
+.qa-q-badge, .qa-a-badge {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.qa-q-badge { background: var(--btn); color: var(--white); }
+.qa-a-badge { background: var(--surface); color: var(--headline); border: 1px solid var(--border); }
+.qa-a {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  background: var(--white);
+  padding: 18px 24px;
+  font-size: 15px;
+  line-height: 1.9;
+  color: var(--para);
+}
+
+.article-image {
+  margin: 36px 0;
+}
+.article-image .img-placeholder {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  color: var(--secondary);
+}
+.article-image figcaption {
+  font-size: 12px;
+  color: var(--secondary);
+  text-align: center;
+  margin-top: 8px;
+  letter-spacing: .04em;
+}
+
+.info-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 24px 28px;
+  margin: 32px 0;
+}
+.info-box-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--btn);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.info-box-title::before {
+  content: '';
+  width: 4px; height: 14px;
+  background: var(--btn);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+.info-box p { font-size: 14px; line-height: 1.85; }
+
+.article-footer-meta {
+  margin-top: 48px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.article-footer-dates {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.article-footer-dates span {
+  font-size: 12px;
+  color: var(--secondary);
+  letter-spacing: .04em;
+}
+
+.share-section {
+  margin-top: 40px;
+  padding: 32px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  text-align: center;
+}
+.share-section-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--headline);
+  letter-spacing: .08em;
+  margin-bottom: 16px;
+}
+.share-section-btns {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.share-btn-lg {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 11px 24px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: opacity .2s, transform .15s;
+  border: none;
+  letter-spacing: .04em;
+}
+.share-btn-lg:hover { opacity: .85; transform: translateY(-1px); }
+.share-btn-lg.x    { background: #000; color: #fff; }
+.share-btn-lg.line { background: #06c755; color: #fff; }
+.share-btn-lg.copy { background: var(--headline); color: var(--white); }
+
+.related-section {
+  margin-top: 64px;
+  padding-top: 40px;
+  border-top: 2px solid var(--headline);
+}
+.related-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--headline);
+  letter-spacing: .06em;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.related-title::before {
+  content: '';
+  width: 4px; height: 20px;
+  background: var(--btn);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+.related-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.related-card {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: box-shadow .25s, transform .25s;
+  cursor: pointer;
+  background: var(--white);
+}
+.related-card:hover {
+  box-shadow: 0 6px 24px rgba(9,64,103,.1);
+  transform: translateY(-3px);
+}
+.related-card-img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: linear-gradient(135deg, var(--surface) 0%, var(--border) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: var(--secondary);
+}
+.related-card-body { padding: 16px; }
+.related-card-cat {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  color: var(--btn);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.related-card-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--headline);
+  line-height: 1.6;
+}
+.related-card-date {
+  font-size: 11px;
+  color: var(--secondary);
+  margin-top: 8px;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  position: sticky;
+  top: 80px;
+}
+.sidebar-block {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.sidebar-block-title {
+  background: var(--headline);
+  color: var(--white);
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.sidebar-block-title::before {
+  content: '';
+  width: 3px; height: 14px;
+  background: var(--btn);
+  border-radius: 2px;
+}
+.sidebar-block-body { padding: 18px; }
+
+.sidebar-author {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+}
+.sidebar-author-avatar {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 3px solid var(--btn);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--btn);
+}
+.sidebar-author-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--headline);
+  letter-spacing: .04em;
+}
+.sidebar-author-role {
+  font-size: 11px;
+  color: var(--btn);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  margin-top: -6px;
+}
+.sidebar-author-bio {
+  font-size: 12px;
+  color: var(--para);
+  line-height: 1.8;
+  text-align: left;
+}
+
+.sidebar-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.sidebar-popular-list {
+  display: flex;
+  flex-direction: column;
+}
+.popular-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: opacity .2s;
+}
+.popular-item:last-child { border-bottom: none; padding-bottom: 0; }
+.popular-item:hover { opacity: .75; }
+.popular-rank {
+  font-family: 'Outfit', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--border);
+  line-height: 1;
+  flex-shrink: 0;
+  width: 24px;
+  text-align: center;
+  padding-top: 2px;
+}
+.popular-rank.top { color: var(--btn); }
+.popular-item-title {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--headline);
+  line-height: 1.65;
+}
+.popular-item-cat {
+  font-size: 10px;
+  color: var(--secondary);
+  margin-top: 4px;
+  letter-spacing: .06em;
+}
+
+.site-footer {
+  background: var(--headline);
+  color: var(--white);
+  margin-top: 80px;
+}
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 48px 40px 32px;
+}
+.footer-top {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 48px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid rgba(255,255,254,.15);
+  margin-bottom: 24px;
+}
+.footer-logo {
+  font-family: 'Outfit', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  margin-bottom: 10px;
+}
+.footer-tagline {
+  font-size: 12px;
+  color: rgba(255,255,254,.6);
+  line-height: 1.8;
+}
+.footer-nav-cols {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+.footer-nav-col-title {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--btn);
+  margin-bottom: 12px;
+}
+.footer-nav-col ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.footer-nav-col span {
+  font-size: 12px;
+  color: rgba(255,255,254,.65);
+}
+.footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.footer-copy {
+  font-size: 11px;
+  color: rgba(255,255,254,.4);
+  letter-spacing: .04em;
+}
+
+@media (max-width: 1024px) {
+  .page-wrap { grid-template-columns: 1fr; gap: 40px; }
+  .sidebar { position: static; }
+  .related-grid { grid-template-columns: repeat(2, 1fr); }
+  .footer-nav-cols { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+  .header-inner { padding: 0 20px; }
+  .global-nav, .header-search { display: none; }
+  .breadcrumb-inner { padding: 8px 20px; }
+  .page-wrap { padding: 28px 20px 60px; }
+  .article-title { font-size: clamp(20px, 5.5vw, 28px); }
+  .article-meta { gap: 10px; }
+  .meta-divider { display: none; }
+  .related-grid { grid-template-columns: 1fr; }
+  .footer-top { grid-template-columns: 1fr; gap: 28px; }
+  .footer-nav-cols { grid-template-columns: repeat(2, 1fr); }
+  .footer-inner { padding: 36px 20px 24px; }
+  .footer-bottom { flex-direction: column; align-items: flex-start; }
+  .share-bar { flex-wrap: wrap; }
+}
+@media (max-width: 480px) {
+  .related-grid { grid-template-columns: 1fr; }
+  .share-section-btns { flex-direction: column; width: 100%; }
+  .share-btn-lg { width: 100%; justify-content: center; }
+}
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="#" class="site-logo">
+        <img src="" alt="リエンタ" class="logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+        <span class="logo-fallback">リエンタ</span>
+      </a>
+      <ul class="global-nav">
+        <li><a href="#">TOP</a></li>
+        <li><a href="#" class="disabled">特集</a></li>
+        <li><a href="#" class="disabled">ニュース</a></li>
+        <li><a href="#" class="disabled">イベント情報</a></li>
+        <li><a href="#" class="disabled">データベース</a></li>
+      </ul>
+      <button class="header-search">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        キーワード検索
+      </button>
+    </div>
+  </header>
+
+  <!-- BREADCRUMB -->
+  <div class="breadcrumb-bar">
+    <div class="breadcrumb-inner">
+      <span class="breadcrumb-item">TOP</span>
+      <span class="breadcrumb-sep">›</span>
+      <span class="breadcrumb-item">インタビュー</span>
+      <span class="breadcrumb-sep">›</span>
+      <span class="breadcrumb-item">IT・テクノロジー</span>
+      <span class="breadcrumb-sep">›</span>
+      <span class="breadcrumb-item current">【インタビュー】タイトルが入ります</span>
+    </div>
+  </div>
+
+  <!-- PAGE WRAP -->
+  <div class="page-wrap">
+
+    <!-- ARTICLE MAIN -->
+    <main class="article-main">
+
+      <div class="article-categories">
+        <span class="cat-badge">インタビュー</span>
+        <span class="cat-badge sub">IT・テクノロジー</span>
+        <span class="tag-chip"># スタートアップ</span>
+        <span class="tag-chip"># キャリア</span>
+        <span class="tag-chip"># 起業</span>
+      </div>
+
+      <h1 class="article-title">
+        【インタビュー】ここに記事タイトルが入ります。複数行になる場合も表示されます。
+      </h1>
+
+      <div class="article-meta">
+        <div class="meta-item meta-author">
+          <div class="meta-author-avatar">編</div>
+          <span>編集者名</span>
+        </div>
+        <span class="meta-divider"></span>
+        <div class="meta-item">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+          公開：2025年○月○日
+        </div>
+        <div class="meta-item">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-.18-3.75"/>
+          </svg>
+          更新：2025年○月○日
+        </div>
+        <span class="meta-divider"></span>
+        <div class="meta-item">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+          </svg>
+          約○分で読めます
+        </div>
+      </div>
+
+      <div class="share-bar">
+        <span class="share-label">SHARE</span>
+        <button class="share-btn" onclick="shareX()">X</button>
+        <button class="share-btn" onclick="shareLine()">LINE</button>
+        <button class="share-btn" onclick="copyURL()">URLをコピー</button>
+      </div>
+
+      <div class="article-eyecatch">
+        <div class="eyecatch-placeholder">
+          <span class="eyecatch-icon">🖼</span>
+          <p>アイキャッチ画像</p>
+        </div>
+      </div>
+
+      <div class="interviewee-profile">
+        <div class="interviewee-avatar">👤</div>
+        <div>
+          <p class="interviewee-label">Interview</p>
+          <p class="interviewee-name">
+            <ruby>氏名<rt>しめい</rt></ruby>
+          </p>
+          <p class="interviewee-role">職業・役職</p>
+          <p class="interviewee-bio">
+            プロフィール文が入ります。インタビュー対象者の経歴・現在の活動・受賞歴などをここに記載します。2〜3文程度を想定しています。
+          </p>
+        </div>
+      </div>
+
+      <div class="article-body">
+        <p>リード文が入ります。記事全体の概要や、なぜこの人物にインタビューをしたのかという背景を説明します。読者の興味を引く導入として機能します。</p>
+
+        <h2>大見出し（h2）はここに入ります</h2>
+        <p>本文テキストが入ります。インタビューの内容や取材で得られた情報をここに記述します。読みやすさを考慮して、適切な長さの段落に分けて記述します。</p>
+
+        <div class="qa-block">
+          <div class="qa-q">
+            <span class="qa-q-badge">Q</span>
+            <span>質問文がここに入ります。インタビュアーからの問いかけをここに記述します。</span>
+          </div>
+          <div class="qa-a">
+            <span class="qa-a-badge">A</span>
+            <span>回答文がここに入ります。インタビュー対象者の言葉を、できるだけそのままの表現で記述します。話し言葉のニュアンスを大切にしながら、読みやすく整形します。</span>
+          </div>
+        </div>
+
+        <h3>小見出し（h3）はここに入ります</h3>
+        <p>本文テキストが続きます。段落ごとに改行し、読みやすいリズムを作ります。</p>
+
+        <figure class="article-image">
+          <div class="img-placeholder">本文中の画像</div>
+          <figcaption>画像のキャプションが入ります</figcaption>
+        </figure>
+
+        <blockquote>
+          「引用・印象的な発言をここに入れます。インタビュー中の重要なコメントや、特に読者に届けたい言葉をピックアップして使用します。」
+        </blockquote>
+
+        <p>本文テキストが続きます。引用のあとの文脈説明や補足情報などをここに記述します。</p>
+
+        <div class="info-box">
+          <p class="info-box-title">POINT</p>
+          <p>補足情報・用語解説・データなどをまとめるインフォボックスです。本文の補足として使用します。</p>
+        </div>
+
+        <div class="qa-block">
+          <div class="qa-q">
+            <span class="qa-q-badge">Q</span>
+            <span>次の質問文がここに入ります。</span>
+          </div>
+          <div class="qa-a">
+            <span class="qa-a-badge">A</span>
+            <span>対応する回答文がここに入ります。複数のQ&Aを連続して使用することも可能です。</span>
+          </div>
+        </div>
+
+        <h2>2つ目の大見出し</h2>
+        <p>本文テキストが続きます。記事の後半部分にあたるコンテンツを記述します。</p>
+        <p>締めの文章が入ります。インタビューを振り返り、読者へのメッセージや記事のまとめを記述します。</p>
+      </div>
+
+      <div class="article-footer-meta">
+        <div class="article-footer-dates">
+          <span>公開：2025年○月○日</span>
+          <span>更新：2025年○月○日</span>
+        </div>
+        <div class="article-categories" style="margin-bottom:0;">
+          <span class="cat-badge">インタビュー</span>
+          <span class="tag-chip"># スタートアップ</span>
+          <span class="tag-chip"># キャリア</span>
+        </div>
+      </div>
+
+      <div class="share-section">
+        <p class="share-section-title">この記事をシェアする</p>
+        <div class="share-section-btns">
+          <button class="share-btn-lg x" onclick="shareX()">Xでポストする</button>
+          <button class="share-btn-lg line" onclick="shareLine()">LINEでシェアする</button>
+          <button class="share-btn-lg copy" onclick="copyURL()">URLをコピーする</button>
+        </div>
+      </div>
+
+      <div class="related-section">
+        <h2 class="related-title">関連記事</h2>
+        <div class="related-grid">
+          <div class="related-card">
+            <div class="related-card-img">画像</div>
+            <div class="related-card-body">
+              <p class="related-card-cat">インタビュー</p>
+              <p class="related-card-title">関連記事のタイトルが入ります。</p>
+              <p class="related-card-date">2025年○月○日</p>
+            </div>
+          </div>
+          <div class="related-card">
+            <div class="related-card-img">画像</div>
+            <div class="related-card-body">
+              <p class="related-card-cat">ニュース</p>
+              <p class="related-card-title">関連記事のタイトルが入ります。</p>
+              <p class="related-card-date">2025年○月○日</p>
+            </div>
+          </div>
+          <div class="related-card">
+            <div class="related-card-img">画像</div>
+            <div class="related-card-body">
+              <p class="related-card-cat">特集</p>
+              <p class="related-card-title">関連記事のタイトルが入ります。</p>
+              <p class="related-card-date">2025年○月○日</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-block">
+        <p class="sidebar-block-title">編集者</p>
+        <div class="sidebar-block-body">
+          <div class="sidebar-author">
+            <div class="sidebar-author-avatar">編</div>
+            <p class="sidebar-author-name">編集者名</p>
+            <p class="sidebar-author-role">Editor</p>
+            <p class="sidebar-author-bio">
+              編集者のプロフィール文が入ります。担当カテゴリや経歴などをここに記述します。
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-block">
+        <p class="sidebar-block-title">タグ</p>
+        <div class="sidebar-block-body">
+          <div class="sidebar-tags">
+            <span class="tag-chip"># スタートアップ</span>
+            <span class="tag-chip"># キャリア</span>
+            <span class="tag-chip"># 起業</span>
+            <span class="tag-chip"># IT</span>
+            <span class="tag-chip"># テクノロジー</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-block">
+        <p class="sidebar-block-title">人気記事</p>
+        <div class="sidebar-block-body">
+          <div class="sidebar-popular-list">
+            <div class="popular-item">
+              <span class="popular-rank top">1</span>
+              <div>
+                <p class="popular-item-title">人気記事のタイトルが入ります。</p>
+                <p class="popular-item-cat">インタビュー</p>
+              </div>
+            </div>
+            <div class="popular-item">
+              <span class="popular-rank top">2</span>
+              <div>
+                <p class="popular-item-title">人気記事のタイトルが入ります。</p>
+                <p class="popular-item-cat">ニュース</p>
+              </div>
+            </div>
+            <div class="popular-item">
+              <span class="popular-rank top">3</span>
+              <div>
+                <p class="popular-item-title">人気記事のタイトルが入ります。</p>
+                <p class="popular-item-cat">特集</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </aside>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div>
+          <p class="footer-logo">リエンタ</p>
+          <p class="footer-tagline">あらゆる職業・業界・企業を取材し、<br>あなたの未来の選択肢を広げるメディアです。</p>
+        </div>
+        <div class="footer-nav-cols">
+          <div class="footer-nav-col">
+            <p class="footer-nav-col-title">コンテンツ</p>
+            <ul>
+              <li><span>TOP</span></li>
+              <li><span>特集</span></li>
+              <li><span>ニュース</span></li>
+              <li><span>イベント情報</span></li>
+              <li><span>データベース</span></li>
+            </ul>
+          </div>
+          <div class="footer-nav-col">
+            <p class="footer-nav-col-title">カテゴリ</p>
+            <ul>
+              <li><span>インタビュー</span></li>
+              <li><span>IT・テクノロジー</span></li>
+              <li><span>医療・福祉</span></li>
+              <li><span>クリエイティブ</span></li>
+            </ul>
+          </div>
+          <div class="footer-nav-col">
+            <p class="footer-nav-col-title">サービス</p>
+            <ul>
+              <li><span>掲載のご依頼</span></li>
+              <li><span>取材のご依頼</span></li>
+              <li><span>メールマガジン</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">© 2025 リエンタ. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+  function shareX() {
+    const url = encodeURIComponent(location.href);
+    const title = encodeURIComponent(document.title);
+    window.open('https://twitter.com/intent/tweet?url=' + url + '&text=' + title, '_blank');
+  }
+  function shareLine() {
+    const url = encodeURIComponent(location.href);
+    window.open('https://social-plugins.line.me/lineit/share?url=' + url, '_blank');
+  }
+  function copyURL() {
+    navigator.clipboard.writeText(location.href).then(() => {
+      alert('URLをコピーしました');
+    });
+  }
+  </script>
+
+</body>
+</html>
+

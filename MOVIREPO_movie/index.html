@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>作品タイトル | ムビレポ</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Outfit:wght@400;600;700&display=swap');
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━
+   CSS Variables
+━━━━━━━━━━━━━━━━━━━━━━━━━ */
+:root {
+  --bg:        #55423d;
+  --bg-deep:   #3f2f2b;
+  --bg-raised: #6b5550;
+  --bg-card:   #4d3b37;
+  --text:      #fff4e0;
+  --text-muted:#c4a98f;
+  --main:      #f7ca7e;
+  --accent:    #73b09c;
+  --border:    rgba(255,244,224,.12);
+  --border-mid:rgba(255,244,224,.2);
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 400;
+  line-height: 1.8;
+  overflow-x: hidden;
+}
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg-deep); }
+::-webkit-scrollbar-thumb { background: var(--main); border-radius: 2px; }
+a { text-decoration: none; color: inherit; }
+img { max-width: 100%; display: block; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━
+   HEADER
+━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.site-header {
+  background: var(--main);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.header-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 40px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.site-logo {
+  display: flex;
+  align-items: center;
+}
+.logo-img {
+  height: 32px;
+  width: auto;
+  display: block;
+}
+.logo-fallback {
+  font-family: 'Outfit', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: .06em;
+}
+.header-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-raised);
+  border: 1px solid var(--border-mid);
+  border-radius: 24px;
+  padding: 7px 18px;
+  font-size: 12px;
+  font-family: 'Noto Sans JP', sans-serif;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: border-color .2s, color .2s;
+}
+.header-search:hover { border-color: var(--main); color: var(--text); }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━
+   FILM HERO
+━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.film-hero {
+  background: var(--bg-deep);
+  border-bottom: 1px solid var(--border);
+}
+.film-hero-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 48px 40px;
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+/* Poster */
+.film-poster {
+  width: 200px;
+  aspect-ratio: 2 / 3;
+  background: var(--bg-raised);
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0,0,0,.4);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.film-poster img { width: 100%; height: 100%; object-fit: cover; }
+.poster-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px;
+  text-align: center;
+}
+.poster-placeholder-icon { font-size: 36px; opacity: .4; }
+.poster-placeholder-text {
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: .08em;
+}
+
+/* Film Info */
+.film-info {}
+.film-genres {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.genre-tag {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .1em;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 3px;
+  padding: 3px 10px;
+  opacity: .9;
+}
+.film-title-ja {
+  font-size: clamp(24px, 4vw, 38px);
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.3;
+  letter-spacing: .04em;
+  margin-bottom: 6px;
+}
+.film-title-orig {
+  font-family: 'Outfit', sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--text-muted);
+  letter-spacing: .08em;
+  margin-bottom: 20px;
+}
+.film-specs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 20px;
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+.film-specs span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.film-specs svg { opacity: .6; flex-shrink: 0; }
+
+/* Rating */
+.film-rating-block {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 24px;
+  width: fit-content;
+}
+.rating-score {
+  font-family: 'Outfit', sans-serif;
+  font-size: 48px;
+  font-weight: 700;
+  color: var(--main);
+  line-height: 1;
+}
+.rating-score sub {
+  font-size: 18px;
+  color: var(--text-muted);
+  vertical-align: baseline;
+  font-weight: 400;
+}
+.rating-right {}
+.rating-stars {
+  display: flex;
+  gap: 3px;
+  margin-bottom: 4px;
+}
+.star-full  { color: var(--main); font-size: 18px; }
+.star-half  { color: var(--main); font-size: 18px; opacity: .6; }
+.star-empty { color: var(--border-mid); font-size: 18px; }
+.rating-count {
+  font-size: 12px;
+  color: var(--text-muted);
+  letter-spacing: .06em;
+}
+
+/* Credits */
+.film-credits {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px 32px;
+}
+.credit-item {}
+.credit-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 3px;
+}
+.credit-value {
+  font-size: 13px;
+  color: var(--text);
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━
+   PAGE BODY
+━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.page-body {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 48px 40px 80px;
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 48px;
+  align-items: start;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━
+   MAIN COLUMN
+━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.main-col {}
+
+/* Section heading */
+.sec-heading {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: .06em;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--main);
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.sec-heading::before {
+  content: '';
+  width: 4px; height: 16px;
+  background: var(--main);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+/* Synopsis */
+.synopsis-text {
+  font-size: 14px;
+  line-height: 2;
+  color: var(--text-muted);
+  margin-bottom: 48px;
+}
+
+/* Reviews */
+.reviews-section { margin-bottom: 48px; }
+.reviews-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--main);
+}
+.reviews-header .sec-heading {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+.reviews-count {
+  font-size: 12px;
+  color: var(--text-muted);
+  letter-spacing: .06em;
+}
+
+/* Review card */
+.review-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.review-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 24px;
+  transition: border-color .22s;
+}
+.review-card:hover { border-color: var(--border-mid); }
+.review-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+.reviewer-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+.reviewer-avatar {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: var(--bg-raised);
+  border: 2px solid var(--border-mid);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--main);
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.reviewer-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.reviewer-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  transition: color .2s;
+}
+.reviewer-info:hover .reviewer-name { color: var(--main); }
+.reviewer-handle {
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: .04em;
+  margin-top: 1px;
+}
+.review-meta-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.review-stars {
+  display: flex;
+  gap: 2px;
+}
+.review-stars .star-full  { font-size: 14px; color: var(--main); }
+.review-stars .star-half  { font-size: 14px; color: var(--main); opacity: .6; }
+.review-stars .star-empty { font-size: 14px; color: var(--border-mid); }
+.review-date {
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: .06em;
+}
+.review-text {
+  font-size: 14px;
+  line-height: 2;
+  color: var(--text-muted);
+  margin-bottom: 14px;
+}
+.review-text strong {
+  color: var(--text);
+  font-weight: 500;
+}
+.review-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.review-tag {
+  font-size: 11px;
+  color: var(--accent);
+  border: 1px solid rgba(115,176,156,.35);
+  border-radius: 20px;
+  padding: 2px 10px;
+  letter-spacing: .06em;
+}
+
+/* Load more */
+.load-more-wrap {
+  text-align: center;
+  margin-top: 24px;
+}
+.load-more-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: 1px solid var(--border-mid);
+  border-radius: 6px;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 500;
+  letter-spacing: .08em;
+  padding: 11px 28px;
+  cursor: pointer;
+  transition: border-color .2s, color .2s, background .2s;
+}
+.load-more-btn:hover {
+  border-color: var(--main);
+  color: var(--main);
+  background: rgba(247,202,126,.06);
+}
+
+/* Related films */
+.related-section {}
+.related-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.related-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color .22s, transform .22s, box-shadow .22s;
+}
+.related-card:hover {
+  border-color: var(--border-mid);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0,0,0,.25);
+}
+.related-poster {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  background: var(--bg-raised);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: .06em;
+}
+.related-poster img { width: 100%; height: 100%; object-fit: cover; }
+.related-body { padding: 12px; }
+.related-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.5;
+  margin-bottom: 4px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.related-year {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+.related-rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--main);
+  font-weight: 700;
+}
+.related-rating svg { opacity: .8; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━
+   SIDEBAR
+━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.side-col {
+  position: sticky;
+  top: 76px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.side-block {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.side-block-title {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--bg-deep);
+  background: var(--main);
+  padding: 10px 16px;
+}
+.side-block-body { padding: 16px; }
+
+/* Cast list */
+.cast-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.cast-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: opacity .2s;
+}
+.cast-item:hover { opacity: .75; }
+.cast-avatar {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: var(--bg-raised);
+  border: 1px solid var(--border-mid);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.cast-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.cast-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 1px;
+}
+.cast-role {
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: .04em;
+}
+
+/* Rating distribution */
+.rating-dist {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.dist-row {
+  display: grid;
+  grid-template-columns: 28px 1fr 32px;
+  align-items: center;
+  gap: 8px;
+}
+.dist-label {
+  font-size: 12px;
+  color: var(--main);
+  text-align: right;
+  font-weight: 700;
+}
+.dist-bar-wrap {
+  background: var(--bg-raised);
+  border-radius: 3px;
+  height: 8px;
+  overflow: hidden;
+}
+.dist-bar {
+  height: 100%;
+  background: var(--main);
+  border-radius: 3px;
+  opacity: .85;
+}
+.dist-count {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-align: right;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━
+   FOOTER
+━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.site-footer {
+  background: var(--bg-deep);
+  border-top: 1px solid var(--border);
+  padding: 32px 40px;
+}
+.footer-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.footer-logo {
+  font-family: 'Outfit', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--main);
+  letter-spacing: .06em;
+}
+.footer-copy {
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: .04em;
+}
+.footer-links {
+  display: flex;
+  gap: 20px;
+}
+.footer-links span {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━
+   SCROLL PROGRESS
+━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.progress-bar {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--main), var(--accent));
+  z-index: 200;
+  width: 0%;
+  transition: width .1s linear;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━
+   BACK TO TOP
+━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.back-to-top {
+  position: fixed;
+  bottom: 28px; right: 28px;
+  width: 44px; height: 44px;
+  background: var(--main);
+  color: var(--bg-deep);
+  border: none;
+  border-radius: 50%;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(0,0,0,.3);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .3s, transform .2s;
+  z-index: 99;
+}
+.back-to-top.show { opacity: 1; pointer-events: auto; }
+.back-to-top:hover { transform: translateY(-3px); background: var(--accent); }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━
+   FADE-IN
+━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fi { opacity: 0; }
+.fi.vis { animation: fadeUp .6s ease forwards; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━
+   RESPONSIVE
+━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@media (max-width: 900px) {
+  .film-hero-inner { grid-template-columns: 160px 1fr; gap: 28px; }
+  .film-poster { width: 160px; }
+  .page-body { grid-template-columns: 1fr; }
+  .side-col { position: static; }
+  .related-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 600px) {
+  .header-inner { padding: 0 20px; }
+  .header-search { display: none; }
+  .film-hero-inner { grid-template-columns: 1fr; padding: 28px 20px; }
+  .film-poster { width: 140px; }
+  .film-rating-block { width: 100%; }
+  .film-credits { grid-template-columns: 1fr 1fr; }
+  .page-body { padding: 28px 20px 60px; }
+  .related-grid { grid-template-columns: repeat(2, 1fr); }
+  .site-footer { padding: 24px 20px; }
+  .footer-inner { flex-direction: column; align-items: flex-start; gap: 8px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Progress Bar -->
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- ═══ HEADER ═══ -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="#" class="site-logo">
+      <img src="" alt="ムビレポ" class="logo-img"
+        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+      <span class="logo-fallback">ムビレポ</span>
+    </a>
+    <button class="header-search">
+      <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      作品を探す
+    </button>
+  </div>
+</header>
+
+<!-- ═══ FILM HERO ═══ -->
+<div class="film-hero">
+  <div class="film-hero-inner">
+
+    <!-- Poster -->
+    <div class="film-poster fi">
+      <img src="" alt="作品ポスター"
+        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+      <div class="poster-placeholder">
+        <span class="poster-placeholder-icon">🎬</span>
+        <span class="poster-placeholder-text">ポスター画像</span>
+      </div>
+    </div>
+
+    <!-- Info -->
+    <div class="film-info">
+
+      <div class="film-genres fi">
+        <span class="genre-tag">ジャンル</span>
+        <span class="genre-tag">ジャンル</span>
+      </div>
+
+      <h1 class="film-title-ja fi">作品タイトルが入ります</h1>
+      <p class="film-title-orig fi">Original Title</p>
+
+      <div class="film-specs fi">
+        <span>
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+          ○○○○年
+        </span>
+        <span>
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+          </svg>
+          ○○分
+        </span>
+        <span>
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+          </svg>
+          製作国
+        </span>
+      </div>
+
+      <!-- Rating -->
+      <div class="film-rating-block fi">
+        <div class="rating-score">
+          ○.○<sub>/5</sub>
+        </div>
+        <div class="rating-right">
+          <div class="rating-stars">
+            <span class="star-full">★</span>
+            <span class="star-full">★</span>
+            <span class="star-full">★</span>
+            <span class="star-half">★</span>
+            <span class="star-empty">★</span>
+          </div>
+          <p class="rating-count">○件のレビュー</p>
+        </div>
+      </div>
+
+      <!-- Credits -->
+      <div class="film-credits fi">
+        <div class="credit-item">
+          <p class="credit-label">監督</p>
+          <p class="credit-value">監督名</p>
+        </div>
+        <div class="credit-item">
+          <p class="credit-label">脚本</p>
+          <p class="credit-value">脚本家名</p>
+        </div>
+        <div class="credit-item">
+          <p class="credit-label">製作</p>
+          <p class="credit-value">製作会社名</p>
+        </div>
+        <div class="credit-item">
+          <p class="credit-label">配給</p>
+          <p class="credit-value">配給会社名</p>
+        </div>
+      </div>
+
+    </div><!-- /film-info -->
+  </div><!-- /film-hero-inner -->
+</div><!-- /film-hero -->
+
+<!-- ═══ PAGE BODY ═══ -->
+<div class="page-body">
+
+  <!-- ─── MAIN ─── -->
+  <div class="main-col">
+
+    <!-- Synopsis -->
+    <section class="fi" style="margin-bottom:48px;">
+      <h2 class="sec-heading">あらすじ</h2>
+      <p class="synopsis-text">
+        あらすじのテキストが入ります。作品の概要や世界観を簡潔に説明します。ネタバレを含まない範囲で、作品の魅力を伝える文章を記述します。複数の段落に分けることも可能です。
+      </p>
+    </section>
+
+    <!-- Reviews -->
+    <section class="reviews-section fi">
+      <div class="reviews-header">
+        <h2 class="sec-heading">レビュー</h2>
+        <span class="reviews-count">○件</span>
+      </div>
+
+      <div class="review-list">
+
+        <!-- Review 1 -->
+        <div class="review-card">
+          <div class="review-card-header">
+            <div class="reviewer-info">
+              <div class="reviewer-avatar">
+                <img src="" alt=""
+                  onerror="this.style.display='none'; this.parentElement.innerHTML='U';">
+              </div>
+              <div>
+                <p class="reviewer-name">ユーザー名</p>
+                <p class="reviewer-handle">@handle</p>
+              </div>
+            </div>
+            <div class="review-meta-right">
+              <div class="review-stars">
+                <span class="star-full">★</span>
+                <span class="star-full">★</span>
+                <span class="star-full">★</span>
+                <span class="star-full">★</span>
+                <span class="star-empty">★</span>
+              </div>
+              <span class="review-date">○○○○年○月○日</span>
+            </div>
+          </div>
+          <p class="review-text">
+            レビューテキストが入ります。映画を観た感想や印象、特に印象に残ったシーンなどを自由に記述します。
+          </p>
+          <div class="review-tags">
+            <span class="review-tag"># タグ</span>
+            <span class="review-tag"># タグ</span>
+          </div>
+        </div>
+
+        <!-- Review 2 -->
+        <div class="review-card">
+          <div class="review-card-header">
+            <div class="reviewer-info">
+              <div class="reviewer-avatar">U</div>
+              <div>
+                <p class="reviewer-name">ユーザー名</p>
+                <p class="reviewer-handle">@handle</p>
+              </div>
+            </div>
+            <div class="review-meta-right">
+              <div class="review-stars">
+                <span class="star-full">★</span>
+                <span class="star-full">★</span>
+                <span class="star-full">★</span>
+                <span class="star-empty">★</span>
+                <span class="star-empty">★</span>
+              </div>
+              <span class="review-date">○○○○年○月○日</span>
+            </div>
+          </div>
+          <p class="review-text">
+            レビューテキストが入ります。映画を観た感想や印象、特に印象に残ったシーンなどを自由に記述します。
+          </p>
+          <div class="review-tags">
+            <span class="review-tag"># タグ</span>
+          </div>
+        </div>
+
+        <!-- Review 3 -->
+        <div class="review-card">
+          <div class="review-card-header">
+            <div class="reviewer-info">
+              <div class="reviewer-avatar">U</div>
+              <div>
+                <p class="reviewer-name">ユーザー名</p>
+                <p class="reviewer-handle">@handle</p>
+              </div>
+            </div>
+            <div class="review-meta-right">
+              <div class="review-stars">
+                <span class="star-full">★</span>
+                <span class="star-full">★</span>
+                <span class="star-full">★</span>
+                <span class="star-full">★</span>
+                <span class="star-full">★</span>
+              </div>
+              <span class="review-date">○○○○年○月○日</span>
+            </div>
+          </div>
+          <p class="review-text">
+            レビューテキストが入ります。映画を観た感想や印象、特に印象に残ったシーンなどを自由に記述します。
+          </p>
+          <div class="review-tags">
+            <span class="review-tag"># タグ</span>
+            <span class="review-tag"># タグ</span>
+            <span class="review-tag"># タグ</span>
+          </div>
+        </div>
+
+      </div><!-- /review-list -->
+
+      <div class="load-more-wrap">
+        <button class="load-more-btn">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+          もっと見る
+        </button>
+      </div>
+
+    </section>
+
+    <!-- Related Films -->
+    <section class="fi">
+      <h2 class="sec-heading" style="margin-bottom:24px;">関連作品</h2>
+      <div class="related-grid">
+        <div class="related-card">
+          <div class="related-poster">ポスター</div>
+          <div class="related-body">
+            <p class="related-title">関連作品タイトル</p>
+            <p class="related-year">○○○○年</p>
+            <p class="related-rating">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+              </svg>
+              ○.○
+            </p>
+          </div>
+        </div>
+        <div class="related-card">
+          <div class="related-poster">ポスター</div>
+          <div class="related-body">
+            <p class="related-title">関連作品タイトル</p>
+            <p class="related-year">○○○○年</p>
+            <p class="related-rating">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+              </svg>
+              ○.○
+            </p>
+          </div>
+        </div>
+        <div class="related-card">
+          <div class="related-poster">ポスター</div>
+          <div class="related-body">
+            <p class="related-title">関連作品タイトル</p>
+            <p class="related-year">○○○○年</p>
+            <p class="related-rating">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+              </svg>
+              ○.○
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /main-col -->
+
+  <!-- ─── SIDEBAR ─── -->
+  <aside class="side-col">
+
+    <!-- Cast -->
+    <div class="side-block fi">
+      <p class="side-block-title">キャスト</p>
+      <div class="side-block-body">
+        <div class="cast-list">
+          <div class="cast-item">
+            <div class="cast-avatar">
+              <img src="" alt=""
+                onerror="this.style.display='none'; this.parentElement.innerHTML='👤';">
+            </div>
+            <div>
+              <p class="cast-name">俳優名</p>
+              <p class="cast-role">役名</p>
+            </div>
+          </div>
+          <div class="cast-item">
+            <div class="cast-avatar">👤</div>
+            <div>
+              <p class="cast-name">俳優名</p>
+              <p class="cast-role">役名</p>
+            </div>
+          </div>
+          <div class="cast-item">
+            <div class="cast-avatar">👤</div>
+            <div>
+              <p class="cast-name">俳優名</p>
+              <p class="cast-role">役名</p>
+            </div>
+          </div>
+          <div class="cast-item">
+            <div class="cast-avatar">👤</div>
+            <div>
+              <p class="cast-name">俳優名</p>
+              <p class="cast-role">役名</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rating Distribution -->
+    <div class="side-block fi">
+      <p class="side-block-title">評価の分布</p>
+      <div class="side-block-body">
+        <div class="rating-dist">
+          <div class="dist-row">
+            <span class="dist-label">5★</span>
+            <div class="dist-bar-wrap"><div class="dist-bar" style="width:65%"></div></div>
+            <span class="dist-count">○件</span>
+          </div>
+          <div class="dist-row">
+            <span class="dist-label">4★</span>
+            <div class="dist-bar-wrap"><div class="dist-bar" style="width:45%"></div></div>
+            <span class="dist-count">○件</span>
+          </div>
+          <div class="dist-row">
+            <span class="dist-label">3★</span>
+            <div class="dist-bar-wrap"><div class="dist-bar" style="width:25%"></div></div>
+            <span class="dist-count">○件</span>
+          </div>
+          <div class="dist-row">
+            <span class="dist-label">2★</span>
+            <div class="dist-bar-wrap"><div class="dist-bar" style="width:10%"></div></div>
+            <span class="dist-count">○件</span>
+          </div>
+          <div class="dist-row">
+            <span class="dist-label">1★</span>
+            <div class="dist-bar-wrap"><div class="dist-bar" style="width:5%"></div></div>
+            <span class="dist-count">○件</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </aside><!-- /side-col -->
+
+</div><!-- /page-body -->
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span class="footer-logo">ムビレポ</span>
+    <div class="footer-links">
+      <span>利用規約</span>
+      <span>プライバシーポリシー</span>
+      <span>お問い合わせ</span>
+    </div>
+    <p class="footer-copy">© 2025 ムビレポ. All rights reserved.</p>
+  </div>
+</footer>
+
+<!-- Back to top -->
+<button class="back-to-top" id="backToTop" aria-label="トップへ戻る">↑</button>
+
+<script>
+/* Scroll progress + back to top */
+window.addEventListener('scroll', () => {
+  const doc = document.documentElement;
+  const scrollTop = doc.scrollTop || document.body.scrollTop;
+  const scrollHeight = doc.scrollHeight - doc.clientHeight;
+  const pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+  document.getElementById('progressBar').style.width = pct + '%';
+  const btn = document.getElementById('backToTop');
+  scrollTop > 400 ? btn.classList.add('show') : btn.classList.remove('show');
+});
+document.getElementById('backToTop').addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+/* Fade-in */
+const io = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      e.target.style.animationDelay = (i * 0.05) + 's';
+      e.target.classList.add('vis');
+      io.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.07 });
+document.querySelectorAll('.fi').forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>

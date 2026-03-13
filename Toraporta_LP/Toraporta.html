@@ -725,10 +725,11 @@ footer {
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    padding-top: 40px;
+    padding: 40px 24px 32px;
     gap: 28px;
-    z-index: 100;
+    z-index: 9999;
     overflow-y: auto;
+    min-height: calc(100vh - 64px);
   }
   nav ul.open { display: flex; }
   nav ul li a {
@@ -1390,19 +1391,35 @@ function toggleMenu() {
   const menu = document.getElementById('navMenu');
   const btn  = document.getElementById('navToggle');
   if (!menu || !btn) return;
-  menu.classList.toggle('open');
-  btn.classList.toggle('open');
+
+  const willOpen = !menu.classList.contains('open');
+  menu.classList.toggle('open', willOpen);
+  btn.classList.toggle('open', willOpen);
+
+  // iPhone Safari / プレビューでも確実に表示切り替えされるよう、念のため display も制御
+  if (window.innerWidth <= 768) {
+    menu.style.display = willOpen ? 'flex' : 'none';
+  } else {
+    menu.style.display = '';
+  }
 }
 function closeMenu() {
   const menu = document.getElementById('navMenu');
   const btn  = document.getElementById('navToggle');
   if (!menu || !btn) return;
+
   menu.classList.remove('open');
   btn.classList.remove('open');
+
+  if (window.innerWidth <= 768) {
+    menu.style.display = 'none';
+  } else {
+    menu.style.display = '';
+  }
 }
 
-// スマホナビのイベント紐付け（iPhone Safari / プレビュー対策）
-document.addEventListener('DOMContentLoaded', () => {
+// スマホナビのイベント紐付け（スクリプト読み込み時に即実行）
+(function() {
   const navToggle = document.getElementById('navToggle');
   const navMenu   = document.getElementById('navMenu');
   if (!navToggle || !navMenu) return;
@@ -1414,7 +1431,7 @@ document.addEventListener('DOMContentLoaded', () => {
   navMenu.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', closeMenu);
   });
-});
+})();
 
 /* ▼ 隠しページのトリガーワード（EDIT） */
 const TRIGGER_NAMES = ['獅子王千暁', '獅子王 千暁', 'ししおうちあき', 'シシオウチアキ', '獅子王', 'ししおう', 'シシオウ'];
