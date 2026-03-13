@@ -800,14 +800,14 @@ footer {
 <nav>
   <a href="#top" class="nav-logo">TRAPORTA<span>.</span></a>
   <ul id="navMenu">
-    <li><a href="#top" onclick="closeMenu()">Top</a></li>
-    <li><a href="#service" onclick="closeMenu()">Service</a></li>
-    <li><a href="#works" onclick="closeMenu()">Works</a></li>
-    <li><a href="#about" onclick="closeMenu()">About</a></li>
-    <li><a href="#recruit" onclick="closeMenu()">Recruit</a></li>
-    <li><a href="#contact" onclick="closeMenu()">Contact</a></li>
+    <li><a href="#top" class="nav-link">Top</a></li>
+    <li><a href="#service" class="nav-link">Service</a></li>
+    <li><a href="#works" class="nav-link">Works</a></li>
+    <li><a href="#about" class="nav-link">About</a></li>
+    <li><a href="#recruit" class="nav-link">Recruit</a></li>
+    <li><a href="#contact" class="nav-link">Contact</a></li>
   </ul>
-  <button class="nav-toggle" id="navToggle" onclick="toggleMenu()" aria-label="メニュー">
+  <button class="nav-toggle" id="navToggle" aria-label="メニュー">
     <span></span><span></span><span></span>
   </button>
 </nav>
@@ -1389,13 +1389,32 @@ footer {
 function toggleMenu() {
   const menu = document.getElementById('navMenu');
   const btn  = document.getElementById('navToggle');
+  if (!menu || !btn) return;
   menu.classList.toggle('open');
   btn.classList.toggle('open');
 }
 function closeMenu() {
-  document.getElementById('navMenu').classList.remove('open');
-  document.getElementById('navToggle').classList.remove('open');
+  const menu = document.getElementById('navMenu');
+  const btn  = document.getElementById('navToggle');
+  if (!menu || !btn) return;
+  menu.classList.remove('open');
+  btn.classList.remove('open');
 }
+
+// スマホナビのイベント紐付け（iPhone Safari / プレビュー対策）
+document.addEventListener('DOMContentLoaded', () => {
+  const navToggle = document.getElementById('navToggle');
+  const navMenu   = document.getElementById('navMenu');
+  if (!navToggle || !navMenu) return;
+
+  // ボタンでメニュー開閉
+  navToggle.addEventListener('click', toggleMenu);
+
+  // メニュー内リンクをタップしたらメニューを閉じる
+  navMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', closeMenu);
+  });
+});
 
 /* ▼ 隠しページのトリガーワード（EDIT） */
 const TRIGGER_NAMES = ['獅子王千暁', '獅子王 千暁', 'ししおうちあき', 'シシオウチアキ', '獅子王', 'ししおう', 'シシオウ'];
