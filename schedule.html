@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>配信予定一覧 | 株式会社トラポルタ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+/* ── Toraporta デザイン基軸 ── */
+:root {
+  --black:   #0e002e;
+  --white:   #fbfcfb;
+  --accent:  #29ae86;
+  --accent2: #ffdd00;
+  --accent3: #73d260;
+  --gray:    #7a7490;
+  --border:  #dddae8;
+  --surface: #f2f0f8;
+  --font-display: 'Noto Sans JP', sans-serif;
+  --font-mono: 'Noto Sans JP', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--white);
+  color: var(--black);
+  font-family: var(--font-display);
+  font-weight: 300;
+  min-height: 100vh;
+  line-height: 1.8;
+}
+::-webkit-scrollbar { width: 2px; }
+::-webkit-scrollbar-track { background: var(--white); }
+::-webkit-scrollbar-thumb { background: var(--accent); }
+
+/* ── NAV（Toraporta 統一） ── */
+nav {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 60px;
+  height: 64px;
+  background: rgba(251,252,251,.94);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 20px;
+  letter-spacing: .35em;
+  color: var(--black);
+  text-decoration: none;
+}
+.nav-logo span { color: var(--accent); }
+nav ul { display: flex; gap: 36px; list-style: none; }
+nav a {
+  font-size: 13px;
+  letter-spacing: .15em;
+  color: var(--gray);
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color .25s;
+}
+nav a:hover { color: var(--accent); }
+.nav-back {
+  font-size: 11px;
+  letter-spacing: .12em;
+  color: var(--gray);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: color .25s;
+}
+.nav-back:hover { color: var(--accent); }
+.nav-back::before { content: '←'; }
+
+/* ── PAGE HERO ── */
+.schedule-hero {
+  padding: 112px 60px 64px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 40px;
+}
+.schedule-hero-label {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .18em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.schedule-hero h1 {
+  font-family: 'Bebas Neue', cursive;
+  font-size: clamp(42px, 5.5vw, 72px);
+  letter-spacing: .06em;
+  line-height: 1.1;
+  color: var(--black);
+}
+.schedule-hero h1 em {
+  font-style: normal;
+  color: var(--accent);
+}
+.schedule-hero-right {
+  max-width: 380px;
+  flex-shrink: 0;
+}
+.schedule-hero-desc {
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--gray);
+  line-height: 2;
+  letter-spacing: .04em;
+}
+
+/* ── FILTER BAR ── */
+.filter-wrap {
+  padding: 28px 60px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.filter-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .18em;
+  color: var(--gray);
+  text-transform: uppercase;
+  margin-right: 6px;
+}
+.filter-btn {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: .08em;
+  padding: 6px 14px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--gray);
+  cursor: pointer;
+  transition: all .25s;
+}
+.filter-btn:hover {
+  border-color: var(--black);
+  color: var(--black);
+  background: var(--surface);
+}
+.filter-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--white);
+}
+.item-count {
+  font-size: 10px;
+  letter-spacing: .12em;
+  color: var(--gray);
+  white-space: nowrap;
+}
+
+/* ── SECTION HEADING ── */
+.section-head {
+  padding: 40px 60px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.section-title {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .2em;
+  color: var(--gray);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.section-rule {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ── CARDS GRID ── */
+.cards-wrap {
+  padding: 0 60px 100px;
+}
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+
+/* ── CARD ── */
+.card {
+  background: var(--white);
+  overflow: hidden;
+  cursor: pointer;
+  transition: background .25s;
+  animation: cardFadeIn .4s ease both;
+  position: relative;
+}
+.card:nth-child(1) { animation-delay: .04s; }
+.card:nth-child(2) { animation-delay: .08s; }
+.card:nth-child(3) { animation-delay: .12s; }
+.card:nth-child(4) { animation-delay: .16s; }
+.card:nth-child(5) { animation-delay: .20s; }
+.card:nth-child(6) { animation-delay: .24s; }
+@keyframes cardFadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.card:hover { background: var(--surface); }
+.card:hover .card-thumb-ph { transform: scale(1.03); }
+
+.card-featured {
+  grid-column: span 3;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.card-thumb {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 16/9;
+}
+.card-featured .card-thumb {
+  aspect-ratio: unset;
+  min-height: 300px;
+}
+.card-thumb-ph {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform .6s cubic-bezier(.16, 1, .3, 1);
+}
+.card-thumb-ph span {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 80px;
+  font-weight: 400;
+  color: rgba(14,0,46,.07);
+  letter-spacing: .05em;
+  user-select: none;
+}
+.ph-1 { background: linear-gradient(135deg, #e8f5f0 0%, #c8ead9 100%); }
+.ph-2 { background: linear-gradient(135deg, #fffbe6 0%, #fff0a0 100%); }
+.ph-3 { background: linear-gradient(135deg, #eaf5e6 0%, #caeac0 100%); }
+.ph-4 { background: linear-gradient(135deg, #e8f5f0 0%, #b8e0d0 100%); }
+.ph-5 { background: linear-gradient(135deg, #fffbe6 0%, #e8f5e0 100%); }
+.ph-6 { background: linear-gradient(135deg, #eaf5e6 0%, #c8ead9 100%); }
+
+.badge {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+}
+.badge-live { background: var(--accent); color: var(--white); }
+.badge-live::before { content: '● '; animation: blink 1.2s ease-in-out infinite; }
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+.badge-upcoming { background: var(--white); color: var(--black); border: 1px solid var(--border); }
+.badge-archive { background: var(--surface); color: var(--gray); border: 1px solid var(--border); }
+.badge-ended   { background: var(--surface); color: var(--gray); border: 1px solid var(--border); }
+
+.type-tag {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  background: rgba(251,252,251,.9);
+  color: var(--gray);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(4px);
+}
+
+.card-body { padding: 24px 28px 28px; }
+.card-featured .card-body {
+  padding: 40px 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.card-meta { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+.card-date { font-size: 10px; font-weight: 700; letter-spacing: .1em; color: var(--accent); }
+.card-platform { font-size: 10px; letter-spacing: .06em; color: var(--gray); }
+.card-title {
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: .04em;
+  line-height: 1.6;
+  color: var(--black);
+  margin-bottom: 10px;
+}
+.card-featured .card-title {
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+.card-desc {
+  font-size: 12px;
+  font-weight: 300;
+  color: var(--gray);
+  line-height: 1.9;
+  letter-spacing: .03em;
+  margin-bottom: 18px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.card-featured .card-desc { -webkit-line-clamp: 5; font-size: 13px; }
+.card-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px; }
+.card-tag {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  padding: 3px 8px;
+  border: 1px solid var(--border);
+  color: var(--gray);
+  text-transform: uppercase;
+}
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+.card-time { font-size: 10px; letter-spacing: .06em; color: var(--gray); }
+.card-link {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: gap .2s;
+  border-bottom: 1px solid var(--accent);
+  padding-bottom: 1px;
+}
+.card-link:hover { gap: 14px; }
+.card-link::after { content: '→'; }
+
+.empty {
+  grid-column: 1 / -1;
+  padding: 80px 40px;
+  text-align: center;
+  font-size: 11px;
+  letter-spacing: .12em;
+  color: var(--gray);
+  display: none;
+  background: var(--white);
+}
+
+/* ── FOOTER（Toraporta 統一） ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 36px 60px;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.footer-logo { font-family: 'Bebas Neue', cursive; font-size: 17px; letter-spacing: .3em; color: var(--gray); }
+.footer-copy { font-size: 13px; color: var(--gray); letter-spacing: .05em; }
+
+/* ── ハンバーガー（サブページ用） ── */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  z-index: 101;
+}
+.nav-toggle span {
+  display: block;
+  width: 24px; height: 2px;
+  background: var(--black);
+  transition: transform .3s, opacity .3s;
+}
+.nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-toggle.open span:nth-child(2) { opacity: 0; }
+.nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+@media (max-width: 960px) {
+  .cards-grid { grid-template-columns: repeat(2, 1fr); }
+  .card-featured { grid-column: span 2; grid-template-columns: 1fr; }
+  .card-featured .card-thumb { min-height: 220px; }
+}
+@media (max-width: 768px) {
+  nav { padding: 0 24px; }
+  .nav-toggle { display: flex; }
+  nav ul { display: none; }
+  nav ul.open { display: flex; flex-direction: column; position: fixed; inset: 64px 0 0; background: var(--white); padding-top: 40px; gap: 28px; z-index: 99; overflow-y: auto; align-items: center; list-style: none; }
+  .schedule-hero, .filter-wrap, .cards-wrap, .section-head { padding-left: 24px; padding-right: 24px; }
+  .schedule-hero { flex-direction: column; align-items: flex-start; padding-top: 100px; }
+  .schedule-hero-right { max-width: 100%; }
+  .cards-grid { grid-template-columns: 1fr; }
+  .card-featured { grid-column: span 1; grid-template-columns: 1fr; }
+  footer { padding: 28px 24px; flex-direction: column; gap: 8px; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="Toraporta.html" class="nav-logo">TRAPORTA<span>.</span></a>
+  <ul id="navMenu">
+    <li><a href="Toraporta.html#top">Top</a></li>
+    <li><a href="Toraporta.html#service">Service</a></li>
+    <li><a href="Toraporta.html#works">Works</a></li>
+    <li><a href="Toraporta.html#about">About</a></li>
+    <li><a href="Toraporta.html#recruit">Recruit</a></li>
+    <li><a href="Toraporta.html#contact">Contact</a></li>
+  </ul>
+  <a href="Toraporta.html#service" class="nav-back">Service</a>
+  <button class="nav-toggle" id="navToggle" aria-label="メニュー">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<section class="schedule-hero">
+  <div class="schedule-hero-left">
+    <p class="schedule-hero-label">Media — Broadcast &amp; Streaming</p>
+    <h1>配信<em>予定</em><br>一覧</h1>
+  </div>
+  <div class="schedule-hero-right">
+    <p class="schedule-hero-desc">
+      トラポルタが制作・演出に関わる配信コンテンツの最新スケジュールです。
+      テレビ番組、不定期特番、ラジオ、YouTubeなど、多彩なフォーマットでお届けします。
+    </p>
+  </div>
+</section>
+
+<div class="filter-wrap">
+  <div class="filter-group">
+    <span class="filter-label">Filter</span>
+    <button class="filter-btn active" data-filter="all">すべて</button>
+    <button class="filter-btn" data-filter="tv">テレビ番組</button>
+    <button class="filter-btn" data-filter="special">不定期特番</button>
+    <button class="filter-btn" data-filter="radio">ラジオ</button>
+    <button class="filter-btn" data-filter="youtube">Youtube</button>
+    <button class="filter-btn" data-filter="other">その他</button>
+  </div>
+  <div class="filter-group">
+    <span class="filter-label">Status</span>
+    <button class="filter-btn" data-filter="live">配信中</button>
+    <button class="filter-btn" data-filter="upcoming">配信予定</button>
+    <button class="filter-btn" data-filter="archive">アーカイブ</button>
+  </div>
+  <span class="item-count" id="item-count">6 items</span>
+</div>
+
+<div class="section-head">
+  <span class="section-title">All Contents</span>
+  <div class="section-rule"></div>
+</div>
+
+<div class="cards-wrap">
+  <div class="cards-grid" id="cards-grid">
+
+    <!-- カード01：特集（1行目・横長） data-category: tv / special / radio / youtube / other  data-status: live / upcoming / archive -->
+    <article class="card card-featured" data-category="tv" data-status="live">
+      <div class="card-thumb ph-1">
+        <div class="card-thumb-ph"><span>01</span></div>
+        <span class="badge badge-live">On Air</span>
+        <span class="type-tag">テレビ番組</span>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-date">日付・曜日・時間</span>
+          <span class="card-platform">放送局・プラットフォーム</span>
+        </div>
+        <h2 class="card-title">番組タイトル（ここに記載）</h2>
+        <p class="card-desc">番組の説明文をここに記載します。あらすじや見どころなどを2〜3行で入力してください。</p>
+        <div class="card-tags"></div>
+        <div class="card-footer">
+          <span class="card-time">放送時間・更新日など</span>
+          <a href="#" class="card-link">詳細を見る</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- カード02 data-category / data-status を必要に応じて変更 -->
+    <article class="card" data-category="tv" data-status="upcoming">
+      <div class="card-thumb ph-2">
+        <div class="card-thumb-ph"><span>02</span></div>
+        <span class="badge badge-upcoming">Upcoming</span>
+        <span class="type-tag">テレビ番組</span>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-date">日付・曜日・時間</span>
+          <span class="card-platform">放送局・プラットフォーム</span>
+        </div>
+        <h2 class="card-title">番組タイトル（ここに記載）</h2>
+        <p class="card-desc">番組の説明文をここに記載します。</p>
+        <div class="card-tags"></div>
+        <div class="card-footer">
+          <span class="card-time">放送時間・更新日など</span>
+          <a href="#" class="card-link">詳細を見る</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- カード03 -->
+    <article class="card" data-category="special" data-status="upcoming">
+      <div class="card-thumb ph-3">
+        <div class="card-thumb-ph"><span>03</span></div>
+        <span class="badge badge-upcoming">Upcoming</span>
+        <span class="type-tag">不定期特番</span>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-date">日付・曜日・時間</span>
+          <span class="card-platform">放送局・プラットフォーム</span>
+        </div>
+        <h2 class="card-title">番組タイトル（ここに記載）</h2>
+        <p class="card-desc">番組の説明文をここに記載します。</p>
+        <div class="card-tags"></div>
+        <div class="card-footer">
+          <span class="card-time">放送時間・更新日など</span>
+          <a href="#" class="card-link">詳細を見る</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- カード04 -->
+    <article class="card" data-category="youtube" data-status="live">
+      <div class="card-thumb ph-4">
+        <div class="card-thumb-ph"><span>04</span></div>
+        <span class="badge badge-live">On Air</span>
+        <span class="type-tag">YouTube</span>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-date">日付・配信日</span>
+          <span class="card-platform">YouTube</span>
+        </div>
+        <h2 class="card-title">番組タイトル（ここに記載）</h2>
+        <p class="card-desc">番組の説明文をここに記載します。</p>
+        <div class="card-tags"></div>
+        <div class="card-footer">
+          <span class="card-time">配信スケジュールなど</span>
+          <a href="#" class="card-link">視聴する</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- カード05 -->
+    <article class="card" data-category="tv" data-status="archive">
+      <div class="card-thumb ph-5">
+        <div class="card-thumb-ph"><span>05</span></div>
+        <span class="badge badge-archive">Archive</span>
+        <span class="type-tag">テレビ番組</span>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-date">放送期間・日付</span>
+          <span class="card-platform">放送局・プラットフォーム</span>
+        </div>
+        <h2 class="card-title">番組タイトル（ここに記載）</h2>
+        <p class="card-desc">番組の説明文をここに記載します。</p>
+        <div class="card-tags"></div>
+        <div class="card-footer">
+          <span class="card-time">アーカイブ公開中 など</span>
+          <a href="#" class="card-link">視聴する</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- カード06 -->
+    <article class="card" data-category="other" data-status="upcoming">
+      <div class="card-thumb ph-6">
+        <div class="card-thumb-ph"><span>06</span></div>
+        <span class="badge badge-upcoming">Upcoming</span>
+        <span class="type-tag">その他</span>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-date">日付・曜日・時間</span>
+          <span class="card-platform">プラットフォーム</span>
+        </div>
+        <h2 class="card-title">番組タイトル（ここに記載）</h2>
+        <p class="card-desc">番組の説明文をここに記載します。</p>
+        <div class="card-tags"></div>
+        <div class="card-footer">
+          <span class="card-time">放送時間・イベント日など</span>
+          <a href="#" class="card-link">詳細を見る</a>
+        </div>
+      </div>
+    </article>
+
+    <div class="empty" id="empty">該当するコンテンツが見つかりませんでした</div>
+
+  </div>
+</div>
+
+<footer>
+  <p class="footer-logo">TRAPORTA</p>
+  <p class="footer-copy">© 2024 株式会社トラポルタ. All rights reserved.</p>
+</footer>
+
+<script>
+(function() {
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const cards = document.querySelectorAll('.card');
+  const itemCount = document.getElementById('item-count');
+  const empty = document.getElementById('empty');
+
+  function filterCards() {
+    const activeBtn = document.querySelector('.filter-btn.active');
+    if (!activeBtn) return;
+    const f = activeBtn.dataset.filter;
+    let count = 0;
+    cards.forEach(function(card) {
+      const cat = card.dataset.category;
+      const status = card.dataset.status;
+      const show = f === 'all' || cat === f ||
+        (f === 'live' && status === 'live') ||
+        (f === 'upcoming' && status === 'upcoming') ||
+        (f === 'archive' && (status === 'archive' || status === 'ended'));
+      card.style.display = show ? '' : 'none';
+      if (show) count++;
+    });
+    itemCount.textContent = count + ' items';
+    empty.style.display = count === 0 ? 'block' : 'none';
+  }
+
+  filterBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      filterBtns.forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      filterCards();
+    });
+  });
+
+  var navToggle = document.getElementById('navToggle');
+  var navMenu = document.getElementById('navMenu');
+  if (navToggle && navMenu) {
+    navToggle.addEventListener('click', function() {
+      navToggle.classList.toggle('open');
+      navMenu.classList.toggle('open');
+    });
+  }
+})();
+</script>
+</body>
+</html>
