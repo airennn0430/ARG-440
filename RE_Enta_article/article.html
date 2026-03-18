@@ -34,6 +34,9 @@ body {
   line-height: 1.8;
   overflow-x: hidden;
 }
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--border); }
+::-webkit-scrollbar-thumb { background: var(--btn); border-radius: 2px; }
 
 img { max-width: 100%; display: block; }
 a { text-decoration: none; color: inherit; }
@@ -115,6 +118,43 @@ a { text-decoration: none; color: inherit; }
 }
 .header-search:hover { border-color: var(--btn); }
 .header-search svg { flex-shrink: 0; }
+
+.header-hamburger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: var(--headline);
+}
+.header-hamburger-inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 20px;
+}
+.header-hamburger-inner span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: currentColor;
+  border-radius: 1px;
+  transition: transform .25s ease, opacity .2s ease;
+}
+.header-hamburger.is-open .header-hamburger-inner span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.header-hamburger.is-open .header-hamburger-inner span:nth-child(2) {
+  opacity: 0;
+}
+.header-hamburger.is-open .header-hamburger-inner span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
 
 /* BREADCRUMB */
 .breadcrumb-bar {
@@ -219,6 +259,12 @@ a { text-decoration: none; color: inherit; }
   border-bottom: 1px solid var(--border);
   margin-bottom: 32px;
 }
+.meta-author-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
 .meta-item {
   display: flex;
   align-items: center;
@@ -308,8 +354,8 @@ a { text-decoration: none; color: inherit; }
 
 .interviewee-profile {
   display: flex;
-  align-items: flex-start;
-  gap: 20px;
+  flex-direction: column;
+  align-items: center;
   background: var(--surface);
   border: 1px solid var(--border);
   border-left: 4px solid var(--btn);
@@ -317,27 +363,28 @@ a { text-decoration: none; color: inherit; }
   padding: 24px;
   margin-bottom: 40px;
 }
-.interviewee-avatar {
-  width: 80px; height: 80px;
-  border-radius: 50%;
-  background: var(--border);
-  border: 3px solid var(--white);
-  box-shadow: 0 0 0 2px var(--secondary);
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 28px;
-  color: var(--secondary);
-  overflow: hidden;
-}
 .interviewee-label {
   font-size: 10px;
   font-weight: 700;
   letter-spacing: .18em;
   text-transform: uppercase;
   color: var(--btn);
-  margin-bottom: 6px;
+  margin-bottom: 12px;
+  text-align: center;
+}
+.interviewee-avatar {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  background: var(--border);
+  border: 3px solid var(--white);
+  box-shadow: 0 0 0 2px var(--secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  color: var(--secondary);
+  overflow: hidden;
+  margin-bottom: 12px;
 }
 .interviewee-name {
   font-family: 'Noto Sans JP', sans-serif;
@@ -345,7 +392,8 @@ a { text-decoration: none; color: inherit; }
   font-weight: 600;
   color: var(--headline);
   letter-spacing: .06em;
-  margin-bottom: 4px;
+  margin-bottom: 8px;
+  text-align: center;
 }
 .interviewee-name ruby rt { font-size: .5em; letter-spacing: .1em; }
 .interviewee-role {
@@ -353,12 +401,15 @@ a { text-decoration: none; color: inherit; }
   color: var(--btn);
   font-weight: 500;
   letter-spacing: .04em;
-  margin-bottom: 10px;
+  margin-bottom: 14px;
+  text-align: center;
 }
 .interviewee-bio {
   font-size: 13px;
   color: var(--para);
   line-height: 1.85;
+  align-self: stretch;
+  text-align: left;
 }
 
 .article-body {
@@ -575,77 +626,6 @@ a { text-decoration: none; color: inherit; }
 .share-btn-lg.line { background: #06c755; color: #fff; }
 .share-btn-lg.copy { background: var(--headline); color: var(--white); }
 
-.related-section {
-  margin-top: 64px;
-  padding-top: 40px;
-  border-top: 2px solid var(--headline);
-}
-.related-title {
-  font-family: 'Outfit', sans-serif;
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--headline);
-  letter-spacing: .06em;
-  margin-bottom: 24px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.related-title::before {
-  content: '';
-  width: 4px; height: 20px;
-  background: var(--btn);
-  border-radius: 2px;
-  flex-shrink: 0;
-}
-.related-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-}
-.related-card {
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  overflow: hidden;
-  transition: box-shadow .25s, transform .25s;
-  cursor: pointer;
-  background: var(--white);
-}
-.related-card:hover {
-  box-shadow: 0 6px 24px rgba(9,64,103,.1);
-  transform: translateY(-3px);
-}
-.related-card-img {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  background: linear-gradient(135deg, var(--surface) 0%, var(--border) 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 11px;
-  color: var(--secondary);
-}
-.related-card-body { padding: 16px; }
-.related-card-cat {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: .12em;
-  color: var(--btn);
-  text-transform: uppercase;
-  margin-bottom: 6px;
-}
-.related-card-title {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--headline);
-  line-height: 1.6;
-}
-.related-card-date {
-  font-size: 11px;
-  color: var(--secondary);
-  margin-top: 8px;
-}
-
 .sidebar {
   display: flex;
   flex-direction: column;
@@ -716,6 +696,22 @@ a { text-decoration: none; color: inherit; }
   color: var(--para);
   line-height: 1.8;
   text-align: left;
+}
+.sidebar-editor-btn {
+  display: block;
+  margin-top: 16px;
+  padding: 10px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+  color: var(--btn-text);
+  background: var(--btn);
+  border-radius: 6px;
+  transition: opacity .2s, background .2s;
+}
+.sidebar-editor-btn:hover {
+  opacity: .9;
+  background: var(--headline);
 }
 
 .sidebar-tags {
@@ -830,9 +826,8 @@ a { text-decoration: none; color: inherit; }
 }
 
 @media (max-width: 1024px) {
-  .page-wrap { grid-template-columns: 1fr; gap: 40px; }
+  .page-wrap { grid-template-columns: 1fr; gap: 40px; padding: 40px 40px 60px; }
   .sidebar { position: static; }
-  .related-grid { grid-template-columns: repeat(2, 1fr); }
   .footer-nav-cols { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 768px) {
@@ -843,7 +838,6 @@ a { text-decoration: none; color: inherit; }
   .article-title { font-size: clamp(20px, 5.5vw, 28px); }
   .article-meta { gap: 10px; }
   .meta-divider { display: none; }
-  .related-grid { grid-template-columns: 1fr; }
   .footer-top { grid-template-columns: 1fr; gap: 28px; }
   .footer-nav-cols { grid-template-columns: repeat(2, 1fr); }
   .footer-inner { padding: 36px 20px 24px; }
@@ -851,13 +845,25 @@ a { text-decoration: none; color: inherit; }
   .share-bar { flex-wrap: wrap; }
 }
 @media (max-width: 480px) {
-  .related-grid { grid-template-columns: 1fr; }
   .share-section-btns { flex-direction: column; width: 100%; }
   .share-btn-lg { width: 100%; justify-content: center; }
+}
+
+/* Scroll progress bar (top) */
+.progress-bar {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--btn), var(--tertiary));
+  z-index: 200;
+  width: 0%;
+  transition: width .1s linear;
 }
   </style>
 </head>
 <body>
+
+  <div class="progress-bar" id="progressBar"></div>
 
   <!-- HEADER -->
   <header class="site-header">
@@ -878,6 +884,11 @@ a { text-decoration: none; color: inherit; }
           <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
         </svg>
         キーワード検索
+      </button>
+      <button type="button" class="header-hamburger" aria-label="メニュー">
+        <span class="header-hamburger-inner">
+          <span></span><span></span><span></span>
+        </span>
       </button>
     </div>
   </header>
@@ -906,7 +917,7 @@ a { text-decoration: none; color: inherit; }
         <span class="cat-badge sub">エンターテイメント</span>
         <span class="tag-chip"># ビジョン</span>
         <span class="tag-chip"># キャリア</span>
-        <span class="tag-chip"># 起業</span>
+        <span class="tag-chip"># 企画・制作</span>
       </div>
 
       <h1 class="article-title">
@@ -914,11 +925,13 @@ a { text-decoration: none; color: inherit; }
       </h1>
 
       <div class="article-meta">
-        <div class="meta-item meta-author">
-          <div class="meta-author-avatar">編</div>
-          <span>編集者名</span>
+        <div class="meta-author-row">
+          <div class="meta-item meta-author">
+            <div class="meta-author-avatar">編</div>
+            <span>編集者名</span>
+          </div>
+          <span class="meta-divider"></span>
         </div>
-        <span class="meta-divider"></span>
         <div class="meta-item">
           <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
@@ -961,17 +974,15 @@ a { text-decoration: none; color: inherit; }
         <p>今回は、本作の制作を指揮する株式会社トラポルタCOO兼プロデューサーの<strong>獅子王千暁</strong>に、公演の企画背景や制作現場の考え方について話を聞いた。</p>
 
       <div class="interviewee-profile">
+        <p class="interviewee-label">Interview</p>
         <div class="interviewee-avatar">👤</div>
-        <div>
-          <p class="interviewee-label">Interview</p>
-          <p class="interviewee-name">
-            <ruby>獅子王千暁<rt>ししおう ちあき</rt></ruby>
-          </p>
-          <p class="interviewee-role">職業・役職</p>
-          <p class="interviewee-bio">
-            株式会社トラポルタでCOO兼プロデューサーを務める。イベント制作に限らず、ゲーム企画、書籍、番組制作など幅広いコンテンツ制作に携わり、企画立案からプロジェクト全体の設計、制作体制の統括までを担っている。
-          </p>
-        </div>
+        <p class="interviewee-name">
+          <ruby>獅子王千暁<rt>ししおう ちあき</rt></ruby>
+        </p>
+        <p class="interviewee-role">職業・役職</p>
+        <p class="interviewee-bio">
+          株式会社トラポルタでCOO兼プロデューサーを務める。イベント制作に限らず、ゲーム企画、書籍、番組制作など幅広いコンテンツ制作に携わり、企画立案からプロジェクト全体の設計、制作体制の統括までを担っている。
+        </p>
       </div>
 
         <h2>高校時代からイベント制作の現場へ</h2>
@@ -1006,10 +1017,6 @@ a { text-decoration: none; color: inherit; }
             <tr>
               <th>脚本</th>
               <td>茂部 むいみ</td>
-            </tr>
-            <tr>
-              <th>公演形式</th>
-              <td>体験型イベント</td>
             </tr>
             <tr>
               <th>会場</th>
@@ -1081,12 +1088,13 @@ a { text-decoration: none; color: inherit; }
       <div class="article-footer-meta">
         <div class="article-footer-dates">
           <span>公開：2025年○月○日</span>
-          <span>更新：2025年○月○日</span>
+          <span>更新：2025年○月○日　更新者：黒木 凪</span>
         </div>
         <div class="article-categories" style="margin-bottom:0;">
           <span class="cat-badge">インタビュー</span>
-          <span class="tag-chip"># スタートアップ</span>
+          <span class="tag-chip"># ビジョン</span>
           <span class="tag-chip"># キャリア</span>
+          <span class="tag-chip"># 企画・制作</span>
         </div>
       </div>
 
@@ -1099,39 +1107,9 @@ a { text-decoration: none; color: inherit; }
         </div>
       </div>
 
-      <div class="related-section">
-        <h2 class="related-title">関連記事</h2>
-        <div class="related-grid">
-          <div class="related-card">
-            <div class="related-card-img">画像</div>
-            <div class="related-card-body">
-              <p class="related-card-cat">インタビュー</p>
-              <p class="related-card-title">関連記事のタイトルが入ります。</p>
-              <p class="related-card-date">2025年○月○日</p>
-            </div>
-          </div>
-          <div class="related-card">
-            <div class="related-card-img">画像</div>
-            <div class="related-card-body">
-              <p class="related-card-cat">ニュース</p>
-              <p class="related-card-title">関連記事のタイトルが入ります。</p>
-              <p class="related-card-date">2025年○月○日</p>
-            </div>
-          </div>
-          <div class="related-card">
-            <div class="related-card-img">画像</div>
-            <div class="related-card-body">
-              <p class="related-card-cat">特集</p>
-              <p class="related-card-title">関連記事のタイトルが入ります。</p>
-              <p class="related-card-date">2025年○月○日</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
     </main>
 
-    <!-- SIDEBAR -->
+    <!-- SIDEBAR (PC: 右カラム / SP: メイン下に表示) -->
     <aside class="sidebar">
       <div class="sidebar-block">
         <p class="sidebar-block-title">編集者</p>
@@ -1144,6 +1122,7 @@ a { text-decoration: none; color: inherit; }
               編集者のプロフィール文が入ります。担当カテゴリや経歴などをここに記述します。
             </p>
           </div>
+          <a href="editor.html" class="sidebar-editor-btn">編集者一覧へ</a>
         </div>
       </div>
 
@@ -1156,6 +1135,35 @@ a { text-decoration: none; color: inherit; }
             <span class="tag-chip"># 起業</span>
             <span class="tag-chip"># IT</span>
             <span class="tag-chip"># テクノロジー</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-block">
+        <p class="sidebar-block-title">関連記事</p>
+        <div class="sidebar-block-body">
+          <div class="sidebar-popular-list">
+            <div class="popular-item">
+              <span class="popular-rank top">1</span>
+              <div>
+                <p class="popular-item-title">関連記事のタイトルが入ります。</p>
+                <p class="popular-item-cat">インタビュー</p>
+              </div>
+            </div>
+            <div class="popular-item">
+              <span class="popular-rank top">2</span>
+              <div>
+                <p class="popular-item-title">関連記事のタイトルが入ります。</p>
+                <p class="popular-item-cat">ニュース</p>
+              </div>
+            </div>
+            <div class="popular-item">
+              <span class="popular-rank top">3</span>
+              <div>
+                <p class="popular-item-title">関連記事のタイトルが入ります。</p>
+                <p class="popular-item-cat">特集</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -1252,6 +1260,16 @@ a { text-decoration: none; color: inherit; }
       alert('URLをコピーしました');
     });
   }
+  document.querySelector('.header-hamburger')?.addEventListener('click', function() {
+    this.classList.toggle('is-open');
+  });
+  window.addEventListener('scroll', function() {
+    const doc = document.documentElement;
+    const scrollTop = doc.scrollTop || document.body.scrollTop;
+    const scrollHeight = doc.scrollHeight - doc.clientHeight;
+    const pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+    document.getElementById('progressBar').style.width = pct + '%';
+  });
   </script>
 
 </body>

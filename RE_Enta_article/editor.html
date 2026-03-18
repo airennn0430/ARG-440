@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>編集者一覧 | リエンタ</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Outfit:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=AB+Country+Road&display=swap');
+
+/* ── CSS Variables ── */
+:root {
+  --bg:       #fffffe;
+  --headline: #094067;
+  --para:     #5f6c7b;
+  --btn:      #3da9fc;
+  --btn-text: #fffffe;
+  --secondary:#90b4ce;
+  --tertiary: #ef4565;
+  --surface:  #f0f7ff;
+  --border:   #dce8f2;
+  --white:    #fffffe;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--para);
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 400;
+  line-height: 1.8;
+  overflow-x: hidden;
+}
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--border); }
+::-webkit-scrollbar-thumb { background: var(--btn); border-radius: 2px; }
+img { max-width: 100%; display: block; }
+a { text-decoration: none; color: inherit; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   HEADER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 1px 12px rgba(9,64,103,.06);
+}
+.header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 40px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+}
+.site-logo {
+  display: flex;
+  align-items: center;
+  color: var(--headline);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.logo-img {
+  height: 36px;
+  width: auto;
+  display: block;
+}
+.logo-fallback {
+  font-family: 'Outfit', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--headline);
+  letter-spacing: .04em;
+  display: none;
+}
+.global-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  list-style: none;
+}
+.global-nav a {
+  display: block;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: .06em;
+  color: var(--headline);
+  border-radius: 4px;
+  transition: background .2s, color .2s;
+}
+.global-nav a:hover { background: var(--surface); color: var(--btn); }
+.global-nav a.disabled {
+  color: var(--secondary);
+  pointer-events: none;
+}
+.header-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 7px 16px;
+  font-size: 13px;
+  color: var(--para);
+  cursor: pointer;
+  transition: border-color .2s;
+  white-space: nowrap;
+}
+.header-search:hover { border-color: var(--btn); }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   PAGE HEADER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.page-header {
+  background: var(--headline);
+  color: var(--white);
+  padding: 56px 40px;
+}
+.page-header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.page-header-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--btn);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.page-header-label::before {
+  content: '';
+  width: 20px; height: 2px;
+  background: var(--btn);
+}
+.page-header-title {
+  font-size: clamp(26px, 4vw, 38px);
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: .04em;
+  line-height: 1.3;
+  margin-bottom: 12px;
+}
+.page-header-desc {
+  font-size: 14px;
+  color: rgba(255,255,254,.65);
+  max-width: 560px;
+  line-height: 1.9;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   PAGE WRAP
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.page-wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 56px 40px 80px;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   EDITOR GRID
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.editor-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.editor-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: box-shadow .25s, transform .25s, border-color .25s;
+}
+.editor-card:hover {
+  box-shadow: 0 8px 32px rgba(9,64,103,.1);
+  transform: translateY(-4px);
+  border-color: var(--secondary);
+}
+
+/* Card top accent bar */
+.editor-card-top {
+  height: 4px;
+  background: linear-gradient(90deg, var(--btn), var(--secondary));
+}
+
+.editor-card-body {
+  padding: 28px;
+}
+
+/* Avatar + name row */
+.editor-identity {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.editor-avatar {
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 3px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--btn);
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.editor-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.editor-name-block {}
+.editor-name {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--headline);
+  letter-spacing: .04em;
+  margin-bottom: 2px;
+}
+.editor-role {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--btn);
+}
+
+/* Categories */
+.editor-categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+.cat-chip {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .06em;
+  color: var(--headline);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 3px 10px;
+}
+
+/* Bio */
+.editor-bio {
+  font-size: 13px;
+  color: var(--para);
+  line-height: 1.9;
+  margin-bottom: 20px;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Card footer */
+.editor-card-footer {
+  padding: 14px 28px;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.editor-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.editor-stat-num {
+  font-family: 'Outfit', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--headline);
+  line-height: 1;
+}
+.editor-stat-label {
+  font-size: 10px;
+  color: var(--secondary);
+  letter-spacing: .08em;
+  white-space: nowrap;
+}
+.editor-stat-divider {
+  width: 1px;
+  height: 32px;
+  background: var(--border);
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   FOOTER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.site-footer {
+  background: var(--headline);
+  color: var(--white);
+  margin-top: 0;
+}
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 48px 40px 32px;
+}
+.footer-top {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 48px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid rgba(255,255,254,.15);
+  margin-bottom: 24px;
+}
+.footer-logo {
+  height: 38px;
+  width: auto;
+  display: block;
+  margin-bottom: 10px;
+}
+.footer-tagline {
+  font-size: 12px;
+  color: rgba(255,255,254,.6);
+  line-height: 1.8;
+}
+.footer-nav-cols {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+.footer-nav-col-title {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--btn);
+  margin-bottom: 12px;
+}
+.footer-nav-col ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.footer-nav-col span { font-size: 12px; color: rgba(255,255,254,.65); }
+.footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.footer-copy {
+  font-size: 11px;
+  color: rgba(255,255,254,.4);
+  letter-spacing: .04em;
+}
+.footer-policy {
+  display: flex;
+  gap: 20px;
+}
+.footer-policy span { font-size: 11px; color: rgba(255,255,254,.4); }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SCROLL PROGRESS / BTT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.progress-bar {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--btn), var(--tertiary));
+  z-index: 200;
+  width: 0%;
+  transition: width .1s linear;
+}
+.back-to-top {
+  position: fixed;
+  bottom: 32px; right: 32px;
+  width: 44px; height: 44px;
+  background: var(--headline);
+  color: var(--white);
+  border: none;
+  border-radius: 50%;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(9,64,103,.3);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .3s, transform .2s;
+  z-index: 99;
+}
+.back-to-top.show { opacity: 1; pointer-events: auto; }
+.back-to-top:hover { transform: translateY(-3px); background: var(--btn); }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   FADE-IN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fi { opacity: 0; }
+.fi.vis { animation: fadeUp .65s ease forwards; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   RESPONSIVE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@media (max-width: 1024px) {
+  .editor-grid { grid-template-columns: repeat(2, 1fr); }
+  .footer-nav-cols { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+  .header-inner { padding: 0 20px; }
+  .global-nav, .header-search { display: none; }
+  .page-header { padding: 40px 20px; }
+  .page-wrap { padding: 36px 20px 60px; }
+  .editor-grid { grid-template-columns: 1fr; }
+  .footer-top { grid-template-columns: 1fr; gap: 28px; }
+  .footer-nav-cols { grid-template-columns: repeat(2, 1fr); }
+  .footer-inner { padding: 36px 20px 24px; }
+  .footer-bottom { flex-direction: column; align-items: flex-start; }
+  .back-to-top { bottom: 20px; right: 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Progress Bar -->
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- ═══ HEADER ═══ -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="article.html" class="site-logo">
+      <img src="../assets/RE_Log.PNG" alt="リエンタ" class="logo-img"
+        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+      <span class="logo-fallback">リエンタ</span>
+    </a>
+    <ul class="global-nav">
+      <li><a href="article.html">TOP</a></li>
+      <li><a href="#" class="disabled">特集</a></li>
+      <li><a href="#" class="disabled">ニュース</a></li>
+      <li><a href="#" class="disabled">イベント情報</a></li>
+      <li><a href="#" class="disabled">データベース</a></li>
+    </ul>
+    <button class="header-search">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      キーワード検索
+    </button>
+  </div>
+</header>
+
+<!-- ═══ PAGE HEADER ═══ -->
+<div class="page-header">
+  <div class="page-header-inner">
+    <p class="page-header-label fi">Editors</p>
+    <h1 class="page-header-title fi">編集者一覧</h1>
+    <p class="page-header-desc fi">リエンタの記事を手がける編集者たちをご紹介します。</p>
+  </div>
+</div>
+
+<!-- ═══ PAGE WRAP ═══ -->
+<div class="page-wrap">
+  <div class="editor-grid">
+
+    <!-- Editor 1 -->
+    <div class="editor-card fi">
+      <div class="editor-card-top"></div>
+      <div class="editor-card-body">
+        <div class="editor-identity">
+          <div class="editor-avatar">
+            <img src="" alt=""
+              onerror="this.style.display='none'; this.parentElement.innerHTML='編';">
+          </div>
+          <div class="editor-name-block">
+            <p class="editor-name">編集者名</p>
+            <p class="editor-role">Editor in Chief</p>
+          </div>
+        </div>
+        <div class="editor-categories">
+          <span class="cat-chip">担当カテゴリ</span>
+          <span class="cat-chip">担当カテゴリ</span>
+        </div>
+        <p class="editor-bio">
+          自己紹介文が入ります。経歴や得意分野、インタビューへの姿勢などをここに記述します。2〜4文程度を想定しています。
+        </p>
+      </div>
+      <div class="editor-card-footer">
+        <div class="editor-stat">
+          <span class="editor-stat-num">○○</span>
+          <span class="editor-stat-label">担当記事数</span>
+        </div>
+        <div class="editor-stat-divider"></div>
+        <div class="editor-stat">
+          <span class="editor-stat-num">○○</span>
+          <span class="editor-stat-label">インタビュー数</span>
+        </div>
+        <div class="editor-stat-divider"></div>
+        <div class="editor-stat">
+          <span class="editor-stat-num">○○○○</span>
+          <span class="editor-stat-label">参加年</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Editor 2 -->
+    <div class="editor-card fi">
+      <div class="editor-card-top"></div>
+      <div class="editor-card-body">
+        <div class="editor-identity">
+          <div class="editor-avatar">編</div>
+          <div class="editor-name-block">
+            <p class="editor-name">編集者名</p>
+            <p class="editor-role">Editor</p>
+          </div>
+        </div>
+        <div class="editor-categories">
+          <span class="cat-chip">担当カテゴリ</span>
+          <span class="cat-chip">担当カテゴリ</span>
+          <span class="cat-chip">担当カテゴリ</span>
+        </div>
+        <p class="editor-bio">
+          自己紹介文が入ります。経歴や得意分野、インタビューへの姿勢などをここに記述します。2〜4文程度を想定しています。
+        </p>
+      </div>
+      <div class="editor-card-footer">
+        <div class="editor-stat">
+          <span class="editor-stat-num">○○</span>
+          <span class="editor-stat-label">担当記事数</span>
+        </div>
+        <div class="editor-stat-divider"></div>
+        <div class="editor-stat">
+          <span class="editor-stat-num">○○</span>
+          <span class="editor-stat-label">インタビュー数</span>
+        </div>
+        <div class="editor-stat-divider"></div>
+        <div class="editor-stat">
+          <span class="editor-stat-num">○○○○</span>
+          <span class="editor-stat-label">参加年</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Editor 3 -->
+    <div class="editor-card fi">
+      <div class="editor-card-top"></div>
+      <div class="editor-card-body">
+        <div class="editor-identity">
+          <div class="editor-avatar">編</div>
+          <div class="editor-name-block">
+            <p class="editor-name">編集者名</p>
+            <p class="editor-role">Editor</p>
+          </div>
+        </div>
+        <div class="editor-categories">
+          <span class="cat-chip">担当カテゴリ</span>
+        </div>
+        <p class="editor-bio">
+          自己紹介文が入ります。経歴や得意分野、インタビューへの姿勢などをここに記述します。2〜4文程度を想定しています。
+        </p>
+      </div>
+      <div class="editor-card-footer">
+        <div class="editor-stat">
+          <span class="editor-stat-num">○○</span>
+          <span class="editor-stat-label">担当記事数</span>
+        </div>
+        <div class="editor-stat-divider"></div>
+        <div class="editor-stat">
+          <span class="editor-stat-num">○○</span>
+          <span class="editor-stat-label">インタビュー数</span>
+        </div>
+        <div class="editor-stat-divider"></div>
+        <div class="editor-stat">
+          <span class="editor-stat-num">○○○○</span>
+          <span class="editor-stat-label">参加年</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /editor-grid -->
+</div><!-- /page-wrap -->
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <img src="../assets/RE_Log_under.png" alt="リエンタ" class="footer-logo">
+        <p class="footer-tagline">あらゆる職業・業界・企業を取材し、<br>あなたの未来の選択肢を広げるメディアです。</p>
+      </div>
+      <div class="footer-nav-cols">
+        <div class="footer-nav-col">
+          <p class="footer-nav-col-title">コンテンツ</p>
+          <ul>
+            <li><span>TOP</span></li>
+            <li><span>特集</span></li>
+            <li><span>ニュース</span></li>
+            <li><span>イベント情報</span></li>
+            <li><span>データベース</span></li>
+          </ul>
+        </div>
+        <div class="footer-nav-col">
+          <p class="footer-nav-col-title">カテゴリ</p>
+          <ul>
+            <li><span>インタビュー</span></li>
+            <li><span>IT・テクノロジー</span></li>
+            <li><span>医療・福祉</span></li>
+            <li><span>クリエイティブ</span></li>
+          </ul>
+        </div>
+        <div class="footer-nav-col">
+          <p class="footer-nav-col-title">サービス</p>
+          <ul>
+            <li><span>掲載のご依頼</span></li>
+            <li><span>取材のご依頼</span></li>
+            <li><span>メールマガジン</span></li>
+          </ul>
+        </div>
+        <div class="footer-nav-col">
+          <p class="footer-nav-col-title">その他</p>
+          <ul>
+            <li><span>運営会社</span></li>
+            <li><span>お問い合わせ</span></li>
+            <li><span>プライバシーポリシー</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2025 リエンタ. All rights reserved.</p>
+      <div class="footer-policy">
+        <span>プライバシーポリシー</span>
+        <span>利用規約</span>
+        <span>お問い合わせ</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Back to top -->
+<button class="back-to-top" id="backToTop" aria-label="トップへ戻る">↑</button>
+
+<script>
+/* Scroll progress + back to top */
+window.addEventListener('scroll', () => {
+  const doc = document.documentElement;
+  const scrollTop = doc.scrollTop || document.body.scrollTop;
+  const scrollHeight = doc.scrollHeight - doc.clientHeight;
+  const pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+  document.getElementById('progressBar').style.width = pct + '%';
+  const btn = document.getElementById('backToTop');
+  scrollTop > 400 ? btn.classList.add('show') : btn.classList.remove('show');
+});
+document.getElementById('backToTop').addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+/* Fade-in */
+const io = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      e.target.style.animationDelay = (i * 0.08) + 's';
+      e.target.classList.add('vis');
+      io.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.08 });
+document.querySelectorAll('.fi').forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
