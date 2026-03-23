@@ -127,7 +127,7 @@ body {
   position: absolute;
   top: calc(100% + 6px);
   right: 0;
-  width: 480px;
+  width: 440px;
   background: var(--main-surface);
   border: 1px solid var(--border);
   border-radius: 10px;
@@ -140,74 +140,158 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 16px;
+  padding: 10px 16px;
   border-bottom: 1px solid var(--border);
   background: var(--main-surface2);
 }
 .search-dropdown-title {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   color: var(--text-muted);
   letter-spacing: .1em;
   text-transform: uppercase;
 }
 .search-result-count {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--pin);
   font-weight: 700;
   letter-spacing: .04em;
 }
 .search-results-list {
-  max-height: 400px;
+  max-height: 420px;
   overflow-y: auto;
 }
 .search-results-list::-webkit-scrollbar { width: 3px; }
 .search-results-list::-webkit-scrollbar-thumb { background: var(--border); }
-.search-result-item {
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--border);
-  cursor: pointer;
-  transition: background .18s;
-}
-.search-result-item:last-child { border-bottom: none; }
-.search-result-item:hover { background: var(--main-surface2); }
-.search-result-meta {
+
+/* ── チャンネルグループ ── */
+.search-channel-group { border-bottom: 1px solid var(--border); }
+.search-channel-group:last-child { border-bottom: none; }
+
+.search-channel-row {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 5px;
+  gap: 10px;
+  padding: 11px 16px;
+  cursor: pointer;
+  transition: background .18s;
+  user-select: none;
 }
-.search-result-channel {
+.search-channel-row:hover { background: var(--main-surface2); }
+.search-channel-group.open > .search-channel-row {
+  background: var(--main-surface2);
+}
+
+.search-channel-icon {
+  font-size: 14px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  width: 18px;
+  text-align: center;
+  line-height: 1;
+}
+.search-channel-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-on);
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.search-channel-badge {
+  flex-shrink: 0;
+  background: var(--pin-bg);
+  border: 1px solid var(--pin-border);
+  color: var(--pin);
   font-size: 11px;
   font-weight: 700;
-  color: var(--pin);
-  letter-spacing: .06em;
+  letter-spacing: .04em;
+  padding: 2px 8px;
+  border-radius: 10px;
+  white-space: nowrap;
 }
-.search-result-author {
-  font-size: 11px;
+.search-channel-chevron {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: var(--text-muted);
+  transition: transform .18s ease;
 }
-.search-result-time {
+.search-channel-group.open .search-channel-chevron {
+  transform: rotate(90deg);
+}
+
+.search-msg-list {
+  display: none;
+  background: var(--main-bg);
+  border-top: 1px solid var(--border);
+}
+.search-channel-group.open .search-msg-list { display: block; }
+
+.search-msg-item {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 10px 16px 10px 20px;
+  border-bottom: 1px solid rgba(36,58,80,.6);
+  cursor: pointer;
+  transition: background .15s;
+}
+.search-msg-item:last-child { border-bottom: none; }
+.search-msg-item:hover { background: var(--main-surface); }
+
+.search-msg-avatar {
+  width: 28px; height: 28px;
+  border-radius: 5px;
+  background: var(--accent2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.search-msg-body { flex: 1; min-width: 0; }
+.search-msg-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 3px;
+}
+.search-msg-author {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-on);
+}
+.search-msg-time {
   font-size: 11px;
   color: var(--text-muted);
   margin-left: auto;
+  white-space: nowrap;
 }
-.search-result-text {
+.search-msg-text {
   font-size: 13px;
+  line-height: 1.65;
   color: var(--text);
-  line-height: 1.7;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
-.search-result-text mark {
+.search-msg-text mark {
   background: var(--highlight);
   color: var(--highlight-text);
   border-radius: 2px;
   padding: 0 2px;
   font-style: normal;
 }
+
 .search-no-result {
   padding: 32px 16px;
   text-align: center;
@@ -265,6 +349,9 @@ body {
   color: #fff;
   flex-shrink: 0;
   position: relative;
+}
+.sidebar-user-avatar--self {
+  background: #9b59b6;
 }
 .sidebar-user-avatar .status-dot {
   position: absolute;
@@ -460,6 +547,94 @@ body {
 .content-area::-webkit-scrollbar { width: 4px; }
 .content-area::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
+/* DM 一覧（view-dm） */
+.dm-directory-wrap {
+  padding: 24px 20px 32px;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+}
+.dm-directory-lead {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 18px;
+  line-height: 1.6;
+  text-align: left;
+  max-width: 420px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.dm-directory {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 420px;
+  width: 100%;
+  margin: 0 auto;
+}
+button.dm-directory-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  background: var(--main-surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background .15s, border-color .15s;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  width: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+button.dm-directory-row:hover {
+  background: var(--main-surface2);
+  border-color: var(--pin-border);
+}
+.dm-directory-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+}
+.dm-directory-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.dm-directory-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-on);
+}
+.dm-directory-role {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.dm-directory-chevron {
+  flex-shrink: 0;
+  font-size: 18px;
+  color: var(--text-muted);
+  opacity: .7;
+}
+
+.search-msg-author--dm {
+  color: var(--pin);
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: rgba(61, 169, 252, .35);
+  text-underline-offset: 2px;
+}
+
 .home-greeting-title {
   font-family: 'Outfit', sans-serif;
   font-size: 24px;
@@ -547,6 +722,10 @@ body {
   font-weight: 700;
   color: var(--text-on);
 }
+.pinned-msg-author--open {
+  cursor: pointer;
+}
+.pinned-msg-author--open:hover { text-decoration: underline; }
 .pinned-msg-role {
   font-size: 11px;
   color: var(--pin);
@@ -683,9 +862,12 @@ body {
   font-size: 14px;
   font-weight: 700;
   color: var(--text-on);
+  cursor: default;
+}
+.msg-author--open {
   cursor: pointer;
 }
-.msg-author:hover { text-decoration: underline; }
+.msg-author--open:hover { text-decoration: underline; }
 .msg-time { font-size: 11px; color: var(--text-muted); letter-spacing: .06em; }
 .msg-text { font-size: 14px; line-height: 1.8; color: var(--text); }
 .msg-text strong { color: var(--text-on); font-weight: 700; }
@@ -729,38 +911,242 @@ body {
   color: var(--text-on);
 }
 .chat-input::placeholder { color: var(--text-muted); }
-.chat-input-hint {
-  font-size: 11px;
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━
+   MOBILE HEADER STACK & TOOLBAR (≤768px)
+━━━━━━━━━━━━━━━━━━━━━━━ */
+.app-header-stack {
+  position: relative;
+  z-index: 500;
+  flex-shrink: 0;
+}
+
+.mobile-toolbar {
+  display: none;
+  align-items: stretch;
+  justify-content: stretch;
+  gap: 0;
+  height: 48px;
+  background: var(--main-surface);
+  border-bottom: 1px solid var(--border);
+}
+.mobile-toolbar-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 6px 4px;
+  border: none;
+  background: transparent;
   color: var(--text-muted);
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 10px;
+  font-weight: 500;
   letter-spacing: .04em;
-  white-space: nowrap;
+  cursor: pointer;
+  transition: background .15s, color .15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.mobile-toolbar-btn svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  fill: none;
+  flex-shrink: 0;
+}
+.mobile-toolbar-btn:hover,
+.mobile-toolbar-btn:focus-visible {
+  background: var(--main-surface2);
+  color: var(--text-on);
+  outline: none;
+}
+.mobile-toolbar-btn.active {
+  color: var(--pin);
+  background: rgba(61, 169, 252, .08);
+}
+
+.mobile-overlay-backdrop {
+  display: none;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 410;
+  background: rgba(0, 0, 0, .42);
+  -webkit-tap-highlight-color: transparent;
+}
+.mobile-overlay-backdrop.visible { display: block; }
+
+.mobile-user-panel {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 100px;
+  right: 0;
+  width: min(300px, 88vw);
+  height: calc(100dvh - 100px);
+  max-height: calc(100vh - 100px);
+  background: var(--sidebar-bg);
+  border-left: 1px solid var(--sidebar-border);
+  box-shadow: -8px 0 32px rgba(0, 0, 0, .35);
+  z-index: 425;
+  transform: translateX(100%);
+  transition: transform .22s ease;
+  overflow-y: auto;
+  pointer-events: none;
+}
+.mobile-user-panel.open {
+  transform: translateX(0);
+  pointer-events: auto;
+}
+.mobile-user-panel .sidebar-user {
+  border-bottom: 1px solid var(--sidebar-border);
+}
+.mobile-user-panel-close {
+  margin: 12px 16px 20px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--sidebar-border);
+  background: rgba(255, 255, 255, .06);
+  color: var(--sidebar-text);
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background .15s;
+}
+.mobile-user-panel-close:hover {
+  background: var(--sidebar-hover);
+  color: var(--sidebar-text-active);
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━
    RESPONSIVE
 ━━━━━━━━━━━━━━━━━━━━━━━ */
 @media (max-width: 768px) {
-  .sidebar { width: 220px; }
   .channel-header-desc { display: none; }
-  .top-search-wrap { width: 260px; }
-  .search-dropdown { width: 320px; }
+
+  .mobile-toolbar { display: flex; }
+
+  .top-bar .top-search-wrap {
+    display: none;
+  }
+  body.mobile-panel-search .top-bar .top-search-wrap {
+    display: block;
+    position: fixed;
+    top: 100px;
+    left: 10px;
+    right: 10px;
+    width: auto !important;
+    max-width: none;
+    margin: 0;
+    z-index: 430;
+    background: var(--main-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 10px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, .55);
+  }
+  /* チャット背景と重なっても視認できるよう不透明（100%）のサーフェス */
+  body.mobile-panel-search .top-search {
+    background: var(--main-surface);
+    border: 1px solid var(--border);
+  }
+  body.mobile-panel-search .top-search:focus-within {
+    background: var(--main-surface);
+    border-color: var(--pin);
+    box-shadow: 0 0 0 3px rgba(61, 169, 252, .22);
+  }
+  body.mobile-panel-search .top-search svg {
+    color: var(--text-muted);
+  }
+  body.mobile-panel-search .top-search-input {
+    color: var(--text-on);
+  }
+  body.mobile-panel-search .top-search-input::placeholder {
+    color: var(--text-muted);
+  }
+  body.mobile-panel-search .top-search-clear {
+    color: var(--text-muted);
+  }
+  body.mobile-panel-search .top-search-clear:hover {
+    color: var(--text-on);
+  }
+  body.mobile-panel-search .search-dropdown {
+    width: 100% !important;
+    max-width: none;
+    right: 0;
+    left: 0;
+    position: relative;
+    top: auto;
+    margin-top: 8px;
+    box-shadow: none;
+    border: 1px solid var(--border);
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 100px;
+    left: 0;
+    width: min(300px, 88vw);
+    height: calc(100dvh - 100px);
+    max-height: calc(100vh - 100px);
+    z-index: 420;
+    transform: translateX(-105%);
+    transition: transform .22s ease;
+    box-shadow: none;
+    flex-shrink: 0;
+  }
+  .sidebar.mobile-open {
+    transform: translateX(0);
+    box-shadow: 6px 0 28px rgba(0, 0, 0, .4);
+  }
+
+  .mobile-overlay-backdrop {
+    top: 100px;
+  }
+
+  .main-area {
+    width: 100%;
+    min-width: 0;
+  }
+
+  /* 送信用欄を画面下端に固定（ホーム・DM選択のみ等、入力のないビューには影響しない） */
+  .view.active .chat-input-wrap {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 340;
+    padding: 10px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+    background: var(--main-bg);
+    border-top: 1px solid var(--border);
+    box-shadow: 0 -6px 24px rgba(0, 0, 0, .28);
+  }
+  .view:has(.chat-input-wrap) .chat-area {
+    padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px));
+  }
 }
 @media (max-width: 560px) {
-  .sidebar { display: none; }
-  .top-search-wrap { width: 200px; }
+  body.mobile-panel-search .top-bar .top-search-wrap {
+    left: 8px;
+    right: 8px;
+  }
 }
 </style>
 </head>
 <body>
 
-<!-- ═══ TOP BAR ═══ -->
+<!-- ═══ HEADER (workspace + モバイル用ツールバー) ═══ -->
+<div class="app-header-stack">
 <div class="top-bar">
   <div class="top-workspace">
     <span>株式会社リエンタ</span>
     <span class="top-workspace-arrow">▾</span>
   </div>
 
-  <div class="top-search-wrap">
+  <div class="top-search-wrap" id="topSearchWrap">
     <div class="top-search">
       <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
         <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
@@ -778,13 +1164,45 @@ body {
   </div>
 </div>
 
+<nav class="mobile-toolbar" id="mobileToolbar" aria-label="モバイル用メニュー">
+  <button type="button" class="mobile-toolbar-btn" id="mobileBtnSearch" aria-expanded="false" aria-controls="topSearchWrap">
+    <svg viewBox="0 0 24 24" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <span>検索</span>
+  </button>
+  <button type="button" class="mobile-toolbar-btn" id="mobileBtnChannels" aria-expanded="false" aria-controls="sidebarNav">
+    <svg viewBox="0 0 24 24" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="14" y2="18"/></svg>
+    <span>チャット</span>
+  </button>
+  <button type="button" class="mobile-toolbar-btn" id="mobileBtnUser" aria-expanded="false" aria-controls="mobileUserPanel">
+    <svg viewBox="0 0 24 24" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    <span>自分</span>
+  </button>
+</nav>
+</div><!-- /app-header-stack -->
+
+<div class="mobile-overlay-backdrop" id="mobileOverlayBackdrop" aria-hidden="true"></div>
+
+<aside class="mobile-user-panel" id="mobileUserPanel" aria-hidden="true" aria-label="自分の情報">
+  <div class="sidebar-user">
+    <div class="sidebar-user-avatar sidebar-user-avatar--self">
+      家
+      <span class="status-dot online"></span>
+    </div>
+    <div class="sidebar-user-info">
+      <p class="sidebar-user-name">家入 ユウ</p>
+      <p class="sidebar-user-role">編集部 / ライター（2年目）</p>
+    </div>
+  </div>
+  <button type="button" class="mobile-user-panel-close" id="mobileUserPanelClose">閉じる</button>
+</aside>
+
 <!-- ═══ APP BODY ═══ -->
 <div class="app-body">
 
   <!-- ─── SIDEBAR ─── -->
-  <aside class="sidebar">
+  <aside class="sidebar" id="sidebarNav" aria-label="チャンネル一覧">
     <div class="sidebar-user">
-      <div class="sidebar-user-avatar">
+      <div class="sidebar-user-avatar sidebar-user-avatar--self">
         家
         <span class="status-dot online"></span>
       </div>
@@ -916,7 +1334,7 @@ body {
         <div class="date-divider"><span>2025年4月7日</span></div>
 
         <div class="msg" data-channel="マイチャット" data-author="家入 ユウ" data-time="2025年4月7日 08:41">
-          <div class="msg-avatar" style="background:#2a7aad;">家</div>
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
           <div class="msg-body">
             <div class="msg-header">
               <span class="msg-author">家入 ユウ</span>
@@ -927,7 +1345,7 @@ body {
         </div>
 
         <div class="msg" data-channel="マイチャット" data-author="家入 ユウ" data-time="2025年4月7日 08:43">
-          <div class="msg-avatar" style="background:#2a7aad;">家</div>
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
           <div class="msg-body">
             <div class="msg-header">
               <span class="msg-author">家入 ユウ</span>
@@ -938,7 +1356,7 @@ body {
         </div>
 
         <div class="msg" data-channel="マイチャット" data-author="家入 ユウ" data-time="2025年4月7日 12:17">
-          <div class="msg-avatar" style="background:#2a7aad;">家</div>
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
           <div class="msg-body">
             <div class="msg-header">
               <span class="msg-author">家入 ユウ</span>
@@ -949,7 +1367,7 @@ body {
         </div>
 
         <div class="msg" data-channel="マイチャット" data-author="家入 ユウ" data-time="2025年4月7日 12:24">
-          <div class="msg-avatar" style="background:#2a7aad;">家</div>
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
           <div class="msg-body">
             <div class="msg-header">
               <span class="msg-author">家入 ユウ</span>
@@ -960,7 +1378,7 @@ body {
         </div>
 
         <div class="msg" data-channel="マイチャット" data-author="家入 ユウ" data-time="2025年4月7日 12:31">
-          <div class="msg-avatar" style="background:#2a7aad;">家</div>
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
           <div class="msg-body">
             <div class="msg-header">
               <span class="msg-author">家入 ユウ</span>
@@ -971,7 +1389,7 @@ body {
         </div>
 
         <div class="msg" data-channel="マイチャット" data-author="家入 ユウ" data-time="2025年4月7日 12:34">
-          <div class="msg-avatar" style="background:#2a7aad;">家</div>
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
           <div class="msg-body">
             <div class="msg-header">
               <span class="msg-author">家入 ユウ</span>
@@ -982,7 +1400,7 @@ body {
         </div>
 
         <div class="msg" data-channel="マイチャット" data-author="家入 ユウ" data-time="2025年4月7日 18:27">
-          <div class="msg-avatar" style="background:#2a7aad;">家</div>
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
           <div class="msg-body">
             <div class="msg-header">
               <span class="msg-author">家入 ユウ</span>
@@ -995,7 +1413,6 @@ body {
       <div class="chat-input-wrap">
         <div class="chat-input-box">
           <input class="chat-input" type="text" placeholder="送信は現在ロックされています" disabled>
-          <span class="chat-input-hint">未承認端末 / 解除コードが必要</span>
         </div>
       </div>
     </div>
@@ -1011,41 +1428,472 @@ body {
         <button class="ch-icon-btn">⋮</button>
       </div>
       <div class="chat-area" id="chat-kintai">
-        <div class="date-divider"><span>2025年4月7日</span></div>
-        <div class="msg" data-channel="勤怠管理チャット" data-author="田村 恵" data-time="2025年4月7日 08:58">
+        <!-- 5月6日（火）GW明け -->
+        <div class="date-divider"><span>2025年5月6日</span></div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="田村 恵" data-time="2025年5月6日 08:58">
           <div class="msg-avatar" style="background:#2a6e5a;">田</div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">田村 恵</span><span class="msg-time">08:58</span></div>
-            <p class="msg-text">おはようございます。始業します。<br>本日の担当：医療・福祉カテゴリ記事2本、取材アポ確認</p>
+            <p class="msg-text">おはようございます。始業します。<br>本日：医療カテゴリ特集の構成案作成、取材アポ確認</p>
           </div>
         </div>
-        <div class="msg" data-channel="勤怠管理チャット" data-author="沢渡 真帆" data-time="2025年4月7日 09:03">
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="沢渡 真帆" data-time="2025年5月6日 09:01">
           <div class="msg-avatar" style="background:#7a5a2a;">沢</div>
           <div class="msg-body">
-            <div class="msg-header"><span class="msg-author">沢渡 真帆</span><span class="msg-time">09:03</span></div>
-            <p class="msg-text">おはようございます。始業します。<br>本日：起業カテゴリ記事の最終確認、週次報告の作成</p>
+            <div class="msg-header"><span class="msg-author">沢渡 真帆</span><span class="msg-time">09:01</span></div>
+            <p class="msg-text">おはようございます。始業します。<br>本日：起業カテゴリ記事の最終確認、週次報告作成</p>
           </div>
         </div>
-        <div class="msg" data-channel="勤怠管理チャット" data-author="黒木 凪" data-time="2025年4月7日 09:05">
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="三上" data-time="2025年5月6日 09:03">
+          <div class="msg-avatar" style="background:#6a5acd;">三</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">三上</span><span class="msg-time">09:03</span></div>
+            <p class="msg-text">おはようございます。始業します。<br>本日：取材先候補リストの更新</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="神谷" data-time="2025年5月6日 09:04">
+          <div class="msg-avatar" style="background:#e67e22;">神</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">神谷</span><span class="msg-time">09:04</span></div>
+            <p class="msg-text">おはようございます。始業します。<br>本日：先週入稿分の校正</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="小西" data-time="2025年5月6日 09:05">
+          <div class="msg-avatar" style="background:#5a7a4a;">小</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">小西</span><span class="msg-time">09:05</span></div>
+            <p class="msg-text">おはようございます。始業します。<br>本日：サムネイル案作成</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="白石" data-time="2025年5月6日 09:06">
+          <div class="msg-avatar" style="background:#9a6a8a;">白</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">白石</span><span class="msg-time">09:06</span></div>
+            <p class="msg-text">おはようございます。始業します。<br>本日：SNS投稿文の草案作成</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="長谷川" data-time="2025年5月6日 09:07">
+          <div class="msg-avatar" style="background:#8b6a4a;">長</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">長谷川</span><span class="msg-time">09:07</span></div>
+            <p class="msg-text">おはようございます。始業します。<br>本日：過去記事リライト着手</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="家入 ユウ" data-time="2025年5月6日 09:08">
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">09:08</span></div>
+            <p class="msg-text">おはようございます。始業します！<br>本日：トラポルタ取材の最終準備</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="黒木 凪" data-time="2025年5月6日 09:10">
           <div class="msg-avatar">凪</div>
           <div class="msg-body">
-            <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">09:05</span></div>
+            <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">09:10</span></div>
             <p class="msg-text">おはようございます。本日もよろしくお願いします。</p>
-            <div class="msg-reactions"><span class="reaction">👍 2</span></div>
           </div>
         </div>
-        <div class="msg" data-channel="勤怠管理チャット" data-author="田村 恵" data-time="2025年4月7日 18:12">
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="田村 恵" data-time="2025年5月6日 18:14">
           <div class="msg-avatar" style="background:#2a6e5a;">田</div>
           <div class="msg-body">
-            <div class="msg-header"><span class="msg-author">田村 恵</span><span class="msg-time">18:12</span></div>
-            <p class="msg-text">退勤します。本日の作業完了。医療・福祉記事1本公開済み、1本は明日最終確認予定です。</p>
+            <div class="msg-header"><span class="msg-author">田村 恵</span><span class="msg-time">18:14</span></div>
+            <p class="msg-text">退勤します。構成案提出済み、修正対応中です。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="沢渡 真帆" data-time="2025年5月6日 18:21">
+          <div class="msg-avatar" style="background:#7a5a2a;">沢</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">沢渡 真帆</span><span class="msg-time">18:21</span></div>
+            <p class="msg-text">退勤します。記事最終確認完了、週次報告提出済みです。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="家入 ユウ" data-time="2025年5月6日 18:30">
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">18:30</span></div>
+            <p class="msg-text">退勤します！明日の取材、準備万端です。</p>
+          </div>
+        </div>
+
+        <!-- 5月7日（水）取材当日 -->
+        <div class="date-divider"><span>2025年5月7日</span></div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="田村 恵" data-time="2025年5月7日 08:59">
+          <div class="msg-avatar" style="background:#2a6e5a;">田</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">田村 恵</span><span class="msg-time">08:59</span></div>
+            <p class="msg-text">おはようございます。始業します。<br>本日：構成案修正、記事執筆</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="沢渡 真帆" data-time="2025年5月7日 09:02">
+          <div class="msg-avatar" style="background:#7a5a2a;">沢</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">沢渡 真帆</span><span class="msg-time">09:02</span></div>
+            <p class="msg-text">おはようございます。始業します。<br>本日：新規記事の調査・執筆</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="三上" data-time="2025年5月7日 09:03">
+          <div class="msg-avatar" style="background:#6a5acd;">三</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">三上</span><span class="msg-time">09:03</span></div>
+            <p class="msg-text">おはようございます。始業します。<br>本日：取材先候補リストの更新続き</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="神谷" data-time="2025年5月7日 09:04">
+          <div class="msg-avatar" style="background:#e67e22;">神</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">神谷</span><span class="msg-time">09:04</span></div>
+            <p class="msg-text">おはようございます。始業します。<br>本日：入稿前校正</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="小西" data-time="2025年5月7日 09:05">
+          <div class="msg-avatar" style="background:#5a7a4a;">小</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">小西</span><span class="msg-time">09:05</span></div>
+            <p class="msg-text">おはようございます。始業します。<br>本日：サムネイル修正対応</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="白石" data-time="2025年5月7日 09:06">
+          <div class="msg-avatar" style="background:#9a6a8a;">白</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">白石</span><span class="msg-time">09:06</span></div>
+            <p class="msg-text">おはようございます。始業します。<br>本日：SNS投稿文の草案仕上げ</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="長谷川" data-time="2025年5月7日 09:07">
+          <div class="msg-avatar" style="background:#8b6a4a;">長</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">長谷川</span><span class="msg-time">09:07</span></div>
+            <p class="msg-text">おはようございます。始業します。<br>本日：リライト2本目に着手</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="家入 ユウ" data-time="2025年5月7日 09:09">
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">09:09</span></div>
+            <p class="msg-text">おはようございます。始業します！<br>本日：午後からトラポルタ取材です。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="黒木 凪" data-time="2025年5月7日 09:11">
+          <div class="msg-avatar">凪</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">09:11</span></div>
+            <p class="msg-text">おはようございます。本日もよろしくお願いします。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="家入 ユウ" data-time="2025年5月7日 18:35">
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">18:35</span></div>
+            <p class="msg-text">退勤します！取材、無事終わりました。原稿に取りかかります。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="田村 恵" data-time="2025年5月7日 18:42">
+          <div class="msg-avatar" style="background:#2a6e5a;">田</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">田村 恵</span><span class="msg-time">18:42</span></div>
+            <p class="msg-text">退勤します。記事執筆、明日完了予定です。</p>
+          </div>
+        </div>
+
+        <!-- 5月8日（木） -->
+        <div class="date-divider"><span>2025年5月8日</span></div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="田村 恵" data-time="2025年5月8日 09:00">
+          <div class="msg-avatar" style="background:#2a6e5a;">田</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">田村 恵</span><span class="msg-time">09:00</span></div>
+            <p class="msg-text">おはようございます。始業します。<br>本日：記事執筆の完成・入稿</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="沢渡 真帆" data-time="2025年5月8日 09:02">
+          <div class="msg-avatar" style="background:#7a5a2a;">沢</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">沢渡 真帆</span><span class="msg-time">09:02</span></div>
+            <p class="msg-text">おはようございます。始業します。<br>本日：新規記事の執筆</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="三上" data-time="2025年5月8日 09:03">
+          <div class="msg-avatar" style="background:#6a5acd;">三</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">三上</span><span class="msg-time">09:03</span></div>
+            <p class="msg-text">おはようございます。始業します。<br>本日：取材先リスト提出</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="神谷" data-time="2025年5月8日 09:04">
+          <div class="msg-avatar" style="background:#e67e22;">神</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">神谷</span><span class="msg-time">09:04</span></div>
+            <p class="msg-text">おはようございます。始業します。<br>本日：校正作業</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="小西" data-time="2025年5月8日 09:05">
+          <div class="msg-avatar" style="background:#5a7a4a;">小</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">小西</span><span class="msg-time">09:05</span></div>
+            <p class="msg-text">おはようございます。始業します。<br>本日：サムネイル案の最終確認</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="白石" data-time="2025年5月8日 09:06">
+          <div class="msg-avatar" style="background:#9a6a8a;">白</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">白石</span><span class="msg-time">09:06</span></div>
+            <p class="msg-text">おはようございます。始業します。<br>本日：SNS投稿文の提出</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="長谷川" data-time="2025年5月8日 09:07">
+          <div class="msg-avatar" style="background:#8b6a4a;">長</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">長谷川</span><span class="msg-time">09:07</span></div>
+            <p class="msg-text">おはようございます。始業します。<br>本日：リライト2本目の仕上げ</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="家入 ユウ" data-time="2025年5月8日 09:08">
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">09:08</span></div>
+            <p class="msg-text">おはようございます。始業します！<br>本日：原稿作成</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="黒木 凪" data-time="2025年5月8日 09:10">
+          <div class="msg-avatar">凪</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">09:10</span></div>
+            <p class="msg-text">おはようございます。本日もよろしくお願いします。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="田村 恵" data-time="2025年5月8日 17:52">
+          <div class="msg-avatar" style="background:#2a6e5a;">田</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">田村 恵</span><span class="msg-time">17:52</span></div>
+            <p class="msg-text">退勤します。記事入稿完了しました。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="家入 ユウ" data-time="2025年5月8日 18:40">
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">18:40</span></div>
+            <p class="msg-text">退勤します！原稿、いい感じに仕上がってきました。</p>
+          </div>
+        </div>
+
+        <!-- 5月9日（金） -->
+        <div class="date-divider"><span>2025年5月9日</span></div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="田村 恵" data-time="2025年5月9日 09:00">
+          <div class="msg-avatar" style="background:#2a6e5a;">田</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">田村 恵</span><span class="msg-time">09:00</span></div>
+            <p class="msg-text">おはようございます。始業します。<br>本日：次の記事の調査・企画</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="沢渡 真帆" data-time="2025年5月9日 09:02">
+          <div class="msg-avatar" style="background:#7a5a2a;">沢</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">沢渡 真帆</span><span class="msg-time">09:02</span></div>
+            <p class="msg-text">おはようございます。始業します。<br>本日：新規記事の入稿準備</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="三上" data-time="2025年5月9日 09:03">
+          <div class="msg-avatar" style="background:#6a5acd;">三</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">三上</span><span class="msg-time">09:03</span></div>
+            <p class="msg-text">おはようございます。始業します。<br>本日：取材先調査続き</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="神谷" data-time="2025年5月9日 09:04">
+          <div class="msg-avatar" style="background:#e67e22;">神</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">神谷</span><span class="msg-time">09:04</span></div>
+            <p class="msg-text">おはようございます。始業します。<br>本日：来週入稿分の校正</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="小西" data-time="2025年5月9日 09:05">
+          <div class="msg-avatar" style="background:#5a7a4a;">小</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">小西</span><span class="msg-time">09:05</span></div>
+            <p class="msg-text">おはようございます。始業します。<br>本日：来週分サムネイル準備</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="白石" data-time="2025年5月9日 09:06">
+          <div class="msg-avatar" style="background:#9a6a8a;">白</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">白石</span><span class="msg-time">09:06</span></div>
+            <p class="msg-text">おはようございます。始業します。<br>本日：今週のSNS数値まとめ</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="長谷川" data-time="2025年5月9日 09:07">
+          <div class="msg-avatar" style="background:#8b6a4a;">長</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">長谷川</span><span class="msg-time">09:07</span></div>
+            <p class="msg-text">おはようございます。始業します。<br>本日：リライト3本目に着手</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="家入 ユウ" data-time="2025年5月9日 09:08">
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">09:08</span></div>
+            <p class="msg-text">おはようございます。始業します！<br>本日：原稿の仕上げ</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="黒木 凪" data-time="2025年5月9日 09:10">
+          <div class="msg-avatar">凪</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">09:10</span></div>
+            <p class="msg-text">おはようございます。本日もよろしくお願いします。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="沢渡 真帆" data-time="2025年5月9日 18:05">
+          <div class="msg-avatar" style="background:#7a5a2a;">沢</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">沢渡 真帆</span><span class="msg-time">18:05</span></div>
+            <p class="msg-text">退勤します。記事入稿準備完了しました。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="長谷川" data-time="2025年5月9日 18:15">
+          <div class="msg-avatar" style="background:#8b6a4a;">長</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">長谷川</span><span class="msg-time">18:15</span></div>
+            <p class="msg-text">退勤します。リライト3本、本日完了しました。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="家入 ユウ" data-time="2025年5月9日 18:28">
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">18:28</span></div>
+            <p class="msg-text">退勤します！今週もお疲れ様でした。原稿、来週提出します。</p>
+          </div>
+        </div>
+
+        <!-- 5月12日（月） -->
+        <div class="date-divider"><span>2025年5月12日</span></div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="田村 恵" data-time="2025年5月12日 08:58">
+          <div class="msg-avatar" style="background:#2a6e5a;">田</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">田村 恵</span><span class="msg-time">08:58</span></div>
+            <p class="msg-text">おはようございます。始業します。<br>本日：次の記事の企画・構成</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="沢渡 真帆" data-time="2025年5月12日 09:01">
+          <div class="msg-avatar" style="background:#7a5a2a;">沢</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">沢渡 真帆</span><span class="msg-time">09:01</span></div>
+            <p class="msg-text">おはようございます。始業します。<br>本日：週次報告作成、新規記事の調査</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="三上" data-time="2025年5月12日 09:03">
+          <div class="msg-avatar" style="background:#6a5acd;">三</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">三上</span><span class="msg-time">09:03</span></div>
+            <p class="msg-text">おはようございます。始業します。<br>本日：取材先候補リストの精査</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="神谷" data-time="2025年5月12日 09:04">
+          <div class="msg-avatar" style="background:#e67e22;">神</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">神谷</span><span class="msg-time">09:04</span></div>
+            <p class="msg-text">おはようございます。始業します。<br>本日：今週入稿予定分の校正</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="小西" data-time="2025年5月12日 09:05">
+          <div class="msg-avatar" style="background:#5a7a4a;">小</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">小西</span><span class="msg-time">09:05</span></div>
+            <p class="msg-text">おはようございます。始業します。<br>本日：今週分サムネイル対応</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="白石" data-time="2025年5月12日 09:06">
+          <div class="msg-avatar" style="background:#9a6a8a;">白</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">白石</span><span class="msg-time">09:06</span></div>
+            <p class="msg-text">おはようございます。始業します。<br>本日：今週のSNS投稿スケジュール管理</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="長谷川" data-time="2025年5月12日 09:07">
+          <div class="msg-avatar" style="background:#8b6a4a;">長</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">長谷川</span><span class="msg-time">09:07</span></div>
+            <p class="msg-text">おはようございます。始業します。<br>本日：新規リライト案件の確認</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="家入 ユウ" data-time="2025年5月12日 09:08">
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">09:08</span></div>
+            <p class="msg-text">おはようございます。始業します！<br>本日：原稿の最終仕上げ・提出</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="黒木 凪" data-time="2025年5月12日 09:10">
+          <div class="msg-avatar">凪</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">09:10</span></div>
+            <p class="msg-text">おはようございます。本日もよろしくお願いします。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="勤怠管理チャット" data-author="家入 ユウ" data-time="2025年5月12日 19:05">
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">19:05</span></div>
+            <p class="msg-text">退勤します！原稿、本日公開準備まで完了しました。お疲れ様でした！</p>
           </div>
         </div>
       </div>
       <div class="chat-input-wrap">
         <div class="chat-input-box">
           <input class="chat-input" type="text" placeholder="送信は現在ロックされています" disabled>
-          <span class="chat-input-hint">未承認端末 / 解除コードが必要</span>
         </div>
       </div>
     </div>
@@ -1061,135 +1909,213 @@ body {
         <button class="ch-icon-btn">⋮</button>
       </div>
       <div class="chat-area" id="chat-henshubu">
+        <!-- 4月7日 -->
         <div class="date-divider"><span>2025年4月7日</span></div>
 
         <div class="msg" data-channel="編集部" data-author="黒木 凪" data-time="2025年4月7日 09:02">
           <div class="msg-avatar">凪</div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">09:02</span></div>
-            <p class="msg-text">本日のタスク整理します。<br><br>・田村：特集記事の構成FIX（本日中）<br>・沢渡：LPデザイン初稿提出（17時まで）<br>・三上：取材先リストの更新<br>・神谷：記事校正（午前中）<br>・小西：サムネ案3パターン出し<br>・白石：SNS投稿文の草案作成<br>・長谷川：過去記事のリライト対応<br>・家入：取材企画の再設計（昨日の指摘反映）<br><br>各自、進捗はこのスレッドに報告してください。</p>
+            <p class="msg-text">今週のタスクを整理します。<br><br>・田村：医療カテゴリ特集の構成案（本日中）<br>・沢渡：起業カテゴリ記事の最終確認、週次報告作成<br>・三上：取材先候補リストの更新（水曜まで）<br>・神谷：先週入稿分の校正（午前中に完了）<br>・小西：サムネイル案3パターン（17時まで）<br>・白石：SNS投稿文の草案（明日午前中）<br>・長谷川：過去記事リライト、優先度高い3本から着手<br>・家入：トラポルタ企画書の作成（今週中）<br><br>進捗はこのスレッドに随時報告してください。</p>
           </div>
         </div>
 
-        <div class="msg" data-channel="編集部" data-author="田村 恵" data-time="2025年4月7日 09:05">
-          <div class="msg-avatar" style="background:#888;">田</div>
+        <div class="msg" data-channel="編集部" data-author="田村 恵" data-time="2025年4月7日 09:06">
+          <div class="msg-avatar" style="background:#2a6e5a;">田</div>
           <div class="msg-body">
-            <div class="msg-header"><span class="msg-author">田村 恵</span><span class="msg-time">09:05</span></div>
-            <p class="msg-text">確認しました。本日中に構成出します。</p>
+            <div class="msg-header"><span class="msg-author">田村 恵</span><span class="msg-time">09:06</span></div>
+            <p class="msg-text">確認しました。構成案、本日中に出します。</p>
           </div>
         </div>
 
-        <div class="msg" data-channel="編集部" data-author="沢渡 真帆" data-time="2025年4月7日 09:07">
-          <div class="msg-avatar" style="background:#d36;">沢</div>
+        <div class="msg" data-channel="編集部" data-author="沢渡 真帆" data-time="2025年4月7日 09:08">
+          <div class="msg-avatar" style="background:#7a5a2a;">沢</div>
           <div class="msg-body">
-            <div class="msg-header"><span class="msg-author">沢渡 真帆</span><span class="msg-time">09:07</span></div>
+            <div class="msg-header"><span class="msg-author">沢渡 真帆</span><span class="msg-time">09:08</span></div>
             <p class="msg-text">確認しました。対応します。</p>
           </div>
         </div>
 
-        <div class="msg" data-channel="編集部" data-author="三上" data-time="2025年4月7日 09:09">
-          <div class="msg-avatar" style="background:#6a5acd;">三</div>
+        <div class="msg" data-channel="編集部" data-author="神谷" data-time="2025年4月7日 09:09">
+          <div class="msg-avatar" style="background:#e67e22;">神</div>
           <div class="msg-body">
-            <div class="msg-header"><span class="msg-author">三上</span><span class="msg-time">09:09</span></div>
-            <p class="msg-text">了解です。リスト更新します。</p>
-          </div>
-        </div>
-
-        <div class="msg" data-channel="編集部" data-author="神谷" data-time="2025年4月7日 09:10">
-          <div class="msg-avatar" style="background:#4682b4;">神</div>
-          <div class="msg-body">
-            <div class="msg-header"><span class="msg-author">神谷</span><span class="msg-time">09:10</span></div>
+            <div class="msg-header"><span class="msg-author">神谷</span><span class="msg-time">09:09</span></div>
             <p class="msg-text">校正入ります。</p>
           </div>
         </div>
 
-        <div class="msg" data-channel="編集部" data-author="家入 ユウ" data-time="2025年4月7日 09:12">
-          <div class="msg-avatar" style="background:#2a7aad;">家</div>
+        <div class="msg" data-channel="編集部" data-author="小西" data-time="2025年4月7日 09:11">
+          <div class="msg-avatar" style="background:#5a7a4a;">小</div>
           <div class="msg-body">
-            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">09:12</span></div>
-            <p class="msg-text">確認しました。再設計進めます。</p>
+            <div class="msg-header"><span class="msg-author">小西</span><span class="msg-time">09:11</span></div>
+            <p class="msg-text">確認しました。サムネ案、17時までに出します。</p>
           </div>
         </div>
 
-        <div class="msg" data-channel="編集部" data-author="黒木 凪" data-time="2025年4月7日 11:32">
-          <div class="msg-avatar">凪</div>
+        <div class="msg" data-channel="編集部" data-author="家入 ユウ" data-time="2025年4月7日 09:13">
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
           <div class="msg-body">
-            <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">11:32</span></div>
-            <p class="msg-text">沢渡さん、LPの進捗どうですか。<br>止まっているようであれば共有してください。</p>
+            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">09:13</span></div>
+            <p class="msg-text">確認しました。企画書、今週中に仕上げます！</p>
           </div>
         </div>
 
-        <div class="msg" data-channel="編集部" data-author="沢渡 真帆" data-time="2025年4月7日 11:40">
-          <div class="msg-avatar" style="background:#d36;">沢</div>
-          <div class="msg-body">
-            <div class="msg-header"><span class="msg-author">沢渡 真帆</span><span class="msg-time">11:40</span></div>
-            <p class="msg-text">すみません、構成との整合で少し詰まっています。</p>
-          </div>
-        </div>
-
-        <div class="msg" data-channel="編集部" data-author="黒木 凪" data-time="2025年4月7日 11:43">
-          <div class="msg-avatar">凪</div>
-          <div class="msg-body">
-            <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">11:43</span></div>
-            <p class="msg-text">どの部分で詰まっているか切り分けてください。<br>判断できない場合は田村さんに確認を。<br>その上で解消しない場合は私に上げてください。</p>
-          </div>
-        </div>
-
-        <div class="msg" data-channel="編集部" data-author="沢渡 真帆" data-time="2025年4月7日 11:47">
-          <div class="msg-avatar" style="background:#d36;">沢</div>
-          <div class="msg-body">
-            <div class="msg-header"><span class="msg-author">沢渡 真帆</span><span class="msg-time">11:47</span></div>
-            <p class="msg-text">ありがとうございます。進めます。</p>
-          </div>
-        </div>
-
-        <div class="msg" data-channel="編集部" data-author="黒木 凪" data-time="2025年4月7日 18:22">
-          <div class="msg-avatar">凪</div>
-          <div class="msg-body">
-            <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">18:22</span></div>
-            <p class="msg-text">家入さん、企画の再設計できたらDMください。<br>このあと確認します。</p>
-          </div>
-        </div>
-      </div>
-      <div class="chat-input-wrap">
-        <div class="chat-input-box">
-          <input class="chat-input" type="text" placeholder="送信は現在ロックされています" disabled>
-          <span class="chat-input-hint">未承認端末 / 解除コードが必要</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- ══ 取材メモ ══ -->
-    <div class="view" id="view-shuzaimemo">
-      <div class="channel-header">
-        <div class="channel-header-left">
-          <span style="color:var(--text-muted);font-size:16px;">#</span>
-          <span class="channel-header-name">取材メモ</span>
-          <span class="channel-header-desc">取材・インタビュー関連</span>
-        </div>
-        <button class="ch-icon-btn">⋮</button>
-      </div>
-      <div class="chat-area" id="chat-shuzaimemo">
-        <div class="date-divider"><span>2025年4月4日</span></div>
-        <div class="msg" data-channel="取材メモ" data-author="黒木 凪" data-time="2025年4月4日 16:00">
-          <div class="msg-avatar">凪</div>
-          <div class="msg-body">
-            <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">16:00</span></div>
-            <p class="msg-text">映画監督・九重灰氏の取材、先方から日程調整の返信が来ました。来週中に設定します。</p>
-          </div>
-        </div>
-        <div class="msg" data-channel="取材メモ" data-author="田村 恵" data-time="2025年4月4日 16:22">
+        <div class="msg" data-channel="編集部" data-author="田村 恵" data-time="2025年4月7日 17:42">
           <div class="msg-avatar" style="background:#2a6e5a;">田</div>
           <div class="msg-body">
-            <div class="msg-header"><span class="msg-author">田村 恵</span><span class="msg-time">16:22</span></div>
-            <p class="msg-text">了解です。質問リストの素案、明日までに共有します。</p>
+            <div class="msg-header"><span class="msg-author">田村 恵</span><span class="msg-time">17:42</span></div>
+            <p class="msg-text">構成案、共有します。<br>［特集_医療カテゴリ_構成案_0407.pdf］</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="編集部" data-author="黒木 凪" data-time="2025年4月7日 18:05">
+          <div class="msg-avatar">凪</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">18:05</span></div>
+            <p class="msg-text">確認しました。<br>導入部分の順番を変えてください。<br>読者が状況を把握する前に結論が来ています。<br>背景→課題→結論の順に組み直してください。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="編集部" data-author="田村 恵" data-time="2025年4月7日 18:12">
+          <div class="msg-avatar" style="background:#2a6e5a;">田</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">田村 恵</span><span class="msg-time">18:12</span></div>
+            <p class="msg-text">ありがとうございます。修正します。</p>
+          </div>
+        </div>
+
+        <!-- 4月10日 -->
+        <div class="date-divider"><span>2025年4月10日</span></div>
+
+        <div class="msg" data-channel="編集部" data-author="長谷川" data-time="2025年4月10日 14:12">
+          <div class="msg-avatar" style="background:#8b6a4a;">長</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">長谷川</span><span class="msg-time">14:12</span></div>
+            <p class="msg-text">リライト3本、着手しています。<br>1本目は修正完了、2本目で少し手が止まっています。<br>競合の最新記事と比較したところ、情報の網羅性で差があって、どこまで加筆するか判断が難しくて。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="編集部" data-author="黒木 凪" data-time="2025年4月10日 14:24">
+          <div class="msg-avatar">凪</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">14:24</span></div>
+            <p class="msg-text">リライトのスコープを確認してください。<br>今回の目的は検索順位の改善です。<br>網羅性の差が順位に影響しているなら加筆する、していないなら触らない。<br>その判断はSERPsを見れば出ます。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="編集部" data-author="長谷川" data-time="2025年4月10日 14:31">
+          <div class="msg-avatar" style="background:#8b6a4a;">長</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">長谷川</span><span class="msg-time">14:31</span></div>
+            <p class="msg-text">確認しました。SERPsで確認して判断します。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="編集部" data-author="長谷川" data-time="2025年4月10日 16:44">
+          <div class="msg-avatar" style="background:#8b6a4a;">長</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">長谷川</span><span class="msg-time">16:44</span></div>
+            <p class="msg-text">2本目完了しました。加筆は1セクションのみにしました。<br>3本目に入ります。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="編集部" data-author="黒木 凪" data-time="2025年4月10日 16:48">
+          <div class="msg-avatar">凪</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">16:48</span></div>
+            <p class="msg-text">了解です。</p>
+          </div>
+        </div>
+
+        <!-- 4月14日 -->
+        <div class="date-divider"><span>2025年4月14日</span></div>
+
+        <div class="msg" data-channel="編集部" data-author="黒木 凪" data-time="2025年4月14日 09:05">
+          <div class="msg-avatar">凪</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">09:05</span></div>
+            <p class="msg-text">今週のタスクを整理します。<br><br>・田村：医療カテゴリ特集、修正稿の入稿（火曜まで）<br>・沢渡：新規カテゴリの記事構成案2本（木曜まで）<br>・三上：取材先候補リスト、先週分の追加漏れ確認<br>・神谷：今週入稿予定分の校正（各入稿日前日まで）<br>・小西：サムネイル修正対応、田村案件と連携<br>・白石：先週のSNS投稿の数値確認、レポート共有<br>・長谷川：リライト残り1本、今週中に完了<br>・家入：トラポルタ取材準備（質問リスト作成、小西に確認依頼）<br><br>進捗はこのスレッドに随時報告してください。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="編集部" data-author="田村 恵" data-time="2025年4月14日 09:09">
+          <div class="msg-avatar" style="background:#2a6e5a;">田</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">田村 恵</span><span class="msg-time">09:09</span></div>
+            <p class="msg-text">確認しました。火曜までに入稿します。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="編集部" data-author="沢渡 真帆" data-time="2025年4月14日 09:11">
+          <div class="msg-avatar" style="background:#7a5a2a;">沢</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">沢渡 真帆</span><span class="msg-time">09:11</span></div>
+            <p class="msg-text">確認しました。対応します。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="編集部" data-author="小西" data-time="2025年4月14日 09:12">
+          <div class="msg-avatar" style="background:#5a7a4a;">小</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">小西</span><span class="msg-time">09:12</span></div>
+            <p class="msg-text">確認しました。田村さん、連携しましょう。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="編集部" data-author="家入 ユウ" data-time="2025年4月14日 09:14">
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">09:14</span></div>
+            <p class="msg-text">確認しました。質問リスト、小西さんに確認してもらいながら進めます！</p>
+          </div>
+        </div>
+
+        <!-- 5月1日 -->
+        <div class="date-divider"><span>2025年5月1日</span></div>
+
+        <div class="msg" data-channel="編集部" data-author="家入 ユウ" data-time="2025年5月1日 17:34">
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">17:34</span></div>
+            <p class="msg-text">明日のトラポルタ取材について確認なのですが、もし可能であれば黒木さんにも同席していただけないでしょうか。<br>初めての取材で不安があって…もし難しければ大丈夫です！</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="編集部" data-author="黒木 凪" data-time="2025年5月1日 17:51">
+          <div class="msg-avatar">凪</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">17:51</span></div>
+            <p class="msg-text">同席はできません。<br>その時間、別の会議が入っています。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="編集部" data-author="家入 ユウ" data-time="2025年5月1日 17:54">
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">17:54</span></div>
+            <p class="msg-text">そうですか…分かりました。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="編集部" data-author="黒木 凪" data-time="2025年5月1日 17:58">
+          <div class="msg-avatar">凪</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">17:58</span></div>
+            <p class="msg-text">質問リストも企画書も、十分な水準に仕上がっています。<br>あとはファンとして楽しんできてください。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="編集部" data-author="家入 ユウ" data-time="2025年5月1日 18:03">
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">18:03</span></div>
+            <p class="msg-text">ありがとうございます！そう言っていただけると安心しました。頑張ってきます！</p>
           </div>
         </div>
       </div>
       <div class="chat-input-wrap">
         <div class="chat-input-box">
           <input class="chat-input" type="text" placeholder="送信は現在ロックされています" disabled>
-          <span class="chat-input-hint">未承認端末 / 解除コードが必要</span>
         </div>
       </div>
     </div>
@@ -1204,27 +2130,313 @@ body {
         <button class="ch-icon-btn">⋮</button>
       </div>
       <div class="chat-area" id="chat-zatsudan">
-        <div class="date-divider"><span>2025年4月6日</span></div>
-        <div class="msg" data-channel="雑談" data-author="沢渡 真帆" data-time="2025年4月6日 12:05">
+        <!-- 4月14日（月） -->
+        <div class="date-divider"><span>2025年4月14日</span></div>
+
+        <div class="msg" data-channel="雑談" data-author="沢渡 真帆" data-time="2025年4月14日 12:03">
           <div class="msg-avatar" style="background:#7a5a2a;">沢</div>
           <div class="msg-body">
-            <div class="msg-header"><span class="msg-author">沢渡 真帆</span><span class="msg-time">12:05</span></div>
-            <p class="msg-text">近所にいい感じの定食屋ができてたんですが、ランチ行く人います？</p>
+            <div class="msg-header"><span class="msg-author">沢渡 真帆</span><span class="msg-time">12:03</span></div>
+            <p class="msg-text">先週のGW前半、どこか行きました？</p>
           </div>
         </div>
-        <div class="msg" data-channel="雑談" data-author="田村 恵" data-time="2025年4月6日 12:08">
+
+        <div class="msg" data-channel="雑談" data-author="家入 ユウ" data-time="2025年4月14日 12:07">
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">12:07</span></div>
+            <p class="msg-text">どこも行かず家にいました😂　ひたすら企画書やってた</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="雑談" data-author="三上" data-time="2025年4月14日 12:09">
+          <div class="msg-avatar" style="background:#6a5acd;">三</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">三上</span><span class="msg-time">12:09</span></div>
+            <p class="msg-text">自分は友人と旅行でした。久しぶりに遠出できてよかったです。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="雑談" data-author="沢渡 真帆" data-time="2025年4月14日 12:11">
+          <div class="msg-avatar" style="background:#7a5a2a;">沢</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">沢渡 真帆</span><span class="msg-time">12:11</span></div>
+            <p class="msg-text">いいな〜！私は地元帰ってきました。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="雑談" data-author="田村 恵" data-time="2025年4月14日 12:14">
           <div class="msg-avatar" style="background:#2a6e5a;">田</div>
           <div class="msg-body">
-            <div class="msg-header"><span class="msg-author">田村 恵</span><span class="msg-time">12:08</span></div>
-            <p class="msg-text">行きます！何時ごろですか？</p>
-            <div class="msg-reactions"><span class="reaction">🙋 1</span></div>
+            <div class="msg-header"><span class="msg-author">田村 恵</span><span class="msg-time">12:14</span></div>
+            <p class="msg-text">自分も地元です。ゆっくりできました。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="雑談" data-author="神谷" data-time="2025年4月14日 12:17">
+          <div class="msg-avatar" style="background:#e67e22;">神</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">神谷</span><span class="msg-time">12:17</span></div>
+            <p class="msg-text">自分は近場でゆっくりしてました。たまにはそれもいいですね。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="雑談" data-author="家入 ユウ" data-time="2025年4月14日 12:19">
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">12:19</span></div>
+            <p class="msg-text">みんなちゃんと休んでてえらい…来年こそどこか行きます</p>
+          </div>
+        </div>
+
+        <!-- 4月15日（火） -->
+        <div class="date-divider"><span>2025年4月15日</span></div>
+
+        <div class="msg" data-channel="雑談" data-author="白石" data-time="2025年4月15日 12:07">
+          <div class="msg-avatar" style="background:#9a6a8a;">白</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">白石</span><span class="msg-time">12:07</span></div>
+            <p class="msg-text">近くのコンビニ、新しいスイーツ出てましたよ。チョコ系のやつ。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="雑談" data-author="沢渡 真帆" data-time="2025年4月15日 12:09">
+          <div class="msg-avatar" style="background:#7a5a2a;">沢</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">沢渡 真帆</span><span class="msg-time">12:09</span></div>
+            <p class="msg-text">見た見た！買いました？</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="雑談" data-author="白石" data-time="2025年4月15日 12:11">
+          <div class="msg-avatar" style="background:#9a6a8a;">白</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">白石</span><span class="msg-time">12:11</span></div>
+            <p class="msg-text">買いました。普通においしかったです。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="雑談" data-author="長谷川" data-time="2025年4月15日 12:13">
+          <div class="msg-avatar" style="background:#8b6a4a;">長</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">長谷川</span><span class="msg-time">12:13</span></div>
+            <p class="msg-text">あのシリーズ毎回クオリティ高いですよね。今日買いに行こうかな。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="雑談" data-author="家入 ユウ" data-time="2025年4月15日 12:15">
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">12:15</span></div>
+            <p class="msg-text">気になる〜。今日のおやつにします！</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="雑談" data-author="小西" data-time="2025年4月15日 12:18">
+          <div class="msg-avatar" style="background:#5a7a4a;">小</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">小西</span><span class="msg-time">12:18</span></div>
+            <p class="msg-text">白石さん情報早いですね笑　自分も後で見てきます。</p>
+          </div>
+        </div>
+
+        <!-- 4月16日（水） -->
+        <div class="date-divider"><span>2025年4月16日</span></div>
+
+        <div class="msg" data-channel="雑談" data-author="田村 恵" data-time="2025年4月16日 12:01">
+          <div class="msg-avatar" style="background:#2a6e5a;">田</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">田村 恵</span><span class="msg-time">12:01</span></div>
+            <p class="msg-text">ちょっと報告なんですが、先週末の競技プログラミングの大会、優勝しました。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="雑談" data-author="沢渡 真帆" data-time="2025年4月16日 12:04">
+          <div class="msg-avatar" style="background:#7a5a2a;">沢</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">沢渡 真帆</span><span class="msg-time">12:04</span></div>
+            <p class="msg-text">え！！！おめでとう！！！すご！</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="雑談" data-author="家入 ユウ" data-time="2025年4月16日 12:05">
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">12:05</span></div>
+            <p class="msg-text">え、優勝！？！？ちゃんと教えてよ！！おめでとう🎉🎉</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="雑談" data-author="長谷川" data-time="2025年4月16日 12:06">
+          <div class="msg-avatar" style="background:#8b6a4a;">長</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">長谷川</span><span class="msg-time">12:06</span></div>
+            <p class="msg-text">おめでとうございます！すごい。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="雑談" data-author="三上" data-time="2025年4月16日 12:07">
+          <div class="msg-avatar" style="background:#6a5acd;">三</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">三上</span><span class="msg-time">12:07</span></div>
+            <p class="msg-text">競技プログラミングなんてやってたんですか！知らなかった。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="雑談" data-author="神谷" data-time="2025年4月16日 12:08">
+          <div class="msg-avatar" style="background:#e67e22;">神</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">神谷</span><span class="msg-time">12:08</span></div>
+            <p class="msg-text">おめでとうございます。それは素直にすごいです。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="雑談" data-author="田村 恵" data-time="2025年4月16日 12:10">
+          <div class="msg-avatar" style="background:#2a6e5a;">田</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">田村 恵</span><span class="msg-time">12:10</span></div>
+            <p class="msg-text">ありがとうございます笑　まだ信じられてないんですけど。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="雑談" data-author="小西" data-time="2025年4月16日 12:12">
+          <div class="msg-avatar" style="background:#5a7a4a;">小</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">小西</span><span class="msg-time">12:12</span></div>
+            <p class="msg-text">黒木さんにも報告したんですか？</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="雑談" data-author="田村 恵" data-time="2025年4月16日 12:14">
+          <div class="msg-avatar" style="background:#2a6e5a;">田</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">田村 恵</span><span class="msg-time">12:14</span></div>
+            <p class="msg-text">しました。さっきDMで。「おめでとう」って返ってきました。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="雑談" data-author="家入 ユウ" data-time="2025年4月16日 12:16">
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">12:16</span></div>
+            <p class="msg-text">え！それだけ！？笑</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="雑談" data-author="神谷" data-time="2025年4月16日 12:18">
+          <div class="msg-avatar" style="background:#e67e22;">神</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">神谷</span><span class="msg-time">12:18</span></div>
+            <p class="msg-text">@黒木 凪 師匠として一言どうぞ。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="雑談" data-author="黒木 凪" data-time="2025年4月16日 12:24">
+          <div class="msg-avatar">凪</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">12:24</span></div>
+            <p class="msg-text">お疲れ様でした。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="雑談" data-author="田村 恵" data-time="2025年4月16日 12:26">
+          <div class="msg-avatar" style="background:#2a6e5a;">田</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">田村 恵</span><span class="msg-time">12:26</span></div>
+            <p class="msg-text">ありがとうございます！！黒木さんのご指導のおかげです！！</p>
+            <div class="msg-reactions"><span class="reaction">👍 1</span></div>
+          </div>
+        </div>
+
+        <!-- 4月17日（木） -->
+        <div class="date-divider"><span>2025年4月17日</span></div>
+
+        <div class="msg" data-channel="雑談" data-author="小西" data-time="2025年4月17日 12:05">
+          <div class="msg-avatar" style="background:#5a7a4a;">小</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">小西</span><span class="msg-time">12:05</span></div>
+            <p class="msg-text">田村さん、昨日の優勝改めておめでとうございます。すごいですよ。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="雑談" data-author="田村 恵" data-time="2025年4月17日 12:09">
+          <div class="msg-avatar" style="background:#2a6e5a;">田</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">田村 恵</span><span class="msg-time">12:09</span></div>
+            <p class="msg-text">ありがとうございます。黒木さんに一言もらえたのが一番びっくりしました笑</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="雑談" data-author="家入 ユウ" data-time="2025年4月17日 12:12">
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">12:12</span></div>
+            <p class="msg-text">あれ、黒木さんってこういう場所でも反応するんですね笑</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="雑談" data-author="沢渡 真帆" data-time="2025年4月17日 12:15">
+          <div class="msg-avatar" style="background:#7a5a2a;">沢</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">沢渡 真帆</span><span class="msg-time">12:15</span></div>
+            <p class="msg-text">なんか珍しくてちょっとじーんとしちゃった。</p>
+          </div>
+        </div>
+
+        <!-- 4月18日（金） -->
+        <div class="date-divider"><span>2025年4月18日</span></div>
+
+        <div class="msg" data-channel="雑談" data-author="沢渡 真帆" data-time="2025年4月18日 12:03">
+          <div class="msg-avatar" style="background:#7a5a2a;">沢</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">沢渡 真帆</span><span class="msg-time">12:03</span></div>
+            <p class="msg-text">来週も頑張りましょう〜。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="雑談" data-author="三上" data-time="2025年4月18日 12:05">
+          <div class="msg-avatar" style="background:#6a5acd;">三</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">三上</span><span class="msg-time">12:05</span></div>
+            <p class="msg-text">お疲れ様でした。来週もよろしくお願いします。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="雑談" data-author="家入 ユウ" data-time="2025年4月18日 12:07">
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">12:07</span></div>
+            <p class="msg-text">今週も早かったー！お疲れ様でした🙌</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="雑談" data-author="白石" data-time="2025年4月18日 12:09">
+          <div class="msg-avatar" style="background:#9a6a8a;">白</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">白石</span><span class="msg-time">12:09</span></div>
+            <p class="msg-text">お疲れ様でした〜。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="雑談" data-author="長谷川" data-time="2025年4月18日 12:11">
+          <div class="msg-avatar" style="background:#8b6a4a;">長</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">長谷川</span><span class="msg-time">12:11</span></div>
+            <p class="msg-text">お疲れ様でした。また来週。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="雑談" data-author="田村 恵" data-time="2025年4月18日 12:12">
+          <div class="msg-avatar" style="background:#2a6e5a;">田</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">田村 恵</span><span class="msg-time">12:12</span></div>
+            <p class="msg-text">お疲れ様でした。来週もよろしくお願いします。</p>
           </div>
         </div>
       </div>
       <div class="chat-input-wrap">
         <div class="chat-input-box">
           <input class="chat-input" type="text" placeholder="送信は現在ロックされています" disabled>
-          <span class="chat-input-hint">未承認端末 / 解除コードが必要</span>
         </div>
       </div>
     </div>
@@ -1242,7 +2454,7 @@ body {
         <div class="date-divider"><span>2025年4月7日</span></div>
 
         <div class="msg" data-channel="同期組" data-author="家入 ユウ" data-time="2025年4月7日 12:18">
-          <div class="msg-avatar" style="background:#2a7aad;">家</div>
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">12:18</span></div>
             <p class="msg-text">昨日また黒木さんに企画見てもらったんだけど、やっぱり逃げ場ない。<br>なんとなくで出した部分、全部止められる。</p>
@@ -1266,7 +2478,7 @@ body {
         </div>
 
         <div class="msg" data-channel="同期組" data-author="家入 ユウ" data-time="2025年4月7日 12:30">
-          <div class="msg-avatar" style="background:#2a7aad;">家</div>
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">12:30</span></div>
             <p class="msg-text">理由で詰められるのきついよね…。<br>なんとなく良さそう、が一番通らない。</p>
@@ -1282,7 +2494,7 @@ body {
         </div>
 
         <div class="msg" data-channel="同期組" data-author="家入 ユウ" data-time="2025年4月7日 12:36">
-          <div class="msg-avatar" style="background:#2a7aad;">家</div>
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">12:36</span></div>
             <p class="msg-text">あれ何？ほんとに。<br>見てるの？ってなる。</p>
@@ -1306,7 +2518,7 @@ body {
         </div>
 
         <div class="msg" data-channel="同期組" data-author="家入 ユウ" data-time="2025年4月7日 12:45">
-          <div class="msg-avatar" style="background:#2a7aad;">家</div>
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">12:45</span></div>
             <p class="msg-text">へえ、そういう話になるんだ。<br>どういう理由で？</p>
@@ -1330,7 +2542,7 @@ body {
         </div>
 
         <div class="msg" data-channel="同期組" data-author="家入 ユウ" data-time="2025年4月7日 12:55">
-          <div class="msg-avatar" style="background:#2a7aad;">家</div>
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">12:55</span></div>
             <p class="msg-text">たしかに。入社してから一回も対面してない。</p>
@@ -1354,7 +2566,7 @@ body {
         </div>
 
         <div class="msg" data-channel="同期組" data-author="家入 ユウ" data-time="2025年4月7日 13:01">
-          <div class="msg-avatar" style="background:#2a7aad;">家</div>
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">13:01</span></div>
             <p class="msg-text">え、このチャットって見られてないよね。</p>
@@ -1373,22 +2585,21 @@ body {
           <div class="msg-avatar" style="background:#7a5a2a;">沢</div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">沢渡 真帆</span><span class="msg-time">13:03</span></div>
-            <p class="msg-text">え、やめて。そういうこと言うの。</p>
+            <p class="msg-text">管理者って黒木さんのこと！？え、マジで？？</p>
           </div>
         </div>
 
         <div class="msg" data-channel="同期組" data-author="家入 ユウ" data-time="2025年4月7日 13:04">
-          <div class="msg-avatar" style="background:#2a7aad;">家</div>
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">13:04</span></div>
-            <p class="msg-text">いや普通に怖いんだけど。</p>
+            <p class="msg-text">いや管理者だからって参加してないチャンネルの会話は見れないでしょ<br>……見れないよね？</p>
           </div>
         </div>
       </div>
       <div class="chat-input-wrap">
         <div class="chat-input-box">
           <input class="chat-input" type="text" placeholder="送信は現在ロックされています" disabled>
-          <span class="chat-input-hint">未承認端末 / 解除コードが必要</span>
         </div>
       </div>
     </div>
@@ -1406,7 +2617,7 @@ body {
         <div class="date-divider"><span>2025年4月3日</span></div>
 
         <div class="msg" data-channel="記事企画_株式会社トラポルタ" data-author="家入 ユウ" data-time="2025年4月3日 10:12">
-          <div class="msg-avatar" style="background:#2a7aad;">家</div>
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">10:12</span></div>
             <p class="msg-text">取材企画の候補を一件共有します。<br>株式会社トラポルタのCOO・獅子王千暁さんです。<br>没入型イベントの制作会社で、最近露出も増えています。<br>獅子王さん自身も注目されている方なので、インタビューすれば読まれると思います。</p>
@@ -1422,7 +2633,7 @@ body {
         </div>
 
         <div class="msg" data-channel="記事企画_株式会社トラポルタ" data-author="家入 ユウ" data-time="2025年4月3日 10:27">
-          <div class="msg-avatar" style="background:#2a7aad;">家</div>
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">10:27</span></div>
             <p class="msg-text">はい、方向性が通ったら作ります。</p>
@@ -1438,7 +2649,7 @@ body {
         </div>
 
         <div class="msg" data-channel="記事企画_株式会社トラポルタ" data-author="家入 ユウ" data-time="2025年4月3日 11:03">
-          <div class="msg-avatar" style="background:#2a7aad;">家</div>
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">11:03</span></div>
             <p class="msg-text">ありがとうございます。整理して企画書に落とします。</p>
@@ -1454,7 +2665,7 @@ body {
         </div>
 
         <div class="msg" data-channel="記事企画_株式会社トラポルタ" data-author="家入 ユウ" data-time="2025年4月3日 11:10">
-          <div class="msg-avatar" style="background:#2a7aad;">家</div>
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">11:10</span></div>
             <p class="msg-text">ありがとうございます。お願いします。</p>
@@ -1465,7 +2676,7 @@ body {
         <div class="date-divider"><span>2025年4月10日</span></div>
 
         <div class="msg" data-channel="記事企画_株式会社トラポルタ" data-author="家入 ユウ" data-time="2025年4月10日 14:22">
-          <div class="msg-avatar" style="background:#2a7aad;">家</div>
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">14:22</span></div>
             <p class="msg-text">お待たせしました。企画書を共有します。<br>［企画書_トラポルタ_獅子王千暁_v1.pdf］</p>
@@ -1489,7 +2700,7 @@ body {
         </div>
 
         <div class="msg" data-channel="記事企画_株式会社トラポルタ" data-author="家入 ユウ" data-time="2025年4月10日 16:17">
-          <div class="msg-avatar" style="background:#2a7aad;">家</div>
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">16:17</span></div>
             <p class="msg-text">ありがとうございます。修正します。</p>
@@ -1508,7 +2719,7 @@ body {
         <div class="date-divider"><span>2025年4月14日</span></div>
 
         <div class="msg" data-channel="記事企画_株式会社トラポルタ" data-author="家入 ユウ" data-time="2025年4月14日 11:45">
-          <div class="msg-avatar" style="background:#2a7aad;">家</div>
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">11:45</span></div>
             <p class="msg-text">修正版を共有します。<br>［企画書_トラポルタ_獅子王千暁_v2.pdf］<br><br>読者設定：「体験型コンテンツの企画・制作に携わっている人」に絞りました。<br>独自情報：獅子王さんが没入型体験の設計でどういう判断基準を持っているか、没になった案をどう扱うかまで聞き出すことを軸にしました。</p>
@@ -1532,7 +2743,7 @@ body {
         </div>
 
         <div class="msg" data-channel="記事企画_株式会社トラポルタ" data-author="家入 ユウ" data-time="2025年4月14日 13:30">
-          <div class="msg-avatar" style="background:#2a7aad;">家</div>
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">13:30</span></div>
             <p class="msg-text">ありがとうございます。代替案も用意して取材準備を進めます。</p>
@@ -1551,7 +2762,7 @@ body {
         <div class="date-divider"><span>2025年5月7日</span></div>
 
         <div class="msg" data-channel="記事企画_株式会社トラポルタ" data-author="家入 ユウ" data-time="2025年5月7日 17:03">
-          <div class="msg-avatar" style="background:#2a7aad;">家</div>
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">17:03</span></div>
             <p class="msg-text">取材お疲れ様でした。原稿を共有します。<br>［原稿_トラポルタ_獅子王千暁_v1.pdf］<br><br>没になった案の話は取れませんでしたが、「体験の設計で外さないための判断基準」という形で代替の軸を作りました。</p>
@@ -1575,7 +2786,7 @@ body {
         </div>
 
         <div class="msg" data-channel="記事企画_株式会社トラポルタ" data-author="家入 ユウ" data-time="2025年5月7日 18:52">
-          <div class="msg-avatar" style="background:#2a7aad;">家</div>
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">18:52</span></div>
             <p class="msg-text">ありがとうございます。構成を組み直します。</p>
@@ -1594,7 +2805,7 @@ body {
         <div class="date-divider"><span>2025年5月12日</span></div>
 
         <div class="msg" data-channel="記事企画_株式会社トラポルタ" data-author="家入 ユウ" data-time="2025年5月12日 15:18">
-          <div class="msg-avatar" style="background:#2a7aad;">家</div>
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">15:18</span></div>
             <p class="msg-text">修正版を共有します。<br>［原稿_トラポルタ_獅子王千暁_v2.pdf］<br><br>結論を冒頭に出し、判断基準・具体事例・補足の順に再構成しました。<br>見出しごとに「何を理解させるか」を一つに絞って文章を当てはめています。</p>
@@ -1618,7 +2829,7 @@ body {
         </div>
 
         <div class="msg" data-channel="記事企画_株式会社トラポルタ" data-author="家入 ユウ" data-time="2025年5月12日 17:11">
-          <div class="msg-avatar" style="background:#2a7aad;">家</div>
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">17:11</span></div>
             <p class="msg-text">ありがとうございます。冒頭を修正します。</p>
@@ -1626,7 +2837,7 @@ body {
         </div>
 
         <div class="msg" data-channel="記事企画_株式会社トラポルタ" data-author="家入 ユウ" data-time="2025年5月12日 18:33">
-          <div class="msg-avatar" style="background:#2a7aad;">家</div>
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">18:33</span></div>
             <p class="msg-text">冒頭を修正しました。<br>［原稿_トラポルタ_獅子王千暁_v3.pdf］</p>
@@ -1642,7 +2853,7 @@ body {
         </div>
 
         <div class="msg" data-channel="記事企画_株式会社トラポルタ" data-author="家入 ユウ" data-time="2025年5月12日 18:54">
-          <div class="msg-avatar" style="background:#2a7aad;">家</div>
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">18:54</span></div>
             <p class="msg-text">ありがとうございます！</p>
@@ -1660,12 +2871,190 @@ body {
       <div class="chat-input-wrap">
         <div class="chat-input-box">
           <input class="chat-input" type="text" placeholder="送信は現在ロックされています" disabled>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ 記事企画_編集長インタビュー ══ -->
+    <div class="view" id="view-interview-nagi">
+      <div class="channel-header">
+        <div class="channel-header-left">
+          <span style="color:var(--text-muted);font-size:16px;">#</span>
+          <span class="channel-header-name">記事企画_編集長インタビュー</span>
+        </div>
+        <button class="ch-icon-btn">⋮</button>
+      </div>
+      <div class="chat-area" id="chat-interview-nagi">
+
+        <div class="date-divider"><span>2021年2月3日</span></div>
+
+        <div class="msg" data-channel="記事企画_編集長インタビュー" data-author="小西" data-time="2021年2月3日 10:12">
+          <div class="msg-avatar" style="background:#5a7a4a;">小</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">小西</span><span class="msg-time">10:12</span></div>
+            <p class="msg-text">編集長インタビュー企画、チャンネル立てました。<br>長谷川さんと担当します。よろしくお願いします。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="記事企画_編集長インタビュー" data-author="長谷川" data-time="2021年2月3日 10:15">
+          <div class="msg-avatar" style="background:#8b6a4a;">長</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">長谷川</span><span class="msg-time">10:15</span></div>
+            <p class="msg-text">よろしくお願いします。<br>会社紹介記事なので、リエンタがどんなメディアかを伝えることを軸にしたいと思っています。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="記事企画_編集長インタビュー" data-author="小西" data-time="2021年2月3日 10:21">
+          <div class="msg-avatar" style="background:#5a7a4a;">小</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">小西</span><span class="msg-time">10:21</span></div>
+            <p class="msg-text">同意です。ただ「どんな記事を作っているか」だけだと薄いので、「なぜその記事を作るのか」まで引き出せると読み応えが出ると思います。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="記事企画_編集長インタビュー" data-author="長谷川" data-time="2021年2月3日 10:28">
+          <div class="msg-avatar" style="background:#8b6a4a;">長</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">長谷川</span><span class="msg-time">10:28</span></div>
+            <p class="msg-text">それいいですね。立ち上げの経緯も聞けると、リエンタがどういう意図で生まれたかも伝わって面白いかも。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="記事企画_編集長インタビュー" data-author="小西" data-time="2021年2月3日 10:33">
+          <div class="msg-avatar" style="background:#5a7a4a;">小</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">小西</span><span class="msg-time">10:33</span></div>
+            <p class="msg-text">質問項目、一度まとめてみます。神谷さんにも確認してもらいましょう。</p>
+          </div>
+        </div>
+
+        <div class="date-divider"><span>2021年2月8日</span></div>
+
+        <div class="msg" data-channel="記事企画_編集長インタビュー" data-author="小西" data-time="2021年2月8日 14:22">
+          <div class="msg-avatar" style="background:#5a7a4a;">小</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">小西</span><span class="msg-time">14:22</span></div>
+            <p class="msg-text">質問項目、まとめました。神谷さん、確認お願いできますか。<br><br>①リエンタはどんな記事を作るメディアで、なぜそれを作るのか<br>②リエンタの編集方針で大切にしていること<br>③リエンタを立ち上げた経緯</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="記事企画_編集長インタビュー" data-author="神谷" data-time="2021年2月8日 14:35">
+          <div class="msg-avatar" style="background:#e67e22;">神</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">神谷</span><span class="msg-time">14:35</span></div>
+            <p class="msg-text">①と②はまとめた方がいいと思います。<br>「どんな記事を・なぜ作るか」の中に編集方針は含まれるので、分けると重複します。<br>③はそのまま残してください。立ち上げの話は読者に刺さると思います。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="記事企画_編集長インタビュー" data-author="長谷川" data-time="2021年2月8日 14:41">
+          <div class="msg-avatar" style="background:#8b6a4a;">長</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">長谷川</span><span class="msg-time">14:41</span></div>
+            <p class="msg-text">たしかに。①にまとめた方がすっきりしますね。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="記事企画_編集長インタビュー" data-author="小西" data-time="2021年2月8日 14:44">
+          <div class="msg-avatar" style="background:#5a7a4a;">小</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">小西</span><span class="msg-time">14:44</span></div>
+            <p class="msg-text">修正します。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="記事企画_編集長インタビュー" data-author="小西" data-time="2021年2月8日 14:48">
+          <div class="msg-avatar" style="background:#5a7a4a;">小</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">小西</span><span class="msg-time">14:48</span></div>
+            <p class="msg-text">@黒木 凪 インタビューの質問項目、神谷さんに確認いただいた上でまとめました。ご確認をお願いします。<br><br>①リエンタはどんな記事を作るメディアで、なぜそれを作るのか<br>②リエンタを立ち上げた経緯</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="記事企画_編集長インタビュー" data-author="黒木 凪" data-time="2021年2月8日 15:20">
+          <div class="msg-avatar">凪</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">15:20</span></div>
+            <p class="msg-text">これで進めてください。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="記事企画_編集長インタビュー" data-author="小西" data-time="2021年2月8日 15:22">
+          <div class="msg-avatar" style="background:#5a7a4a;">小</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">小西</span><span class="msg-time">15:22</span></div>
+            <p class="msg-text">ありがとうございます。取材の日程調整します。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="記事企画_編集長インタビュー" data-author="長谷川" data-time="2021年2月8日 15:24">
+          <div class="msg-avatar" style="background:#8b6a4a;">長</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">長谷川</span><span class="msg-time">15:24</span></div>
+            <p class="msg-text">神谷さんもありがとうございました。頑張りましょう。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="記事企画_編集長インタビュー" data-author="神谷" data-time="2021年2月8日 15:26">
+          <div class="msg-avatar" style="background:#e67e22;">神</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">神谷</span><span class="msg-time">15:26</span></div>
+            <p class="msg-text">いい記事にしてください。</p>
+          </div>
+        </div>
+
+        <!-- 公開報告 -->
+        <div class="date-divider"><span>2021年3月1日</span></div>
+
+        <div class="msg" data-channel="記事企画_編集長インタビュー" data-author="小西" data-time="2021年3月1日 10:15">
+          <div class="msg-avatar" style="background:#5a7a4a;">小</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">小西</span><span class="msg-time">10:15</span></div>
+            <p class="msg-text">記事、公開しました。<br><a href="https://rienta.com/articles/editor-interview-2021" style="color:var(--pin);">【編集長インタビュー】リエンタが目指すメディアとは｜Rienta</a></p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="記事企画_編集長インタビュー" data-author="小西" data-time="2021年3月1日 10:16">
+          <div class="msg-avatar" style="background:#5a7a4a;">小</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">小西</span><span class="msg-time">10:16</span></div>
+            <p class="msg-text">黒木さん、神谷さん、ご協力ありがとうございました。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="記事企画_編集長インタビュー" data-author="長谷川" data-time="2021年3月1日 10:18">
+          <div class="msg-avatar" style="background:#8b6a4a;">長</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">長谷川</span><span class="msg-time">10:18</span></div>
+            <p class="msg-text">お疲れ様でした！いい記事になりました。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="記事企画_編集長インタビュー" data-author="神谷" data-time="2021年3月1日 10:22">
+          <div class="msg-avatar" style="background:#e67e22;">神</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">神谷</span><span class="msg-time">10:22</span></div>
+            <p class="msg-text">お疲れ様でした。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="記事企画_編集長インタビュー" data-author="黒木 凪" data-time="2021年3月1日 10:31">
+          <div class="msg-avatar">凪</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">10:31</span></div>
+            <p class="msg-text">お疲れ様でした。</p>
+          </div>
+        </div>
+
+      </div>
+      <div class="chat-input-wrap">
+        <div class="chat-input-box">
+          <input class="chat-input" type="text" placeholder="送信は現在ロックされています" disabled>
           <span class="chat-input-hint">未承認端末 / 解除コードが必要</span>
         </div>
       </div>
     </div>
 
-    <!-- ══ DM / その他（ダミー） ══ -->
+    <!-- ══ DM（連絡先一覧 → 各DMスレッド） ══ -->
     <div class="view" id="view-dm">
       <div class="channel-header">
         <div class="channel-header-left">
@@ -1673,8 +3062,34 @@ body {
           <span class="channel-header-name">ダイレクトメッセージ</span>
         </div>
       </div>
-      <div class="content-area" style="align-items:center;justify-content:center;text-align:center;">
-        <p style="color:var(--text-muted);font-size:14px;">送信相手を選択してください</p>
+      <div class="content-area dm-directory-wrap">
+        <p class="dm-directory-lead">メッセージを送る相手を選択してください。</p>
+        <div class="dm-directory" role="list">
+          <button type="button" class="dm-directory-row" onclick="openDmConversation('dm-nagi','DM:黒木凪')">
+            <div class="dm-directory-avatar" style="background:#0d5a8e;">凪</div>
+            <div class="dm-directory-info">
+              <span class="dm-directory-name">黒木 凪</span>
+              <span class="dm-directory-role">編集長</span>
+            </div>
+            <span class="dm-directory-chevron" aria-hidden="true">›</span>
+          </button>
+          <button type="button" class="dm-directory-row" onclick="openDmConversation('dm-tamura','DM:田村恵')">
+            <div class="dm-directory-avatar" style="background:#2a6e5a;">田</div>
+            <div class="dm-directory-info">
+              <span class="dm-directory-name">田村 恵</span>
+              <span class="dm-directory-role">Editor</span>
+            </div>
+            <span class="dm-directory-chevron" aria-hidden="true">›</span>
+          </button>
+          <button type="button" class="dm-directory-row" onclick="openDmConversation('dm-sawatari','DM:沢渡真帆')">
+            <div class="dm-directory-avatar" style="background:#7a5a2a;">沢</div>
+            <div class="dm-directory-info">
+              <span class="dm-directory-name">沢渡 真帆</span>
+              <span class="dm-directory-role">Editor</span>
+            </div>
+            <span class="dm-directory-chevron" aria-hidden="true">›</span>
+          </button>
+        </div>
       </div>
     </div>
 
@@ -1689,155 +3104,106 @@ body {
         <div class="date-divider"><span>2025年4月6日</span></div>
 
         <div class="msg" data-channel="DM:黒木凪" data-author="家入 ユウ" data-time="2025年4月6日 19:12">
-          <div class="msg-avatar" style="background:#2a7aad;">家</div>
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">19:12</span></div>
-            <p class="msg-text">お疲れ様です。<br>企画案を1本まとめたので、明日どこかで5分ほどお時間いただけないでしょうか。</p>
+            <p class="msg-text">お疲れ様です！突然すみません。<br>実はトラポルタのイベント、先週行ってきたんですが、めちゃくちゃよくて…！<br>COOの獅子王さんって方が設計しているらしくて、この人にインタビューしたら絶対面白い記事になると思うんですが、企画として出してみていいですか？</p>
           </div>
         </div>
 
-        <div class="msg" data-channel="DM:黒木凪" data-author="黒木 凪" data-time="2025年4月6日 19:26">
+        <div class="msg" data-channel="DM:黒木凪" data-author="黒木 凪" data-time="2025年4月6日 19:31">
           <div class="msg-avatar">凪</div>
           <div class="msg-body">
-            <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">19:26</span></div>
-            <p class="msg-text">大丈夫です。明日11時以降なら空けられます。<br>先に概要だけ投げておいてください。</p>
+            <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">19:31</span></div>
+            <p class="msg-text">トラポルタ、どんな会社ですか。</p>
           </div>
         </div>
 
-        <div class="msg" data-channel="DM:黒木凪" data-author="家入 ユウ" data-time="2025年4月6日 19:34">
-          <div class="msg-avatar" style="background:#2a7aad;">家</div>
+        <div class="msg" data-channel="DM:黒木凪" data-author="家入 ユウ" data-time="2025年4月6日 19:36">
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
           <div class="msg-body">
-            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">19:34</span></div>
-            <p class="msg-text">ありがとうございます。<br>没入型の体験コンテンツを作っている会社の取材企画です。<br>サービス紹介だけでなく、作る側の設計思想や、どういう判断で体験を作っているのかまで聞けたら面白いのではと思っています。</p>
+            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">19:36</span></div>
+            <p class="msg-text">没入型のイベントを作っている会社です！<br>体験型のコンテンツで、参加者が物語の中に入り込む感じの演出がすごくて。<br>最近メディアにも出てきていて、注目されてる会社だと思います。</p>
           </div>
         </div>
 
-        <div class="msg" data-channel="DM:黒木凪" data-author="黒木 凪" data-time="2025年4月6日 19:49">
+        <div class="msg" data-channel="DM:黒木凪" data-author="黒木 凪" data-time="2025年4月6日 19:44">
           <div class="msg-avatar">凪</div>
           <div class="msg-body">
-            <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">19:49</span></div>
-            <p class="msg-text">視点は悪くないです。<br>ただ、このままだと「面白そう」で止まっています。<br><br>企画として成立させるために、まずこの3点を詰めてください。<br><br>①誰に読ませるのか<br>　→想定読者を1つに絞ってください。複数想定すると全部浅くなります。<br><br>②読後に何を持ち帰らせるのか<br>　→「面白かった」ではなく、読者の理解や行動がどう変わるかまで書いてください。<br><br>③なぜその会社である必要があるのか<br>　→他でも成立する内容なら、その時点で弱いです。固有性を言語化してください。</p>
+            <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">19:44</span></div>
+            <p class="msg-text">分かりました。やってみていいです。<br>ただ企画書を出す前に、3つ自分で答えられる状態にしてください。<br><br>誰に読ませるのか。<br>読み終わったあと、その人の何が変わるのか。<br>なぜ獅子王さんでないといけないのか。<br><br>「面白いと思ったから」は理由になりません。<br>その3点が言語化できた時点で持ってきてください。</p>
           </div>
         </div>
 
-        <div class="msg" data-channel="DM:黒木凪" data-author="黒木 凪" data-time="2025年4月6日 19:52">
+        <div class="msg" data-channel="DM:黒木凪" data-author="家入 ユウ" data-time="2025年4月6日 19:55">
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">19:55</span></div>
+            <p class="msg-text">ありがとうございます！<br>正直そこまで考えられていなかったです…。ちゃんと整理してから企画書に落とします。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="DM:黒木凪" data-author="黒木 凪" data-time="2025年4月6日 19:58">
           <div class="msg-avatar">凪</div>
           <div class="msg-body">
-            <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">19:52</span></div>
-            <p class="msg-text">あともう一点。<br>家入さんの案は、発想自体は毎回おもしろいです。<br>ただ、発想を広げたまま出してしまっている。<br><br>企画は「削って残す」作業なので、<br>・今回やらないこと<br>・触れない領域<br>を先に決めてください。<br><br>そこが決まると、構成と取材内容が自然に絞れます。</p>
+            <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">19:58</span></div>
+            <p class="msg-text">あと一点。<br>「インタビューで何を聞くか」より先に、「何を引き出したいか」を決めてください。<br>質問は手段です。目的が曖昧だと全部浅くなります。</p>
           </div>
         </div>
 
-        <div class="msg" data-channel="DM:黒木凪" data-author="家入 ユウ" data-time="2025年4月6日 20:01">
-          <div class="msg-avatar" style="background:#2a7aad;">家</div>
+        <div class="msg" data-channel="DM:黒木凪" data-author="家入 ユウ" data-time="2025年4月6日 20:03">
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
           <div class="msg-body">
-            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">20:01</span></div>
-            <p class="msg-text">ありがとうございます。<br>そこが毎回弱い自覚があります。<br>3点整理して、明日改めて持っていきます。</p>
+            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">20:03</span></div>
+            <p class="msg-text">たしかに、質問を先に考えてました。目的から逆算します！</p>
           </div>
         </div>
 
-        <div class="msg" data-channel="DM:黒木凪" data-author="黒木 凪" data-time="2025年4月6日 20:05">
+        <div class="date-divider"><span>2025年4月11日</span></div>
+
+        <div class="msg" data-channel="DM:黒木凪" data-author="家入 ユウ" data-time="2025年4月11日 18:22">
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">18:22</span></div>
+            <p class="msg-text">お疲れ様です。企画書、修正しているんですが構成の組み立てで詰まっていて…。<br>取材で聞きたいことは整理できてるんですけど、それを記事としてどういう順番で見せるかが決まらなくて💦</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="DM:黒木凪" data-author="黒木 凪" data-time="2025年4月11日 18:41">
           <div class="msg-avatar">凪</div>
           <div class="msg-body">
-            <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">20:05</span></div>
-            <p class="msg-text">もう一つだけ。<br>「何を聞くか」より先に、「何を引き出したいか」を決めてください。<br><br>質問は手段なので、目的が曖昧だと全部浅くなります。<br>取材で取りに行くのは情報ではなく、解釈です。</p>
+            <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">18:41</span></div>
+            <p class="msg-text">「取材で聞く順番」と「読ませる順番」は別物です。<br>取材は素材を集める作業で、構成はその素材を読者のために並べ直す作業です。<br><br>まずこの一文を作ってください。<br>「この記事を読んだ〇〇は、△△を理解する」<br><br>その一文が決まれば、何を先に置くべきかが自然に決まります。</p>
           </div>
         </div>
 
-        <div class="msg" data-channel="DM:黒木凪" data-author="家入 ユウ" data-time="2025年4月6日 20:09">
-          <div class="msg-avatar" style="background:#2a7aad;">家</div>
+        <div class="msg" data-channel="DM:黒木凪" data-author="家入 ユウ" data-time="2025年4月11日 18:55">
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
           <div class="msg-body">
-            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">20:09</span></div>
-            <p class="msg-text">確かに、質問を並べることばかり考えていました。<br>引き出したい内容から逆算して組み立てます。</p>
+            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">18:55</span></div>
+            <p class="msg-text">一文で言えるように整理してみます！<br>取材の順番で構成考えてたのが問題だったんですね…。</p>
           </div>
         </div>
 
-        <div class="msg" data-channel="DM:黒木凪" data-author="黒木 凪" data-time="2025年4月6日 20:14">
+        <div class="msg" data-channel="DM:黒木凪" data-author="黒木 凪" data-time="2025年4月11日 19:01">
           <div class="msg-avatar">凪</div>
           <div class="msg-body">
-            <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">20:14</span></div>
-            <p class="msg-text">あと、構成を考えるときに時系列に引っ張られすぎています。<br><br>「取材した順番」と「読ませる順番」は別物です。<br>読者にとって一番理解しやすい順番で並べ替えてください。</p>
+            <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">19:01</span></div>
+            <p class="msg-text">そうです。<br>取材の流れに引っ張られると、読者ではなく自分の理解の順番で並べることになります。<br>読者が何を知らない状態で記事を開くのか、そこから逆算してください。<br><br>構成の組み方は小西さんが得意なので、一度直接聞いてみてください。</p>
           </div>
         </div>
 
-        <div class="msg" data-channel="DM:黒木凪" data-author="家入 ユウ" data-time="2025年4月6日 20:18">
-          <div class="msg-avatar" style="background:#2a7aad;">家</div>
+        <div class="msg" data-channel="DM:黒木凪" data-author="家入 ユウ" data-time="2025年4月11日 19:07">
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
           <div class="msg-body">
-            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">20:18</span></div>
-            <p class="msg-text">時系列でしか考えていませんでした。<br>読者目線で並び替えます。</p>
-          </div>
-        </div>
-
-        <div class="msg" data-channel="DM:黒木凪" data-author="黒木 凪" data-time="2025年4月6日 20:23">
-          <div class="msg-avatar">凪</div>
-          <div class="msg-body">
-            <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">20:23</span></div>
-            <p class="msg-text">最後に。<br>企画書の段階で、「誰に・何を・なぜそれが面白いのか」を一文で言える状態まで整理してください。<br><br>例えば今回であれば、<br>「〇〇な読者に対して、△△という視点で□□の裏側を見せる企画」<br>のように言い切れる形です。<br><br>この一文に入らない情報は、優先度が低いか、まだ整理できていない要素です。</p>
-          </div>
-        </div>
-
-        <div class="msg" data-channel="DM:黒木凪" data-author="家入 ユウ" data-time="2025年4月6日 20:27">
-          <div class="msg-avatar" style="background:#2a7aad;">家</div>
-          <div class="msg-body">
-            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">20:27</span></div>
-            <p class="msg-text">ありがとうございます。<br>一文で言えるところまで削ってみます。</p>
-          </div>
-        </div>
-
-        <div class="date-divider"><span>2025年4月8日</span></div>
-
-        <div class="msg" data-channel="DM:黒木凪" data-author="家入 ユウ" data-time="2025年4月8日 14:12">
-          <div class="msg-avatar" style="background:#2a7aad;">家</div>
-          <div class="msg-body">
-            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">14:12</span></div>
-            <p class="msg-text">お疲れ様です。<br>昨日ご指摘いただいた内容を反映して、企画書と初稿をまとめました。<br>お時間あるときにご確認いただけますでしょうか。</p>
-          </div>
-        </div>
-
-        <div class="msg" data-channel="DM:黒木凪" data-author="黒木 凪" data-time="2025年4月8日 16:03">
-          <div class="msg-avatar">凪</div>
-          <div class="msg-body">
-            <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">16:03</span></div>
-            <p class="msg-text">確認しました。方向性は良いです。<br><br>ただ、現状だと「取材で得た情報の並び」になっています。<br>読者が理解する順番に再構成してください。<br><br>具体的には、<br>・結論（この体験がなぜ成立しているのか）を先に出す<br>・その後に設計思想と具体事例を置く<br>・最後に裏側の試行錯誤を補足する<br><br>この順に並べ替えると、読みやすくなります。</p>
-          </div>
-        </div>
-
-        <div class="msg" data-channel="DM:黒木凪" data-author="黒木 凪" data-time="2025年4月8日 16:07">
-          <div class="msg-avatar">凪</div>
-          <div class="msg-body">
-            <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">16:07</span></div>
-            <p class="msg-text">もう一点。<br>各見出しの役割が曖昧です。<br><br>「この見出しで何を理解させるのか」を一つに絞ってください。<br>1見出し1役割にすると、全体の流れが整理されます。</p>
-          </div>
-        </div>
-
-        <div class="msg" data-channel="DM:黒木凪" data-author="家入 ユウ" data-time="2025年4月8日 16:15">
-          <div class="msg-avatar" style="background:#2a7aad;">家</div>
-          <div class="msg-body">
-            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">16:15</span></div>
-            <p class="msg-text">ありがとうございます。<br>構成を読者順に並び替えて、見出しごとの役割も整理します。</p>
-          </div>
-        </div>
-
-        <div class="msg" data-channel="DM:黒木凪" data-author="家入 ユウ" data-time="2025年4月8日 18:42">
-          <div class="msg-avatar" style="background:#2a7aad;">家</div>
-          <div class="msg-body">
-            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">18:42</span></div>
-            <p class="msg-text">修正対応完了しました。<br>構成を結論先出しに変更し、見出しごとに内容を整理しています。<br>再度ご確認お願いいたします。</p>
-          </div>
-        </div>
-
-        <div class="msg" data-channel="DM:黒木凪" data-author="黒木 凪" data-time="2025年4月8日 19:10">
-          <div class="msg-avatar">凪</div>
-          <div class="msg-body">
-            <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">19:10</span></div>
-            <p class="msg-text">良くなっています。<br>読みやすさと伝わり方が改善されています。<br><br>この形を基準にしてください。公開準備に進んで問題ありません。</p>
+            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">19:07</span></div>
+            <p class="msg-text">分かりました！読者の起点から組み直してみます。ありがとうございます。</p>
           </div>
         </div>
       </div>
       <div class="chat-input-wrap">
         <div class="chat-input-box">
           <input class="chat-input" type="text" placeholder="送信は現在ロックされています" disabled>
-          <span class="chat-input-hint">未承認端末 / 解除コードが必要</span>
         </div>
       </div>
     </div>
@@ -1850,19 +3216,213 @@ body {
         </div>
       </div>
       <div class="chat-area" id="chat-dm-tamura">
-        <div class="date-divider"><span>2025年4月5日</span></div>
-        <div class="msg" data-channel="DM:田村恵" data-author="田村 恵" data-time="2025年4月5日 13:00">
+        <div class="date-divider"><span>2025年4月17日</span></div>
+
+        <div class="msg" data-channel="DM:田村恵" data-author="田村 恵" data-time="2025年4月17日 12:38">
           <div class="msg-avatar" style="background:#2a6e5a;">田</div>
           <div class="msg-body">
-            <div class="msg-header"><span class="msg-author">田村 恵</span><span class="msg-time">13:00</span></div>
-            <p class="msg-text">九重灰さんへの取材質問リスト、送ります。確認してもらえますか？</p>
+            <div class="msg-header"><span class="msg-author">田村 恵</span><span class="msg-time">12:38</span></div>
+            <p class="msg-text">ねえ、今週ランチ行かない？</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="DM:田村恵" data-author="家入 ユウ" data-time="2025年4月17日 12:41">
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">12:41</span></div>
+            <p class="msg-text">行きたい！！いつ空いてる？</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="DM:田村恵" data-author="田村 恵" data-time="2025年4月17日 12:43">
+          <div class="msg-avatar" style="background:#2a6e5a;">田</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">田村 恵</span><span class="msg-time">12:43</span></div>
+            <p class="msg-text">水か木なら大丈夫。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="DM:田村恵" data-author="家入 ユウ" data-time="2025年4月17日 12:45">
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">12:45</span></div>
+            <p class="msg-text">木曜にしよ。沢渡も誘う？</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="DM:田村恵" data-author="田村 恵" data-time="2025年4月17日 12:46">
+          <div class="msg-avatar" style="background:#2a6e5a;">田</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">田村 恵</span><span class="msg-time">12:46</span></div>
+            <p class="msg-text">誘おう。</p>
+          </div>
+        </div>
+
+        <div class="date-divider"><span>2025年4月21日</span></div>
+
+        <div class="msg" data-channel="DM:田村恵" data-author="田村 恵" data-time="2025年4月21日 21:14">
+          <div class="msg-avatar" style="background:#2a6e5a;">田</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">田村 恵</span><span class="msg-time">21:14</span></div>
+            <p class="msg-text">今日ランチ楽しかった。また行こう。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="DM:田村恵" data-author="家入 ユウ" data-time="2025年4月21日 21:17">
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">21:17</span></div>
+            <p class="msg-text">ほんとに！またすぐ行こ😂</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="DM:田村恵" data-author="田村 恵" data-time="2025年4月21日 21:19">
+          <div class="msg-avatar" style="background:#2a6e5a;">田</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">田村 恵</span><span class="msg-time">21:19</span></div>
+            <p class="msg-text">そういえば昨日、黒木さんと初めてリアルで会ったんだよね。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="DM:田村恵" data-author="家入 ユウ" data-time="2025年4月21日 21:20">
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">21:20</span></div>
+            <p class="msg-text">え！！！どういう状況で！？</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="DM:田村恵" data-author="田村 恵" data-time="2025年4月21日 21:23">
+          <div class="msg-avatar" style="background:#2a6e5a;">田</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">田村 恵</span><span class="msg-time">21:23</span></div>
+            <p class="msg-text">エンジニアの勉強、一緒に見てもらってる流れで。<br>ちょっとしたカフェで作業してたら黒木さんも来て。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="DM:田村恵" data-author="家入 ユウ" data-time="2025年4月21日 21:24">
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">21:24</span></div>
+            <p class="msg-text">偶然！？それとも待ち合わせ？</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="DM:田村恵" data-author="田村 恵" data-time="2025年4月21日 21:26">
+          <div class="msg-avatar" style="background:#2a6e5a;">田</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">田村 恵</span><span class="msg-time">21:26</span></div>
+            <p class="msg-text">待ち合わせ。でも初めて顔見たから最初分からなくて笑</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="DM:田村恵" data-author="家入 ユウ" data-time="2025年4月21日 21:27">
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">21:27</span></div>
+            <p class="msg-text">どうだった！？想像と違った？</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="DM:田村恵" data-author="田村 恵" data-time="2025年4月21日 21:31">
+          <div class="msg-avatar" style="background:#2a6e5a;">田</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">田村 恵</span><span class="msg-time">21:31</span></div>
+            <p class="msg-text">全然違った。意外と若くて、同年代くらいに見えた。<br>チャットの感じからもっとこう…厳格な人かと思ってたんだけど。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="DM:田村恵" data-author="家入 ユウ" data-time="2025年4月21日 21:33">
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">21:33</span></div>
+            <p class="msg-text">わかる気がする笑　声のイメージとは違った感じ？</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="DM:田村恵" data-author="田村 恵" data-time="2025年4月21日 21:35">
+          <div class="msg-avatar" style="background:#2a6e5a;">田</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">田村 恵</span><span class="msg-time">21:35</span></div>
+            <p class="msg-text">それはそんなに変わらなかった。<br>ただ話してたら、好きなお笑い芸人が一緒で、めちゃくちゃ盛り上がった笑</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="DM:田村恵" data-author="家入 ユウ" data-time="2025年4月21日 21:37">
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">21:37</span></div>
+            <p class="msg-text">お笑い芸人って、恵くんのスマホに挟んでるあのステッカーの人？</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="DM:田村恵" data-author="田村 恵" data-time="2025年4月21日 21:39">
+          <div class="msg-avatar" style="background:#2a6e5a;">田</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">田村 恵</span><span class="msg-time">21:39</span></div>
+            <p class="msg-text">そうそう。まさにそれ見て「お好きなんですか」って話題振ってくれて。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="DM:田村恵" data-author="家入 ユウ" data-time="2025年4月21日 21:41">
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">21:41</span></div>
+            <p class="msg-text">へー、意外。お笑いとか見るんだね、あの人。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="DM:田村恵" data-author="田村 恵" data-time="2025年4月21日 21:43">
+          <div class="msg-avatar" style="background:#2a6e5a;">田</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">田村 恵</span><span class="msg-time">21:43</span></div>
+            <p class="msg-text">あのステッカー見て分かるってことは、相当なファンだよ。限定ものだし、売れ出す前のグッズだもん。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="DM:田村恵" data-author="田村 恵" data-time="2025年4月21日 21:44">
+          <div class="msg-avatar" style="background:#2a6e5a;">田</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">田村 恵</span><span class="msg-time">21:44</span></div>
+            <p class="msg-text">「地下芸人だった頃から応援してます」って言ってた。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="DM:田村恵" data-author="家入 ユウ" data-time="2025年4月21日 21:46">
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">21:46</span></div>
+            <p class="msg-text">めっちゃ好きじゃん…</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="DM:田村恵" data-author="田村 恵" data-time="2025年4月21日 21:47">
+          <div class="msg-avatar" style="background:#2a6e5a;">田</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">田村 恵</span><span class="msg-time">21:47</span></div>
+            <p class="msg-text">仕事の話してる黒木さんとは別人みたいで、ちょっとびっくりした。<br>でも帰り際に「次の課題、来週までに」って普通に言われて笑　戻ってきたって感じがした。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="DM:田村恵" data-author="家入 ユウ" data-time="2025年4月21日 21:49">
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">21:49</span></div>
+            <p class="msg-text">それが黒木さんですよね笑<br>でもなんか、ちょっと安心した。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="DM:田村恵" data-author="田村 恵" data-time="2025年4月21日 21:51">
+          <div class="msg-avatar" style="background:#2a6e5a;">田</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">田村 恵</span><span class="msg-time">21:51</span></div>
+            <p class="msg-text">自分もそうだった。</p>
           </div>
         </div>
       </div>
       <div class="chat-input-wrap">
         <div class="chat-input-box">
           <input class="chat-input" type="text" placeholder="送信は現在ロックされています" disabled>
-          <span class="chat-input-hint">未承認端末 / 解除コードが必要</span>
         </div>
       </div>
     </div>
@@ -1875,19 +3435,125 @@ body {
         </div>
       </div>
       <div class="chat-area" id="chat-dm-sawatari">
-        <div class="date-divider"><span>2025年4月6日</span></div>
-        <div class="msg" data-channel="DM:沢渡真帆" data-author="沢渡 真帆" data-time="2025年4月6日 17:00">
+        <div class="date-divider"><span>2025年4月15日</span></div>
+
+        <div class="msg" data-channel="DM:沢渡真帆" data-author="沢渡 真帆" data-time="2025年4月15日 12:44">
           <div class="msg-avatar" style="background:#7a5a2a;">沢</div>
           <div class="msg-body">
-            <div class="msg-header"><span class="msg-author">沢渡 真帆</span><span class="msg-time">17:00</span></div>
-            <p class="msg-text">来週の取材、カメラマンの手配は済んでいますか？</p>
+            <div class="msg-header"><span class="msg-author">沢渡 真帆</span><span class="msg-time">12:44</span></div>
+            <p class="msg-text">ねえ今日のランチどこ行った？</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="DM:沢渡真帆" data-author="家入 ユウ" data-time="2025年4月15日 12:47">
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">12:47</span></div>
+            <p class="msg-text">近くのパスタ屋！安くておいしかった😊沢渡は？</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="DM:沢渡真帆" data-author="沢渡 真帆" data-time="2025年4月15日 12:49">
+          <div class="msg-avatar" style="background:#7a5a2a;">沢</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">沢渡 真帆</span><span class="msg-time">12:49</span></div>
+            <p class="msg-text">コンビニ…。締め切り前でバタバタしてて。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="DM:沢渡真帆" data-author="家入 ユウ" data-time="2025年4月15日 12:51">
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">12:51</span></div>
+            <p class="msg-text">えー！それはかわいそう。今週中に一緒に行こ。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="DM:沢渡真帆" data-author="沢渡 真帆" data-time="2025年4月15日 12:53">
+          <div class="msg-avatar" style="background:#7a5a2a;">沢</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">沢渡 真帆</span><span class="msg-time">12:53</span></div>
+            <p class="msg-text">行きたい。木曜空いてる？</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="DM:沢渡真帆" data-author="家入 ユウ" data-time="2025年4月15日 12:54">
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">12:54</span></div>
+            <p class="msg-text">田村も誘ってたから一緒にしよ。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="DM:沢渡真帆" data-author="沢渡 真帆" data-time="2025年4月15日 12:55">
+          <div class="msg-avatar" style="background:#7a5a2a;">沢</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">沢渡 真帆</span><span class="msg-time">12:55</span></div>
+            <p class="msg-text">最高。</p>
+          </div>
+        </div>
+
+        <div class="date-divider"><span>2025年4月22日</span></div>
+
+        <div class="msg" data-channel="DM:沢渡真帆" data-author="沢渡 真帆" data-time="2025年4月22日 19:33">
+          <div class="msg-avatar" style="background:#7a5a2a;">沢</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">沢渡 真帆</span><span class="msg-time">19:33</span></div>
+            <p class="msg-text">今日の三上さんの取材先リスト、なんか方向性ちょっとずれてたよね…？</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="DM:沢渡真帆" data-author="家入 ユウ" data-time="2025年4月22日 19:37">
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">19:37</span></div>
+            <p class="msg-text">あー、なんかカテゴリが微妙に違うやつ混ざってたね。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="DM:沢渡真帆" data-author="沢渡 真帆" data-time="2025年4月22日 19:39">
+          <div class="msg-avatar" style="background:#7a5a2a;">沢</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">沢渡 真帆</span><span class="msg-time">19:39</span></div>
+            <p class="msg-text">指摘するタイミング逃してそのままになっちゃって、なんか気になってる。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="DM:沢渡真帆" data-author="家入 ユウ" data-time="2025年4月22日 19:42">
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">19:42</span></div>
+            <p class="msg-text">明日さらっと言えばよくない？三上さんなら普通に受け取ってくれそう。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="DM:沢渡真帆" data-author="沢渡 真帆" data-time="2025年4月22日 19:44">
+          <div class="msg-avatar" style="background:#7a5a2a;">沢</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">沢渡 真帆</span><span class="msg-time">19:44</span></div>
+            <p class="msg-text">そうだよね。明日言ってみる。</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="DM:沢渡真帆" data-author="家入 ユウ" data-time="2025年4月22日 19:45">
+          <div class="msg-avatar" style="background:#9b59b6;">家</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">19:45</span></div>
+            <p class="msg-text">頑張れ〜！</p>
+          </div>
+        </div>
+
+        <div class="msg" data-channel="DM:沢渡真帆" data-author="沢渡 真帆" data-time="2025年4月22日 19:46">
+          <div class="msg-avatar" style="background:#7a5a2a;">沢</div>
+          <div class="msg-body">
+            <div class="msg-header"><span class="msg-author">沢渡 真帆</span><span class="msg-time">19:46</span></div>
+            <p class="msg-text">ありがとう笑</p>
           </div>
         </div>
       </div>
       <div class="chat-input-wrap">
         <div class="chat-input-box">
           <input class="chat-input" type="text" placeholder="送信は現在ロックされています" disabled>
-          <span class="chat-input-hint">未承認端末 / 解除コードが必要</span>
         </div>
       </div>
     </div>
@@ -1898,6 +3564,36 @@ body {
 <script>
 /* 簡易ログインチェック（sessionStorage）。未ログイン時はログイン画面へ。Vercelデプロイ時もクライアント側で動作 */
 (function(){ try { if (!sessionStorage.getItem('rientachat_logged_in')) { window.location.replace('chat_login.html'); return; } } catch(e) { window.location.replace('chat_login.html'); return; } })();
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━
+   MOBILE PANELS (≤768px)
+━━━━━━━━━━━━━━━━━━━━━━━ */
+function updateMobileToolbarActive() {
+  const searchOn = document.body.classList.contains('mobile-panel-search');
+  const sidebar = document.querySelector('.sidebar');
+  const chOn = sidebar?.classList.contains('mobile-open');
+  const userPanel = document.getElementById('mobileUserPanel');
+  const userOn = userPanel?.classList.contains('open');
+  const bd = document.getElementById('mobileOverlayBackdrop');
+  const anyOpen = searchOn || chOn || userOn;
+
+  document.getElementById('mobileBtnSearch')?.classList.toggle('active', searchOn);
+  document.getElementById('mobileBtnChannels')?.classList.toggle('active', chOn);
+  document.getElementById('mobileBtnUser')?.classList.toggle('active', userOn);
+  document.getElementById('mobileBtnSearch')?.setAttribute('aria-expanded', String(searchOn));
+  document.getElementById('mobileBtnChannels')?.setAttribute('aria-expanded', String(chOn));
+  document.getElementById('mobileBtnUser')?.setAttribute('aria-expanded', String(userOn));
+  if (userPanel) userPanel.setAttribute('aria-hidden', userOn ? 'false' : 'true');
+  if (bd) bd.setAttribute('aria-hidden', anyOpen ? 'false' : 'true');
+}
+
+function closeAllMobilePanels() {
+  document.body.classList.remove('mobile-panel-search');
+  document.querySelector('.sidebar')?.classList.remove('mobile-open');
+  document.getElementById('mobileUserPanel')?.classList.remove('open');
+  document.getElementById('mobileOverlayBackdrop')?.classList.remove('visible');
+  updateMobileToolbarActive();
+}
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━
    VIEW SWITCHING
@@ -1915,10 +3611,11 @@ function switchView(id) {
 
   // clear search on view change
   clearSearch();
+  closeAllMobilePanels();
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━
-   SEARCH
+   SEARCH — アコーディオン展開
 ━━━━━━━━━━━━━━━━━━━━━━━ */
 const searchInput    = document.getElementById('searchInput');
 const searchClear    = document.getElementById('searchClear');
@@ -1926,7 +3623,44 @@ const searchDropdown = document.getElementById('searchDropdown');
 const resultCount    = document.getElementById('resultCount');
 const resultsList    = document.getElementById('searchResultsList');
 
-// Gather all messages from data attributes
+const AVATAR_COLORS = {
+  '家入 ユウ': '#9b59b6',
+  '黒木 凪':   '#0d5a8e',
+  '田村 恵':   '#2a6e5a',
+  '沢渡 真帆': '#7a5a2a',
+  '三上':      '#6a5acd',
+  '神谷':      '#e67e22',
+  '小西':      '#5a7a4a',
+  '白石':      '#9a6a8a',
+  '長谷川':    '#8b6a4a',
+};
+
+const CHANNEL_VIEW_MAP = {
+  'マイチャット': 'mychat',
+  '勤怠管理チャット': 'kintai',
+  '編集部': 'henshubu',
+  '雑談': 'zatsudan',
+  '同期組': 'doki',
+  '記事企画_株式会社トラポルタ': 'traporta',
+  '記事企画_編集長インタビュー': 'interview-nagi',
+  'DM:黒木凪': 'dm-nagi',
+  'DM:田村恵': 'dm-tamura',
+  'DM:沢渡真帆': 'dm-sawatari',
+  'ホーム（ピン留め）': 'home',
+};
+const CHANNEL_LABEL_MAP = {};
+
+/** DMスレッドが用意されている相手（表示名＝data-author と一致） */
+const DM_PEER_AUTHORS = {
+  '黒木 凪': true,
+  '田村 恵': true,
+  '沢渡 真帆': true,
+};
+
+function isDM(channel) {
+  return typeof channel === 'string' && channel.indexOf('DM:') === 0;
+}
+
 function getAllMessages() {
   const msgs = [];
   document.querySelectorAll('.msg').forEach(el => {
@@ -1938,33 +3672,32 @@ function getAllMessages() {
       text:    el.querySelector('.msg-text')?.innerText || ''
     });
   });
-  // Also include pinned message content
   const pinned = document.getElementById('pinned-content');
   if (pinned) {
     msgs.push({
-      el: pinned,
-      channel: 'ホーム（ピン留め）',
-      author:  '黒木 凪',
-      time:    '2025年4月1日 10:00',
-      text:    pinned.innerText
+      el: pinned, channel: 'ホーム（ピン留め）',
+      author: '黒木 凪', time: '2025年4月1日 10:00',
+      text: pinned.innerText
     });
   }
   return msgs;
 }
 
-function highlight(text, query) {
-  if (!query) return escapeHtml(text);
-  const escaped = escapeHtml(text);
-  const escapedQuery = escapeHtml(query).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  return escaped.replace(new RegExp(escapedQuery, 'gi'), m => `<mark>${m}</mark>`);
-}
-
 function escapeHtml(str) {
   return str
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+function highlight(text, query) {
+  const escaped = escapeHtml(text);
+  const re = new RegExp(escapeHtml(query).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+  return escaped.replace(re, m => `<mark>${m}</mark>`);
+}
+
+function shortTime(timeStr) {
+  const m = timeStr.match(/(\d{2}:\d{2})$/);
+  return m ? m[1] : timeStr;
 }
 
 function doSearch(query) {
@@ -1977,71 +3710,118 @@ function doSearch(query) {
   const all = getAllMessages();
   const hits = all.filter(m => m.text.toLowerCase().includes(q.toLowerCase()));
 
-  resultCount.textContent = `${hits.length}件`;
+  const channelMap = new Map();
+  hits.forEach(m => {
+    if (!channelMap.has(m.channel)) channelMap.set(m.channel, []);
+    channelMap.get(m.channel).push(m);
+  });
 
-  if (hits.length === 0) {
+  const groups = [...channelMap.entries()].sort((a, b) => b[1].length - a[1].length);
+
+  resultCount.textContent = groups.length > 0
+    ? `${groups.length}チャンネル・${hits.length}件`
+    : '';
+
+  if (groups.length === 0) {
     resultsList.innerHTML = `<div class="search-no-result">「${escapeHtml(q)}」に一致するメッセージが見つかりませんでした。</div>`;
     return;
   }
 
-  resultsList.innerHTML = hits.map((m, i) => `
-    <div class="search-result-item" onclick="jumpToMessage(${i}, '${escapeHtml(q)}')">
-      <div class="search-result-meta">
-        <span class="search-result-channel"># ${escapeHtml(m.channel)}</span>
-        <span class="search-result-author">${escapeHtml(m.author)}</span>
-        <span class="search-result-time">${escapeHtml(m.time)}</span>
-      </div>
-      <div class="search-result-text">${highlight(m.text.slice(0, 120) + (m.text.length > 120 ? '…' : ''), q)}</div>
-    </div>
-  `).join('');
+  resultsList.innerHTML = groups.map(([ch, msgs]) => {
+    const label = CHANNEL_LABEL_MAP[ch] || ch;
+    const icon  = isDM(ch) ? '💬' : '#';
 
-  // store hits globally for jump
-  window._searchHits = hits;
+    const msgRows = msgs.map(m => {
+      const color   = AVATAR_COLORS[m.author] || '#0d5a8e';
+      const snippet = m.text.slice(0, 100) + (m.text.length > 100 ? '…' : '');
+      const dmAuthorClass = DM_PEER_AUTHORS[m.author] ? ' search-msg-author--dm' : '';
+      return `
+        <div class="search-msg-item" onclick="jumpToMessage('${escapeHtml(ch)}', this)">
+          <div class="search-msg-avatar" style="background:${color};">${escapeHtml((m.author || '?').charAt(0))}</div>
+          <div class="search-msg-body">
+            <div class="search-msg-meta">
+              <span class="search-msg-author${dmAuthorClass}">${escapeHtml(m.author)}</span>
+              <span class="search-msg-time">${escapeHtml(shortTime(m.time))}</span>
+            </div>
+            <div class="search-msg-text">${highlight(snippet, q)}</div>
+          </div>
+        </div>`;
+    }).join('');
+
+    return `
+      <div class="search-channel-group" data-ch="${escapeHtml(ch)}">
+        <div class="search-channel-row" onclick="toggleGroup(this.parentElement)">
+          <span class="search-channel-icon">${icon}</span>
+          <span class="search-channel-name">${escapeHtml(label)}</span>
+          <span class="search-channel-badge">${msgs.length}件</span>
+          <span class="search-channel-chevron">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          </span>
+        </div>
+        <div class="search-msg-list">${msgRows}</div>
+      </div>`;
+  }).join('');
+
+  if (groups.length === 1) {
+    resultsList.querySelector('.search-channel-group')?.classList.add('open');
+  }
 }
 
-function jumpToMessage(index, query) {
-  const hits = window._searchHits;
-  if (!hits || !hits[index]) return;
-  const m = hits[index];
+function toggleGroup(groupEl) {
+  groupEl.classList.toggle('open');
+}
 
-  // close dropdown
+function jumpToMessage(channelName, itemEl) {
+  const viewId = CHANNEL_VIEW_MAP[channelName];
+  if (!viewId) return;
+
   searchDropdown.classList.remove('show');
+  revealInSidebar(viewId, channelName);
+  switchView(viewId);
 
-  // switch to correct view
-  const viewMap = {
-    'マイチャット': 'mychat',
-    '勤怠管理チャット': 'kintai',
-    '編集部': 'henshubu',
-    '取材メモ': 'shuzaimemo',
-    '雑談': 'zatsudan',
-    '同期組': 'doki',
-    '記事企画_株式会社トラポルタ': 'traporta',
-    'DM:黒木凪': 'dm-nagi',
-    'DM:田村恵': 'dm-tamura',
-    'DM:沢渡真帆': 'dm-sawatari',
-    'ホーム（ピン留め）': 'home',
-  };
-  const viewId = viewMap[m.channel];
-  if (viewId) {
-    // 隠しチャンネルならサイドバーに追加表示する
-    revealInSidebar(viewId, m.channel);
-    switchView(viewId);
-  }
-
-  // highlight and scroll
+  const author  = itemEl.querySelector('.search-msg-author')?.textContent || '';
+  const timeStr = itemEl.querySelector('.search-msg-time')?.textContent   || '';
   setTimeout(() => {
-    document.querySelectorAll('.msg.highlighted').forEach(el => el.classList.remove('highlighted'));
-    const target = m.el.closest('.msg') || m.el;
+    let target = null;
+    document.querySelectorAll('#view-' + viewId + ' .msg').forEach(el => {
+      if (!target &&
+          (el.dataset.author || '') === author &&
+          (el.dataset.time   || '').endsWith(timeStr)) {
+        target = el;
+      }
+    });
     if (target) {
+      document.querySelectorAll('.msg.highlighted').forEach(e => e.classList.remove('highlighted'));
       target.classList.add('highlighted');
       target.scrollIntoView({ behavior: 'smooth', block: 'center' });
       setTimeout(() => target.classList.remove('highlighted'), 3000);
     }
-  }, 100);
+  }, 120);
 }
 
+function clearSearch() {
+  searchInput.value = '';
+  searchClear.classList.remove('show');
+  searchDropdown.classList.remove('show');
+  resultsList.innerHTML = '';
+  resultCount.textContent = '';
+  document.querySelectorAll('.msg.highlighted').forEach(el => el.classList.remove('highlighted'));
+}
+
+searchInput.addEventListener('input', e => doSearch(e.target.value));
+searchClear.addEventListener('click', clearSearch);
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('.top-search-wrap')) {
+    searchDropdown.classList.remove('show');
+  }
+});
+searchInput.addEventListener('focus', () => {
+  if (searchInput.value.trim()) searchDropdown.classList.add('show');
+});
+
 // 隠しチャンネルをサイドバーに追加表示する
-const HIDDEN_CHANNELS = ['henshubu','shuzaimemo','zatsudan','doki','traporta','dm-nagi','dm-tamura','dm-sawatari'];
+const HIDDEN_CHANNELS = ['henshubu','zatsudan','doki','traporta','dm-nagi','dm-tamura','dm-sawatari','interview-nagi'];
 function revealInSidebar(viewId, channelName) {
   if (!HIDDEN_CHANNELS.includes(viewId)) return;
   if (document.getElementById('nav-' + viewId)) return; // すでにある
@@ -2079,29 +3859,131 @@ function revealInSidebar(viewId, channelName) {
   listEl.appendChild(item);
 }
 
-function clearSearch() {
-  searchInput.value = '';
-  searchClear.classList.remove('show');
-  searchDropdown.classList.remove('show');
-  resultsList.innerHTML = '';
-  resultCount.textContent = '';
-  window._searchHits = [];
-  // remove highlights
-  document.querySelectorAll('.msg.highlighted').forEach(el => el.classList.remove('highlighted'));
+/* DM表示：3名とのスレッドを開く（サイドバー「最近アクセス」連携） */
+const AUTHOR_DM_TARGET = {
+  '黒木 凪':   { view: 'dm-nagi',     reveal: 'DM:黒木凪' },
+  '田村 恵':   { view: 'dm-tamura',   reveal: 'DM:田村恵' },
+  '沢渡 真帆': { view: 'dm-sawatari', reveal: 'DM:沢渡真帆' },
+};
+
+function openDmConversation(viewId, revealChannel) {
+  revealInSidebar(viewId, revealChannel);
+  switchView(viewId);
 }
 
-searchInput.addEventListener('input', e => doSearch(e.target.value));
-searchClear.addEventListener('click', clearSearch);
+function openFromAuthorName(author) {
+  const cfg = AUTHOR_DM_TARGET[author];
+  if (!cfg) return;
+  openDmConversation(cfg.view, cfg.reveal);
+}
 
-// Close dropdown on outside click
-document.addEventListener('click', e => {
-  if (!e.target.closest('.top-search-wrap')) {
-    searchDropdown.classList.remove('show');
+function markOpenableAuthors() {
+  document.querySelectorAll('.msg[data-author]').forEach(msg => {
+    const author = msg.dataset.author;
+    if (!AUTHOR_DM_TARGET[author]) return;
+    const nameEl = msg.querySelector('.msg-author');
+    if (!nameEl) return;
+    nameEl.classList.add('msg-author--open');
+    nameEl.title = author + 'とのDMを開く';
+  });
+  const pinAuth = document.querySelector('.pinned-msg-author');
+  if (pinAuth) {
+    const a = pinAuth.textContent.trim();
+    if (AUTHOR_DM_TARGET[a]) {
+      pinAuth.classList.add('pinned-msg-author--open');
+      pinAuth.title = a + 'とのDMを開く';
+    }
+  }
+}
+
+document.querySelector('.main-area')?.addEventListener('click', e => {
+  const openMsgAuthor = e.target.closest('.msg-author--open');
+  if (openMsgAuthor) {
+    const msg = openMsgAuthor.closest('.msg');
+    const author = msg?.dataset.author;
+    if (author) {
+      e.preventDefault();
+      openFromAuthorName(author);
+    }
+    return;
+  }
+  const openPin = e.target.closest('.pinned-msg-author--open');
+  if (openPin) {
+    e.preventDefault();
+    openFromAuthorName(openPin.textContent.trim());
   }
 });
-searchInput.addEventListener('focus', () => {
-  if (searchInput.value.trim()) searchDropdown.classList.add('show');
-});
+
+markOpenableAuthors();
+
+searchDropdown.addEventListener('click', e => {
+  const span = e.target.closest('.search-msg-author--dm');
+  if (!span || !span.closest('.search-msg-item')) return;
+  e.stopPropagation();
+  e.preventDefault();
+  openFromAuthorName(span.textContent.trim());
+}, true);
+
+/* モバイルツールバー */
+(function initMobileToolbar() {
+  const btnSearch = document.getElementById('mobileBtnSearch');
+  const btnChannels = document.getElementById('mobileBtnChannels');
+  const btnUser = document.getElementById('mobileBtnUser');
+  const backdrop = document.getElementById('mobileOverlayBackdrop');
+  const userClose = document.getElementById('mobileUserPanelClose');
+
+  btnSearch?.addEventListener('click', () => {
+    const wasOpen = document.body.classList.contains('mobile-panel-search');
+    closeAllMobilePanels();
+    if (!wasOpen) {
+      document.body.classList.add('mobile-panel-search');
+      backdrop?.classList.add('visible');
+      setTimeout(() => searchInput?.focus(), 60);
+    }
+    updateMobileToolbarActive();
+  });
+
+  btnChannels?.addEventListener('click', () => {
+    const sidebar = document.querySelector('.sidebar');
+    const wasOpen = sidebar?.classList.contains('mobile-open');
+    closeAllMobilePanels();
+    if (!wasOpen) {
+      sidebar?.classList.add('mobile-open');
+      backdrop?.classList.add('visible');
+    }
+    updateMobileToolbarActive();
+  });
+
+  btnUser?.addEventListener('click', () => {
+    const panel = document.getElementById('mobileUserPanel');
+    const wasOpen = panel?.classList.contains('open');
+    closeAllMobilePanels();
+    if (!wasOpen) {
+      panel?.classList.add('open');
+      backdrop?.classList.add('visible');
+    }
+    updateMobileToolbarActive();
+  });
+
+  backdrop?.addEventListener('click', closeAllMobilePanels);
+  userClose?.addEventListener('click', closeAllMobilePanels);
+
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Escape') return;
+    if (
+      document.body.classList.contains('mobile-panel-search') ||
+      document.querySelector('.sidebar')?.classList.contains('mobile-open') ||
+      document.getElementById('mobileUserPanel')?.classList.contains('open')
+    ) {
+      e.preventDefault();
+      closeAllMobilePanels();
+    }
+  });
+
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 768) closeAllMobilePanels();
+  });
+})();
 </script>
 
 </body>
