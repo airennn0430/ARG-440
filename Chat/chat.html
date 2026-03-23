@@ -1134,6 +1134,88 @@ button.dm-directory-row:hover {
     right: 8px;
   }
 }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━
+   GLITCH TEXT
+━━━━━━━━━━━━━━━━━━━━━━━ */
+.glitch {
+  position: relative;
+  display: inline-block;
+  font-weight: 700;
+  color: #e8534a;
+  animation: glitch-flicker 2.4s infinite;
+  cursor: default;
+}
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  overflow: hidden;
+}
+.glitch::before {
+  color: #0ff;
+  animation: glitch-slice-1 2.4s infinite, glitch-shift-x 2.4s infinite;
+  mix-blend-mode: screen;
+}
+.glitch::after {
+  color: #f0f;
+  animation: glitch-slice-2 2.4s infinite, glitch-shift-x2 2.4s infinite;
+  mix-blend-mode: screen;
+}
+@keyframes glitch-flicker {
+  0%,89%  { opacity:1; transform:translate(0,0) skewX(0deg); }
+  90%     { opacity:.8; transform:translate(-2px,0) skewX(-2deg); }
+  91%     { opacity:1; transform:translate(0,0) skewX(0deg); }
+  92%     { opacity:.9; transform:translate(2px,1px) skewX(1deg); }
+  93%     { opacity:1; transform:translate(0,0) skewX(0deg); }
+  94%     { opacity:.7; transform:translate(-1px,-1px) skewX(3deg); }
+  95%     { opacity:1; transform:translate(0,0) skewX(0deg); }
+  96%     { opacity:.85; transform:translate(3px,0) skewX(-1deg); }
+  97%,100%{ opacity:1; transform:translate(0,0) skewX(0deg); }
+}
+@keyframes glitch-slice-1 {
+  0%,88%  { clip-path:polygon(0 0,100% 0,100% 100%,0 100%); }
+  89%     { clip-path:polygon(0 12%,100% 12%,100% 26%,0 26%); }
+  90%     { clip-path:polygon(0 58%,100% 58%,100% 72%,0 72%); }
+  91%     { clip-path:polygon(0 33%,100% 33%,100% 44%,0 44%); }
+  92%     { clip-path:polygon(0 0,100% 0,100% 100%,0 100%); }
+  93%     { clip-path:polygon(0 76%,100% 76%,100% 88%,0 88%); }
+  94%     { clip-path:polygon(0 5%,100% 5%,100% 18%,0 18%); }
+  95%,100%{ clip-path:polygon(0 0,100% 0,100% 100%,0 100%); }
+}
+@keyframes glitch-slice-2 {
+  0%,88%  { clip-path:polygon(0 0,100% 0,100% 100%,0 100%); }
+  89%     { clip-path:polygon(0 65%,100% 65%,100% 80%,0 80%); }
+  90%     { clip-path:polygon(0 20%,100% 20%,100% 35%,0 35%); }
+  91%     { clip-path:polygon(0 0,100% 0,100% 100%,0 100%); }
+  92%     { clip-path:polygon(0 48%,100% 48%,100% 60%,0 60%); }
+  93%     { clip-path:polygon(0 0,100% 0,100% 100%,0 100%); }
+  94%     { clip-path:polygon(0 85%,100% 85%,100% 95%,0 95%); }
+  95%,100%{ clip-path:polygon(0 0,100% 0,100% 100%,0 100%); }
+}
+@keyframes glitch-shift-x {
+  0%,88%{ transform:translate(0,0); }
+  89%   { transform:translate(-4px,0); }
+  90%   { transform:translate(3px,0); }
+  91%   { transform:translate(-2px,0); }
+  92%   { transform:translate(0,0); }
+  93%   { transform:translate(5px,0); }
+  94%   { transform:translate(-3px,0); }
+  95%,100%{ transform:translate(0,0); }
+}
+@keyframes glitch-shift-x2 {
+  0%,88%{ transform:translate(0,0); }
+  89%   { transform:translate(4px,0); }
+  90%   { transform:translate(-3px,0); }
+  91%   { transform:translate(0,0); }
+  92%   { transform:translate(-5px,0); }
+  93%   { transform:translate(0,0); }
+  94%   { transform:translate(3px,0); }
+  95%,100%{ transform:translate(0,0); }
+}
+
 </style>
 </head>
 <body>
@@ -1268,7 +1350,7 @@ button.dm-directory-row:hover {
             この端末は未承認端末として検出されています。<br>
             一部のチャンネルおよびDMは一覧に表示されません。<br>
             必要な情報は上部検索から参照してください。<br>
-            解除コードは<strong style="color:#e8534a;font-weight:700;">管理者</strong>に確認をしてください。
+            解除コードは<span class="glitch" data-text="管理者">管理者</span>に確認をしてください。
           </div>
         </div>
         <div class="pinned-block">
