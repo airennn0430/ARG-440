@@ -1216,6 +1216,132 @@ button.dm-directory-row:hover {
   95%,100%{ transform:translate(0,0); }
 }
 
+/* ── 未読バッジ（サイドバー） ── */
+.sidebar-item-unread-badge {
+  background: #ef4565;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  animation: badge-pop .3s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes badge-pop {
+  0%   { transform: scale(0); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* ── 入力中インジケーター ── */
+.typing-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  font-size: 12px;
+  color: var(--text-muted);
+  animation: typing-fade-in .3s ease;
+}
+.typing-indicator-name {
+  font-weight: 700;
+  color: var(--text);
+}
+.typing-dots {
+  display: flex;
+  gap: 3px;
+  align-items: center;
+}
+.typing-dots span {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  animation: typing-bounce 1.2s infinite;
+}
+.typing-dots span:nth-child(2) { animation-delay: .2s; }
+.typing-dots span:nth-child(3) { animation-delay: .4s; }
+@keyframes typing-bounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: .4; }
+  30%           { transform: translateY(-4px); opacity: 1; }
+}
+@keyframes typing-fade-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── 新着メッセージのフェードイン ── */
+.msg-new-arrive {
+  animation: msg-arrive .4s cubic-bezier(.22,.68,0,1.1);
+}
+@keyframes msg-arrive {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── グリッチ＋暗転オーバーレイ ── */
+#blackout-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 16px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .8s ease;
+}
+#blackout-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+#blackout-overlay .blackout-msg {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 15px;
+  color: rgba(255,255,255,.7);
+  letter-spacing: .12em;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 1s ease .6s;
+}
+#blackout-overlay.active .blackout-msg {
+  opacity: 1;
+}
+
+/* ── 画面全体グリッチ（暗転直前） ── */
+.screen-glitch-active {
+  animation: screen-glitch .6s steps(4) forwards;
+}
+@keyframes screen-glitch {
+  0%   { filter: none; transform: translate(0); }
+  10%  { filter: hue-rotate(90deg) saturate(3); transform: translate(-2px, 1px); }
+  20%  { filter: hue-rotate(-60deg) contrast(2); transform: translate(3px, -1px); }
+  30%  { filter: invert(1) saturate(5); transform: translate(-1px, 2px); }
+  40%  { filter: hue-rotate(180deg) brightness(1.5); transform: translate(2px, -2px); }
+  50%  { filter: saturate(0) contrast(3); transform: translate(-3px, 0); }
+  60%  { filter: hue-rotate(45deg) saturate(2); transform: translate(1px, 1px); }
+  70%  { filter: invert(.7) hue-rotate(-30deg); transform: translate(-2px, -1px); }
+  80%  { filter: contrast(5) brightness(.5); transform: translate(2px, 2px); }
+  90%  { filter: hue-rotate(270deg) saturate(4); transform: translate(-1px, -2px); }
+  100% { filter: brightness(0); transform: translate(0); }
+}
+
+/* ── サイドバーのDMアイテムが光る演出 ── */
+.sidebar-item-alert {
+  animation: sidebar-alert-pulse 1.5s ease infinite;
+}
+@keyframes sidebar-alert-pulse {
+  0%, 100% { background: transparent; }
+  50%      { background: rgba(239,69,101,.15); }
+}
+
 </style>
 </head>
 <body>
@@ -3929,6 +4055,173 @@ function revealInSidebar(viewId, channelName) {
   item.innerHTML = `${prefix}<span class="sidebar-item-name">${label}</span>`;
   listEl.appendChild(item);
 }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   全チャンネルコンプリート → 黒木DM演出
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+(function initCompleteEvent() {
+
+  // --- 暗転用オーバーレイ（まだ無ければ生成） ---
+  if (!document.getElementById('blackout-overlay')) {
+    const overlay = document.createElement('div');
+    overlay.id = 'blackout-overlay';
+    overlay.innerHTML = '<p class="blackout-msg">セッションが切断されました</p>';
+    document.body.appendChild(overlay);
+  }
+
+  let completeTriggered = false;   // 二重発火防止
+  let dmSequenceReady   = false;   // DM演出の準備完了フラグ
+  let dmSequencePlayed  = false;   // DM演出の再生済みフラグ
+
+  // --- revealInSidebar の末尾に差し込むチェック ---
+  // 既存の revealInSidebar をラップ
+  const _originalReveal = revealInSidebar;
+  revealInSidebar = function(viewId, channelName) {
+    _originalReveal(viewId, channelName);
+    checkAllChannelsRevealed();
+  };
+
+  function checkAllChannelsRevealed() {
+    if (completeTriggered) return;
+    const listEl = document.getElementById('sidebar-hidden-list');
+    if (!listEl) return;
+    const count = listEl.children.length;
+    if (count < HIDDEN_CHANNELS.length) return;
+
+    completeTriggered = true;
+
+    // 3秒後に未読バッジ表示
+    setTimeout(() => {
+      showUnreadBadge();
+      dmSequenceReady = true;
+    }, 3000);
+  }
+
+  // --- サイドバーに未読バッジを付ける ---
+  function showUnreadBadge() {
+    const navDmNagi = document.getElementById('nav-dm-nagi');
+    if (!navDmNagi) return;
+    // 既にバッジがあれば何もしない
+    if (navDmNagi.querySelector('.sidebar-item-unread-badge')) return;
+
+    const badge = document.createElement('span');
+    badge.className = 'sidebar-item-unread-badge';
+    badge.textContent = '1';
+    navDmNagi.appendChild(badge);
+    navDmNagi.classList.add('sidebar-item-alert');
+
+    // 名前を太字に
+    const nameEl = navDmNagi.querySelector('.sidebar-item-name');
+    if (nameEl) nameEl.classList.add('sidebar-item-unread');
+  }
+
+  // --- DM演出シーケンス ---
+  const DM_SEQUENCE = [
+    { typing: 2000, text: 'あなた、誰ですか' },
+    { typing: 3000, text: '成程。' },
+    { typing: 4000, text: '不正アクセスはいけませんね' },
+    { typing: 5000, text: '欲しいものは見れましたか？' },
+  ];
+
+  function startDmSequence() {
+    if (dmSequencePlayed) return;
+    dmSequencePlayed = true;
+
+    // バッジ・アラートを消す
+    const navDmNagi = document.getElementById('nav-dm-nagi');
+    if (navDmNagi) {
+      const badge = navDmNagi.querySelector('.sidebar-item-unread-badge');
+      if (badge) badge.remove();
+      navDmNagi.classList.remove('sidebar-item-alert');
+      const nameEl = navDmNagi.querySelector('.sidebar-item-name');
+      if (nameEl) nameEl.classList.remove('sidebar-item-unread');
+    }
+
+    const chatArea = document.getElementById('chat-dm-nagi');
+    if (!chatArea) return;
+
+    // 日付ディバイダーを追加
+    const divider = document.createElement('div');
+    divider.className = 'date-divider';
+    divider.innerHTML = '<span>今日</span>';
+    chatArea.appendChild(divider);
+
+    // メッセージを順番に表示
+    let delay = 500; // 初回の短い間
+
+    DM_SEQUENCE.forEach((item, idx) => {
+      // 入力中インジケーター表示
+      setTimeout(() => {
+        // 前のインジケーターがあれば消す
+        const oldTyping = chatArea.querySelector('.typing-indicator');
+        if (oldTyping) oldTyping.remove();
+
+        const typing = document.createElement('div');
+        typing.className = 'typing-indicator';
+        typing.innerHTML = `
+          <span class="typing-indicator-name">黒木 凪</span>が入力中
+          <div class="typing-dots"><span></span><span></span><span></span></div>
+        `;
+        chatArea.appendChild(typing);
+        typing.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      }, delay);
+
+      delay += item.typing;
+
+      // メッセージ表示
+      setTimeout(() => {
+        // インジケーターを消す
+        const oldTyping = chatArea.querySelector('.typing-indicator');
+        if (oldTyping) oldTyping.remove();
+
+        const msg = document.createElement('div');
+        msg.className = 'msg msg-new-arrive';
+        msg.dataset.channel = 'DM:黒木凪';
+        msg.dataset.author = '黒木 凪';
+        msg.dataset.time = '今日';
+        msg.innerHTML = `
+          <div class="msg-avatar">凪</div>
+          <div class="msg-body">
+            <div class="msg-header">
+              <span class="msg-author">黒木 凪</span>
+              <span class="msg-time">now</span>
+            </div>
+            <p class="msg-text">${item.text}</p>
+          </div>
+        `;
+        chatArea.appendChild(msg);
+        msg.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      }, delay);
+
+      delay += 800; // メッセージ表示後の短い間
+    });
+
+    // 全メッセージ表示後 → グリッチ → 暗転
+    const glitchDelay = delay + 2000;
+    const blackoutDelay = glitchDelay + 700;
+
+    setTimeout(() => {
+      document.body.classList.add('screen-glitch-active');
+    }, glitchDelay);
+
+    setTimeout(() => {
+      document.body.classList.remove('screen-glitch-active');
+      const overlay = document.getElementById('blackout-overlay');
+      if (overlay) overlay.classList.add('active');
+    }, blackoutDelay);
+  }
+
+  // --- switchView にフックして dm-nagi を開いた時に発火 ---
+  const _originalSwitchView = switchView;
+  switchView = function(id) {
+    _originalSwitchView(id);
+    if (id === 'dm-nagi' && dmSequenceReady && !dmSequencePlayed) {
+      // 少し待ってからシーケンス開始（画面遷移が落ち着いてから）
+      setTimeout(startDmSequence, 600);
+    }
+  };
+
+})();
 
 /* DM表示：3名とのスレッドを開く（サイドバー「最近アクセス」連携） */
 const AUTHOR_DM_TARGET = {

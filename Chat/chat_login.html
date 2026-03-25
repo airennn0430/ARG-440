@@ -362,7 +362,18 @@ body {
 </footer>
 
 <script>
-function handleLogin(e) {
+// SHA-256ハッシュ関数（Web Crypto API）
+async function sha256(str) {
+  const buf = await crypto.subtle.digest(
+    'SHA-256',
+    new TextEncoder().encode(str)
+  );
+  return Array.from(new Uint8Array(buf))
+    .map(b => b.toString(16).padStart(2, '0'))
+    .join('');
+}
+
+async function handleLogin(e) {
   e.preventDefault();
   const email = document.getElementById('email');
   const password = document.getElementById('password');
@@ -390,8 +401,9 @@ function handleLogin(e) {
   }
   if (!valid) return;
 
-  // 仮ログイン：ID 000 / Pass 000 のみ許可
-  if (email.value.trim() !== '000' || password.value.trim() !== '000') {
+  // ハッシュ照合（ソースに平文は残らない）
+  const hash = await sha256(email.value.trim() + ':' + password.value.trim());
+  if (hash !== '8ed0412563dcade2c0cc4326cd0133c872ddfd4b675a7354eccd5d222be66c3a') {
     password.classList.add('error');
     if (loginError) loginError.classList.add('show');
     return;
