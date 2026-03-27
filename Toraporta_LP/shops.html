@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>店舗一覧 | 株式会社トラポルタ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+/* ── Toraporta デザイン基軸（schedule.html と整合） ── */
+:root {
+  --black:   #0e002e;
+  --white:   #fbfcfb;
+  --accent:  #29ae86;
+  --accent2: #ffdd00;
+  --accent3: #73d260;
+  --gray:    #7a7490;
+  --border:  #dddae8;
+  --surface: #f2f0f8;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--white);
+  color: var(--black);
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 300;
+  min-height: 100vh;
+  line-height: 1.8;
+}
+::-webkit-scrollbar { width: 2px; }
+::-webkit-scrollbar-track { background: var(--white); }
+::-webkit-scrollbar-thumb { background: var(--accent); }
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 60px;
+  height: 64px;
+  background: rgba(251,252,251,.94);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 20px;
+  letter-spacing: .35em;
+  color: var(--black);
+  text-decoration: none;
+}
+.nav-logo span { color: var(--accent); }
+nav ul { display: flex; gap: 36px; list-style: none; }
+nav a {
+  font-size: 13px;
+  letter-spacing: .15em;
+  color: var(--gray);
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color .25s;
+}
+nav a:hover { color: var(--accent); }
+.nav-back {
+  font-size: 11px;
+  letter-spacing: .12em;
+  color: var(--gray);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: color .25s;
+}
+.nav-back:hover { color: var(--accent); }
+.nav-back::before { content: '←'; }
+
+/* ── PAGE HERO ── */
+.page-hero {
+  padding: 112px 60px 64px;
+  border-bottom: 1px solid var(--border);
+}
+.page-hero-label {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .18em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.page-hero h1 {
+  font-family: 'Bebas Neue', cursive;
+  font-size: clamp(42px, 5.5vw, 72px);
+  letter-spacing: .06em;
+  line-height: 1.1;
+  color: var(--black);
+}
+.page-hero h1 em { font-style: normal; color: var(--accent); }
+
+/* ── AREA ── */
+.area-section { padding: 0 60px; }
+.area-heading {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 48px 0 24px;
+}
+.area-heading-text {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .18em;
+  color: var(--accent);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.area-heading-line { flex: 1; height: 1px; background: var(--border); }
+
+/* ── SHOP GRID ── */
+.shop-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+/* ── SHOP CARD ──
+   左：情報 / 右：画像（常に2列。minmax(0,1fr) でグリッドはみ出しを防止） */
+.shop-card {
+  border: 1px solid var(--border);
+  background: var(--white);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(120px, 200px);
+  grid-template-rows: auto;
+  align-items: stretch;
+  overflow: hidden;
+  transition: box-shadow .3s;
+}
+.shop-card:hover { box-shadow: 0 4px 20px rgba(14,0,46,.06); }
+
+.shop-card-info {
+  grid-column: 1;
+  grid-row: 1;
+  min-width: 0;
+  padding: 28px 28px 24px;
+  display: flex;
+  flex-direction: column;
+}
+.shop-card-name {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  line-height: 1.5;
+  color: var(--black);
+  margin-bottom: 14px;
+}
+.shop-card-address {
+  font-size: 12px;
+  font-weight: 300;
+  color: var(--gray);
+  letter-spacing: .03em;
+  line-height: 1.8;
+  margin-bottom: 6px;
+}
+.shop-card-tel {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--black);
+  letter-spacing: .06em;
+  margin-bottom: 18px;
+}
+.shop-card-badge {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  margin-bottom: 18px;
+  align-self: flex-start;
+}
+.shop-card-btn {
+  margin-top: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: .1em;
+  color: var(--black);
+  text-decoration: none;
+  border: 1px solid var(--border);
+  padding: 10px 0;
+  text-align: center;
+  transition: all .25s;
+}
+.shop-card-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.shop-card-img {
+  grid-column: 2;
+  grid-row: 1;
+  min-width: 0;
+  align-self: stretch;
+  overflow: hidden;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+}
+.shop-card-img-ph {
+  flex: 1;
+  width: 100%;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.shop-card-img-ph span {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 36px;
+  color: rgba(14,0,46,.06);
+  letter-spacing: .05em;
+  user-select: none;
+}
+.ph-experience { background: linear-gradient(135deg, #e8f5f0 0%, #c8ead9 100%); }
+.ph-gallery    { background: linear-gradient(135deg, #fffbe6 0%, #fff0a0 100%); }
+.ph-store      { background: linear-gradient(135deg, #eaf5e6 0%, #caeac0 100%); }
+
+.bottom-spacer { height: 80px; }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 36px 60px;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.footer-logo { font-family: 'Bebas Neue', cursive; font-size: 17px; letter-spacing: .3em; color: var(--gray); }
+.footer-copy { font-size: 13px; color: var(--gray); letter-spacing: .05em; }
+
+/* ── ハンバーガー ── */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  z-index: 101;
+}
+.nav-toggle span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--black);
+  transition: transform .3s, opacity .3s;
+}
+.nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-toggle.open span:nth-child(2) { opacity: 0; }
+.nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+@media (max-width: 960px) {
+  .shop-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+  nav { padding: 0 24px; }
+  .nav-toggle { display: flex; }
+  nav ul {
+    display: none;
+    position: fixed;
+    inset: 64px 0 0;
+    background: var(--white);
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 40px 24px 32px;
+    gap: 28px;
+    z-index: 9999;
+    overflow-y: auto;
+    list-style: none;
+    min-height: calc(100vh - 64px);
+  }
+  nav ul.open { display: flex; }
+  .page-hero, .area-section { padding-left: 24px; padding-right: 24px; }
+  .page-hero { padding-top: 100px; }
+  .shop-card { grid-template-columns: minmax(0, 1fr) minmax(100px, 140px); }
+  .shop-card-info { padding: 20px 20px 18px; }
+  .shop-card-name { font-size: 14px; }
+  .shop-card-img-ph { min-height: 160px; }
+  footer { padding: 28px 24px; flex-direction: column; gap: 8px; text-align: center; }
+}
+@media (max-width: 480px) {
+  .shop-card { grid-template-columns: minmax(0, 1fr) 96px; }
+  .shop-card-img-ph { min-height: 120px; }
+  .shop-card-img-ph span { font-size: 26px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="Toraporta.html" class="nav-logo">TRAPORTA<span>.</span></a>
+  <ul id="navMenu">
+    <li><a href="Toraporta.html#top">Top</a></li>
+    <li><a href="Toraporta.html#service">Service</a></li>
+    <li><a href="Toraporta.html#works">Works</a></li>
+    <li><a href="Toraporta.html#about">About</a></li>
+    <li><a href="Toraporta.html#recruit">Recruit</a></li>
+    <li><a href="Toraporta.html#contact">Contact</a></li>
+  </ul>
+  <a href="Toraporta.html#service" class="nav-back">Service</a>
+  <button class="nav-toggle" id="navToggle" aria-label="メニュー"><span></span><span></span><span></span></button>
+</nav>
+
+<section class="page-hero">
+  <p class="page-hero-label">Shop — Concept Store</p>
+  <h1>店舗<em>一覧</em></h1>
+</section>
+
+<!-- ── 関東 ── -->
+<div class="area-section">
+  <div class="area-heading">
+    <span class="area-heading-text">関東</span>
+    <div class="area-heading-line"></div>
+  </div>
+  <div class="shop-grid">
+
+    <div class="shop-card">
+      <div class="shop-card-info">
+        <h2 class="shop-card-name">トラポルタ 東京・青山店</h2>
+        <span class="shop-card-badge">体験型</span>
+        <p class="shop-card-address">東京都港区青山</p>
+        <p class="shop-card-tel">03-XXXX-XXXX</p>
+        <a href="#" class="shop-card-btn">店舗HP</a>
+      </div>
+      <div class="shop-card-img"><div class="shop-card-img-ph ph-experience"><span>01</span></div></div>
+    </div>
+
+    <div class="shop-card">
+      <div class="shop-card-info">
+        <h2 class="shop-card-name">トラポルタ 東京・新宿店</h2>
+        <span class="shop-card-badge">体験型</span>
+        <p class="shop-card-address">東京都新宿区新宿</p>
+        <p class="shop-card-tel">03-XXXX-XXXX</p>
+        <a href="#" class="shop-card-btn">店舗HP</a>
+      </div>
+      <div class="shop-card-img"><div class="shop-card-img-ph ph-experience"><span>02</span></div></div>
+    </div>
+
+    <div class="shop-card">
+      <div class="shop-card-info">
+        <h2 class="shop-card-name">トラポルタ 東京・渋谷店</h2>
+        <span class="shop-card-badge">体験型</span>
+        <p class="shop-card-address">東京都渋谷区渋谷</p>
+        <p class="shop-card-tel">03-XXXX-XXXX</p>
+        <a href="#" class="shop-card-btn">店舗HP</a>
+      </div>
+      <div class="shop-card-img"><div class="shop-card-img-ph ph-experience"><span>03</span></div></div>
+    </div>
+
+    <div class="shop-card">
+      <div class="shop-card-info">
+        <h2 class="shop-card-name">TRAPORTA GALLERY<br>東京・原宿</h2>
+        <span class="shop-card-badge">ギャラリー</span>
+        <p class="shop-card-address">東京都渋谷区原宿</p>
+        <p class="shop-card-tel">03-XXXX-XXXX</p>
+        <a href="#" class="shop-card-btn">店舗HP</a>
+      </div>
+      <div class="shop-card-img"><div class="shop-card-img-ph ph-gallery"><span>04</span></div></div>
+    </div>
+
+    <div class="shop-card">
+      <div class="shop-card-info">
+        <h2 class="shop-card-name">TRAPORTA STORE<br>東京・日向台</h2>
+        <span class="shop-card-badge">ショップ</span>
+        <p class="shop-card-address">東京都日向台</p>
+        <p class="shop-card-tel">03-XXXX-XXXX</p>
+        <a href="#" class="shop-card-btn">店舗HP</a>
+      </div>
+      <div class="shop-card-img"><div class="shop-card-img-ph ph-store"><span>05</span></div></div>
+    </div>
+
+    <div class="shop-card">
+      <div class="shop-card-info">
+        <h2 class="shop-card-name">トラポルタ 神奈川・横浜店</h2>
+        <span class="shop-card-badge">体験型</span>
+        <p class="shop-card-address">神奈川県横浜市</p>
+        <p class="shop-card-tel">045-XXX-XXXX</p>
+        <a href="#" class="shop-card-btn">店舗HP</a>
+      </div>
+      <div class="shop-card-img"><div class="shop-card-img-ph ph-experience"><span>06</span></div></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── 北海道・東北 ── -->
+<div class="area-section">
+  <div class="area-heading">
+    <span class="area-heading-text">北海道・東北</span>
+    <div class="area-heading-line"></div>
+  </div>
+  <div class="shop-grid">
+
+    <div class="shop-card">
+      <div class="shop-card-info">
+        <h2 class="shop-card-name">トラポルタ 北海道・札幌店</h2>
+        <span class="shop-card-badge">体験型</span>
+        <p class="shop-card-address">北海道札幌市</p>
+        <p class="shop-card-tel">011-XXX-XXXX</p>
+        <a href="#" class="shop-card-btn">店舗HP</a>
+      </div>
+      <div class="shop-card-img"><div class="shop-card-img-ph ph-experience"><span>07</span></div></div>
+    </div>
+
+    <div class="shop-card">
+      <div class="shop-card-info">
+        <h2 class="shop-card-name">トラポルタ 宮城・仙台店</h2>
+        <span class="shop-card-badge">体験型</span>
+        <p class="shop-card-address">宮城県仙台市</p>
+        <p class="shop-card-tel">022-XXX-XXXX</p>
+        <a href="#" class="shop-card-btn">店舗HP</a>
+      </div>
+      <div class="shop-card-img"><div class="shop-card-img-ph ph-experience"><span>08</span></div></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── 関西 ── -->
+<div class="area-section">
+  <div class="area-heading">
+    <span class="area-heading-text">関西</span>
+    <div class="area-heading-line"></div>
+  </div>
+  <div class="shop-grid">
+
+    <div class="shop-card">
+      <div class="shop-card-info">
+        <h2 class="shop-card-name">トラポルタ 大阪・浅谷店</h2>
+        <span class="shop-card-badge">体験型</span>
+        <p class="shop-card-address">大阪府浅谷市</p>
+        <p class="shop-card-tel">06-XXXX-XXXX</p>
+        <a href="#" class="shop-card-btn">店舗HP</a>
+      </div>
+      <div class="shop-card-img"><div class="shop-card-img-ph ph-experience"><span>09</span></div></div>
+    </div>
+
+    <div class="shop-card">
+      <div class="shop-card-info">
+        <h2 class="shop-card-name">トラポルタ 京都・石動水店</h2>
+        <span class="shop-card-badge">体験型</span>
+        <p class="shop-card-address">京都府石動水市</p>
+        <p class="shop-card-tel">075-XXX-XXXX</p>
+        <a href="#" class="shop-card-btn">店舗HP</a>
+      </div>
+      <div class="shop-card-img"><div class="shop-card-img-ph ph-experience"><span>10</span></div></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── 四国 ── -->
+<div class="area-section">
+  <div class="area-heading">
+    <span class="area-heading-text">四国</span>
+    <div class="area-heading-line"></div>
+  </div>
+  <div class="shop-grid">
+
+    <div class="shop-card">
+      <div class="shop-card-info">
+        <h2 class="shop-card-name">トラポルタ 香川・宮門店</h2>
+        <span class="shop-card-badge">体験型</span>
+        <p class="shop-card-address">香川県宮門市</p>
+        <p class="shop-card-tel">087-XXX-XXXX</p>
+        <a href="#" class="shop-card-btn">店舗HP</a>
+      </div>
+      <div class="shop-card-img"><div class="shop-card-img-ph ph-experience"><span>11</span></div></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── 九州 ── -->
+<div class="area-section">
+  <div class="area-heading">
+    <span class="area-heading-text">九州</span>
+    <div class="area-heading-line"></div>
+  </div>
+  <div class="shop-grid">
+
+    <div class="shop-card">
+      <div class="shop-card-info">
+        <h2 class="shop-card-name">トラポルタ 福岡・岩ノ津店</h2>
+        <span class="shop-card-badge">体験型</span>
+        <p class="shop-card-address">福岡県岩ノ津市</p>
+        <p class="shop-card-tel">092-XXX-XXXX</p>
+        <a href="#" class="shop-card-btn">店舗HP</a>
+      </div>
+      <div class="shop-card-img"><div class="shop-card-img-ph ph-experience"><span>12</span></div></div>
+    </div>
+
+  </div>
+</div>
+
+<div class="bottom-spacer"></div>
+
+<footer>
+  <p class="footer-logo">TRAPORTA</p>
+  <p class="footer-copy">© 2024 株式会社トラポルタ. All rights reserved.</p>
+</footer>
+
+<script>
+(function() {
+  function toggleMenu() {
+    var menu = document.getElementById('navMenu');
+    var btn  = document.getElementById('navToggle');
+    if (!menu || !btn) return;
+    var willOpen = !menu.classList.contains('open');
+    menu.classList.toggle('open', willOpen);
+    btn.classList.toggle('open', willOpen);
+    if (window.innerWidth <= 768) { menu.style.display = willOpen ? 'flex' : 'none'; }
+    else { menu.style.display = ''; }
+  }
+  function closeMenu() {
+    var menu = document.getElementById('navMenu');
+    var btn  = document.getElementById('navToggle');
+    if (!menu || !btn) return;
+    menu.classList.remove('open'); btn.classList.remove('open');
+    if (window.innerWidth <= 768) { menu.style.display = 'none'; }
+    else { menu.style.display = ''; }
+  }
+  var navToggle = document.getElementById('navToggle');
+  var navMenu = document.getElementById('navMenu');
+  if (navToggle && navMenu) {
+    navToggle.addEventListener('click', toggleMenu);
+    navMenu.querySelectorAll('a').forEach(function(link) { link.addEventListener('click', closeMenu); });
+  }
+})();
+</script>
+</body>
+</html>
