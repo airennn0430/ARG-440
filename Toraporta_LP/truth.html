@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>株式会社トラポルタ | Traporta</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@1,300;1,400&display=swap');
+
+/*
+  カラーパレット（色反転）
+  背景      #0e002e  テキスト  #fbfcfb
+  Acc1      #29ae86  Acc2      #ffdd00  Acc3  #73d260
+*/
+:root {
+  --black:   #fbfcfb;
+  --white:   #0e002e;
+  --accent:  #29ae86;
+  --accent2: #ffdd00;
+  --accent3: #73d260;
+  --gray:    #9e98b4;
+  --border:  #2a2048;
+  --surface: #160838;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+h1, h2, h3, h4 { font-size: inherit; font-weight: inherit; line-height: inherit; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--white);
+  color: var(--black);
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 300;
+  line-height: 1.8;
+  overflow-x: hidden;
+  position: relative;
+}
+::-webkit-scrollbar { width: 2px; }
+::-webkit-scrollbar-track { background: var(--white); }
+::-webkit-scrollbar-thumb { background: var(--accent); }
+
+/* ── ノイズオーバーレイ ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  pointer-events: none;
+  animation: noiseShift 0.12s steps(3) infinite;
+}
+@keyframes noiseShift {
+  0%   { transform: translate(0, 0); }
+  33%  { transform: translate(-2px, 1px); }
+  66%  { transform: translate(1px, -1px); }
+  100% { transform: translate(0, 0); }
+}
+
+/* ── スキャンライン ── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(14,0,46,.06) 2px,
+    rgba(14,0,46,.06) 4px
+  );
+  pointer-events: none;
+}
+
+/* ── グリッチフラッシュ ── */
+#glitchFlash {
+  position: fixed;
+  inset: 0;
+  z-index: 9997;
+  pointer-events: none;
+  opacity: 0;
+}
+#glitchFlash.fire {
+  animation: flashAnim .12s steps(2) forwards;
+}
+@keyframes flashAnim {
+  0%   { opacity: .12; background: var(--accent); }
+  50%  { opacity: .04; background: #ffdd00; }
+  100% { opacity: 0; }
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 60px;
+  height: 64px;
+  background: rgba(14,0,46,.94);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 20px;
+  letter-spacing: .35em;
+  color: var(--black);
+  text-decoration: none;
+}
+.nav-logo span { color: var(--accent); }
+nav ul { display: flex; gap: 36px; list-style: none; }
+nav a {
+  font-size: 13px;
+  letter-spacing: .15em;
+  color: var(--gray);
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color .25s;
+}
+nav a:hover { color: var(--accent); }
+
+/* ── HERO ── */
+#top {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 64px;
+  position: relative;
+  overflow: hidden;
+}
+.hero-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 80px 140px;
+  position: relative;
+  z-index: 1;
+}
+.hero-tag {
+  font-size: 13px;
+  letter-spacing: .22em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  opacity: 0;
+  animation: fadeUp .9s .2s forwards;
+}
+.hero-tag::before {
+  content: '';
+  width: 28px; height: 2px;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+.hero-title {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: clamp(38px, 5.5vw, 76px);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: .05em;
+  margin-bottom: 36px;
+  opacity: 0;
+  animation: fadeUp .9s .35s forwards;
+}
+.hero-title em {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: .5em;
+  letter-spacing: .1em;
+  color: var(--accent);
+  display: block;
+  margin-bottom: 8px;
+}
+.hero-desc {
+  font-size: 16px;
+  color: var(--black);
+  max-width: 420px;
+  line-height: 2;
+  margin-bottom: 44px;
+  opacity: 0;
+  animation: fadeUp .9s .5s forwards;
+}
+.hero-scroll {
+  position: absolute;
+  bottom: 36px;
+  left: 140px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+  letter-spacing: .18em;
+  color: var(--gray);
+  text-transform: uppercase;
+  opacity: 0;
+  animation: fadeUp .9s 1.1s forwards;
+}
+.hero-scroll::before {
+  content: '';
+  width: 32px; height: 1px;
+  background: var(--accent);
+}
+
+/* ── SECTION COMMON ── */
+section { padding: 112px 140px; border-top: 1px solid var(--border); }
+#top { padding: 0; border-top: none; }
+.sec-hd { display: flex; align-items: baseline; gap: 18px; margin-bottom: 64px; }
+.sec-num {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 60px;
+  color: var(--accent);
+  line-height: 1;
+}
+.sec-meta { display: flex; flex-direction: column; gap: 0; }
+.sec-label {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .18em;
+  color: var(--accent);
+  text-transform: uppercase;
+  display: inline-block;
+  margin-top: 0;
+  line-height: 1.2;
+}
+.sec-title {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 38px;
+  letter-spacing: .06em;
+  position: relative;
+  display: inline-block;
+  line-height: 1;
+  margin-bottom: 2px;
+}
+.sec-title::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 2px;
+  width: 300%;
+  height: 6px;
+  background: linear-gradient(90deg, var(--accent2), transparent);
+  opacity: .55;
+}
+.sec-hd-line { display: none; }
+.sec-desc { font-size: 13px; color: var(--gray); margin-bottom: 48px; max-width: 1100px; margin-left: auto; margin-right: auto; }
+
+/* ── SERVICE ── */
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+}
+.svc-item {
+  background: var(--white);
+  padding: 44px 32px;
+  position: relative;
+  overflow: hidden;
+  transition: background .35s;
+}
+.svc-item::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent3));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .4s;
+}
+.svc-item:hover { background: var(--surface); }
+.svc-item:hover::before { transform: scaleX(1); }
+.svc-num {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 44px;
+  color: rgba(41,174,134,.3);
+  line-height: 1;
+  margin-bottom: 20px;
+}
+.svc-name { font-size: 15px; font-weight: 700; letter-spacing: .06em; margin-bottom: 14px; }
+.svc-desc { font-size: 13px; color: var(--gray); line-height: 2; }
+
+/* ── WORKS ── */
+.works-track {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: var(--border);
+}
+.work-item {
+  background: var(--white);
+  flex: 0 0 100%;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  transition: background .28s;
+}
+.work-item:hover { background: var(--surface); }
+.work-num {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 34px;
+  color: var(--accent);
+  line-height: 1;
+  flex-shrink: 0;
+  width: 72px;
+  text-align: center;
+}
+.work-poster {
+  width: 110px;
+  flex-shrink: 0;
+  aspect-ratio: 3 / 4;
+  background: var(--surface);
+  overflow: hidden;
+  position: relative;
+  margin: 16px 0;
+}
+.work-body { padding: 20px 28px; flex: 1; display: flex; flex-direction: column; gap: 8px; }
+.work-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.work-tag {
+  font-size: 13px;
+  letter-spacing: .1em;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 3px 10px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.work-title { font-size: 16px; font-weight: 700; line-height: 1.5; }
+.work-lead { font-size: 13px; font-weight: 700; color: var(--black); line-height: 1.6; }
+.work-desc { font-size: 13px; color: var(--gray); line-height: 2; }
+
+/* ── ABOUT ── */
+.about-lead { max-width: 680px; margin-bottom: 72px; }
+.about-lead p { font-size: 14px; color: var(--black); line-height: 2.4; margin-bottom: 16px; }
+.about-tagline { font-size: 22px !important; font-weight: 700 !important; color: var(--black) !important; letter-spacing: .04em; }
+
+/* MVV */
+.mvv-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: var(--border);
+  margin-bottom: 80px;
+}
+.mvv-item { background: var(--white); padding: 40px 36px; transition: background .3s; }
+.mvv-item:hover { background: var(--surface); }
+.mvv-label { font-size: 13px; font-weight: 700; letter-spacing: .18em; color: var(--accent); text-transform: uppercase; margin-bottom: 10px; }
+.mvv-title { font-family: 'Bebas Neue', cursive; font-size: 22px; letter-spacing: .08em; margin-bottom: 16px; }
+.mvv-body { font-size: 13px; color: var(--gray); line-height: 2.2; }
+
+/* Value */
+.value-grid-wrap { margin-bottom: 80px; }
+.value-grid-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+}
+.value-item {
+  background: var(--white);
+  padding: 40px 36px;
+  position: relative;
+  overflow: hidden;
+  transition: background .3s;
+}
+.value-item::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent3));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .4s;
+}
+.value-item:hover { background: var(--surface); }
+.value-item:hover::before { transform: scaleX(1); }
+.value-num-name { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.value-num { font-family: 'Bebas Neue', cursive; font-size: 22px; color: rgba(41,174,134,.3); line-height: 1; }
+.value-name { font-family: 'Bebas Neue', cursive; font-size: 22px; letter-spacing: .08em; color: var(--black); line-height: 1; }
+.value-sub { font-size: 13px; font-weight: 700; color: var(--gray); letter-spacing: .08em; margin-bottom: 18px; }
+.value-body { font-size: 13px; color: var(--gray); line-height: 2.1; }
+
+/* Members */
+.member-hd { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; }
+.member-hd-label { font-size: 13px; font-weight: 700; letter-spacing: .18em; color: var(--accent); text-transform: uppercase; }
+.member-card {
+  background: var(--white);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 0;
+}
+.member-icon {
+  width: 140px; height: 140px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  overflow: hidden;
+  margin-bottom: 20px;
+  display: flex; align-items: center; justify-content: center;
+}
+.member-icon-placeholder {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 36px;
+  color: var(--border);
+  letter-spacing: .1em;
+}
+.member-name {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  color: var(--black);
+  margin-bottom: 5px;
+  text-align: center;
+}
+.member-role {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .18em;
+  color: var(--accent);
+  text-transform: uppercase;
+  text-align: center;
+}
+.member-slider { padding: 0 36px; max-width: 100%; }
+.member-slider-inner {
+  display: flex;
+  align-items: stretch;
+  gap: 14px;
+}
+.member-slider-viewport {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+.member-slider-track {
+  display: flex;
+  transition: transform .45s cubic-bezier(.25, .1, .25, 1);
+}
+.member-slider-track .member-card {
+  flex: 0 0 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+.member-slider-btn {
+  flex-shrink: 0;
+  align-self: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--accent);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background .25s, color .25s, border-color .25s;
+}
+.member-slider-btn:hover:not(:disabled) {
+  background: rgba(41,174,134,.12);
+  border-color: var(--accent);
+}
+.member-slider-btn:disabled {
+  opacity: .28;
+  cursor: not-allowed;
+}
+.member-slider-next-slot {
+  flex-shrink: 0;
+  align-self: center;
+  position: relative;
+  width: 44px;
+  height: 44px;
+}
+.member-slider-next-slot .member-slider-next,
+.member-slider-next-slot .member-anonymous-reroll {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.member-slider-dots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+.member-slider-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  background: var(--border);
+  cursor: pointer;
+  transition: background .25s, transform .25s;
+}
+.member-slider-dot[aria-current="true"] {
+  background: var(--accent);
+  transform: scale(1.15);
+}
+@media (max-width: 600px) {
+  .member-slider-inner { gap: 8px; }
+  .member-slider-btn { width: 38px; height: 38px; font-size: 18px; }
+  .member-slider-next-slot { width: 38px; height: 38px; }
+}
+
+/* 無記名：抽選名＆グリッチ（名前は他カードと同じ中央位置、抽選ボタンは右スロット） */
+.member-card-anonymous .member-anonymous-display {
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 5px;
+  min-height: 1.4em;
+  position: relative;
+}
+.member-anonymous-display.member-anonymous-glitch {
+  animation: member-anon-noise .52s steps(3, end) forwards;
+}
+@keyframes member-anon-noise {
+  0%   { opacity: 1; transform: translate(0,0) skewX(0); text-shadow: none; filter: none; }
+  8%   { opacity: .72; transform: translate(-4px,1px) skewX(-4deg);
+         text-shadow: 3px 0 rgba(41,174,134,.95), -3px 0 rgba(255,221,0,.85), 0 0 12px rgba(115,210,96,.4); }
+  16%  { opacity: 1; transform: translate(3px,-2px) skewX(3deg);
+         text-shadow: -4px 0 rgba(255,0,255,.55), 4px 0 rgba(0,255,255,.45); filter: contrast(1.35) brightness(1.08); }
+  24%  { opacity: .65; transform: translate(-2px,2px) skewX(-2deg);
+         text-shadow: 2px 1px rgba(41,174,134,.8), -2px -1px rgba(255,221,0,.7); }
+  32%  { opacity: .9; transform: translate(5px,0) skewX(5deg);
+         text-shadow: -2px 0 #73d260, 2px 0 #ffdd00; }
+  40%  { opacity: 1; transform: translate(-3px,-1px) skewX(-3deg);
+         text-shadow: 1px 0 rgba(255,0,255,.6), -1px 0 rgba(0,255,255,.5); }
+  48%  { opacity: .78; transform: translate(2px,1px) skewX(2deg);
+         text-shadow: 4px 0 rgba(41,174,134,.5), -4px 0 rgba(255,221,0,.5); }
+  56%  { opacity: 1; transform: translate(-1px,0) skewX(-1deg); filter: contrast(1.2); }
+  64%  { opacity: .85; transform: translate(0,0) skewX(0);
+         text-shadow: 0 0 8px rgba(41,174,134,.35); }
+  72%  { opacity: 1; transform: translate(1px,-1px); text-shadow: none; filter: none; }
+  100% { opacity: 1; transform: none; text-shadow: none; filter: none; }
+}
+.member-slider-btn.member-anonymous-reroll {
+  font-size: 18px;
+}
+@media (max-width: 600px) {
+  .member-slider-btn.member-anonymous-reroll { font-size: 15px; }
+}
+.member-slider-btn.member-anonymous-reroll:hover:not(:disabled) {
+  background: rgba(41,174,134,.12);
+  border-color: var(--accent);
+}
+.member-slider-btn.member-anonymous-reroll:disabled {
+  opacity: .35;
+  cursor: wait;
+}
+
+/* ── RECRUIT ── */
+.recruit-list { display: flex; flex-direction: column; gap: 1px; background: var(--border); }
+.recruit-item {
+  background: var(--white);
+  padding: 30px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background .28s;
+}
+.recruit-item:hover { background: var(--surface); }
+.recruit-name { font-size: 14px; font-weight: 700; margin-bottom: 10px; }
+.recruit-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.recruit-arrow {
+  width: 36px; height: 36px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+  color: var(--gray);
+  flex-shrink: 0;
+  transition: all .25s;
+}
+.recruit-item:hover .recruit-arrow { border-color: var(--accent); color: var(--accent); }
+
+/* ── CONTACT ── */
+.contact-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+.contact-lead-label { font-size: 13px; font-weight: 700; letter-spacing: .18em; color: var(--accent); text-transform: uppercase; margin-bottom: 20px; }
+.contact-lead-title {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 36px;
+  letter-spacing: .04em;
+  line-height: 1.2;
+  margin-bottom: 24px;
+}
+.contact-lead { font-size: 13px; color: var(--gray); line-height: 2.1; }
+
+/* ── FOOTER ── */
+footer {
+  padding: 36px 60px;
+  max-width: 1200px;
+  margin: 0 auto;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.footer-logo { font-family: 'Bebas Neue', cursive; font-size: 17px; letter-spacing: .3em; color: var(--gray); }
+.footer-copy { font-size: 13px; color: var(--gray); letter-spacing: .05em; }
+
+/* ── UTILS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: none; }
+}
+.fi { opacity: 0; transform: translateY(22px); transition: opacity .75s, transform .75s; max-width: 1100px; margin-left: auto; margin-right: auto; }
+.fi.vis { opacity: 1; transform: none; }
+
+/* ── グリッチテキスト ── */
+.glitch-text {
+  position: relative;
+  display: inline-block;
+  font-weight: 700;
+  color: inherit;
+  animation: glitch-flicker 2.4s infinite;
+  cursor: default;
+}
+.glitch-text::before,
+.glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  overflow: hidden;
+}
+.glitch-text::before {
+  color: #0ff;
+  animation: glitch-slice-1 2.4s infinite, glitch-shift-x 2.4s infinite;
+  mix-blend-mode: screen;
+}
+.glitch-text::after {
+  color: #f0f;
+  animation: glitch-slice-2 2.4s infinite, glitch-shift-x2 2.4s infinite;
+  mix-blend-mode: screen;
+}
+@keyframes glitch-flicker {
+  0%,89%  { opacity:1; transform:translate(0,0) skewX(0deg); }
+  90%     { opacity:.8; transform:translate(-2px,0) skewX(-2deg); }
+  91%     { opacity:1; transform:translate(0,0) skewX(0deg); }
+  92%     { opacity:.9; transform:translate(2px,1px) skewX(1deg); }
+  93%     { opacity:1; transform:translate(0,0) skewX(0deg); }
+  94%     { opacity:.7; transform:translate(-1px,-1px) skewX(3deg); }
+  95%     { opacity:1; transform:translate(0,0) skewX(0deg); }
+  96%     { opacity:.85; transform:translate(3px,0) skewX(-1deg); }
+  97%,100%{ opacity:1; transform:translate(0,0) skewX(0deg); }
+}
+@keyframes glitch-slice-1 {
+  0%,88%  { clip-path:polygon(0 0,100% 0,100% 100%,0 100%); }
+  89%     { clip-path:polygon(0 12%,100% 12%,100% 26%,0 26%); }
+  90%     { clip-path:polygon(0 58%,100% 58%,100% 72%,0 72%); }
+  91%     { clip-path:polygon(0 33%,100% 33%,100% 44%,0 44%); }
+  92%     { clip-path:polygon(0 0,100% 0,100% 100%,0 100%); }
+  93%     { clip-path:polygon(0 76%,100% 76%,100% 88%,0 88%); }
+  94%     { clip-path:polygon(0 5%,100% 5%,100% 18%,0 18%); }
+  95%,100%{ clip-path:polygon(0 0,100% 0,100% 100%,0 100%); }
+}
+@keyframes glitch-slice-2 {
+  0%,88%  { clip-path:polygon(0 0,100% 0,100% 100%,0 100%); }
+  89%     { clip-path:polygon(0 65%,100% 65%,100% 80%,0 80%); }
+  90%     { clip-path:polygon(0 20%,100% 20%,100% 35%,0 35%); }
+  91%     { clip-path:polygon(0 0,100% 0,100% 100%,0 100%); }
+  92%     { clip-path:polygon(0 48%,100% 48%,100% 60%,0 60%); }
+  93%     { clip-path:polygon(0 0,100% 0,100% 100%,0 100%); }
+  94%     { clip-path:polygon(0 85%,100% 85%,100% 95%,0 95%); }
+  95%,100%{ clip-path:polygon(0 0,100% 0,100% 100%,0 100%); }
+}
+@keyframes glitch-shift-x {
+  0%,88%{ transform:translate(0,0); }
+  89%   { transform:translate(-4px,0); }
+  90%   { transform:translate(3px,0); }
+  91%   { transform:translate(-2px,0); }
+  92%   { transform:translate(0,0); }
+  93%   { transform:translate(5px,0); }
+  94%   { transform:translate(-3px,0); }
+  95%,100%{ transform:translate(0,0); }
+}
+@keyframes glitch-shift-x2 {
+  0%,88%{ transform:translate(0,0); }
+  89%   { transform:translate(4px,0); }
+  90%   { transform:translate(-3px,0); }
+  91%   { transform:translate(0,0); }
+  92%   { transform:translate(-5px,0); }
+  93%   { transform:translate(0,0); }
+  94%   { transform:translate(3px,0); }
+  95%,100%{ transform:translate(0,0); }
+}
+
+/* ── ハンバーガー ── */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  z-index: 101;
+}
+.nav-toggle span {
+  display: block;
+  width: 24px; height: 2px;
+  background: var(--black);
+  transition: transform .3s, opacity .3s;
+}
+.nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-toggle.open span:nth-child(2) { opacity: 0; }
+.nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+@media (max-width: 768px) {
+  nav { padding: 0 20px; }
+  .nav-toggle { display: flex; }
+  nav ul { display: none; position: fixed; inset: 64px 0 0; background: var(--white); flex-direction: column; align-items: center; justify-content: flex-start; padding: 40px 24px 32px; gap: 28px; z-index: 9999; overflow-y: auto; min-height: calc(100vh - 64px); }
+  nav ul.open { display: flex; }
+  #top { min-height: auto; }
+  .hero-left { padding: 100px 24px 72px; min-height: 100svh; }
+  .hero-title { font-size: clamp(32px, 9vw, 52px); }
+  .hero-desc { font-size: 13px; max-width: 100%; }
+  .hero-scroll { left: 24px; bottom: 28px; }
+  section { padding: 64px 24px; }
+  .sec-num { font-size: 44px; }
+  .sec-title { font-size: 30px; }
+  .sec-hd { margin-bottom: 40px; }
+  .service-grid { grid-template-columns: 1fr 1fr; }
+  .work-num { display: none; }
+  .value-grid-list { grid-template-columns: 1fr; }
+  .contact-inner { grid-template-columns: 1fr; gap: 36px; }
+  .contact-lead-title { font-size: 28px; }
+  .recruit-item { padding: 22px 24px; }
+  footer { flex-direction: column; gap: 8px; text-align: center; padding: 28px 24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- グリッチフラッシュ -->
+<div id="glitchFlash"></div>
+
+<!-- ═══ NAV ═══ -->
+<nav>
+  <a href="#top" class="nav-logo">TRAPORTA<span>.</span></a>
+  <ul id="navMenu">
+    <li><a href="#top">Top</a></li>
+    <li><a href="#service">Service</a></li>
+    <li><a href="#works">Works</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#recruit">Recruit</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="nav-toggle" id="navToggle" aria-label="メニュー"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section id="top">
+  <div class="hero-left">
+    <p class="hero-tag">CLASSIFIED — Private Access</p>
+    <h1 class="hero-title">
+      <span class="glitch-text" data-text="獅子王千暁の">獅子王千暁の</span><br>
+      <span class="glitch-text" data-text="正しさは">正しさは</span><br>
+      <span class="glitch-text" data-text="現実にとっての悪だ">現実にとっての悪だ</span>
+    </h1>
+    <p class="hero-desc">あらゆる"嘘"は、この世にとって不要な悪しきもの。憎むべきものである</p>
+    <p class="hero-scroll">Scroll to explore</p>
+  </div>
+</section>
+
+<!-- ═══ SERVICE ═══ -->
+<section id="service">
+  <div class="sec-hd fi">
+    <span class="sec-num">01</span>
+    <div class="sec-meta">
+      <h2 class="sec-title glitch-text" data-text="Service">Service</h2>
+      <h3 class="sec-label">What I do</h3>
+    </div>
+  </div>
+  <p class="sec-desc fi">ここにセクション説明のプレースホルダー。獅子王の視点からのService。</p>
+  <div class="service-grid fi">
+    <div class="svc-item">
+      <p class="svc-num">01</p>
+      <h3 class="svc-name">プレースホルダー</h3>
+      <p class="svc-desc">ここに獅子王視点のテキストが入ります。</p>
+    </div>
+    <div class="svc-item">
+      <p class="svc-num">02</p>
+      <h3 class="svc-name">プレースホルダー</h3>
+      <p class="svc-desc">ここに獅子王視点のテキストが入ります。</p>
+    </div>
+    <div class="svc-item">
+      <p class="svc-num">03</p>
+      <h3 class="svc-name">プレースホルダー</h3>
+      <p class="svc-desc">ここに獅子王視点のテキストが入ります。</p>
+    </div>
+    <div class="svc-item">
+      <p class="svc-num">04</p>
+      <h3 class="svc-name">プレースホルダー</h3>
+      <p class="svc-desc">ここに獅子王視点のテキストが入ります。</p>
+    </div>
+    <div class="svc-item">
+      <p class="svc-num">05</p>
+      <h3 class="svc-name">プレースホルダー</h3>
+      <p class="svc-desc">ここに獅子王視点のテキストが入ります。</p>
+    </div>
+    <div class="svc-item">
+      <p class="svc-num">06</p>
+      <h3 class="svc-name">プレースホルダー</h3>
+      <p class="svc-desc">ここに獅子王視点のテキストが入ります。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ WORKS ═══ -->
+<section id="works">
+  <div class="sec-hd fi">
+    <span class="sec-num">02</span>
+    <div class="sec-meta">
+      <h2 class="sec-title glitch-text" data-text="Works">Works</h2>
+      <h3 class="sec-label">What I've done</h3>
+    </div>
+  </div>
+  <p class="sec-desc fi">ここにセクション説明のプレースホルダー。</p>
+  <div class="fi">
+    <div class="works-track">
+      <div class="work-item">
+        <p class="work-num">01</p>
+        <div class="work-poster"></div>
+        <div class="work-body">
+          <div class="work-tags"><span class="work-tag">Tag</span></div>
+          <p class="work-title">プレースホルダータイトル</p>
+          <p class="work-lead">プレースホルダーリード文</p>
+        </div>
+      </div>
+      <div class="work-item">
+        <p class="work-num">02</p>
+        <div class="work-poster"></div>
+        <div class="work-body">
+          <div class="work-tags"><span class="work-tag">Tag</span></div>
+          <p class="work-title">プレースホルダータイトル</p>
+          <p class="work-lead">プレースホルダーリード文</p>
+        </div>
+      </div>
+      <div class="work-item">
+        <p class="work-num">03</p>
+        <div class="work-poster"></div>
+        <div class="work-body">
+          <div class="work-tags"><span class="work-tag">Tag</span></div>
+          <p class="work-title">プレースホルダータイトル</p>
+          <p class="work-lead">プレースホルダーリード文</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ABOUT ═══ -->
+<section id="about">
+  <div class="sec-hd fi">
+    <span class="sec-num">03</span>
+    <div class="sec-meta">
+      <h2 class="sec-title glitch-text" data-text="About">About</h2>
+      <h3 class="sec-label">Who I am</h3>
+    </div>
+  </div>
+  <div class="about-lead fi">
+    <h3 class="about-tagline">ここに獅子王のタグラインが入ります。</h3>
+    <p>ここに獅子王の独白・告白テキストが入ります。プレースホルダー。</p>
+  </div>
+
+  <div class="mvv-stack fi">
+    <div class="mvv-item">
+      <h3 class="mvv-label">Confession</h3>
+      <h4 class="mvv-title">プレースホルダー</h4>
+      <p class="mvv-body">ここに独白テキストが入ります。</p>
+    </div>
+    <div class="mvv-item">
+      <h3 class="mvv-label">Truth</h3>
+      <h4 class="mvv-title">プレースホルダー</h4>
+      <p class="mvv-body">ここに独白テキストが入ります。</p>
+    </div>
+  </div>
+
+  <div class="value-grid-wrap fi">
+    <div style="padding: 0 36px; margin-bottom:28px;">
+      <h3 class="mvv-label">Value</h3>
+    </div>
+    <div class="value-grid-list">
+      <div class="value-item">
+        <div class="value-num-name">
+          <span class="value-num">01</span>
+          <h4 class="value-name">PLACEHOLDER</h4>
+        </div>
+        <p class="value-sub">プレースホルダー</p>
+        <p class="value-body">ここに獅子王視点のテキストが入ります。</p>
+      </div>
+      <div class="value-item">
+        <div class="value-num-name">
+          <span class="value-num">02</span>
+          <h4 class="value-name">PLACEHOLDER</h4>
+        </div>
+        <p class="value-sub">プレースホルダー</p>
+        <p class="value-body">ここに獅子王視点のテキストが入ります。</p>
+      </div>
+      <div class="value-item">
+        <div class="value-num-name">
+          <span class="value-num">03</span>
+          <h4 class="value-name">PLACEHOLDER</h4>
+        </div>
+        <p class="value-sub">プレースホルダー</p>
+        <p class="value-body">ここに獅子王視点のテキストが入ります。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="fi">
+    <div class="member-hd" style="padding: 0 36px;">
+      <h3 class="member-hd-label">Members</h3>
+    </div>
+    <div class="member-slider" id="memberSlider">
+      <div class="member-slider-inner">
+        <button type="button" class="member-slider-btn member-slider-prev" aria-label="前のメンバー">‹</button>
+        <div class="member-slider-viewport">
+          <div class="member-slider-track" id="memberSliderTrack">
+            <div class="member-card">
+              <div class="member-icon">
+                <span class="member-icon-placeholder">?</span>
+              </div>
+              <h4 class="member-name">獅子王 千暁</h4>
+              <h4 class="member-role">———</h4>
+            </div>
+            <div class="member-card">
+              <div class="member-icon">
+                <span class="member-icon-placeholder">?</span>
+              </div>
+              <h4 class="member-name">黒木 凪</h4>
+              <h4 class="member-role">———</h4>
+            </div>
+            <div class="member-card">
+              <div class="member-icon">
+                <span class="member-icon-placeholder">?</span>
+              </div>
+              <h4 class="member-name">九重 灰</h4>
+              <h4 class="member-role">———</h4>
+            </div>
+            <div class="member-card">
+              <div class="member-icon">
+                <span class="member-icon-placeholder">?</span>
+              </div>
+              <h4 class="member-name">伏見 瀬人</h4>
+              <h4 class="member-role">———</h4>
+            </div>
+            <div class="member-card member-card-anonymous">
+              <div class="member-icon">
+                <span class="member-icon-placeholder">?</span>
+              </div>
+              <span class="member-name member-anonymous-display" id="memberAnonymousDisplay" aria-live="polite"></span>
+              <h4 class="member-role">———</h4>
+            </div>
+          </div>
+        </div>
+        <div class="member-slider-next-slot">
+          <button type="button" class="member-slider-btn member-slider-next" aria-label="次のメンバー">›</button>
+          <button type="button" class="member-slider-btn member-anonymous-reroll" id="memberAnonymousReroll" aria-label="表示名を別の名前で抽選し直す" hidden>→</button>
+        </div>
+      </div>
+      <div class="member-slider-dots" id="memberSliderDots" role="tablist" aria-label="メンバー選択"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ RECRUIT ═══ -->
+<section id="recruit">
+  <div class="sec-hd fi">
+    <span class="sec-num">04</span>
+    <div class="sec-meta">
+      <h2 class="sec-title glitch-text" data-text="Recruit">Recruit</h2>
+      <h3 class="sec-label">What I seek</h3>
+    </div>
+  </div>
+  <p class="sec-desc fi">プレースホルダー説明文。</p>
+  <div class="recruit-list fi">
+    <div class="recruit-item">
+      <div>
+        <h3 class="recruit-name">プレースホルダー</h3>
+        <div class="recruit-tags"><span class="work-tag">Tag</span></div>
+      </div>
+      <span class="recruit-arrow">→</span>
+    </div>
+    <div class="recruit-item">
+      <div>
+        <h3 class="recruit-name">プレースホルダー</h3>
+        <div class="recruit-tags"><span class="work-tag">Tag</span></div>
+      </div>
+      <span class="recruit-arrow">→</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CONTACT ═══ -->
+<section id="contact">
+  <div class="sec-hd fi">
+    <span class="sec-num">05</span>
+    <div class="sec-meta">
+      <h2 class="sec-title glitch-text" data-text="Contact">Contact</h2>
+      <h3 class="sec-label">Reach me</h3>
+    </div>
+  </div>
+  <div class="contact-inner fi">
+    <div>
+      <h3 class="contact-lead-label">メッセージ</h3>
+      <h4 class="contact-lead-title">ここにタイトル</h4>
+      <p class="contact-lead">ここに獅子王からのメッセージが入ります。プレースホルダー。</p>
+    </div>
+    <div>
+      <p style="color:var(--gray);font-size:13px;letter-spacing:.06em;line-height:2.4;">
+        ここにContact右側のテキストが入ります。プレースホルダー。
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <p class="footer-logo">TRAPORTA</p>
+  <p class="footer-copy">CLASSIFIED — AUTHORIZED ACCESS ONLY</p>
+</footer>
+
+<script>
+/* スクロールフェードイン */
+var io = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('vis'); });
+}, { threshold: 0.08 });
+document.querySelectorAll('.fi').forEach(function(el) { io.observe(el); });
+
+/* グリッチフラッシュ */
+(function() {
+  function fire() {
+    var el = document.getElementById('glitchFlash');
+    el.classList.remove('fire');
+    void el.offsetWidth;
+    el.classList.add('fire');
+  }
+  function loop() {
+    setTimeout(function() { fire(); loop(); }, 3000 + Math.random() * 5000);
+  }
+  loop();
+})();
+
+/* ハンバーガー */
+(function() {
+  var navToggle = document.getElementById('navToggle');
+  var navMenu = document.getElementById('navMenu');
+  if (!navToggle || !navMenu) return;
+  navToggle.addEventListener('click', function() {
+    var willOpen = !navMenu.classList.contains('open');
+    navMenu.classList.toggle('open', willOpen);
+    navToggle.classList.toggle('open', willOpen);
+    if (window.innerWidth <= 768) { navMenu.style.display = willOpen ? 'flex' : 'none'; }
+    else { navMenu.style.display = ''; }
+  });
+  navMenu.querySelectorAll('a').forEach(function(link) {
+    link.addEventListener('click', function() {
+      navMenu.classList.remove('open');
+      navToggle.classList.remove('open');
+      if (window.innerWidth <= 768) { navMenu.style.display = 'none'; }
+      else { navMenu.style.display = ''; }
+    });
+  });
+})();
+
+/* Members スライダー */
+(function() {
+  var root = document.getElementById('memberSlider');
+  var track = document.getElementById('memberSliderTrack');
+  var dotsWrap = document.getElementById('memberSliderDots');
+  var prev = root && root.querySelector('.member-slider-prev');
+  var next = root && root.querySelector('.member-slider-next');
+  var reroll = document.getElementById('memberAnonymousReroll');
+  if (!root || !track || !dotsWrap || !prev || !next) return;
+  var slides = track.querySelectorAll('.member-card');
+  var n = slides.length;
+  var i = 0;
+  function goTo(idx) {
+    i = Math.max(0, Math.min(n - 1, idx));
+    track.style.transform = 'translateX(-' + (i * 100) + '%)';
+    prev.disabled = i === 0;
+    next.disabled = i === n - 1;
+    if (reroll) {
+      if (i === n - 1) {
+        next.setAttribute('hidden', '');
+        next.setAttribute('aria-hidden', 'true');
+        reroll.removeAttribute('hidden');
+        reroll.setAttribute('aria-hidden', 'false');
+      } else {
+        next.removeAttribute('hidden');
+        next.setAttribute('aria-hidden', 'false');
+        reroll.setAttribute('hidden', '');
+        reroll.setAttribute('aria-hidden', 'true');
+      }
+    }
+    dotsWrap.querySelectorAll('.member-slider-dot').forEach(function(d, j) {
+      d.setAttribute('aria-current', j === i ? 'true' : 'false');
+    });
+  }
+  for (var d = 0; d < n; d++) {
+    (function(index) {
+      var dot = document.createElement('button');
+      dot.type = 'button';
+      dot.className = 'member-slider-dot';
+      dot.setAttribute('aria-label', (index + 1) + '人目');
+      dot.addEventListener('click', function() { goTo(index); });
+      dotsWrap.appendChild(dot);
+    })(d);
+  }
+  prev.addEventListener('click', function() { goTo(i - 1); });
+  next.addEventListener('click', function() { goTo(i + 1); });
+  goTo(0);
+})();
+
+/* 無記名：リスト抽選・直前と異なる・グリッチ */
+(function() {
+  var NAMES = [
+    '影山 遥', '宮本 統真', '夜久 忍', '砂川 聖斗', '神代 也良',
+    '砂原 宮人', '時永 誠', '乙骨 右京', '阿藤 樹', '鯰江 アラン',
+    '黒田 晴夫', '安黒 王介', '内藤 慎一', '阿久津 徹', '時任 守',
+    '宍戸 剛', '星野 智', '淵上 駿', '安室 拓', '蓮見 龍一',
+    '福家 麗', '織田 英斗', '久留主 式', '面出 零二', '白河 潔',
+    '柳 安璃', '鳴海 響'
+  ];
+  var display = document.getElementById('memberAnonymousDisplay');
+  var btn = document.getElementById('memberAnonymousReroll');
+  if (!display || !btn) return;
+
+  var last = null;
+  var busy = false;
+
+  function flashGlobalGlitch() {
+    var el = document.getElementById('glitchFlash');
+    if (!el) return;
+    el.classList.remove('fire');
+    void el.offsetWidth;
+    el.classList.add('fire');
+  }
+
+  function playLocalGlitch() {
+    display.classList.remove('member-anonymous-glitch');
+    void display.offsetWidth;
+    display.classList.add('member-anonymous-glitch');
+  }
+
+  function pickNext() {
+    var pool = last == null ? NAMES.slice() : NAMES.filter(function(n) { return n !== last; });
+    return pool[Math.floor(Math.random() * pool.length)];
+  }
+
+  function roll() {
+    last = pickNext();
+    display.textContent = last;
+    playLocalGlitch();
+    flashGlobalGlitch();
+  }
+
+  display.addEventListener('animationend', function(e) {
+    if (e.animationName === 'member-anon-noise') {
+      display.classList.remove('member-anonymous-glitch');
+    }
+  });
+
+  roll();
+
+  btn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    if (busy) return;
+    busy = true;
+    btn.disabled = true;
+    roll();
+    setTimeout(function() {
+      busy = false;
+      btn.disabled = false;
+    }, 540);
+  });
+})();
+</script>
+</body>
+</html>

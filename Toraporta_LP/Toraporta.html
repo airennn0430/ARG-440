@@ -1129,7 +1129,7 @@ footer {
   </div>
   <p class="sec-desc fi">株式会社トラポルタでは、一緒に働くメンバーを募集中です。<br>現在募集中の求人は、下記よりご覧いただけます。</p>
   <div class="recruit-list fi">
-    <div class="recruit-item">
+    <div class="recruit-item" data-job="イベント制作プランナー" style="cursor:pointer;">
       <div>
         <h3 class="recruit-name">イベント制作プランナー</h3>
         <div class="recruit-tags">
@@ -1141,7 +1141,7 @@ footer {
       </div>
       <span class="recruit-arrow">→</span>
     </div>
-    <div class="recruit-item">
+    <div class="recruit-item" data-job="配信番組プロデューサー" style="cursor:pointer;">
       <div>
         <h3 class="recruit-name">配信番組プロデューサー</h3>
         <div class="recruit-tags">
@@ -1152,7 +1152,7 @@ footer {
       </div>
       <span class="recruit-arrow">→</span>
     </div>
-    <div class="recruit-item">
+    <div class="recruit-item" data-job="デジタルアクティベーション・プロデューサー" style="cursor:pointer;">
       <div>
         <h3 class="recruit-name">デジタルアクティベーション・プロデューサー</h3>
         <div class="recruit-tags">
@@ -1428,6 +1428,26 @@ function closeMenu() {
     link.addEventListener('click', closeMenu);
   });
 })();
+
+/* ── Recruit → Contact 連動 ── */
+document.querySelectorAll('.recruit-item[data-job]').forEach(function(item) {
+  item.addEventListener('click', function() {
+    var jobName = this.dataset.job;
+    var contactType = document.getElementById('contactType');
+    var message = document.getElementById('contactMessage');
+    for (var i = 0; i < contactType.options.length; i++) {
+      if (contactType.options[i].text === '採用に関するお問い合わせ') {
+        contactType.selectedIndex = i;
+        break;
+      }
+    }
+    if (message) {
+      message.value = '【' + jobName + '】について問い合わせいたします。\n';
+      message.focus();
+    }
+    document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+  });
+});
 
 /* ▼ 隠しページのトリガーワード（EDIT） */
 const TRIGGER_NAMES = ['獅子王千暁', '獅子王 千暁', 'ししおうちあき', 'シシオウチアキ', '獅子王', 'ししおう', 'シシオウ'];
