@@ -896,18 +896,13 @@ footer {
   .hero-scroll { left: 24px; bottom: 28px; }
 
   /* SECTION共通 */
-  section { padding: 64px 0; }
+  section { padding: 64px 24px; border-left: none; border-right: none; }
   .sec-num { font-size: 44px; }
   .sec-title { font-size: 30px; }
   .sec-hd { margin-bottom: 40px; }
   /* Hero 以外：全コンテンツ塊を同一カラムで中央配置 */
-  section:not(#top) {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
   section:not(#top) > * {
-    width: min(calc(100% - 48px), 560px);
+    max-width: 560px;
     margin-left: auto;
     margin-right: auto;
     box-sizing: border-box;
@@ -953,8 +948,8 @@ footer {
     gap: 8px;
     text-align: center;
     padding: 28px 24px;
-    width: min(calc(100% - 48px), 560px);
-    max-width: none;
+    width: 100%;
+    max-width: 560px;
     margin-left: auto;
     margin-right: auto;
     box-sizing: border-box;
