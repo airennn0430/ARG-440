@@ -85,23 +85,6 @@ body::after {
   pointer-events: none;
 }
 
-/* ── グリッチフラッシュ ── */
-#glitchFlash {
-  position: fixed;
-  inset: 0;
-  z-index: 9997;
-  pointer-events: none;
-  opacity: 0;
-}
-#glitchFlash.fire {
-  animation: flashAnim .12s steps(2) forwards;
-}
-@keyframes flashAnim {
-  0%   { opacity: .12; background: var(--accent); }
-  50%  { opacity: .04; background: #ffdd00; }
-  100% { opacity: 0; }
-}
-
 /* ── NAV ── */
 nav {
   position: fixed;
@@ -367,6 +350,7 @@ section { padding: 112px 140px; border-top: 1px solid var(--border); }
 .about-lead { max-width: 680px; margin-bottom: 72px; }
 .about-lead p { margin-bottom: 16px; }
 .about-tagline { font-size: 22px !important; font-weight: 700 !important; color: var(--black) !important; letter-spacing: .04em; }
+#about > .talent-dossier { margin-bottom: 80px; }
 
 /* MVV */
 .mvv-stack {
@@ -382,6 +366,28 @@ section { padding: 112px 140px; border-top: 1px solid var(--border); }
 .mvv-title { font-family: 'Bebas Neue', cursive; font-size: 22px; letter-spacing: .08em; margin-bottom: 16px; }
 
 /* Value */
+.value-grid-list-outer {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.value-arrow {
+  display: none;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--border);
+  background: var(--white);
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--gray);
+  align-items: center;
+  justify-content: center;
+  transition: all .25s;
+  z-index: 2;
+}
+.value-arrow:hover { border-color: var(--accent); color: var(--accent); }
+.value-grid-list-wrap { flex: 1; min-width: 0; }
 .value-grid-wrap { margin-bottom: 80px; }
 .value-grid-list {
   display: grid;
@@ -419,6 +425,9 @@ section { padding: 112px 140px; border-top: 1px solid var(--border); }
   line-height: 1.5;
   margin-bottom: 18px;
 }
+.slider-dots { display: flex; gap: 6px; margin-top: 20px; justify-content: center; }
+.slider-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border); cursor: pointer; transition: background .25s; }
+.slider-dot.active { background: var(--accent); }
 
 /* Members */
 .member-hd { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; }
@@ -849,32 +858,111 @@ footer {
 .nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
 @media (max-width: 768px) {
+  /* NAV */
   nav { padding: 0 20px; }
   .nav-toggle { display: flex; }
-  nav ul { display: none; position: fixed; inset: 64px 0 0; background: var(--white); flex-direction: column; align-items: center; justify-content: flex-start; padding: 40px 24px 32px; gap: 28px; z-index: 9999; overflow-y: auto; min-height: calc(100vh - 64px); }
+  nav ul {
+    display: none;
+    position: fixed;
+    inset: 64px 0 0;
+    background: var(--white);
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 40px 24px 32px;
+    gap: 28px;
+    z-index: 9999;
+    overflow-y: auto;
+    min-height: calc(100vh - 64px);
+  }
   nav ul.open { display: flex; }
-  #top { min-height: auto; }
-  .hero-left { padding: 100px 24px 72px; min-height: 100svh; }
+  nav ul li a {
+    font-size: 13px;
+    letter-spacing: .22em;
+  }
+
+  /* HERO */
+  #top { grid-template-columns: 1fr; min-height: auto; }
+  .hero-right { display: none; }
+  .hero-left {
+    padding: 100px 24px 72px;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
   .hero-title { font-size: clamp(32px, 9vw, 52px); }
   .hero-desc { font-size: 13px; max-width: 100%; }
   .hero-scroll { left: 24px; bottom: 28px; }
-  section { padding: 64px 24px; }
+
+  /* SECTION共通 */
+  section { padding: 64px 0; }
   .sec-num { font-size: 44px; }
   .sec-title { font-size: 30px; }
   .sec-hd { margin-bottom: 40px; }
+  /* Hero 以外：全コンテンツ塊を同一カラムで中央配置 */
+  section:not(#top) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  section:not(#top) > * {
+    width: min(calc(100% - 48px), 560px);
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+  }
+  /* About の局所 36px ずれをモバイルでは無効化 */
+  #about .member-hd[style],
+  #about .value-grid-wrap > div[style] {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+  #about .member-slider {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  /* WORKS */
+  .work-item { flex: 0 0 calc(100% - 1px); flex-direction: row; align-items: flex-start; }
   .work-num { display: none; }
-  .value-grid-list { grid-template-columns: 1fr; }
+  .work-poster { width: 120px; flex-shrink: 0; aspect-ratio: 3 / 4; margin: 16px 0 16px 16px; }
+  .work-body { padding: 16px; }
+  .work-item .work-tag { display: none; }
+
+  /* ABOUT */
+  .value-grid-list-wrap { overflow: hidden; }
+  .value-grid-list {
+    display: flex;
+    flex-wrap: nowrap;
+    will-change: transform;
+  }
+  .value-item { flex: 0 0 100%; min-width: 0; }
+  .value-arrow { display: flex; }
+
+  /* RECRUIT */
+  .recruit-item { padding: 22px 24px; }
+
+  /* CONTACT */
   .contact-inner { grid-template-columns: 1fr; gap: 36px; }
   .contact-lead-title { font-size: 28px; }
-  .recruit-item { padding: 22px 24px; }
-  footer { flex-direction: column; gap: 8px; text-align: center; padding: 28px 24px; }
+
+  /* FOOTER（本文カラムと同一の中心軸） */
+  footer {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+    padding: 28px 24px;
+    width: min(calc(100% - 48px), 560px);
+    max-width: none;
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+  }
 }
 </style>
 </head>
 <body>
-
-<!-- グリッチフラッシュ -->
-<div id="glitchFlash"></div>
 
 <!-- ═══ NAV ═══ -->
 <nav>
@@ -899,8 +987,8 @@ footer {
       <span class="glitch-text" data-text="正しさは">正しさは</span><br>
       <span class="glitch-text" data-text="現実にとっての悪だ">現実にとっての悪だ</span>
     </h1>
-    <p class="hero-desc">あらゆる"嘘"は、この世にとって不要な悪しきもの。<br>
-      憎むべきものである。</p>
+    <p class="hero-desc">あらゆる"嘘"は、この世にとって不要な悪しきもの。</p>
+    <p class="hero-desc">憎むべきものである。</p>
     <p class="hero-scroll">Scroll to explore</p>
   </div>
 </section>
@@ -921,7 +1009,23 @@ footer {
     <div class="talent-dossier-divider" aria-hidden="true"></div>
     <p class="talent-dossier-body">彼の才能の核は、嘘―――虚偽、方便、建前、フィクション、演出。<br>
       あらゆる<strong>現実ではないもの</strong>。<br>
-      そして、それらを使って人を動かす力にある。</p>
+      そして、それらを使って人を動かす力にある。</p><br>
+    <p class="talent-dossier-body">彼がもっとも正確に見抜くのは、その本人すら気づいていない眠ったままの可能性。<br>
+      彼が"欲しい"と思ったものを育て、肥えさせる。<br>
+      ただし、本人にそれと悟らせない方法で。<br>
+      偶然を装った出会い。意図を隠した助言。断れない形で差し出される機会。<br>
+      みな自分の意思で道を選んだと信じたまま、気付かぬうちに彼に敷かれたレールに乗せられる。<br>
+      操作であり支配。手のひらの上。あるいはそう、人生そのもののディレクション。</p>
+    <p class="talent-dossier-body">彼が「超高校級のディレクター」と呼ばれた所以はその点に尽きる。</p><br>
+    <p class="talent-dossier-body">良い人生を望まない人間などいない。当然である。<br>
+      自分の行動は自分の意志で決める。これも当然である。</p>
+      <br>
+    <p class="talent-dossier-body">だから、彼に騙されるのは当然なのだと。愉快そうに彼は笑う。<br>
+      より良い選択肢をぶら下げてやるだけで、勝手にカモは飛びつく。<br>
+      自分では選ばなかった道を選び、まんまと自分の居場所を見つけている。<br>
+      誰も頼んでいない。誰も気づいていない。<br>
+      感謝されることもなければ、恨まれることもない。</p>
+    <p class="talent-dossier-body"><strong>それが彼の嘘の正体である。</strong></p>
   </article>
 </section>
 
@@ -977,54 +1081,54 @@ footer {
       <h3 class="sec-label">Who I am</h3>
     </div>
   </div>
+
   <div class="about-lead fi">
-    <h3 class="about-tagline">ここに獅子王のタグラインが入ります。</h3>
-    <p>ここに獅子王の独白・告白テキストが入ります。プレースホルダー。</p>
+    <h3 class="about-tagline">「獅子王千暁」の全ては、嘘で出来ている。</h3>
   </div>
 
-  <div class="mvv-stack fi">
-    <div class="mvv-item">
-      <h3 class="mvv-label">Confession</h3>
-      <h4 class="mvv-title">プレースホルダー</h4>
-      <p class="mvv-body">ここに独白テキストが入ります。</p>
-    </div>
-    <div class="mvv-item">
-      <h3 class="mvv-label">Truth</h3>
-      <h4 class="mvv-title">プレースホルダー</h4>
-      <p class="mvv-body">ここに独白テキストが入ります。</p>
-    </div>
-  </div>
+  <article class="talent-dossier fi">
+    <p class="talent-dossier-body">名前、性格、ふとした瞬間に唇を噛み締める癖のひとつさえ。<br>なにを取っても嘘だらけ、聞き出したところで出てくるのはその場で捻ったストーリー。<br>真っ赤な嘘である。<br>この生き物のなにかを知ったとて、彼が「そうだよ」と認めただけで、それもまた新たな嘘と成り果てる。</p>
+    <p class="talent-dossier-body" style="margin-top:24px; font-weight:700;">暴かれるべき真実はここに無い。</p>
+    <p class="talent-dossier-body" style="margin-top:24px;">彼が生み出す虚構は、価値あるものは何も残さず、ただ誰かのどこかに刺さって残される。<br>それが嘘。エンターテインメントという虚構。<br>もっと嘘らしく表現するならば、他人の人生に軽率に踏み入る<ruby>害悪<rp>(</rp><rt>おひとよし</rt><rp>)</rp></ruby>である。</p>
+  </article>
 
   <div class="value-grid-wrap fi">
     <div style="padding: 0 36px; margin-bottom:28px;">
-      <h3 class="mvv-label">Value</h3>
+      <h3 class="mvv-label">Lie</h3>
     </div>
-    <div class="value-grid-list">
+    <div class="value-grid-list-outer">
+    <button class="value-arrow value-arrow-prev" id="valuePrev2" aria-label="前の項目">←</button>
+    <div class="value-grid-list-wrap">
+    <div class="value-grid-list" id="valueGridList">
       <div class="value-item">
         <div class="value-num-name">
           <span class="value-num">01</span>
-          <h4 class="value-name">PLACEHOLDER</h4>
+          <h4 class="value-name">PERSONA</h4>
         </div>
-        <p class="value-sub">プレースホルダー</p>
-        <p class="value-body">ここに獅子王視点のテキストが入ります。</p>
+        <p class="value-sub">人格</p>
+        <p class="value-body">「千の顔を持つ男」とは言い得て妙。<br>より多くの人間の人生に入り込み、欲しいままに支配するために、場面やコミュニティ、そしてあなたのために異なる人格を構築し、そのすべてに全力を注ぐ。<br>どの顔が本物なのかという問いに意味はない。すべてがあなたにとって本物であり、すべてがあなたのための嘘なのである。あなたの知らない名前に、あなたにとっての意味は無い。</p>
       </div>
       <div class="value-item">
         <div class="value-num-name">
           <span class="value-num">02</span>
-          <h4 class="value-name">PLACEHOLDER</h4>
+          <h4 class="value-name">DIRECTION</h4>
         </div>
-        <p class="value-sub">プレースホルダー</p>
-        <p class="value-body">ここに獅子王視点のテキストが入ります。</p>
+        <p class="value-sub">演出</p>
+        <p class="value-body">言うこと為すこと、果ては歩数のひとつまで。<br>獅子王千暁の嘘は、相手を意のままに動かすための演出である。<br>相手が何を求め、何を信じたがっているかを読み取り、最適な言葉と表情で差し出す。<br>ステージの上でも、画面の向こうでも、コロシアイの場でも変わらない。</p>
       </div>
       <div class="value-item">
         <div class="value-num-name">
           <span class="value-num">03</span>
-          <h4 class="value-name">PLACEHOLDER</h4>
+          <h4 class="value-name">EVIL</h4>
         </div>
-        <p class="value-sub">プレースホルダー</p>
-        <p class="value-body">ここに獅子王視点のテキストが入ります。</p>
+        <p class="value-sub">悪</p>
+        <p class="value-body">"全人類を笑顔にしたい"と、彼は言う。<br>しかし、己の口から語られるものは全てが嘘だと彼は認める。<br>人は真実に生きるもの。それに反する嘘など、真っ当な人生においてあってはならない。<br>無くてもいい無駄をこの世に生み出し続ける彼は、まさしく現実にとっての悪である。</p>
       </div>
     </div>
+    </div>
+    <button class="value-arrow value-arrow-next" id="valueNext2" aria-label="次の項目">→</button>
+    </div>
+    <div class="slider-dots" id="valueDots2" style="margin-top:16px;"></div>
   </div>
 
   <div class="fi">
@@ -1163,20 +1267,6 @@ var io = new IntersectionObserver(function(entries) {
 }, { threshold: 0.08 });
 document.querySelectorAll('.fi').forEach(function(el) { io.observe(el); });
 
-/* グリッチフラッシュ */
-(function() {
-  function fire() {
-    var el = document.getElementById('glitchFlash');
-    el.classList.remove('fire');
-    void el.offsetWidth;
-    el.classList.add('fire');
-  }
-  function loop() {
-    setTimeout(function() { fire(); loop(); }, 3000 + Math.random() * 5000);
-  }
-  loop();
-})();
-
 /* ハンバーガー */
 (function() {
   var navToggle = document.getElementById('navToggle');
@@ -1197,6 +1287,87 @@ document.querySelectorAll('.fi').forEach(function(el) { io.observe(el); });
       else { navMenu.style.display = ''; }
     });
   });
+})();
+
+/* Value スマホスライダー */
+(function() {
+  var list = document.getElementById('valueGridList');
+  var dots = document.getElementById('valueDots2');
+  var prev = document.getElementById('valuePrev2');
+  var next = document.getElementById('valueNext2');
+  if (!list || !dots || !prev || !next) return;
+
+  var items = Array.prototype.slice.call(list.children);
+  var total = items.length;
+  var cur = 0;
+  var touchStartX = 0;
+  var enabled = false;
+  var touchBound = false;
+
+  function isMobile() { return window.innerWidth <= 768; }
+  function clamp(i) { return Math.max(0, Math.min(i, total - 1)); }
+
+  function buildDots() {
+    dots.innerHTML = '';
+    items.forEach(function(_, idx) {
+      var d = document.createElement('span');
+      d.className = 'slider-dot' + (idx === cur ? ' active' : '');
+      d.addEventListener('click', function() { goTo(idx); });
+      dots.appendChild(d);
+    });
+  }
+
+  function syncDots() {
+    dots.querySelectorAll('.slider-dot').forEach(function(d, i) {
+      d.classList.toggle('active', i === cur);
+    });
+  }
+
+  function goTo(idx) {
+    cur = clamp(idx);
+    list.style.transform = 'translateX(-' + (100 * cur) + '%)';
+    syncDots();
+  }
+
+  function onTouchStart(e) { touchStartX = e.touches[0].clientX; }
+  function onTouchEnd(e) {
+    var diff = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) <= 40) return;
+    goTo(diff > 0 ? (cur + 1) % total : (cur - 1 + total) % total);
+  }
+
+  function enable() {
+    if (!enabled) {
+      list.style.transition = 'transform .45s cubic-bezier(.22,1,.36,1)';
+      if (!touchBound) {
+        list.addEventListener('touchstart', onTouchStart, { passive: true });
+        list.addEventListener('touchend', onTouchEnd, { passive: true });
+        touchBound = true;
+      }
+      buildDots();
+      goTo(cur);
+      enabled = true;
+    } else {
+      goTo(cur);
+    }
+    dots.style.display = 'flex';
+  }
+
+  function disable() {
+    if (!enabled) return;
+    list.style.transform = '';
+    list.style.transition = '';
+    dots.style.display = 'none';
+    dots.innerHTML = '';
+    enabled = false;
+  }
+
+  prev.addEventListener('click', function() { if (isMobile()) goTo((cur - 1 + total) % total); });
+  next.addEventListener('click', function() { if (isMobile()) goTo((cur + 1) % total); });
+
+  function check() { isMobile() ? enable() : disable(); }
+  window.addEventListener('resize', check);
+  check();
 })();
 
 /* Members スライダー */
@@ -1303,14 +1474,6 @@ document.querySelectorAll('.fi').forEach(function(el) { io.observe(el); });
     });
   }
 
-  function flashGlobalGlitch() {
-    var el = document.getElementById('glitchFlash');
-    if (!el) return;
-    el.classList.remove('fire');
-    void el.offsetWidth;
-    el.classList.add('fire');
-  }
-
   function playLocalGlitch() {
     display.classList.remove('member-anonymous-glitch');
     void display.offsetWidth;
@@ -1326,7 +1489,6 @@ document.querySelectorAll('.fi').forEach(function(el) { io.observe(el); });
     last = pickNext();
     display.textContent = last;
     playLocalGlitch();
-    flashGlobalGlitch();
   }
 
   display.addEventListener('animationend', function(e) {
