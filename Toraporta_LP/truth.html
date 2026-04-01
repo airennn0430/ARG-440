@@ -30,7 +30,7 @@
 
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 h1, h2, h3, h4 { font-size: inherit; font-weight: inherit; line-height: inherit; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
 body {
   background: var(--white);
   color: var(--black);
@@ -663,6 +663,7 @@ section { padding: 112px 140px; border-top: 1px solid var(--border); }
   line-height: 1.5;
   color: #000;
   padding-top: 2px;
+  white-space: pre-line;
 }
 .win95-member-alert-actions {
   display: flex;
@@ -702,17 +703,46 @@ section { padding: 112px 140px; border-top: 1px solid var(--border); }
 .recruit-item:hover { background: var(--surface); }
 .recruit-name { font-size: 14px; font-weight: 700; margin-bottom: 10px; }
 .recruit-tags { display: flex; flex-wrap: wrap; gap: 6px; }
-.recruit-arrow {
-  width: 36px; height: 36px;
-  border: 1px solid var(--border);
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 14px;
-  color: var(--gray);
-  flex-shrink: 0;
-  transition: all .25s;
+button.recruit-apply-btn {
+  margin: 0;
+  font: inherit;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
 }
-.recruit-item:hover .recruit-arrow { border-color: var(--accent); color: var(--accent); }
+.recruit-apply-btn {
+  flex-shrink: 0;
+  align-self: center;
+  padding: 11px 24px;
+  border: 2px solid var(--accent);
+  border-radius: 2px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1.3;
+  color: var(--black);
+  background: var(--accent);
+  white-space: nowrap;
+  box-shadow: 0 0 0 1px rgba(41, 174, 134, 0.35);
+  transition: background .2s, border-color .2s, box-shadow .2s;
+}
+.recruit-apply-btn:hover,
+.recruit-item:hover .recruit-apply-btn {
+  background: #3bc49a;
+  border-color: #3bc49a;
+  box-shadow: 0 0 0 1px rgba(59, 196, 154, 0.45), 0 4px 14px rgba(41, 174, 134, 0.25);
+}
+.recruit-apply-btn:focus-visible {
+  outline: 2px solid var(--accent2);
+  outline-offset: 3px;
+}
+@media (max-width: 600px) {
+  .recruit-item { flex-direction: column; align-items: stretch; gap: 20px; }
+  .recruit-apply-btn { align-self: flex-end; }
+}
 
 /* ── CONTACT ── */
 .contact-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
@@ -898,7 +928,7 @@ footer {
   /* SECTION共通 */
   section { padding: 64px 24px; border-left: none; border-right: none; }
   .sec-num { font-size: 44px; }
-  .sec-title { font-size: 30px; }
+  .sec-title { font-size: 30px; overflow: hidden; }
   .sec-hd { margin-bottom: 40px; }
   /* Hero 以外：全コンテンツ塊を同一カラムで中央配置 */
   section:not(#top) > * {
@@ -1101,7 +1131,7 @@ footer {
           <h4 class="value-name">PERSONA</h4>
         </div>
         <p class="value-sub">人格</p>
-        <p class="value-body">「千の顔を持つ男」とは言い得て妙。<br>より多くの人間の人生に入り込み、欲しいままに支配するために、場面やコミュニティ、そしてあなたのために異なる人格を構築し、そのすべてに全力を注ぐ。<br>どの顔が本物なのかという問いに意味はない。すべてがあなたにとって本物であり、すべてがあなたのための嘘なのである。あなたの知らない名前に、あなたにとっての意味は無い。</p>
+        <p class="value-body"><span class="glitch-text" data-text="千の顔を持つ男">千の顔を持つ男</span>とは言い得て妙。<br>より多くの人間の人生に入り込み、欲しいままに支配するために、場面やコミュニティ、そしてあなたのために異なる人格を構築し、そのすべてに全力を注ぐ。<br>どの顔が本物なのかという問いに意味はない。すべてがあなたにとって本物であり、すべてがあなたのための嘘だ。あなたの知らない名前に、あなたにとっての意味は無い。</p>
       </div>
       <div class="value-item">
         <div class="value-num-name">
@@ -1200,6 +1230,42 @@ footer {
   </div>
 </div>
 
+<div id="recruitApplyClassicAlert" class="win95-member-alert-overlay" hidden aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="recruitApplyClassicAlertTitle">
+  <div class="win95-member-alert-window">
+    <div class="win95-member-alert-titlebar" id="recruitApplyClassicAlertTitle"></div>
+    <div class="win95-member-alert-body">
+      <div class="win95-member-alert-icon" aria-hidden="true">
+        <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="16,3 30,28 2,28" fill="#ffcc00" stroke="#000" stroke-width="1"/>
+          <text x="16" y="25" text-anchor="middle" font-size="17" font-weight="700" font-family="Arial Black, sans-serif" fill="#000">!</text>
+        </svg>
+      </div>
+      <p class="win95-member-alert-msg" id="recruitApplyClassicAlertMsg"></p>
+    </div>
+    <div class="win95-member-alert-actions">
+      <button type="button" class="win95-member-alert-ok" id="recruitApplyClassicAlertOk">OK</button>
+    </div>
+  </div>
+</div>
+
+<div id="recruitApplyFourthAlert" class="win95-member-alert-overlay" hidden aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="recruitApplyFourthAlertTitle">
+  <div class="win95-member-alert-window">
+    <div class="win95-member-alert-titlebar" id="recruitApplyFourthAlertTitle">ごめんね</div>
+    <div class="win95-member-alert-body">
+      <div class="win95-member-alert-icon" aria-hidden="true">
+        <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="16,3 30,28 2,28" fill="#ffcc00" stroke="#000" stroke-width="1"/>
+          <text x="16" y="25" text-anchor="middle" font-size="17" font-weight="700" font-family="Arial Black, sans-serif" fill="#000">!</text>
+        </svg>
+      </div>
+      <p class="win95-member-alert-msg" id="recruitApplyFourthAlertMsg">実はもう応募は締め切っちゃったんだ<br>素敵な人が見つかったからね</p>
+    </div>
+    <div class="win95-member-alert-actions">
+      <button type="button" class="win95-member-alert-ok" id="recruitApplyFourthAlertOk">OK</button>
+    </div>
+  </div>
+</div>
+
 <!-- ═══ RECRUIT ═══ -->
 <section id="recruit">
   <div class="sec-hd fi">
@@ -1209,21 +1275,44 @@ footer {
       <h3 class="sec-label">What I seek</h3>
     </div>
   </div>
-  <p class="sec-desc fi">プレースホルダー説明文。</p>
   <div class="recruit-list fi">
     <div class="recruit-item">
       <div>
-        <h3 class="recruit-name">プレースホルダー</h3>
-        <div class="recruit-tags"><span class="work-tag">Tag</span></div>
+        <h3 class="recruit-name">諦めが悪いひと</h3>
+        <p style="margin-top:14px; font-size:14px; color:var(--prose-color); line-height:1.85;">
+          不条理でも、不都合でも、自分の欲を手放さない人間は面白い。<br>
+          そういう不器用な人間は、騙しがいがある。<br>
+          叶ったものにありつけた瞬間の顔を、██も欲しいと思う。
+        </p>
       </div>
-      <span class="recruit-arrow">→</span>
+      <button type="button" class="recruit-apply-btn" aria-label="諦めが悪いひと — 応募する"
+        data-win-title="そんなにオレのこと気になる？"
+        data-win-msg="ここまで来るんだからきっと本当にきみは諦めが悪いンだろうね。&#10;きみとはどこかで会える気がするよ。">応募する</button>
     </div>
     <div class="recruit-item">
       <div>
-        <h3 class="recruit-name">プレースホルダー</h3>
-        <div class="recruit-tags"><span class="work-tag">Tag</span></div>
+        <h3 class="recruit-name">驚かせてくれるひと</h3>
+        <p style="margin-top:14px; font-size:14px; color:var(--prose-color); line-height:1.85;">
+          こちらが用意した筋書きを、セオリーというものを平気で踏み越えてくる人間。<br>
+          常套から外れていることを分かりながら、まっすぐに狙いを定めている犭のようなひと。
+        </p>
       </div>
-      <span class="recruit-arrow">→</span>
+      <button type="button" class="recruit-apply-btn" aria-label="驚かせてくれるひと — 応募する"
+        data-win-title="オレの動線に従ってどうするのさ"
+        data-win-msg="このメッセージが見えてるってことはオレの想定内じゃない？">応募する</button>
+    </div>
+    <div class="recruit-item">
+      <div>
+        <h3 class="recruit-name">うそつき</h3>
+        <p style="margin-top:14px; font-size:14px; color:var(--prose-color); line-height:1.85;">
+          いつかはバレてしまうもの。<br>
+          誰に問うても「いけないこと」とされる悪いこと。<br>
+          それでも使わざるを得ないと決めた人間のいじらしさときたら。
+        </p>
+      </div>
+      <button type="button" class="recruit-apply-btn" aria-label="うそつき — 応募する"
+        data-win-title="正直者だね"
+        data-win-msg="馬鹿正直にこんなボタン押すきみは正直者だと思うよ">応募する</button>
     </div>
   </div>
 </section>
@@ -1508,6 +1597,94 @@ document.querySelectorAll('.fi').forEach(function(el) { io.observe(el); });
       busy = false;
       btn.disabled = false;
     }, 540);
+  });
+})();
+
+/* Recruit：応募ボタン — data-win-title / data-win-msg で求人別ダイアログ。合計4回目を閉じた直後に追加ダイアログ */
+(function() {
+  var overlay = document.getElementById('recruitApplyClassicAlert');
+  var okBtn = document.getElementById('recruitApplyClassicAlertOk');
+  var titleEl = document.getElementById('recruitApplyClassicAlertTitle');
+  var msgEl = document.getElementById('recruitApplyClassicAlertMsg');
+  var fourth = document.getElementById('recruitApplyFourthAlert');
+  var fourthOk = document.getElementById('recruitApplyFourthAlertOk');
+  var applyBtns = document.querySelectorAll('.recruit-apply-btn');
+  if (!overlay || !okBtn || !titleEl || !msgEl || !fourth || !fourthOk || !applyBtns.length) return;
+
+  var lastTrigger = null;
+  var applyClickTotal = 0;
+  var pendingFourthAfterClose = false;
+
+  function showFourth() {
+    fourth.removeAttribute('hidden');
+    fourth.setAttribute('aria-hidden', 'false');
+    fourthOk.focus();
+  }
+
+  function hideFourth() {
+    fourth.setAttribute('hidden', '');
+    fourth.setAttribute('aria-hidden', 'true');
+    var t = lastTrigger;
+    lastTrigger = null;
+    if (t && typeof t.focus === 'function') {
+      t.focus();
+    }
+  }
+
+  function show(fromEl) {
+    lastTrigger = fromEl;
+    applyClickTotal += 1;
+    if (applyClickTotal === 4) {
+      pendingFourthAfterClose = true;
+    }
+    var t = fromEl.getAttribute('data-win-title') || 'ご案内';
+    var m = fromEl.getAttribute('data-win-msg') || '';
+    titleEl.textContent = t;
+    msgEl.textContent = m;
+    overlay.removeAttribute('hidden');
+    overlay.setAttribute('aria-hidden', 'false');
+    okBtn.focus();
+  }
+
+  function hide() {
+    var chainFourth = pendingFourthAfterClose;
+    pendingFourthAfterClose = false;
+    overlay.setAttribute('hidden', '');
+    overlay.setAttribute('aria-hidden', 'true');
+    if (chainFourth) {
+      showFourth();
+      return;
+    }
+    var t = lastTrigger;
+    lastTrigger = null;
+    if (t && typeof t.focus === 'function') {
+      t.focus();
+    }
+  }
+
+  applyBtns.forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      show(btn);
+    });
+  });
+
+  okBtn.addEventListener('click', hide);
+
+  overlay.addEventListener('keydown', function(ev) {
+    if (ev.key === 'Escape') {
+      ev.preventDefault();
+      hide();
+    }
+  });
+
+  fourthOk.addEventListener('click', hideFourth);
+
+  fourth.addEventListener('keydown', function(ev) {
+    if (ev.key === 'Escape') {
+      ev.preventDefault();
+      hideFourth();
+    }
   });
 })();
 </script>
