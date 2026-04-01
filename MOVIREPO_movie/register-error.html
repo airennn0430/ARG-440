@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>エラー | ムビレポ</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap');
+:root {
+  --bg: #4a3833;
+  --bg-deep: #362823;
+  --text: #f5ead6;
+  --text-muted: #b8a08a;
+  --main: #e8b96e;
+  --border: rgba(245, 234, 214, 0.12);
+  --radius-lg: 12px;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: linear-gradient(180deg, var(--bg-deep) 0%, var(--bg) 100%);
+  color: var(--text);
+  font-family: 'Noto Sans JP', sans-serif;
+  line-height: 1.75;
+}
+.error-card {
+  width: 100%;
+  max-width: 420px;
+  padding: 40px 32px;
+  text-align: center;
+  background: rgba(67, 51, 46, 0.95);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 20px 48px rgba(30, 18, 12, 0.45);
+}
+.error-card h1 {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  margin-bottom: 16px;
+  color: var(--main);
+}
+.error-card p {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 28px;
+}
+.error-card a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 28px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--bg-deep);
+  background: var(--main);
+  border-radius: 6px;
+  text-decoration: none;
+  transition: filter 0.2s;
+}
+.error-card a:hover {
+  filter: brightness(1.06);
+}
+</style>
+</head>
+<body>
+  <main class="error-card" role="alert">
+    <h1>エラーが発生しました</h1>
+    <p>有料会員の登録処理を完了できませんでした。しばらく時間をおいて再度お試しください。</p>
+    <a href="index.html">作品ページに戻る</a>
+  </main>
+</body>
+</html>
