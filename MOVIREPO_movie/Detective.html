@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ネクロゲーム | ムビレポ</title>
+<title>名探偵のメモリー・パレスへようこそ | ムビレポ</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=DM+Serif+Display&family=Outfit:wght@400;500;600;700&display=swap');
 
@@ -692,7 +692,7 @@ button { font-family: inherit; }
 }
 .dist-row {
   display: grid;
-  grid-template-columns: 24px 1fr minmax(40px, max-content);
+  grid-template-columns: 24px 1fr 28px;
   align-items: center;
   gap: 8px;
 }
@@ -888,12 +888,12 @@ button { font-family: inherit; }
 </header>
 
 <!-- ═══ FILM HERO ═══ -->
-<section class="film-hero" aria-label="舞台作品情報">
+<section class="film-hero" aria-label="作品情報">
   <div class="film-hero-inner">
 
     <!-- Poster -->
     <figure class="film-poster fi">
-      <img src="" alt="ネクロゲーム"
+      <img src="Detective.webp" alt="名探偵のメモリー・パレスへようこそ ポスター"
         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
       <div class="poster-placeholder" style="display:none;">
         <svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
@@ -909,39 +909,37 @@ button { font-family: inherit; }
     <div class="film-info">
 
       <div class="film-genres fi">
-        <span class="genre-tag">ミステリ・サスペンス</span>
-        <span class="genre-tag">イマーシブシアター</span>
+        <span class="genre-tag">ミステリ</span>
+        <span class="genre-tag">体験型イベント</span>
       </div>
 
-      <h1 class="film-title-ja fi">ネクロゲーム</h1>
-      <p class="film-title-orig fi">Necro Game — イマーシブシアター</p>
+      <h1 class="film-title-ja fi">名探偵のメモリー・パレスへようこそ</h1>
 
       <div class="film-specs fi">
         <span>
           <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
             <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
           </svg>
-          2025年8月15日〜9月7日
+          体験型イベント
         </span>
         <span>
           <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
             <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
           </svg>
-          180分
+          約120分
         </span>
         <span>
           <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-            <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/>
-            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
           </svg>
-          舞台／イマーシブシアター
+          開催期間：3/18〜4/12
         </span>
       </div>
 
       <!-- Rating -->
       <div class="film-rating-block fi" aria-label="ユーザー評価">
         <div class="rating-score">
-          4.3<sub>/5</sub>
+          4.5<sub>/5</sub>
         </div>
         <div>
           <div class="rating-stars" aria-hidden="true">
@@ -951,27 +949,27 @@ button { font-family: inherit; }
             <span class="star-full">★</span>
             <span class="star-half">★</span>
           </div>
-          <p class="rating-count">3762件のレビュー</p>
+          <p class="rating-count">1,887件のレビュー</p>
         </div>
       </div>
 
       <!-- Credits -->
       <dl class="film-credits fi">
         <div class="credit-item">
-          <dt class="credit-label">演出・脚本</dt>
+          <dt class="credit-label">ディレクター</dt>
           <dd class="credit-value">獅子王千暁</dd>
         </div>
         <div class="credit-item">
-          <dt class="credit-label">原作</dt>
-          <dd class="credit-value">ゲーム『ネクロゲーム』</dd>
+          <dt class="credit-label">脚本</dt>
+          <dd class="credit-value">茂部 むいみ</dd>
+        </div>
+        <div class="credit-item">
+          <dt class="credit-label">会場</dt>
+          <dd class="credit-value">〇〇ビル</dd>
         </div>
         <div class="credit-item">
           <dt class="credit-label">制作</dt>
           <dd class="credit-value">株式会社トラポルタ</dd>
-        </div>
-        <div class="credit-item">
-          <dt class="credit-label">会場</dt>
-          <dd class="credit-value">品川プリンセスホール</dd>
         </div>
       </dl>
 
@@ -989,7 +987,7 @@ button { font-family: inherit; }
     <section class="synopsis-section fi" aria-label="あらすじ">
       <h2 class="sec-heading">あらすじ</h2>
       <p class="synopsis-text">
-        人気ゲーム「ネクロゲーム」を原作としたイマーシブシアター作品。目を覚ますと、見知らぬ空間に大勢の人間が集められていた。告げられたのはただ一つのルール。「最後の一人になるまで、ゲームは終わらない」。参加者たちは極限状態の中で疑い、結託し、裏切りながら、次々と課されるデスゲームに挑んでいく。
+        連続殺人事件の捜査本部。犯人の正体はつかめず、捜査は行き詰まっていた。次の犯行予告時刻が迫る中、新米刑事であるあなたのPCに一本の電話がかかってくる。「きみ、何をしているんだい。さっさとそんな事件は解決してしまえ。」参加者自身が捜査官となり、名探偵の導きのもとで事件の真相に迫る没入型ミステリ体験。
       </p>
     </section>
 
@@ -997,7 +995,7 @@ button { font-family: inherit; }
     <section class="reviews-section fi" aria-label="レビュー">
       <div class="reviews-header">
         <h2 class="sec-heading">レビュー</h2>
-        <span class="reviews-count">3762件</span>
+        <span class="reviews-count">1,887件</span>
       </div>
 
       <div class="review-list">
@@ -1011,8 +1009,8 @@ button { font-family: inherit; }
                   onerror="this.style.display='none'; this.parentElement.textContent='U';">
               </div>
               <div>
-                <p class="reviewer-name">ムビレポユーザー</p>
-                <p class="reviewer-handle">@necro_fan</p>
+                <p class="reviewer-name">まだミス子</p>
+                <p class="reviewer-handle">@mystery_lover</p>
               </div>
             </div>
             <div class="review-meta-right">
@@ -1023,15 +1021,15 @@ button { font-family: inherit; }
                 <span class="star-full">★</span>
                 <span class="star-full">★</span>
               </div>
-              <time class="review-date" datetime="2025-09-12">2025年9月12日</time>
+              <time class="review-date">2025年4月15日</time>
             </div>
           </div>
           <p class="review-text">
-            原作プレイ済みで正直不安だったんですけど、いい意味で裏切られました。ゲームの緊張感をそのまま舞台に持ってきてて、しかもイマーシブシアターとしてちゃんと成立してる。キャストの人数もかなり多いのに破綻してないのがすごい。原作の空気感をここまで再現できるのかと思った。ネクロゲーム好きなら絶対観てほしい。
+            体験型イベント自体が初めてだったけど、開始5分で完全に「自分が刑事」になってた。電話越しの名探偵の声がとにかく良くて、指示に従って証拠を集めていくうちに本当に事件を追っている感覚になる。最後の推理パートで全部つながった瞬間は鳥肌だった。一緒に行った友人と終わったあと1時間くらい考察してた。
           </p>
           <div class="review-tags">
-            <span class="review-tag"># ネクロゲーム</span>
-            <span class="review-tag"># 原作勢</span>
+            <span class="review-tag"># 体験型ミステリ</span>
+            <span class="review-tag"># 没入感</span>
           </div>
         </article>
 
@@ -1042,7 +1040,37 @@ button { font-family: inherit; }
               <div class="reviewer-avatar">U</div>
               <div>
                 <p class="reviewer-name">ムビレポユーザー</p>
-                <p class="reviewer-handle">@stage_note</p>
+                <p class="reviewer-handle">@escape_maniac</p>
+              </div>
+            </div>
+            <div class="review-meta-right">
+              <div class="review-stars" aria-label="5つ星">
+                <span class="star-full">★</span>
+                <span class="star-full">★</span>
+                <span class="star-full">★</span>
+                <span class="star-full">★</span>
+                <span class="star-full">★</span>
+              </div>
+              <time class="review-date">2025年4月20日</time>
+            </div>
+          </div>
+          <p class="review-text">
+            謎解きイベントには結構行ってるけど、これは「謎を解く」よりも「事件を体験する」に振り切ってるのが新鮮。証拠品の作り込みとか、空間の雰囲気とか、細部のクオリティが異常に高い。制作トラポルタって聞いて納得した。ディレクションの密度がすごい。脚本もよくできてて、序盤のミスリードに完全にやられた。
+          </p>
+          <div class="review-tags">
+            <span class="review-tag"># トラポルタ</span>
+            <span class="review-tag"># 謎解きイベント</span>
+          </div>
+        </article>
+
+        <!-- Review 3 -->
+        <article class="review-card">
+          <div class="review-card-header">
+            <div class="reviewer-info">
+              <div class="reviewer-avatar">U</div>
+              <div>
+                <p class="reviewer-name">ムビレポユーザー</p>
+                <p class="reviewer-handle">@casual_viewer</p>
               </div>
             </div>
             <div class="review-meta-right">
@@ -1053,45 +1081,15 @@ button { font-family: inherit; }
                 <span class="star-full">★</span>
                 <span class="star-empty">★</span>
               </div>
-              <time class="review-date" datetime="2025-09-20">2025年9月20日</time>
+              <time class="review-date">2025年4月28日</time>
             </div>
           </div>
           <p class="review-text">
-            大人数キャストの群像劇をこの密度でまとめるディレクションがすごい。原作だとルールが難解で何度も読み返した記憶があるけど、舞台版では伏見が場を引っ搔き回すたびに自然と状況が整理されていく構成になっていて感心した。本人はたぶん好き勝手暴れてるだけだし他のキャラは困惑してるのに、観てるこっちは「あ、そういうことか」ってなる。
+            友人に誘われて参加。ミステリに詳しくなくても楽しめた。電話で指示をくれる名探偵のキャラクターが面白くて、プレッシャーがかかる場面でも不思議と安心感がある。ただ、後半の情報量がかなり多くて処理しきれなかった部分もあった。もう一回行ったら違う景色が見えそう。
           </p>
           <div class="review-tags">
-            <span class="review-tag"># 伏見瀬人</span>
-            <span class="review-tag"># 群像劇</span>
-          </div>
-        </article>
-
-        <!-- Review 3 -->
-        <article class="review-card">
-          <div class="review-card-header">
-            <div class="reviewer-info">
-              <div class="reviewer-avatar">工</div>
-              <div>
-                <p class="reviewer-name">工藤やろがい</p>
-                <p class="reviewer-handle">@kudo_yarogai</p>
-              </div>
-            </div>
-            <div class="review-meta-right">
-              <div class="review-stars" aria-label="2つ星">
-                <span class="star-full">★</span>
-                <span class="star-full">★</span>
-                <span class="star-empty">★</span>
-                <span class="star-empty">★</span>
-                <span class="star-empty">★</span>
-              </div>
-              <time class="review-date" datetime="2025-10-03">2025年10月3日</time>
-            </div>
-          </div>
-          <p class="review-text">
-            話題になってたから来てみたけど、情報量が多すぎてオッサンにはキツかった。登場人物も多いしゲームのルールも次々変わるし、頭フル回転で3時間は体力がいる。ただ面白かったのは間違いない。体力に自信がある人向け。
-          </p>
-          <div class="review-tags">
-            <span class="review-tag"># イマーシブシアター</span>
-            <span class="review-tag"># ネクロゲーム</span>
+            <span class="review-tag"># 初参加</span>
+            <span class="review-tag"># 体験型イベント</span>
           </div>
         </article>
 
@@ -1113,18 +1111,16 @@ button { font-family: inherit; }
     <section class="fi" aria-label="関連作品">
       <h2 class="sec-heading" style="margin-bottom:20px;">関連作品</h2>
       <div class="related-grid">
-        <a class="related-card" href="Detective.html">
-          <div class="related-poster">
-            <img src="Detective.webp" alt="名探偵のメモリー・パレスへようこそ">
-          </div>
+        <a class="related-card" href="NecroGame.html">
+          <div class="related-poster">No Image</div>
           <div class="related-body">
-            <p class="related-title">名探偵のメモリー・パレスへようこそ</p>
+            <p class="related-title">ネクロゲーム</p>
             <p class="related-year">2025年</p>
             <p class="related-rating">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                 <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
               </svg>
-              4.5
+              4.3
             </p>
           </div>
         </a>
@@ -1168,31 +1164,27 @@ button { font-family: inherit; }
       <div class="side-block-body">
         <div class="cast-list">
           <div class="cast-item">
-            <div class="cast-avatar">主</div>
+            <div class="cast-avatar">
+              <img src="" alt=""
+                onerror="this.style.display='none'; this.parentElement.textContent='—';">
+            </div>
             <div>
-              <p class="cast-name">主藤公太郎</p>
-              <p class="cast-role">朝倉陽介 役</p>
+              <p class="cast-name">瀬川 透</p>
+              <p class="cast-role">名探偵 役</p>
             </div>
           </div>
           <div class="cast-item">
-            <div class="cast-avatar">広</div>
+            <div class="cast-avatar">—</div>
             <div>
-              <p class="cast-name">広井引子</p>
-              <p class="cast-role">水瀬鈴音 役</p>
+              <p class="cast-name">日向 奏</p>
+              <p class="cast-role">捜査官A 役</p>
             </div>
           </div>
           <div class="cast-item">
-            <div class="cast-avatar">雷</div>
+            <div class="cast-avatar">—</div>
             <div>
-              <p class="cast-name">雷堂大翔</p>
-              <p class="cast-role">兵頭誠 役</p>
-            </div>
-          </div>
-          <div class="cast-item">
-            <div class="cast-avatar">獅</div>
-            <div>
-              <p class="cast-name">獅子王千暁</p>
-              <p class="cast-role">伏見瀬人 役</p>
+              <p class="cast-name">柊 理央</p>
+              <p class="cast-role">捜査官B 役</p>
             </div>
           </div>
         </div>
@@ -1207,27 +1199,27 @@ button { font-family: inherit; }
           <div class="dist-row">
             <span class="dist-label">5</span>
             <div class="dist-bar-wrap"><div class="dist-bar" style="width:100%"></div></div>
-            <span class="dist-count">1,653</span>
+            <span class="dist-count">842</span>
           </div>
           <div class="dist-row">
             <span class="dist-label">4</span>
-            <div class="dist-bar-wrap"><div class="dist-bar" style="width:79%"></div></div>
-            <span class="dist-count">1,298</span>
+            <div class="dist-bar-wrap"><div class="dist-bar" style="width:75%"></div></div>
+            <span class="dist-count">631</span>
           </div>
           <div class="dist-row">
             <span class="dist-label">3</span>
             <div class="dist-bar-wrap"><div class="dist-bar" style="width:34%"></div></div>
-            <span class="dist-count">556</span>
+            <span class="dist-count">287</span>
           </div>
           <div class="dist-row">
             <span class="dist-label">2</span>
-            <div class="dist-bar-wrap"><div class="dist-bar" style="width:14%"></div></div>
-            <span class="dist-count">224</span>
+            <div class="dist-bar-wrap"><div class="dist-bar" style="width:12%"></div></div>
+            <span class="dist-count">98</span>
           </div>
           <div class="dist-row">
             <span class="dist-label">1</span>
-            <div class="dist-bar-wrap"><div class="dist-bar" style="width:2%"></div></div>
-            <span class="dist-count">31</span>
+            <div class="dist-bar-wrap"><div class="dist-bar" style="width:3%"></div></div>
+            <span class="dist-count">29</span>
           </div>
         </div>
       </div>

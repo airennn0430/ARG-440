@@ -1329,6 +1329,15 @@ button { font-family: inherit; }
     if (!inDialog) dialog.close();
   });
 })();
+
+/* 有料会員登録 → エラーページに戻り先用パラメータを付与 */
+(() => {
+  const registerLink = document.querySelector('#memberOnlyDialog a.member-modal-primary[href*="register-error"]');
+  if (!registerLink) return;
+  let page = (location.pathname.split('/').pop() || 'index.html').split('?')[0];
+  if (!/^[a-zA-Z0-9_.-]+\.html?$/.test(page)) page = 'index.html';
+  registerLink.href = 'register-error.html?return=' + encodeURIComponent(page);
+})();
 </script>
 
 </body>

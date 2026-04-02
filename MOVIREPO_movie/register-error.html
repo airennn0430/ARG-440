@@ -72,7 +72,44 @@ body {
   <main class="error-card" role="alert">
     <h1>エラーが発生しました</h1>
     <p>有料会員の登録処理を完了できませんでした。しばらく時間をおいて再度お試しください。</p>
-    <a href="index.html">作品ページに戻る</a>
+    <a href="index.html" id="backToWorkLink">作品ページに戻る</a>
   </main>
+  <script>
+  (() => {
+    const link = document.getElementById('backToWorkLink');
+    if (!link) return;
+    const isSafeReturn = (name) =>
+      typeof name === 'string' &&
+      /^[a-zA-Z0-9_.-]+\.html?$/.test(name) &&
+      !name.includes('..');
+
+    const fromQuery = new URLSearchParams(location.search).get('return');
+    if (fromQuery) {
+      const decoded = decodeURIComponent(fromQuery);
+      if (isSafeReturn(decoded)) {
+        link.href = decoded;
+        return;
+      }
+    }
+
+    if (document.referrer) {
+      try {
+        const ref = new URL(document.referrer);
+        const here = new URL(location.href);
+        const refFile = (ref.pathname.split('/').pop() || '').split('?')[0];
+        if (
+          refFile.endsWith('.html') &&
+          ref.protocol === here.protocol &&
+          (here.protocol === 'file:' || ref.origin === here.origin)
+        ) {
+          link.href = document.referrer;
+          return;
+        }
+      } catch (_) { /* ignore */ }
+    }
+
+    link.href = 'index.html';
+  })();
+  </script>
 </body>
 </html>
