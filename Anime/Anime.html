@@ -430,6 +430,30 @@ html, body {
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━
+   TAP GATE — iOS audio unlock
+━━━━━━━━━━━━━━━━━━━━━━━ */
+#tap-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 999998;
+  background: #0a0a12;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+#tap-gate.hidden {
+  display: none;
+}
+.tap-gate-text {
+  font-size: 14px;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 0.1em;
+  animation: call-pulse 2s ease-in-out infinite;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━
    DESKTOP BLOCK MESSAGE
 ━━━━━━━━━━━━━━━━━━━━━━━ */
 #desktop-block {
@@ -463,6 +487,13 @@ html, body {
 
 <!-- Screen flash effect -->
 <div class="call-flash" id="callFlash"></div>
+
+<!-- iOS audio unlock — 初回タップ誘導 -->
+<div id="tap-gate">
+  <div class="tap-gate-inner">
+    <span class="tap-gate-text">タップして開始</span>
+  </div>
+</div>
 
 <!-- ═══ INCOMING CALL OVERLAY ═══ -->
 <div id="call-overlay">
@@ -1019,10 +1050,28 @@ vnContainer.addEventListener('click', (e) => {
    INIT
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 document.addEventListener('DOMContentLoaded', () => {
-  if (shouldTriggerCall()) {
-    // Slight delay for immersion
-    setTimeout(showCallScreen, 800);
+  if (!shouldTriggerCall()) {
+    const hideGate = document.getElementById('tap-gate');
+    if (hideGate) hideGate.classList.add('hidden');
+    return;
   }
+
+  const tapGate = document.getElementById('tap-gate');
+  if (!tapGate) { setTimeout(showCallScreen, 800); return; }
+
+  // iOS audio unlock: 無音を再生してAudioContextを解除
+  tapGate.addEventListener('click', () => {
+    // 無音再生でiOS AudioContextをunlock
+    const unlock = new Audio();
+    unlock.src = 'data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//tQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAACAAABhgC7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7//////////////////////////////////////////////////////////////////8AAAAATGF2YzU4LjEzAAAAAAAAAAAAAAAAJAAAAAAAAAAAAYYoRwCHAAAAAAAAAAAAAAAAAAAA//tQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAACAAABhgC7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7//////////////////////////////////////////////////////////////////8AAAAATGF2YzU4LjEzAAAAAAAAAAAAAAAAJAAAAAAAAAAAAYYoRwCHAAAAAAAAAAAAAAAAAAAA';
+    unlock.volume = 0.01;
+    unlock.play().then(() => {
+      unlock.pause();
+    }).catch(() => {});
+
+    tapGate.classList.add('hidden');
+    setTimeout(showCallScreen, 800);
+  }, { once: true });
 });
 
 /* ── DEBUG: テスト用 — コンソールから手動発火 ──
