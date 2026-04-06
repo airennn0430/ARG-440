@@ -540,6 +540,7 @@ html, body {
   </div>
 </div>
 
+<script src="sfx.js"></script>
 <script>
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    CONFIG — トリガー日時・シナリオをここで管理
@@ -672,10 +673,12 @@ const connectingText = document.getElementById('connectingText');
 function showCallScreen() {
   overlay.classList.add('visible');
   startVibration();
+  if (window.AnimeSFX) AnimeSFX.startRingtone();
 }
 
 function dismissCall() {
   stopVibration();
+  if (window.AnimeSFX) AnimeSFX.stopRingtone();
   overlay.classList.add('hidden');
 
   // 3秒後に再着信
@@ -688,6 +691,7 @@ function dismissCall() {
 
 function acceptCall() {
   stopVibration();
+  if (window.AnimeSFX) AnimeSFX.stopRingtone();
   callStartTime = Date.now();
 
   // Transition to "connecting" state
@@ -962,6 +966,7 @@ const btnEnd          = document.getElementById('btnEnd');
 function endVN() {
   // BGM cleanup
   bgmFadeout(1500);
+  if (window.AnimeSFX) AnimeSFX.stopCalling();
   vnContainer.classList.remove('active');
   bgmStop();
   showCallEndScreen();
@@ -971,6 +976,7 @@ function showCallEndScreen() {
   // Set duration
   callEndDuration.textContent = getCallDuration();
   callEndScreen.classList.add('active');
+  if (window.AnimeSFX) AnimeSFX.playBusyTone();
 }
 
 btnEnd.addEventListener('click', () => {
@@ -994,14 +1000,17 @@ vnContainer.addEventListener('click', (e) => {
     clearTimeout(vnWaitTimer);
     vnWaitTimer = null;
     vnIndex++;
+    if (window.AnimeSFX) AnimeSFX.playClick();
     renderVNStep();
     return;
   }
 
   if (vnTyping) {
     skipTyping();
+    if (window.AnimeSFX) AnimeSFX.playClick();
   } else {
     vnIndex++;
+    if (window.AnimeSFX) AnimeSFX.playClick();
     renderVNStep();
   }
 });
@@ -1022,6 +1031,7 @@ document.addEventListener('DOMContentLoaded', () => {
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 window.resetCall = function() {
   bgmStop();
+  if (window.AnimeSFX) AnimeSFX.stopAllLoops();
   overlay.classList.remove('hidden', 'connecting', 'visible');
   vnContainer.classList.remove('active');
   vnFade.classList.remove('active');
@@ -1030,6 +1040,7 @@ window.resetCall = function() {
 
 window.testVN = function() {
   bgmStop();
+  if (window.AnimeSFX) AnimeSFX.stopRingtone();
   overlay.classList.add('hidden');
   startVN();
 };
