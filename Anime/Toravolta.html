@@ -21,7 +21,9 @@
   --gray:    #7a7490;
   --border:  #dddae8;
   --surface: #f2f0f8;
+  /* 横の余白（画面端ぴったりを避ける） */
   --layout-pad-x: clamp(48px, 6vw, 140px);
+  /* MVV / ABOUT リードなど本文の字下げ（Mission と揃える） */
   --text-inset: 36px;
 }
 
@@ -140,6 +142,8 @@ nav a:hover { color: var(--white); }
   line-height: 1.15;
   letter-spacing: .05em;
   margin-bottom: 36px;
+  color: var(--black);
+  text-shadow: 0 4px 28px rgba(41,174,134,.12);
   opacity: 0;
   animation: fadeUp .9s .35s forwards;
 }
@@ -243,7 +247,15 @@ section {
   opacity: .55;
 }
 
-.sec-desc { font-size: 16px; color: var(--gray); margin-bottom: 48px; max-width: 1100px; margin-left: auto; margin-right: auto; }
+.sec-desc {
+  font-size: 16px;
+  letter-spacing: .02em;
+  color: var(--gray);
+  margin-bottom: 48px;
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+}
 
 /* ── SERVICE ── */
 .service-grid {
@@ -829,6 +841,81 @@ footer {
 .trans-line.show { opacity: 1; }
 .trans-accent { color: var(--accent); }
 
+/* ── 音声同意モーダル（初回流入時） ── */
+#audio-consent {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  min-height: 100%;
+  z-index: 100000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  -webkit-tap-highlight-color: transparent;
+}
+#audio-consent.hidden {
+  display: none;
+}
+.audio-consent-panel {
+  width: 100%;
+  max-width: 360px;
+  padding: 28px 24px 24px;
+  border-radius: 16px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  box-shadow: 0 24px 64px rgba(41, 174, 134, 0.18);
+  text-align: center;
+}
+.audio-consent-msg {
+  font-size: 16px;
+  line-height: 1.75;
+  color: var(--black);
+  letter-spacing: 0.04em;
+  margin-bottom: 22px;
+}
+.audio-consent-btns {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+.audio-consent-btn {
+  flex: 1;
+  min-height: 44px;
+  border: none;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.audio-consent-btn:active {
+  transform: scale(0.98);
+}
+.audio-consent-btn--on {
+  background: var(--accent);
+  color: var(--white);
+}
+.audio-consent-btn--on:hover {
+  opacity: 0.92;
+}
+.audio-consent-btn--off {
+  background: var(--surface);
+  color: var(--gray);
+  border: 1px solid var(--border);
+}
+.audio-consent-btn--off:hover {
+  background: var(--border);
+}
+
 /* ── UTILS ── */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(18px); }
@@ -864,6 +951,7 @@ footer {
     --layout-pad-x: clamp(20px, 5.5vw, 40px);
     --text-inset: 12px;
   }
+  /* NAV */
   .nav-toggle { display: flex; }
   nav ul {
     display: none;
@@ -951,7 +1039,7 @@ footer {
   
 
   /* RECRUIT */
-  .recruit-item { padding: 22px var(--layout-pad-x); }
+  .recruit-item { padding: 22px 24px; }
 
   /* CONTACT */
   .contact-inner { grid-template-columns: 1fr; gap: 36px; }
@@ -963,6 +1051,16 @@ footer {
 </style>
 </head>
 <body>
+
+<div id="audio-consent" role="dialog" aria-modal="true" aria-labelledby="audio-consent-title">
+  <div class="audio-consent-panel">
+    <p id="audio-consent-title" class="audio-consent-msg">このサイトでは音が流れる場合があります。</p>
+    <div class="audio-consent-btns">
+      <button type="button" class="audio-consent-btn audio-consent-btn--on" id="audioConsentOn">ON</button>
+      <button type="button" class="audio-consent-btn audio-consent-btn--off" id="audioConsentOff">OFF</button>
+    </div>
+  </div>
+</div>
 
 <!-- ═══ NAV ═══ -->
 <nav>
@@ -1073,7 +1171,7 @@ footer {
         <div class="work-item">
           <p class="work-num">01</p>
           <div class="work-poster">
-            <img src="Detective.webp" alt="名探偵のメモリー・パレスへようこそ" />
+            <img src="image/Detective.webp" alt="名探偵のメモリー・パレスへようこそ" />
           </div>
           <div class="work-body">
             <div class="work-tags">
@@ -1092,7 +1190,7 @@ footer {
         <div class="work-item" data-modal-img-pos="top">
           <p class="work-num">02</p>
           <div class="work-poster">
-            <img src="Azagami.webp" alt="怪異迫るかえりみち" />
+            <img src="image/Azagami.webp" alt="怪異迫るかえりみち" />
           </div>
           <div class="work-body">
             <div class="work-tags">
@@ -1112,7 +1210,7 @@ footer {
         <div class="work-item" data-modal-img-pos="top">
           <p class="work-num">03</p>
           <div class="work-poster">
-            <img src="Bird.webp" alt="雨降る旧邸に眠る秘密" />
+            <img src="image/Bird.webp" alt="雨降る旧邸に眠る秘密" />
           </div>
           <div class="work-body">
             <div class="work-tags">
@@ -1405,6 +1503,61 @@ footer {
 
 
 <script>
+/* ── 音声同意 → 深夜帯は Anime / 再訪は Toraporta ── */
+(function () {
+  var NIGHT_KEY = 'toravolta_night_redirect_v1';
+  var SOUND_KEY = 'toravolta_sound_pref_v1';
+  var INSTANT_KEY = 'anime_instant_call_v1';
+  var SILENT_MP3 = 'data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//tQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAACAAABhgC7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7//////////////////////////////////////////////////////////////////8AAAAATGF2YzU4LjEzAAAAAAAAAAAAAAAAJAAAAAAAAAAAAYYoRwCHAAAAAAAAAAAAAAAAAAAA//tQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAACAAABhgC7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7//////////////////////////////////////////////////////////////////8AAAAATGF2YzU4LjEzAAAAAAAAAAAAAAAAJAAAAAAAAAAAAYYoRwCHAAAAAAAAAAAAAAAAAAAA';
+
+  function isNightWindow() {
+    return new Date().getHours() === 2;
+  }
+
+  function finishConsent(soundOn) {
+    var modal = document.getElementById('audio-consent');
+    try {
+      if (soundOn) {
+        sessionStorage.setItem(SOUND_KEY, '1');
+        var unlock = new Audio();
+        unlock.src = SILENT_MP3;
+        unlock.volume = 0.01;
+        unlock.play().then(function () { unlock.pause(); }).catch(function () {});
+      } else {
+        sessionStorage.setItem(SOUND_KEY, '0');
+      }
+    } catch (e) {}
+    if (modal) modal.classList.add('hidden');
+
+    var night = isNightWindow();
+    var already = false;
+    try {
+      already = !!sessionStorage.getItem(NIGHT_KEY);
+    } catch (e) {}
+
+    if (night && !already) {
+      setTimeout(function () {
+        try {
+          sessionStorage.setItem(NIGHT_KEY, '1');
+          sessionStorage.setItem(INSTANT_KEY, '1');
+        } catch (e) {}
+        location.replace('Anime.html');
+      }, 2000);
+      return;
+    }
+    if (night && already) {
+      location.replace('../Toraporta_LP/Toraporta.html');
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var onBtn = document.getElementById('audioConsentOn');
+    var offBtn = document.getElementById('audioConsentOff');
+    if (onBtn) onBtn.addEventListener('click', function () { finishConsent(true); });
+    if (offBtn) offBtn.addEventListener('click', function () { finishConsent(false); });
+  });
+})();
+
 (function () {
   var modal = document.getElementById('workSynopsisModal');
   if (!modal) return;

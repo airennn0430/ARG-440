@@ -4,6 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Incoming Call</title>
+<script>
+(function () {
+  try {
+    if (sessionStorage.getItem('anime_instant_call_v1') === '1') {
+      document.documentElement.classList.add('anime-instant-call');
+    }
+  } catch (e) {}
+})();
+</script>
 <style>
 /* ━━━━━━━━━━━━━━━━━━━━━━━
    RESET & BASE
@@ -38,6 +47,9 @@ html, body {
   padding: env(safe-area-inset-top, 48px) 0 env(safe-area-inset-bottom, 32px);
   opacity: 0;
   transition: opacity 0.4s ease;
+}
+html.anime-instant-call #call-overlay {
+  transition: none !important;
 }
 #call-overlay.visible { opacity: 1; }
 #call-overlay.hidden {
@@ -218,25 +230,6 @@ html, body {
 @keyframes call-pulse {
   0%, 100% { opacity: 1; }
   50%      { opacity: 0.4; }
-}
-
-/* ━━━━━━━━━━━━━━━━━━━━━━━
-   SCREEN FLASH on answer
-━━━━━━━━━━━━━━━━━━━━━━━ */
-.call-flash {
-  position: fixed;
-  inset: 0;
-  z-index: 100000;
-  background: #fff;
-  opacity: 0;
-  pointer-events: none;
-}
-.call-flash.active {
-  animation: flash-bang 0.6s ease-out forwards;
-}
-@keyframes flash-bang {
-  0%   { opacity: 0.85; }
-  100% { opacity: 0; }
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━
@@ -430,30 +423,6 @@ html, body {
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━
-   TAP GATE — iOS audio unlock
-━━━━━━━━━━━━━━━━━━━━━━━ */
-#tap-gate {
-  position: fixed;
-  inset: 0;
-  z-index: 999998;
-  background: #0a0a12;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-}
-#tap-gate.hidden {
-  display: none;
-}
-.tap-gate-text {
-  font-size: 14px;
-  color: rgba(255,255,255,0.3);
-  letter-spacing: 0.1em;
-  animation: call-pulse 2s ease-in-out infinite;
-}
-
-/* ━━━━━━━━━━━━━━━━━━━━━━━
    DESKTOP BLOCK MESSAGE
 ━━━━━━━━━━━━━━━━━━━━━━━ */
 #desktop-block {
@@ -483,16 +452,6 @@ html, body {
 <!-- Desktop blocker -->
 <div id="desktop-block">
   このページはスマートフォンでのみ閲覧できます。
-</div>
-
-<!-- Screen flash effect -->
-<div class="call-flash" id="callFlash"></div>
-
-<!-- iOS audio unlock — 初回タップ誘導 -->
-<div id="tap-gate">
-  <div class="tap-gate-inner">
-    <span class="tap-gate-text">タップして開始</span>
-  </div>
 </div>
 
 <!-- ═══ INCOMING CALL OVERLAY ═══ -->
@@ -644,12 +603,7 @@ const VN_SCENARIO = [
   {
     speaker: '???',
     text: 'シナリオデータを差し替えてください。',
-  },
-  {
-    speaker: '',
-    text: '通話が切断された。',
     bgm: 'fadeout',
-    fade: 'out',
   },
 ];
 
@@ -697,14 +651,17 @@ function stopVibration() {
 const overlay   = document.getElementById('call-overlay');
 const btnAccept = document.getElementById('btnAccept');
 const btnDecline = document.getElementById('btnDecline');
-const callFlash = document.getElementById('callFlash');
 const callSub   = document.getElementById('callSub');
 const connectingText = document.getElementById('connectingText');
 
 function showCallScreen() {
   overlay.classList.add('visible');
   startVibration();
-  if (window.AnimeSFX) AnimeSFX.startRingtone();
+  let soundOff = false;
+  try {
+    soundOff = sessionStorage.getItem('toravolta_sound_pref_v1') === '0';
+  } catch (e) {}
+  if (!soundOff && window.AnimeSFX) AnimeSFX.startRingtone();
 }
 
 function dismissCall() {
@@ -730,18 +687,8 @@ function acceptCall() {
   callSub.textContent = '接続中...';
 
   setTimeout(() => {
-    // Flash
-    callFlash.classList.add('active');
-
-    // Hide call overlay
     overlay.classList.add('hidden');
-
-    // Start VN after flash
-    setTimeout(() => {
-      callFlash.classList.remove('active');
-      startVN();
-    }, 500);
-
+    startVN();
   }, CALL_CONFIG.connectDelay);
 }
 
@@ -854,7 +801,10 @@ function renderVNStep() {
     vnFade.classList.add('active');
     setTimeout(() => {
       applyVNContent(step);
-      vnLocked = false;
+      requestAnimationFrame(() => {
+        vnFade.classList.remove('active');
+        setTimeout(() => { vnLocked = false; }, 800);
+      });
     }, 800);
   } else {
     applyVNContent(step);
@@ -995,12 +945,12 @@ const callEndDuration = document.getElementById('callEndDuration');
 const btnEnd          = document.getElementById('btnEnd');
 
 function endVN() {
-  // BGM cleanup
   bgmFadeout(1500);
   if (window.AnimeSFX) AnimeSFX.stopCalling();
+  vnFade.classList.remove('active');
+  showCallEndScreen();
   vnContainer.classList.remove('active');
   bgmStop();
-  showCallEndScreen();
 }
 
 function showCallEndScreen() {
@@ -1050,28 +1000,18 @@ vnContainer.addEventListener('click', (e) => {
    INIT
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 document.addEventListener('DOMContentLoaded', () => {
-  if (!shouldTriggerCall()) {
-    const hideGate = document.getElementById('tap-gate');
-    if (hideGate) hideGate.classList.add('hidden');
+  if (!shouldTriggerCall()) return;
+  let instant = false;
+  try {
+    instant = sessionStorage.getItem('anime_instant_call_v1') === '1';
+    if (instant) sessionStorage.removeItem('anime_instant_call_v1');
+  } catch (e) {}
+  if (instant) {
+    showCallScreen();
+    document.documentElement.classList.remove('anime-instant-call');
     return;
   }
-
-  const tapGate = document.getElementById('tap-gate');
-  if (!tapGate) { setTimeout(showCallScreen, 800); return; }
-
-  // iOS audio unlock: 無音を再生してAudioContextを解除
-  tapGate.addEventListener('click', () => {
-    // 無音再生でiOS AudioContextをunlock
-    const unlock = new Audio();
-    unlock.src = 'data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//tQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAACAAABhgC7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7//////////////////////////////////////////////////////////////////8AAAAATGF2YzU4LjEzAAAAAAAAAAAAAAAAJAAAAAAAAAAAAYYoRwCHAAAAAAAAAAAAAAAAAAAA//tQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAACAAABhgC7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7//////////////////////////////////////////////////////////////////8AAAAATGF2YzU4LjEzAAAAAAAAAAAAAAAAJAAAAAAAAAAAAYYoRwCHAAAAAAAAAAAAAAAAAAAA';
-    unlock.volume = 0.01;
-    unlock.play().then(() => {
-      unlock.pause();
-    }).catch(() => {});
-
-    tapGate.classList.add('hidden');
-    setTimeout(showCallScreen, 800);
-  }, { once: true });
+  setTimeout(showCallScreen, 800);
 });
 
 /* ── DEBUG: テスト用 — コンソールから手動発火 ──

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>店舗一覧 | 株式会社トラポルタ</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Bebas+Neue&display=swap" rel="stylesheet">
 <style>
 /* ── Toraporta デザイン基軸（schedule.html と整合） ── */
 :root {
@@ -25,10 +25,11 @@ body {
   background: var(--white);
   color: var(--black);
   font-family: 'Noto Sans JP', sans-serif;
-  font-weight: 300;
+  font-weight: 500;
   min-height: 100vh;
   line-height: 1.8;
 }
+p { font-weight: 400; }
 ::-webkit-scrollbar { width: 2px; }
 ::-webkit-scrollbar-track { background: var(--white); }
 ::-webkit-scrollbar-thumb { background: var(--accent); }
@@ -48,7 +49,7 @@ nav {
   border-bottom: 1px solid var(--border);
 }
 .nav-logo {
-  font-family: 'Bebas Neue', cursive;
+  font-family: 'Bebas Neue', 'Noto Sans JP', sans-serif;
   font-size: 20px;
   letter-spacing: .35em;
   color: var(--black);
@@ -57,7 +58,7 @@ nav {
 .nav-logo span { color: var(--accent); }
 nav ul { display: flex; gap: 36px; list-style: none; }
 nav a {
-  font-size: 13px;
+  font-size: 16px;
   letter-spacing: .15em;
   color: var(--gray);
   text-decoration: none;
@@ -66,7 +67,7 @@ nav a {
 }
 nav a:hover { color: var(--accent); }
 .nav-back {
-  font-size: 11px;
+  font-size: 16px;
   letter-spacing: .12em;
   color: var(--gray);
   text-decoration: none;
@@ -84,7 +85,7 @@ nav a:hover { color: var(--accent); }
   border-bottom: 1px solid var(--border);
 }
 .page-hero-label {
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 700;
   letter-spacing: .18em;
   color: var(--accent);
@@ -92,7 +93,7 @@ nav a:hover { color: var(--accent); }
   margin-bottom: 20px;
 }
 .page-hero h1 {
-  font-family: 'Bebas Neue', cursive;
+  font-family: 'Bebas Neue', 'Noto Sans JP', sans-serif;
   font-size: clamp(42px, 5.5vw, 72px);
   letter-spacing: .06em;
   line-height: 1.1;
@@ -109,7 +110,7 @@ nav a:hover { color: var(--accent); }
   padding: 48px 0 24px;
 }
 .area-heading-text {
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 700;
   letter-spacing: .18em;
   color: var(--accent);
@@ -156,23 +157,21 @@ nav a:hover { color: var(--accent); }
   margin-bottom: 14px;
 }
 .shop-card-address {
-  font-size: 12px;
-  font-weight: 300;
+  font-size: 16px;
   color: var(--gray);
   letter-spacing: .03em;
   line-height: 1.8;
   margin-bottom: 6px;
 }
 .shop-card-tel {
-  font-size: 12px;
-  font-weight: 400;
+  font-size: 16px;
   color: var(--black);
   letter-spacing: .06em;
   margin-bottom: 18px;
 }
 .shop-card-badge {
   display: inline-block;
-  font-size: 9px;
+  font-size: 16px;
   font-weight: 700;
   letter-spacing: .1em;
   text-transform: uppercase;
@@ -189,7 +188,7 @@ nav a:hover { color: var(--accent); }
   justify-content: center;
   gap: 8px;
   font-family: 'Noto Sans JP', sans-serif;
-  font-size: 12px;
+  font-size: 16px;
   font-weight: 500;
   letter-spacing: .1em;
   color: var(--black);
@@ -223,7 +222,7 @@ nav a:hover { color: var(--accent); }
   justify-content: center;
 }
 .shop-card-img-ph span {
-  font-family: 'Bebas Neue', cursive;
+  font-family: 'Bebas Neue', 'Noto Sans JP', sans-serif;
   font-size: 36px;
   color: rgba(14,0,46,.06);
   letter-spacing: .05em;
@@ -245,8 +244,8 @@ footer {
   align-items: center;
   justify-content: space-between;
 }
-.footer-logo { font-family: 'Bebas Neue', cursive; font-size: 17px; letter-spacing: .3em; color: var(--gray); }
-.footer-copy { font-size: 13px; color: var(--gray); letter-spacing: .05em; }
+.footer-logo { font-family: 'Bebas Neue', 'Noto Sans JP', sans-serif; font-size: 17px; letter-spacing: .3em; color: var(--gray); }
+.footer-copy { font-size: 16px; color: var(--gray); letter-spacing: .05em; }
 
 /* ── ハンバーガー ── */
 .nav-toggle {
@@ -296,7 +295,7 @@ footer {
   .page-hero { padding-top: 100px; }
   .shop-card { grid-template-columns: minmax(0, 1fr) minmax(100px, 140px); }
   .shop-card-info { padding: 20px 20px 18px; }
-  .shop-card-name { font-size: 14px; }
+  .shop-card-name { font-size: 16px; }
   .shop-card-img-ph { min-height: 160px; }
   footer { padding: 28px 24px; flex-direction: column; gap: 8px; text-align: center; }
 }

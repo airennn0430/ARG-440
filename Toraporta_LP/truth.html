@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>株式会社トラポルタ | Traporta</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@1,300;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@1,300;1,400&display=swap');
 
 /*
   カラーパレット（色反転）
@@ -22,7 +22,7 @@
   --border:  #2a2048;
   --surface: #160838;
   --prose-weight: 400;
-  --prose-size: 15px;
+  --prose-size: 16px;
   --prose-color: rgba(251, 252, 251, 0.88);
   --prose-letter: .03em;
   --prose-line: 2.05;
@@ -35,7 +35,7 @@ body {
   background: var(--white);
   color: var(--black);
   font-family: 'Noto Sans JP', sans-serif;
-  font-weight: 300;
+  font-weight: 500;
   line-height: 1.8;
   overflow-x: hidden;
   position: relative;
@@ -100,7 +100,7 @@ nav {
   border-bottom: 1px solid var(--border);
 }
 .nav-logo {
-  font-family: 'Bebas Neue', cursive;
+  font-family: 'Bebas Neue', 'Noto Sans JP', sans-serif;
   font-size: 20px;
   letter-spacing: .35em;
   color: var(--black);
@@ -109,7 +109,7 @@ nav {
 .nav-logo span { color: var(--accent); }
 nav ul { display: flex; gap: 36px; list-style: none; }
 nav a {
-  font-size: 13px;
+  font-size: 16px;
   letter-spacing: .15em;
   color: var(--gray);
   text-decoration: none;
@@ -137,7 +137,7 @@ nav a:hover { color: var(--accent); }
   z-index: 1;
 }
 .hero-tag {
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 700;
   letter-spacing: .22em;
   color: var(--accent);
@@ -187,7 +187,7 @@ nav a:hover { color: var(--accent); }
   display: flex;
   align-items: center;
   gap: 12px;
-  font-size: 13px;
+  font-size: 16px;
   letter-spacing: .18em;
   color: var(--gray);
   text-transform: uppercase;
@@ -205,14 +205,14 @@ section { padding: 112px 140px; border-top: 1px solid var(--border); }
 #top { padding: 0; border-top: none; }
 .sec-hd { display: flex; align-items: baseline; gap: 18px; margin-bottom: 64px; }
 .sec-num {
-  font-family: 'Bebas Neue', cursive;
+  font-family: 'Bebas Neue', 'Noto Sans JP', sans-serif;
   font-size: 60px;
   color: var(--accent);
   line-height: 1;
 }
 .sec-meta { display: flex; flex-direction: column; gap: 0; }
 .sec-label {
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 700;
   letter-spacing: .18em;
   color: var(--accent);
@@ -222,7 +222,7 @@ section { padding: 112px 140px; border-top: 1px solid var(--border); }
   line-height: 1.2;
 }
 .sec-title {
-  font-family: 'Bebas Neue', cursive;
+  font-family: 'Bebas Neue', 'Noto Sans JP', sans-serif;
   font-size: 38px;
   letter-spacing: .06em;
   position: relative;
@@ -264,7 +264,7 @@ section { padding: 112px 140px; border-top: 1px solid var(--border); }
   background: linear-gradient(90deg, var(--accent), var(--accent3));
 }
 .talent-dossier-hook {
-  font-size: clamp(15px, 2.1vw, 18px);
+  font-size: clamp(16px, 2.1vw, 18px);
   font-weight: 700;
   letter-spacing: .14em;
   line-height: 1.75;
@@ -307,7 +307,7 @@ section { padding: 112px 140px; border-top: 1px solid var(--border); }
 }
 .work-item:hover { background: var(--surface); }
 .work-num {
-  font-family: 'Bebas Neue', cursive;
+  font-family: 'Bebas Neue', 'Noto Sans JP', sans-serif;
   font-size: 34px;
   font-weight: 400;
   color: var(--accent);
@@ -329,7 +329,7 @@ section { padding: 112px 140px; border-top: 1px solid var(--border); }
 .work-body { padding: 20px 28px; flex: 1; display: flex; flex-direction: column; gap: 8px; }
 .work-tags { display: flex; flex-wrap: wrap; gap: 6px; }
 .work-tag {
-  font-size: 13px;
+  font-size: 16px;
   letter-spacing: .1em;
   color: var(--accent);
   border: 1px solid var(--accent);
@@ -344,12 +344,25 @@ section { padding: 112px 140px; border-top: 1px solid var(--border); }
   color: var(--black);
   letter-spacing: .02em;
 }
-.work-lead { font-size: 14px; font-weight: 700; color: var(--black); line-height: 1.6; letter-spacing: .04em; }
+.work-lead { font-size: 16px; font-weight: 700; color: var(--black); line-height: 1.6; letter-spacing: .04em; }
 
 /* ── ABOUT ── */
-.about-lead { max-width: 680px; margin-bottom: 72px; }
+.about-lead {
+  max-width: 680px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 72px;
+  text-align: left;
+  box-sizing: border-box;
+}
 .about-lead p { margin-bottom: 16px; }
-.about-tagline { font-size: 22px !important; font-weight: 700 !important; color: var(--black) !important; letter-spacing: .04em; }
+.about-tagline {
+  font-size: 22px !important;
+  font-weight: 700 !important;
+  color: var(--black) !important;
+  letter-spacing: .04em;
+  margin: 0 0 16px 0;
+}
 #about > .talent-dossier { margin-bottom: 80px; }
 
 /* MVV */
@@ -362,8 +375,8 @@ section { padding: 112px 140px; border-top: 1px solid var(--border); }
 }
 .mvv-item { background: var(--white); padding: 40px 36px; transition: background .3s; }
 .mvv-item:hover { background: var(--surface); }
-.mvv-label { font-size: 13px; font-weight: 700; letter-spacing: .18em; color: var(--accent); text-transform: uppercase; margin-bottom: 10px; }
-.mvv-title { font-family: 'Bebas Neue', cursive; font-size: 22px; letter-spacing: .08em; margin-bottom: 16px; }
+.mvv-label { font-size: 16px; font-weight: 700; letter-spacing: .18em; color: var(--accent); text-transform: uppercase; margin-bottom: 10px; }
+.mvv-title { font-family: 'Bebas Neue', 'Noto Sans JP', sans-serif; font-size: 22px; font-weight: 700; letter-spacing: .08em; margin-bottom: 16px; }
 
 /* Value */
 .value-grid-list-outer {
@@ -379,7 +392,7 @@ section { padding: 112px 140px; border-top: 1px solid var(--border); }
   border: 1px solid var(--border);
   background: var(--white);
   cursor: pointer;
-  font-size: 14px;
+  font-size: 16px;
   color: var(--gray);
   align-items: center;
   justify-content: center;
@@ -415,10 +428,10 @@ section { padding: 112px 140px; border-top: 1px solid var(--border); }
 .value-item:hover { background: var(--surface); }
 .value-item:hover::before { transform: scaleX(1); }
 .value-num-name { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-.value-num { font-family: 'Bebas Neue', cursive; font-size: 22px; color: rgba(41,174,134,.3); line-height: 1; }
-.value-name { font-family: 'Bebas Neue', cursive; font-size: 22px; letter-spacing: .08em; color: var(--black); line-height: 1; }
+.value-num { font-family: 'Bebas Neue', 'Noto Sans JP', sans-serif; font-size: 22px; color: rgba(41,174,134,.3); line-height: 1; }
+.value-name { font-family: 'Bebas Neue', 'Noto Sans JP', sans-serif; font-size: 22px; letter-spacing: .08em; color: var(--black); line-height: 1; }
 .value-sub {
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 700;
   color: var(--gray);
   letter-spacing: .08em;
@@ -431,7 +444,7 @@ section { padding: 112px 140px; border-top: 1px solid var(--border); }
 
 /* Members */
 .member-hd { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; }
-.member-hd-label { font-size: 13px; font-weight: 700; letter-spacing: .18em; color: var(--accent); text-transform: uppercase; }
+.member-hd-label { font-size: 16px; font-weight: 700; letter-spacing: .18em; color: var(--accent); text-transform: uppercase; }
 .member-card {
   background: var(--white);
   display: flex;
@@ -449,7 +462,7 @@ section { padding: 112px 140px; border-top: 1px solid var(--border); }
   display: flex; align-items: center; justify-content: center;
 }
 .member-icon-placeholder {
-  font-family: 'Bebas Neue', cursive;
+  font-family: 'Bebas Neue', 'Noto Sans JP', sans-serif;
   font-size: 36px;
   color: var(--border);
   letter-spacing: .1em;
@@ -463,7 +476,7 @@ section { padding: 112px 140px; border-top: 1px solid var(--border); }
   text-align: center;
 }
 .member-role {
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 700;
   letter-spacing: .18em;
   color: var(--accent);
@@ -587,7 +600,7 @@ section { padding: 112px 140px; border-top: 1px solid var(--border); }
   font-size: 18px;
 }
 @media (max-width: 600px) {
-  .member-slider-btn.member-anonymous-reroll { font-size: 15px; }
+  .member-slider-btn.member-anonymous-reroll { font-size: 16px; }
 }
 .member-slider-btn.member-anonymous-reroll:hover:not(:disabled) {
   background: rgba(41,174,134,.12);
@@ -630,7 +643,7 @@ section { padding: 112px 140px; border-top: 1px solid var(--border); }
 .win95-member-alert-titlebar {
   background: #000080;
   color: #fff;
-  font-size: 11px;
+  font-size: 16px;
   font-weight: 700;
   line-height: 1.2;
   padding: 5px 8px 6px;
@@ -642,7 +655,7 @@ section { padding: 112px 140px; border-top: 1px solid var(--border); }
   align-items: flex-start;
   gap: 12px;
   padding: 16px 14px 14px 16px;
-  font-size: 11px;
+  font-size: 16px;
   line-height: 1.45;
 }
 .win95-member-alert-icon {
@@ -658,7 +671,7 @@ section { padding: 112px 140px; border-top: 1px solid var(--border); }
 }
 .win95-member-alert-msg {
   font-family: inherit;
-  font-size: 11px;
+  font-size: 16px;
   font-weight: 400;
   line-height: 1.5;
   color: #000;
@@ -672,7 +685,7 @@ section { padding: 112px 140px; border-top: 1px solid var(--border); }
 }
 .win95-member-alert-ok {
   font-family: inherit;
-  font-size: 11px;
+  font-size: 16px;
   min-width: 75px;
   padding: 4px 16px 5px;
   background: #c0c0c0;
@@ -701,7 +714,7 @@ section { padding: 112px 140px; border-top: 1px solid var(--border); }
   transition: background .28s;
 }
 .recruit-item:hover { background: var(--surface); }
-.recruit-name { font-size: 14px; font-weight: 700; margin-bottom: 10px; }
+.recruit-name { font-size: 16px; font-weight: 700; margin-bottom: 10px; }
 .recruit-tags { display: flex; flex-wrap: wrap; gap: 6px; }
 button.recruit-apply-btn {
   margin: 0;
@@ -719,7 +732,7 @@ button.recruit-apply-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 700;
   letter-spacing: 0.06em;
   line-height: 1.3;
@@ -746,10 +759,11 @@ button.recruit-apply-btn {
 
 /* ── CONTACT ── */
 .contact-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
-.contact-lead-label { font-size: 13px; font-weight: 700; letter-spacing: .18em; color: var(--accent); text-transform: uppercase; margin-bottom: 20px; }
+.contact-lead-label { font-size: 16px; font-weight: 700; letter-spacing: .18em; color: var(--accent); text-transform: uppercase; margin-bottom: 20px; }
 .contact-lead-title {
-  font-family: 'Bebas Neue', cursive;
+  font-family: 'Bebas Neue', 'Noto Sans JP', sans-serif;
   font-size: 36px;
+  font-weight: 700;
   letter-spacing: .04em;
   line-height: 1.2;
   margin-bottom: 24px;
@@ -765,14 +779,14 @@ footer {
   justify-content: space-between;
 }
 .footer-logo {
-  font-family: 'Bebas Neue', cursive;
+  font-family: 'Bebas Neue', 'Noto Sans JP', sans-serif;
   font-size: 17px;
   font-weight: 400;
   letter-spacing: .3em;
   color: rgba(251, 252, 251, 0.55);
 }
 .footer-copy {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 400;
   color: rgba(251, 252, 251, 0.62);
   letter-spacing: .05em;
@@ -907,7 +921,7 @@ footer {
   }
   nav ul.open { display: flex; }
   nav ul li a {
-    font-size: 13px;
+    font-size: 16px;
     letter-spacing: .22em;
   }
 
@@ -922,7 +936,7 @@ footer {
     justify-content: center;
   }
   .hero-title { font-size: clamp(32px, 9vw, 52px); }
-  .hero-desc { font-size: 13px; max-width: 100%; }
+  .hero-desc { font-size: 16px; max-width: 100%; }
   .hero-scroll { left: 24px; bottom: 28px; }
 
   /* SECTION共通 */
@@ -1279,7 +1293,7 @@ footer {
     <div class="recruit-item">
       <div>
         <h3 class="recruit-name">諦めが悪いひと</h3>
-        <p style="margin-top:14px; font-size:14px; color:var(--prose-color); line-height:1.85;">
+        <p style="margin-top:14px; font-size:16px; color:var(--prose-color); line-height:1.85;">
           不条理でも、不都合でも、自分の欲を手放さない人間は面白い。<br>
           そういう不器用な人間は、騙しがいがある。<br>
           叶ったものにありつけた瞬間の顔を、██も欲しいと思う。
@@ -1292,7 +1306,7 @@ footer {
     <div class="recruit-item">
       <div>
         <h3 class="recruit-name">驚かせてくれるひと</h3>
-        <p style="margin-top:14px; font-size:14px; color:var(--prose-color); line-height:1.85;">
+        <p style="margin-top:14px; font-size:16px; color:var(--prose-color); line-height:1.85;">
           こちらが用意した筋書きを、セオリーというものを平気で踏み越えてくる人間。<br>
           常套から外れていることを分かりながら、まっすぐに狙いを定めている犭のようなひと。
         </p>
@@ -1304,7 +1318,7 @@ footer {
     <div class="recruit-item">
       <div>
         <h3 class="recruit-name">うそつき</h3>
-        <p style="margin-top:14px; font-size:14px; color:var(--prose-color); line-height:1.85;">
+        <p style="margin-top:14px; font-size:16px; color:var(--prose-color); line-height:1.85;">
           いつかはバレてしまうもの。<br>
           誰に問うても「いけないこと」とされる悪いこと。<br>
           それでも使わざるを得ないと決めた人間のいじらしさときたら。
