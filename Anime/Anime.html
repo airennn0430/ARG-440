@@ -293,39 +293,37 @@ html.anime-instant-call #call-overlay {
   bottom: 0;
   left: 0;
   right: 0;
-  min-height: 200px;
-  background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.85) 20%, rgba(0,0,0,0.95) 100%);
-  padding: 48px 24px calc(24px + env(safe-area-inset-bottom, 16px));
+  z-index: 7;
+  min-height: clamp(240px, 39vh, 390px);
+  background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.72) 10%, rgba(0,0,0,0.93) 100%);
+  padding:
+    36px
+    max(14px, env(safe-area-inset-left, 14px))
+    calc(36px + env(safe-area-inset-bottom, 20px))
+    max(14px, env(safe-area-inset-right, 14px));
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 14px;
 }
-
-.vn-speaker {
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  color: #e8534a;
-  min-height: 1.2em;
-}
-.vn-speaker:empty { display: none; }
 
 .vn-text {
-  font-size: 16px;
+  font-size: 19px;
   font-weight: 400;
-  line-height: 1.85;
+  line-height: 2.05;
   color: rgba(255,255,255,0.92);
   letter-spacing: 0.02em;
-  min-height: 3.5em;
+  min-height: 5.6em;
+  padding-inline: 1.1em;
+  padding-block-start: 0.45em;
 }
 
 /* Tap-to-advance indicator */
 .vn-next {
   position: absolute;
-  bottom: calc(12px + env(safe-area-inset-bottom, 8px));
-  right: 20px;
-  font-size: 11px;
-  color: rgba(255,255,255,0.3);
+  bottom: calc(14px + env(safe-area-inset-bottom, 8px));
+  right: 24px;
+  font-size: 15px;
+  color: rgba(255,255,255,0.35);
   letter-spacing: 0.08em;
   animation: vn-blink 1.6s ease-in-out infinite;
 }
@@ -335,12 +333,85 @@ html.anime-instant-call #call-overlay {
 }
 
 /* Text typing effect */
-.vn-text .char {
+.vn-text span.char {
   opacity: 0;
   display: inline;
 }
-.vn-text .char.visible {
+.vn-text span.char.visible {
   opacity: 1;
+}
+
+/* ルビ：親文字は span.char、rt は別管理。同時刻に .visible を付けて文字送りと同期 */
+.vn-text ruby.vn-ruby-unit {
+  display: ruby;
+  ruby-position: over;
+  ruby-align: center;
+  -webkit-ruby-position: before;
+  vertical-align: baseline;
+}
+.vn-text ruby.vn-ruby-unit > span.char {
+  opacity: 0;
+  display: inline;
+}
+.vn-text ruby.vn-ruby-unit > span.char.visible {
+  opacity: 1;
+}
+.vn-text ruby.vn-ruby-unit > rt.vn-ruby-rt {
+  opacity: 0;
+  visibility: hidden;
+  font-size: 0.55em;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  color: rgba(255,255,255,0.78);
+  white-space: nowrap;
+}
+.vn-text ruby.vn-ruby-unit > rt.vn-ruby-rt.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Branch choices — 立ち絵・背景エリアの中央（下はセリフ枠分あける） */
+.vn-choices-layer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: clamp(210px, 33vh, 315px);
+  z-index: 6;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 24px;
+  pointer-events: none;
+}
+.vn-choices-layer.active {
+  display: flex;
+  gap: 14px;
+  pointer-events: auto;
+}
+.vn-choice-btn {
+  width: min(100%, 360px);
+  max-width: 100%;
+  text-align: left;
+  font-family: inherit;
+  font-size: 19px;
+  line-height: 1.55;
+  font-weight: 500;
+  color: rgba(255,255,255,0.96);
+  padding: 18px 20px;
+  border-radius: 14px;
+  border: 1px solid rgba(232,83,74,0.5);
+  background: rgba(12,12,22,0.82);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.45);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.vn-choice-btn:active {
+  background: rgba(232,83,74,0.22);
+  border-color: rgba(232,83,74,0.85);
 }
 
 /* VN fade to black */
@@ -498,8 +569,8 @@ html.anime-instant-call #call-overlay {
   <div class="vn-viewport">
     <div class="vn-bg vn-bg--default" id="vnBg"></div>
     <img class="vn-character" id="vnChar" src="" alt="">
+    <div class="vn-choices-layer" id="vnChoices" aria-live="polite"></div>
     <div class="vn-textbox" id="vnTextbox">
-      <div class="vn-speaker" id="vnSpeaker"></div>
       <div class="vn-text" id="vnText"></div>
       <div class="vn-next" id="vnNext">TAP ▸</div>
     </div>
@@ -561,8 +632,8 @@ const CALL_CONFIG = {
   ┌─────────────┬────────────────────────────────────────────┐
   │ プロパティ    │ 説明                                       │
   ├─────────────┼────────────────────────────────────────────┤
-  │ speaker      │ 話者名（空文字 = ナレーション/地の文）       │
-  │ text         │ 本文。<br>で改行可。                         │
+  │ text         │ 本文。<br> または / で改行可。                │
+  │              │ <ruby>漢字<rt>ルビ</rt></ruby> 可              │
   │ bg           │ 背景画像URL。変更時のみ指定。               │
   │ char         │ キャラ立ち絵URL。変更時のみ指定。           │
   │ charVisible  │ true/false — 立ち絵の表示/非表示            │
@@ -577,34 +648,71 @@ const CALL_CONFIG = {
   │              │   'fadeout' — フェードアウト停止(2s)         │
   │ textSpeed    │ タイピング速度(ms/文字)。省略時 = 45        │
   │ wait         │ 自動で次へ進むまでの待機(ms)。省略=タップ待ち│
-  │ speakerColor │ 話者名の色。省略時 = #e8534a                │
+  │ choices      │ [{ text: '…' }, …] — 選択肢（TAP不可）       │
   └─────────────┴────────────────────────────────────────────┘
 
   ── 使用例 ──────────────────────────────────────────── */
 
 const VN_SCENARIO = [
   {
-    speaker: '',
-    text: '……。',
+    text: 'うわ。出るんだ。',
     fade: 'in',
     bgm: { src: 'bgm/call_scene.mp3', volume: 0.4, loop: true },
   },
+  { text: 'こんな時間まで夜更かしするなんて、/随分とオレの事が好きみたいだね' },
+  { text: '何時間かかった？/まぁせいぜい10分ってとこかな' },
+  { text: '……え？そんなに？なんで？' },
+  { text: 'あ～…まぁ、そうだよね…/きみ…ウン……' },
+  { text: '……冗談だって。/ちゃんとそのくらいの時間だろうなって思ってたよ' },
+  { text: 'それっぽいゴールは何個も用意しておいたのに、キミもよくやるよねェ' },
+  { text: '……。' },
+  { text: '……なに？もう何も無いよ' },
+  { text: 'もしかして、/オレの秘密でも教えてもらえると思った？' },
+  { text: 'しょうがないなァ。/何が知りたいの？' },
+  { text: 'キミにならなんでも教えてあげるよ。' },
+  { text: '本名、住所、母親の旧姓、初めて行った海外旅行先、ペットの名前…' },
+  { text: 'あァ、本心なんてのもあったね。' },
+  { text: '……嘘って分かっていても聞きたいの？' },
+  { text: '……。' },
+  { text: '…意地悪じゃないよぉ。' },
+  { text: 'これでも大事なことは最初に伝えておくスタンスでね。/キミにもちゃんと言っておいたじゃない。' },
+  { text: 'えェと、なんだっけ……' },
+  { text: '"獅子王千暁の全ては嘘で構成されている"。' },
+  { text: '…嘘と言うにも色々あってね。/キミなら辞書に何て載せる？' },
   {
-    speaker: '',
-    text: '………………。',
+    choices: [
+      { text: '事実とは違うこと' },
+      { text: '騙すための偽り' },
+    ],
   },
+  { text: 'うん、いいね。/簡潔で無駄がない説明だ。' },
+  { text: 'ところでキミ、小説は読む？/映画やドラマは？/アニメでもいい。' },
+  { text: 'フィクションやユーモアも、身近な嘘だと言えるよね。' },
+  { text: 'じゃあ、新聞やニュースは見る？' },
+  { text: '…ちがうよ、フェイクニュースって話じゃない。/キミに真実を伝えてくれるアレのことさ。' },
+  { text: 'オレが言いたいのはアレの作り方。/事実を羅列しただけじゃ読者が理解しづらいから、時系列を組み替えたり補足情報を追加して伝えたりするよね。' },
+  { text: 'キミの定義に沿えばアレも"嘘"だ。/主題を理解させるために事実とは違うことで読者をコントロールしている。' },
+  { text: 'まぁ、こういうのもディレクションって言うんだけど。/知ってた？' },
+  { text: 'とどのつまり、”暴かれるべき真実は<ruby>僕<rt>ここ</rt></ruby>に無い”ってこと。/理解できたかな？' },
   {
-    speaker: '???',
-    text: 'ここにセリフが入ります。',
-    // bg: 'bg/night_room.png',
-    // char: 'char/shishiou.png',
-    // charVisible: true,
+    choices: [
+      { text: '理解した' },
+      { text: '納得できない' },
+    ],
   },
+  { text: 'はは、いい子だね。' },
+  { text: 'まぁ、キミが好きなように解釈すればいいよ。/全部見せてあげたんだし。' },
+  { text: '…うん？/あぁ、もちろん嘘だらけだけど。' },
+  { text: 'こんな時間までオレと話してるんだからキミ、騙されるのは好きなんでしょ？' },
+  { text: 'そりゃどんな嘘かは教えてあげないよぉ。' },
+  { text: 'せいぜい楽しんで。/オレはそういう顔を見ながら酒飲むのが趣味だから。' },
+  { text: '…嘘ってバレてると適当なこと言いやすいねぇ。/いいおもちゃだよキミは。' },
+  { text: 'じゃあね。/次はまた別の顔だと思うけど。' },
   {
-    speaker: '???',
-    text: 'シナリオデータを差し替えてください。',
-    bgm: 'fadeout',
+    choices: [{ text: '嘘だ' }],
   },
+  { text: 'さァ。どうでしょう？' },
+  { text: '”またね”。', bgm: 'fadeout' },
 ];
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -756,9 +864,9 @@ function handleBGM(bgm) {
 const vnContainer = document.getElementById('vn-container');
 const vnBg        = document.getElementById('vnBg');
 const vnChar      = document.getElementById('vnChar');
-const vnSpeaker   = document.getElementById('vnSpeaker');
 const vnText      = document.getElementById('vnText');
 const vnNext      = document.getElementById('vnNext');
+const vnChoices   = document.getElementById('vnChoices');
 const vnFade      = document.getElementById('vnFade');
 
 let vnIndex = 0;
@@ -811,7 +919,15 @@ function renderVNStep() {
   }
 }
 
+function normalizeVnText(s) {
+  // 「/」は改行にするが、</rt>・</ruby> など閉じタグ内の / は壊さない（そうしないと <ruby> が全文表示される）
+  return String(s || '').replace(/(?<!<)\//g, '<br>');
+}
+
 function applyVNContent(step) {
+  vnChoices.classList.remove('active');
+  vnChoices.innerHTML = '';
+
   // Background
   if (step.bg) {
     vnBg.classList.remove('vn-bg--default');
@@ -833,17 +949,35 @@ function applyVNContent(step) {
       step.charPos === 'right' ? '75%' : '50%';
   }
 
-  // Speaker
-  vnSpeaker.textContent = step.speaker || '';
-  if (step.speakerColor) {
-    vnSpeaker.style.color = step.speakerColor;
-  } else {
-    vnSpeaker.style.color = '';  // CSSデフォルト (#e8534a) に戻す
+  if (step.choices && step.choices.length) {
+    vnCharTimers.forEach(t => clearTimeout(t));
+    vnCharTimers = [];
+    if (vnWaitTimer) { clearTimeout(vnWaitTimer); vnWaitTimer = null; }
+    vnText.innerHTML = '';
+    vnTyping = false;
+    vnNext.style.display = 'none';
+    step.choices.forEach((ch) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'vn-choice-btn';
+      btn.textContent = ch.text;
+      btn.addEventListener('click', (ev) => {
+        ev.stopPropagation();
+        if (window.AnimeSFX) AnimeSFX.playClick();
+        vnChoices.classList.remove('active');
+        vnChoices.innerHTML = '';
+        vnIndex++;
+        renderVNStep();
+      });
+      vnChoices.appendChild(btn);
+    });
+    vnChoices.classList.add('active');
+    return;
   }
 
-  // Text — typing effect
+  // Text — typing effect（/ は改行に変換）
   const speed = step.textSpeed || 45;
-  typeText(step.text, speed, () => {
+  typeText(normalizeVnText(step.text || ''), speed, () => {
     // Auto-advance if wait is specified
     if (step.wait !== undefined && step.wait >= 0) {
       vnNext.style.display = 'none';
@@ -865,7 +999,7 @@ function typeText(text, speed, onComplete) {
   vnNext.style.display = 'none';
   vnTyping = true;
 
-  // Build char spans (preserve <br> as-is)
+  // Build char spans（<br>・<ruby>…<rt>…</rt></ruby> を単位として保持）
   const chars = [];
   let i = 0;
   while (i < text.length) {
@@ -873,6 +1007,27 @@ function typeText(text, speed, onComplete) {
       const brLen = text[i + 3] === '>' ? 4 : 5;
       chars.push({ type: 'br', raw: text.substr(i, brLen) });
       i += brLen;
+    } else if (text.substr(i, 6) === '<ruby>') {
+      const close = text.indexOf('</ruby>', i);
+      if (close === -1) {
+        chars.push({ type: 'char', raw: text[i] });
+        i++;
+        continue;
+      }
+      const inner = text.slice(i + 6, close);
+      const rtOpen = inner.indexOf('<rt>');
+      const rtEnd = inner.indexOf('</rt>');
+      if (rtOpen === -1 || rtEnd === -1 || rtEnd < rtOpen) {
+        chars.push({ type: 'char', raw: text[i] });
+        i++;
+        continue;
+      }
+      chars.push({
+        type: 'ruby',
+        base: inner.slice(0, rtOpen),
+        rt: inner.slice(rtOpen + 4, rtEnd),
+      });
+      i = close + 7;
     } else {
       chars.push({ type: 'char', raw: text[i] });
       i++;
@@ -885,6 +1040,23 @@ function typeText(text, speed, onComplete) {
   chars.forEach(c => {
     if (c.type === 'br') {
       fragment.appendChild(document.createElement('br'));
+    } else if (c.type === 'ruby') {
+      const ruby = document.createElement('ruby');
+      ruby.className = 'vn-ruby-unit';
+      const baseSpans = [];
+      for (let j = 0; j < c.base.length; j++) {
+        const span = document.createElement('span');
+        span.className = 'char';
+        span.textContent = c.base[j];
+        ruby.appendChild(span);
+        baseSpans.push(span);
+      }
+      const rtEl = document.createElement('rt');
+      rtEl.className = 'vn-ruby-rt';
+      rtEl.textContent = c.rt;
+      ruby.appendChild(rtEl);
+      fragment.appendChild(ruby);
+      charEls.push({ _rubyBatch: true, baseSpans, rtEl });
     } else {
       const span = document.createElement('span');
       span.className = 'char';
@@ -895,10 +1067,15 @@ function typeText(text, speed, onComplete) {
   });
   vnText.appendChild(fragment);
 
-  // Reveal one by one
+  // Reveal one by one（ルビは親字と rt を同一タイミングで表示）
   charEls.forEach((el, idx) => {
     const t = setTimeout(() => {
-      el.classList.add('visible');
+      if (el && el._rubyBatch) {
+        el.baseSpans.forEach((s) => s.classList.add('visible'));
+        el.rtEl.classList.add('visible');
+      } else if (el) {
+        el.classList.add('visible');
+      }
       if (idx === charEls.length - 1) {
         vnTyping = false;
         vnNext.style.display = '';
@@ -919,7 +1096,7 @@ function typeText(text, speed, onComplete) {
 function skipTyping() {
   vnCharTimers.forEach(t => clearTimeout(t));
   vnCharTimers = [];
-  vnText.querySelectorAll('.char').forEach(el => el.classList.add('visible'));
+  vnText.querySelectorAll('.char, .vn-ruby-rt').forEach(el => el.classList.add('visible'));
   vnTyping = false;
   vnNext.style.display = '';
 }
@@ -975,6 +1152,7 @@ btnEnd.addEventListener('click', () => {
 vnContainer.addEventListener('click', (e) => {
   if (e.target.closest('button, a')) return;
   if (vnLocked) return;
+  if (vnChoices.classList.contains('active')) return;
 
   // Cancel wait timer if active
   if (vnWaitTimer) {
@@ -1024,6 +1202,8 @@ window.resetCall = function() {
   overlay.classList.remove('hidden', 'connecting', 'visible');
   vnContainer.classList.remove('active');
   vnFade.classList.remove('active');
+  vnChoices.classList.remove('active');
+  vnChoices.innerHTML = '';
   setTimeout(showCallScreen, 300);
 };
 
