@@ -159,23 +159,6 @@ a { text-decoration: none; color: inherit; }
   color: var(--secondary);
   pointer-events: none;
 }
-.header-search {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 24px;
-  padding: 7px 16px;
-  font-size: 13px;
-  color: var(--para);
-  cursor: pointer;
-  transition: border-color .2s;
-  white-space: nowrap;
-}
-.header-search:hover { border-color: var(--btn); }
-.header-search svg { flex-shrink: 0; }
-
 .header-hamburger {
   display: flex;
   align-items: center;
@@ -889,7 +872,7 @@ a { text-decoration: none; color: inherit; }
 }
 @media (max-width: 768px) {
   .header-inner { padding: 0 20px; }
-  .global-nav, .header-search { display: none; }
+  .global-nav { display: none; }
   .breadcrumb-inner { padding: 8px 20px; }
   .page-wrap { padding: 28px 20px 60px; }
   .article-title { font-size: clamp(20px, 5.5vw, 28px); }
@@ -917,6 +900,7 @@ a { text-decoration: none; color: inherit; }
   transition: width .1s linear;
 }
   </style>
+  <link rel="stylesheet" href="../shared/anime-redact.css">
 </head>
 <body>
 
@@ -936,12 +920,6 @@ a { text-decoration: none; color: inherit; }
         <li><a href="#" class="disabled">イベント情報</a></li>
         <li><a href="#" class="disabled">データベース</a></li>
       </ul>
-      <button class="header-search">
-        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-        </svg>
-        キーワード検索
-      </button>
       <button type="button" class="header-hamburger" aria-label="メニュー">
         <span class="header-hamburger-inner">
           <span></span><span></span><span></span>
@@ -1328,6 +1306,7 @@ a { text-decoration: none; color: inherit; }
     document.getElementById('progressBar').style.width = pct + '%';
   });
   </script>
+  <script src="../shared/anime-redact.js" defer></script>
 
 </body>
 </html>

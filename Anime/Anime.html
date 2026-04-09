@@ -1135,6 +1135,9 @@ function showCallEndScreen() {
   callEndDuration.textContent = getCallDuration();
   callEndScreen.classList.add('active');
   if (window.AnimeSFX) AnimeSFX.playBusyTone();
+  try {
+    localStorage.setItem('anime_call_end_reached_v1', '1');
+  } catch (e) {}
 }
 
 btnEnd.addEventListener('click', () => {

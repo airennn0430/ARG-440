@@ -100,22 +100,6 @@ a { text-decoration: none; color: inherit; }
   color: var(--secondary);
   pointer-events: none;
 }
-.header-search {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 24px;
-  padding: 7px 16px;
-  font-size: 13px;
-  color: var(--para);
-  cursor: pointer;
-  transition: border-color .2s;
-  white-space: nowrap;
-}
-.header-search:hover { border-color: var(--btn); }
-
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    PAGE HEADER
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
@@ -262,10 +246,6 @@ a { text-decoration: none; color: inherit; }
   color: var(--para);
   line-height: 1.9;
   margin-bottom: 20px;
-  display: -webkit-box;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
 }
 
 /* Card footer */
@@ -300,6 +280,36 @@ a { text-decoration: none; color: inherit; }
   width: 1px;
   height: 32px;
   background: var(--border);
+}
+
+/* X（名前横・円形アイコン） */
+.editor-identity--with-x .editor-name-block {
+  flex: 1;
+  min-width: 0;
+}
+.editor-x-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  padding: 0;
+  color: var(--white);
+  background: var(--headline);
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  transition: background .2s, border-color .2s, transform .2s, box-shadow .2s;
+}
+.editor-x-btn:hover {
+  background: var(--btn);
+  border-color: var(--btn);
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(9, 64, 103, .2);
+}
+.editor-x-btn svg {
+  width: 17px;
+  height: 17px;
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -420,7 +430,7 @@ a { text-decoration: none; color: inherit; }
 }
 @media (max-width: 768px) {
   .header-inner { padding: 0 20px; }
-  .global-nav, .header-search { display: none; }
+  .global-nav { display: none; }
   .page-header { padding: 40px 20px; }
   .page-wrap { padding: 36px 20px 60px; }
   .editor-grid { grid-template-columns: 1fr; }
@@ -431,6 +441,7 @@ a { text-decoration: none; color: inherit; }
   .back-to-top { bottom: 20px; right: 20px; }
 }
 </style>
+<link rel="stylesheet" href="../shared/anime-redact.css">
 </head>
 <body>
 
@@ -452,19 +463,13 @@ a { text-decoration: none; color: inherit; }
       <li><a href="#" class="disabled">イベント情報</a></li>
       <li><a href="#" class="disabled">データベース</a></li>
     </ul>
-    <button class="header-search">
-      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-      </svg>
-      キーワード検索
-    </button>
   </div>
 </header>
 
 <!-- ═══ PAGE HEADER ═══ -->
 <div class="page-header">
   <div class="page-header-inner">
-    <p class="page-header-label fi">Editors</p>
+    <p class="page-header-label fi">Directors</p>
     <h1 class="page-header-title fi">編集者一覧</h1>
     <p class="page-header-desc fi">リエンタの記事を手がける編集者たちをご紹介します。</p>
   </div>
@@ -474,115 +479,329 @@ a { text-decoration: none; color: inherit; }
 <div class="page-wrap">
   <div class="editor-grid">
 
-    <!-- Editor 1 -->
+    <!-- 黒木 凪 -->
     <div class="editor-card fi">
       <div class="editor-card-top"></div>
       <div class="editor-card-body">
         <div class="editor-identity">
-          <div class="editor-avatar">
-            <img src="" alt=""
-              onerror="this.style.display='none'; this.parentElement.innerHTML='編';">
-          </div>
+          <div class="editor-avatar">黒</div>
           <div class="editor-name-block">
-            <p class="editor-name">編集者名</p>
-            <p class="editor-role">Editor in Chief</p>
+            <p class="editor-name">黒木 凪</p>
+            <p class="editor-role">編集長</p>
           </div>
         </div>
         <div class="editor-categories">
-          <span class="cat-chip">担当カテゴリ</span>
-          <span class="cat-chip">担当カテゴリ</span>
+          <span class="cat-chip">全体統括</span>
         </div>
         <p class="editor-bio">
-          自己紹介文が入ります。経歴や得意分野、インタビューへの姿勢などをここに記述します。2〜4文程度を想定しています。
+          リエンタ創刊時より編集長を務める。「まだ言語化されていない仕事の面白さ」を掘り起こすことをメディアの使命と捉え、あらゆるジャンルの記事に目を通す。取材先との対話を重視し、記事の精度にこだわる編集者。
         </p>
       </div>
       <div class="editor-card-footer">
         <div class="editor-stat">
-          <span class="editor-stat-num">○○</span>
+          <span class="editor-stat-num">48</span>
           <span class="editor-stat-label">担当記事数</span>
         </div>
         <div class="editor-stat-divider"></div>
         <div class="editor-stat">
-          <span class="editor-stat-num">○○</span>
+          <span class="editor-stat-num">12</span>
           <span class="editor-stat-label">インタビュー数</span>
         </div>
         <div class="editor-stat-divider"></div>
         <div class="editor-stat">
-          <span class="editor-stat-num">○○○○</span>
+          <span class="editor-stat-num">2021</span>
           <span class="editor-stat-label">参加年</span>
         </div>
       </div>
     </div>
 
-    <!-- Editor 2 -->
+    <!-- 神谷 -->
     <div class="editor-card fi">
       <div class="editor-card-top"></div>
       <div class="editor-card-body">
         <div class="editor-identity">
-          <div class="editor-avatar">編</div>
+          <div class="editor-avatar">神</div>
           <div class="editor-name-block">
-            <p class="editor-name">編集者名</p>
-            <p class="editor-role">Editor</p>
+            <p class="editor-name">神谷</p>
+            <p class="editor-role">副編集長</p>
           </div>
         </div>
         <div class="editor-categories">
-          <span class="cat-chip">担当カテゴリ</span>
-          <span class="cat-chip">担当カテゴリ</span>
-          <span class="cat-chip">担当カテゴリ</span>
+          <span class="cat-chip">ニュース・特集</span>
         </div>
         <p class="editor-bio">
-          自己紹介文が入ります。経歴や得意分野、インタビューへの姿勢などをここに記述します。2〜4文程度を想定しています。
+          業界の動向を幅広くカバーし、速報性と正確性の両立を追求する。特集記事では、ひとつのテーマを複数の視点から立体的に描くことを意識している。創刊初期からリエンタの記事品質を支える存在。
         </p>
       </div>
       <div class="editor-card-footer">
         <div class="editor-stat">
-          <span class="editor-stat-num">○○</span>
+          <span class="editor-stat-num">67</span>
           <span class="editor-stat-label">担当記事数</span>
         </div>
         <div class="editor-stat-divider"></div>
         <div class="editor-stat">
-          <span class="editor-stat-num">○○</span>
+          <span class="editor-stat-num">8</span>
           <span class="editor-stat-label">インタビュー数</span>
         </div>
         <div class="editor-stat-divider"></div>
         <div class="editor-stat">
-          <span class="editor-stat-num">○○○○</span>
+          <span class="editor-stat-num">2021</span>
           <span class="editor-stat-label">参加年</span>
         </div>
       </div>
     </div>
 
-    <!-- Editor 3 -->
+    <!-- 小西 -->
     <div class="editor-card fi">
       <div class="editor-card-top"></div>
       <div class="editor-card-body">
         <div class="editor-identity">
-          <div class="editor-avatar">編</div>
+          <div class="editor-avatar">小</div>
           <div class="editor-name-block">
-            <p class="editor-name">編集者名</p>
-            <p class="editor-role">Editor</p>
+            <p class="editor-name">小西</p>
+            <p class="editor-role">ディレクター</p>
           </div>
         </div>
         <div class="editor-categories">
-          <span class="cat-chip">担当カテゴリ</span>
+          <span class="cat-chip">インタビュー・クリエイティブ</span>
         </div>
         <p class="editor-bio">
-          自己紹介文が入ります。経歴や得意分野、インタビューへの姿勢などをここに記述します。2〜4文程度を想定しています。
+          取材相手の言葉の奥にある意図を引き出すことを大切にしている。企画の構想からビジュアルの方向性まで、記事全体の設計を一貫して手がけるスタイル。読者が「会ってみたい」と感じる人物記事を目指す。
         </p>
       </div>
       <div class="editor-card-footer">
         <div class="editor-stat">
-          <span class="editor-stat-num">○○</span>
+          <span class="editor-stat-num">54</span>
           <span class="editor-stat-label">担当記事数</span>
         </div>
         <div class="editor-stat-divider"></div>
         <div class="editor-stat">
-          <span class="editor-stat-num">○○</span>
+          <span class="editor-stat-num">21</span>
           <span class="editor-stat-label">インタビュー数</span>
         </div>
         <div class="editor-stat-divider"></div>
         <div class="editor-stat">
-          <span class="editor-stat-num">○○○○</span>
+          <span class="editor-stat-num">2021</span>
+          <span class="editor-stat-label">参加年</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 長谷川 -->
+    <div class="editor-card fi">
+      <div class="editor-card-top"></div>
+      <div class="editor-card-body">
+        <div class="editor-identity">
+          <div class="editor-avatar">長</div>
+          <div class="editor-name-block">
+            <p class="editor-name">長谷川</p>
+            <p class="editor-role">ディレクター</p>
+          </div>
+        </div>
+        <div class="editor-categories">
+          <span class="cat-chip">IT・テクノロジー</span>
+        </div>
+        <p class="editor-bio">
+          技術やサービスの仕組みを、専門知識のない読者にも伝わる言葉で届けることを得意とする。新しい技術の背景にある思想や、開発者の判断に焦点を当てた記事を多く手がける。
+        </p>
+      </div>
+      <div class="editor-card-footer">
+        <div class="editor-stat">
+          <span class="editor-stat-num">41</span>
+          <span class="editor-stat-label">担当記事数</span>
+        </div>
+        <div class="editor-stat-divider"></div>
+        <div class="editor-stat">
+          <span class="editor-stat-num">15</span>
+          <span class="editor-stat-label">インタビュー数</span>
+        </div>
+        <div class="editor-stat-divider"></div>
+        <div class="editor-stat">
+          <span class="editor-stat-num">2021</span>
+          <span class="editor-stat-label">参加年</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 白石 -->
+    <div class="editor-card fi">
+      <div class="editor-card-top"></div>
+      <div class="editor-card-body">
+        <div class="editor-identity">
+          <div class="editor-avatar">白</div>
+          <div class="editor-name-block">
+            <p class="editor-name">白石</p>
+            <p class="editor-role">ディレクター</p>
+          </div>
+        </div>
+        <div class="editor-categories">
+          <span class="cat-chip">ニュース・トレンド</span>
+        </div>
+        <p class="editor-bio">
+          世の中の空気の変化を敏感に察知し、読者が「今知っておきたいこと」を記事にする。情報の鮮度を大事にしながらも、表面的な速報に留まらない切り口を探すことを心がけている。
+        </p>
+      </div>
+      <div class="editor-card-footer">
+        <div class="editor-stat">
+          <span class="editor-stat-num">38</span>
+          <span class="editor-stat-label">担当記事数</span>
+        </div>
+        <div class="editor-stat-divider"></div>
+        <div class="editor-stat">
+          <span class="editor-stat-num">6</span>
+          <span class="editor-stat-label">インタビュー数</span>
+        </div>
+        <div class="editor-stat-divider"></div>
+        <div class="editor-stat">
+          <span class="editor-stat-num">2022</span>
+          <span class="editor-stat-label">参加年</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 三上 -->
+    <div class="editor-card fi">
+      <div class="editor-card-top"></div>
+      <div class="editor-card-body">
+        <div class="editor-identity">
+          <div class="editor-avatar">三</div>
+          <div class="editor-name-block">
+            <p class="editor-name">三上</p>
+            <p class="editor-role">ディレクター</p>
+          </div>
+        </div>
+        <div class="editor-categories">
+          <span class="cat-chip">インタビュー・起業</span>
+        </div>
+        <p class="editor-bio">
+          起業家やスタートアップへの取材を中心に、事業を立ち上げる人々のリアルな判断と葛藤を記事にしている。華やかな成功談よりも、意思決定の過程に光を当てるスタイルを好む。
+        </p>
+      </div>
+      <div class="editor-card-footer">
+        <div class="editor-stat">
+          <span class="editor-stat-num">33</span>
+          <span class="editor-stat-label">担当記事数</span>
+        </div>
+        <div class="editor-stat-divider"></div>
+        <div class="editor-stat">
+          <span class="editor-stat-num">18</span>
+          <span class="editor-stat-label">インタビュー数</span>
+        </div>
+        <div class="editor-stat-divider"></div>
+        <div class="editor-stat">
+          <span class="editor-stat-num">2023</span>
+          <span class="editor-stat-label">参加年</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 田村 恵 -->
+    <div class="editor-card fi">
+      <div class="editor-card-top"></div>
+      <div class="editor-card-body">
+        <div class="editor-identity">
+          <div class="editor-avatar">田</div>
+          <div class="editor-name-block">
+            <p class="editor-name">田村 恵</p>
+            <p class="editor-role">ディレクター</p>
+          </div>
+        </div>
+        <div class="editor-categories">
+          <span class="cat-chip">医療・福祉</span>
+        </div>
+        <p class="editor-bio">
+          医療や福祉の現場で働く人の声を丁寧に届けることをテーマにしている。専門的な制度や用語をかみ砕きながら、読者が自分ごととして考えられる記事づくりを目指す。
+        </p>
+      </div>
+      <div class="editor-card-footer">
+        <div class="editor-stat">
+          <span class="editor-stat-num">9</span>
+          <span class="editor-stat-label">担当記事数</span>
+        </div>
+        <div class="editor-stat-divider"></div>
+        <div class="editor-stat">
+          <span class="editor-stat-num">5</span>
+          <span class="editor-stat-label">インタビュー数</span>
+        </div>
+        <div class="editor-stat-divider"></div>
+        <div class="editor-stat">
+          <span class="editor-stat-num">2025</span>
+          <span class="editor-stat-label">参加年</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 沢渡 真帆 -->
+    <div class="editor-card fi">
+      <div class="editor-card-top"></div>
+      <div class="editor-card-body">
+        <div class="editor-identity">
+          <div class="editor-avatar">沢</div>
+          <div class="editor-name-block">
+            <p class="editor-name">沢渡 真帆</p>
+            <p class="editor-role">ディレクター</p>
+          </div>
+        </div>
+        <div class="editor-categories">
+          <span class="cat-chip">起業・キャリア</span>
+        </div>
+        <p class="editor-bio">
+          キャリアの選択肢を広げる記事を軸に、働き方や組織のあり方を取材している。「正解がないからこそ、多くの事例を届けたい」という考えで取材に臨む。
+        </p>
+      </div>
+      <div class="editor-card-footer">
+        <div class="editor-stat">
+          <span class="editor-stat-num">11</span>
+          <span class="editor-stat-label">担当記事数</span>
+        </div>
+        <div class="editor-stat-divider"></div>
+        <div class="editor-stat">
+          <span class="editor-stat-num">7</span>
+          <span class="editor-stat-label">インタビュー数</span>
+        </div>
+        <div class="editor-stat-divider"></div>
+        <div class="editor-stat">
+          <span class="editor-stat-num">2025</span>
+          <span class="editor-stat-label">参加年</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 家入 ユウ -->
+    <div class="editor-card fi">
+      <div class="editor-card-top"></div>
+      <div class="editor-card-body">
+        <div class="editor-identity editor-identity--with-x">
+          <div class="editor-avatar">家</div>
+          <div class="editor-name-block">
+            <p class="editor-name">家入 ユウ</p>
+            <p class="editor-role">ディレクター</p>
+          </div>
+          <!-- URL確定後: onclick を削除し href を X プロフィールに差し替え、target="_blank" rel="noopener noreferrer" を付与 -->
+          <a href="#" class="editor-x-btn" onclick="return false;" aria-label="Xアカウント（プロフィールURLは後日公開）" title="Xアカウント">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+        </div>
+        <div class="editor-categories">
+          <span class="cat-chip">クリエイティブ・エンタメ</span>
+        </div>
+        <p class="editor-bio">
+          エンターテインメントやクリエイティブ業界を中心に取材中。作り手の想いや制作の裏側を、同じ熱量で読者に届けることを目標にしている。好きなものに正直な企画力が持ち味。
+        </p>
+      </div>
+      <div class="editor-card-footer">
+        <div class="editor-stat">
+          <span class="editor-stat-num">3</span>
+          <span class="editor-stat-label">担当記事数</span>
+        </div>
+        <div class="editor-stat-divider"></div>
+        <div class="editor-stat">
+          <span class="editor-stat-num">1</span>
+          <span class="editor-stat-label">インタビュー数</span>
+        </div>
+        <div class="editor-stat-divider"></div>
+        <div class="editor-stat">
+          <span class="editor-stat-num">2025</span>
           <span class="editor-stat-label">参加年</span>
         </div>
       </div>
@@ -678,6 +897,7 @@ const io = new IntersectionObserver(entries => {
 }, { threshold: 0.08 });
 document.querySelectorAll('.fi').forEach(el => io.observe(el));
 </script>
+<script src="../shared/anime-redact.js" defer></script>
 
 </body>
 </html>
