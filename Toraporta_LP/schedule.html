@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>配信予定一覧 | 株式会社トラポルタ</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Bebas+Neue&display=swap" rel="stylesheet">
 <style>
 /* ── Toraporta デザイン基軸 ── */
 :root {
@@ -14,86 +14,88 @@
   --accent:  #29ae86;
   --accent2: #ffdd00;
   --accent3: #73d260;
-  --gray:    #7a7490;
+  --gray:    #4a435c;
   --border:  #dddae8;
   --surface: #f2f0f8;
   --font-display: 'Noto Sans JP', sans-serif;
   --font-mono: 'Noto Sans JP', sans-serif;
+  --layout-pad-x: clamp(48px, 6vw, 140px);
+  --text-inset: 36px;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  width: 100%;
+  max-width: 100%;
+}
 body {
   background: var(--white);
   color: var(--black);
   font-family: var(--font-display);
-  font-weight: 500;
+  font-weight: 400;
   min-height: 100vh;
   line-height: 1.8;
+  width: 100%;
+  max-width: 100%;
 }
 p { font-weight: 400; }
 ::-webkit-scrollbar { width: 2px; }
 ::-webkit-scrollbar-track { background: var(--white); }
 ::-webkit-scrollbar-thumb { background: var(--accent); }
 
-/* ── NAV（Toraporta 統一） ── */
+/* ── NAV（Toraporta.html と同一） ── */
 nav {
   position: fixed;
-  inset: 0 0 auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  max-width: 100%;
   z-index: 100;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 60px;
+  padding: 0 var(--layout-pad-x);
   height: 64px;
-  background: rgba(251,252,251,.94);
-  backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--border);
+  box-sizing: border-box;
+  background: #29ae86;
+  border-bottom: 1px solid rgba(255,255,255,.22);
 }
 .nav-logo {
   font-family: 'Bebas Neue', 'Noto Sans JP', sans-serif;
   font-size: 20px;
   letter-spacing: .35em;
-  color: var(--black);
+  color: var(--white);
   text-decoration: none;
 }
-.nav-logo span { color: var(--accent); }
+.nav-logo span { color: var(--accent2); }
 nav ul { display: flex; gap: 36px; list-style: none; }
 nav a {
   font-size: 16px;
   letter-spacing: .15em;
-  color: var(--gray);
+  color: rgba(251,252,251,.88);
   text-decoration: none;
   text-transform: uppercase;
   transition: color .25s;
 }
-nav a:hover { color: var(--accent); }
-.nav-back {
-  font-size: 16px;
-  letter-spacing: .12em;
-  color: var(--gray);
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  transition: color .25s;
-}
-.nav-back:hover { color: var(--accent); }
-.nav-back::before { content: '←'; }
 
 /* ── PAGE HERO ── */
 .schedule-hero {
-  padding: 112px 60px 64px;
+  padding: 112px var(--layout-pad-x) 64px;
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
   gap: 40px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 .schedule-hero-label {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 700;
-  letter-spacing: .18em;
+  letter-spacing: .14em;
   color: var(--accent);
   text-transform: uppercase;
   margin-bottom: 20px;
@@ -105,16 +107,13 @@ nav a:hover { color: var(--accent); }
   line-height: 1.1;
   color: var(--black);
 }
-.schedule-hero h1 em {
-  font-style: normal;
-  color: var(--accent);
-}
 .schedule-hero-right {
   max-width: 380px;
   flex-shrink: 0;
 }
 .schedule-hero-desc {
-  font-size: 16px;
+  font-size: 15px;
+  font-weight: 400;
   color: var(--gray);
   line-height: 2;
   letter-spacing: .04em;
@@ -122,13 +121,16 @@ nav a:hover { color: var(--accent); }
 
 /* ── FILTER BAR ── */
 .filter-wrap {
-  padding: 28px 60px;
+  padding: 28px 0;
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 20px;
   flex-wrap: wrap;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 .filter-group {
   display: flex;
@@ -136,27 +138,33 @@ nav a:hover { color: var(--accent); }
   gap: 6px;
   flex-wrap: wrap;
 }
+.filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
 .filter-label {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 700;
-  letter-spacing: .18em;
+  letter-spacing: .12em;
   color: var(--gray);
   text-transform: uppercase;
   margin-right: 6px;
 }
 .filter-btn {
   font-family: var(--font-display);
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
-  letter-spacing: .08em;
-  padding: 6px 14px;
+  letter-spacing: .06em;
+  padding: 8px 16px;
   border: 1px solid var(--border);
   background: transparent;
   color: var(--gray);
   cursor: pointer;
   transition: all .25s;
 }
-.filter-btn:hover {
+.filter-btn:not(.active):hover {
   border-color: var(--black);
   color: var(--black);
   background: var(--surface);
@@ -167,23 +175,35 @@ nav a:hover { color: var(--accent); }
   color: var(--white);
 }
 .item-count {
-  font-size: 16px;
-  letter-spacing: .12em;
+  font-size: 15px;
+  letter-spacing: .08em;
   color: var(--gray);
   white-space: nowrap;
 }
 
+/* フィルター〜リストを同一幅で揃える（Toraporta footer と同じ 1200px 基準） */
+.schedule-below-hero {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--layout-pad-x);
+  box-sizing: border-box;
+  width: 100%;
+}
+
 /* ── SECTION HEADING ── */
 .section-head {
-  padding: 40px 60px 24px;
+  padding: 40px 0 0;
   display: flex;
   align-items: center;
   gap: 16px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 .section-title {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 700;
-  letter-spacing: .2em;
+  letter-spacing: .14em;
   color: var(--gray);
   text-transform: uppercase;
   white-space: nowrap;
@@ -194,205 +214,327 @@ nav a:hover { color: var(--accent); }
   background: var(--border);
 }
 
-/* ── CARDS GRID ── */
-.cards-wrap {
-  padding: 0 60px 100px;
+/* ── LIST LAYOUT ── */
+.list-wrap {
+  padding: 0 0 100px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
-.cards-grid {
+/* PC：Category と「もっと見る」の間に余白を取る */
+.list-header {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1px;
-  background: var(--border);
-  border: 1px solid var(--border);
+  /* 第3・4列をヘッダーと行で同一幅にし、Category とカテゴリボックスの始点を揃える */
+  grid-template-columns: 88px minmax(0, 1fr) 13rem 10rem;
+  gap: 20px 32px;
+  align-items: center;
+  padding: 20px 0 14px;
+  border-bottom: 2px solid var(--black);
+}
+.list-header-cell:nth-child(3) {
+  justify-self: start;
+  text-align: left;
+}
+.list-header-action {
+  text-align: left;
+  justify-self: start;
+  min-width: 0;
+}
+.list-header-cell {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  color: var(--gray);
+  text-transform: uppercase;
 }
 
-/* ── CARD ── */
-.card {
-  background: var(--white);
-  overflow: hidden;
-  cursor: pointer;
-  transition: background .25s;
-  animation: cardFadeIn .4s ease both;
-  position: relative;
+/* ── LIST ENTRY (wrapper) ── */
+.list-entry {
+  border-bottom: 1px solid var(--border);
+  animation: listFadeIn .4s ease both;
 }
-.card:nth-child(1) { animation-delay: .04s; }
-.card:nth-child(2) { animation-delay: .08s; }
-.card:nth-child(3) { animation-delay: .12s; }
-.card:nth-child(4) { animation-delay: .16s; }
-.card:nth-child(5) { animation-delay: .20s; }
-.card:nth-child(6) { animation-delay: .24s; }
-@keyframes cardFadeIn {
-  from { opacity: 0; transform: translateY(12px); }
+.list-entry:nth-child(1) { animation-delay: .03s; }
+.list-entry:nth-child(2) { animation-delay: .06s; }
+.list-entry:nth-child(3) { animation-delay: .09s; }
+.list-entry:nth-child(4) { animation-delay: .12s; }
+@keyframes listFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-.card:hover { background: var(--surface); }
-.card:hover .card-thumb-ph { transform: scale(1.03); }
 
-.card-featured {
-  grid-column: span 3;
+/* ── LIST ITEM (clickable header row) ── */
+.list-item {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-}
-.card-thumb {
-  position: relative;
-  overflow: hidden;
-  aspect-ratio: 16/9;
-}
-.card-featured .card-thumb {
-  aspect-ratio: unset;
-  min-height: 300px;
-}
-.card-thumb-ph {
-  width: 100%;
-  height: 100%;
-  display: flex;
+  grid-template-columns: 88px minmax(0, 1fr) 13rem 10rem;
+  gap: 20px 32px;
   align-items: center;
-  justify-content: center;
-  transition: transform .6s cubic-bezier(.16, 1, .3, 1);
-}
-.card-thumb-ph span {
-  font-family: 'Bebas Neue', 'Noto Sans JP', sans-serif;
-  font-size: 80px;
-  font-weight: 500;
-  color: rgba(14,0,46,.07);
-  letter-spacing: .05em;
+  padding: 22px 0;
+  cursor: pointer;
+  transition: background .2s;
   user-select: none;
-}
-.ph-1 { background: linear-gradient(135deg, #e8f5f0 0%, #c8ead9 100%); }
-.ph-2 { background: linear-gradient(135deg, #fffbe6 0%, #fff0a0 100%); }
-.ph-3 { background: linear-gradient(135deg, #eaf5e6 0%, #caeac0 100%); }
-.ph-4 { background: linear-gradient(135deg, #e8f5f0 0%, #b8e0d0 100%); }
-.ph-5 { background: linear-gradient(135deg, #fffbe6 0%, #e8f5e0 100%); }
-.ph-6 { background: linear-gradient(135deg, #eaf5e6 0%, #c8ead9 100%); }
-
-.badge {
-  position: absolute;
-  bottom: 12px;
-  left: 12px;
-  font-size: 16px;
-  font-weight: 700;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  padding: 4px 10px;
-}
-.badge-live { background: var(--accent); color: var(--white); }
-.badge-live::before { content: '● '; animation: blink 1.2s ease-in-out infinite; }
-@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-.badge-upcoming { background: var(--white); color: var(--black); border: 1px solid var(--border); }
-.badge-archive { background: var(--surface); color: var(--gray); border: 1px solid var(--border); }
-.badge-ended   { background: var(--surface); color: var(--gray); border: 1px solid var(--border); }
-
-.type-tag {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  font-size: 16px;
-  font-weight: 700;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  padding: 3px 8px;
-  background: rgba(251,252,251,.9);
-  color: var(--gray);
-  border: 1px solid var(--border);
-  backdrop-filter: blur(4px);
+  overflow: visible;
 }
 
-.card-body { padding: 24px 28px 28px; }
-.card-featured .card-body {
-  padding: 40px 48px;
+/* No. */
+.item-no {
+  font-family: 'Bebas Neue', 'Noto Sans JP', sans-serif;
+  font-size: 28px;
+  letter-spacing: .04em;
+  color: rgba(14,0,46,.22);
+  line-height: 1;
+}
+
+/* タイトル＋説明 */
+.item-info { min-width: 0; }
+.item-title {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  line-height: 1.5;
+  color: #29ae86;
+  margin-bottom: 6px;
+  transition: color .25s;
+}
+.item-meta {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 4px;
+  max-width: 100%;
 }
-.card-meta { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
-.card-date { font-size: 16px; font-weight: 700; letter-spacing: .1em; color: var(--accent); }
-.card-platform { font-size: 16px; letter-spacing: .06em; color: var(--gray); }
-.card-title {
-  font-size: 16px;
-  font-weight: 500;
+.item-date {
+  font-size: 15px;
+  font-weight: 700;
   letter-spacing: .04em;
+  color: #0e002e;
   line-height: 1.6;
-  color: var(--black);
-  margin-bottom: 10px;
+  white-space: normal;
+  word-break: break-word;
 }
-.card-featured .card-title {
-  font-size: 22px;
-  font-weight: 500;
-  line-height: 1.5;
-  margin-bottom: 16px;
-}
-.card-desc {
-  font-size: 16px;
-  color: var(--gray);
-  line-height: 1.9;
+.item-platform {
+  font-size: 15px;
   letter-spacing: .03em;
-  margin-bottom: 18px;
+  color: var(--gray);
+  line-height: 1.65;
+  white-space: normal;
+  word-break: break-word;
+  max-width: 100%;
+}
+.item-desc {
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--gray);
+  line-height: 1.7;
+  letter-spacing: .03em;
+  margin-top: 6px;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
-.card-featured .card-desc { -webkit-line-clamp: 5; font-size: 16px; }
-.card-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px; }
-.card-tag {
-  font-size: 16px;
+/* PC：アコーディオン展開時はあらすじ全文 */
+.list-entry.open .item-desc {
+  display: block;
+  -webkit-line-clamp: unset;
+  overflow: visible;
+}
+
+/* カテゴリ */
+.item-category {
+  font-size: 15px;
   font-weight: 700;
-  letter-spacing: .08em;
-  padding: 3px 8px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--black);
+  padding: 6px 12px;
   border: 1px solid var(--border);
+  text-align: left;
+  white-space: normal;
+  max-width: 100%;
+  line-height: 1.45;
+}
+
+/* もっと見る（Tbar ボタン風：塗り＋矢印） */
+.item-toggle {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  justify-self: start;
+  width: auto;
+  min-width: 0;
+  overflow: visible;
+  box-sizing: border-box;
+}
+.item-more-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  line-height: 1.4;
+  padding: 8px 16px;
+  color: var(--white);
+  background: var(--accent);
+  border: none;
+  white-space: nowrap;
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  transition: background .2s, gap .2s, color .2s, border-color .2s;
+}
+.item-more-text.is-collapsed::after {
+  content: '→';
+  font-size: 15px;
+}
+.item-more-text.is-collapsed:hover {
+  background: #1f9472;
+  gap: 10px;
+}
+.item-more-text.is-expanded { display: none; }
+.list-entry.open .item-more-text.is-collapsed { display: none; }
+/* 閉じる：旧「もっと見る」の枠線スタイル */
+.list-entry.open .item-more-text.is-expanded {
+  display: inline-flex;
+  gap: 0;
+  color: var(--black);
+  background: var(--white);
+  border: 1px solid var(--border);
+  padding: 6px 14px;
+  line-height: 1.45;
+}
+.list-entry.open .item-more-text.is-expanded::after {
+  content: none;
+}
+.list-entry.open .item-more-text.is-expanded:hover {
+  border-color: var(--accent);
+  color: #1f9472;
+  background: var(--surface);
+}
+.item-sp-badges {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px 14px;
+  min-width: 0;
+  justify-self: start;
+}
+
+/* ── EPISODES PANEL ── */
+.episodes {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .4s cubic-bezier(.4,0,.2,1);
+  background: var(--surface);
+}
+.episodes-inner {
+  padding: 0 0 8px;
+}
+
+/* エピソードリストヘッダー */
+.ep-header {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 16px;
+  align-items: center;
+  padding: 16px var(--text-inset) 10px;
+  border-bottom: 1px solid var(--border);
+}
+.ep-header-cell {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: .1em;
   color: var(--gray);
   text-transform: uppercase;
 }
-.card-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-top: 16px;
-  border-top: 1px solid var(--border);
-}
-.card-time { font-size: 16px; letter-spacing: .06em; color: var(--gray); }
-.card-link {
-  font-size: 16px;
-  font-weight: 700;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: var(--accent);
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  transition: gap .2s;
-  border-bottom: 1px solid var(--accent);
-  padding-bottom: 1px;
-}
-.card-link:hover { gap: 14px; }
-.card-link::after { content: '→'; }
 
-.empty {
-  grid-column: 1 / -1;
-  padding: 80px 40px;
-  text-align: center;
+/* エピソード行 */
+.ep-row {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 16px;
+  align-items: start;
+  padding: 14px var(--text-inset);
+  border-bottom: 1px solid rgba(221,218,232,.5);
+  transition: background .15s;
+}
+.ep-row:last-child {
+  border-bottom: none;
+}
+.ep-no {
+  font-family: 'Bebas Neue', 'Noto Sans JP', sans-serif;
+  font-size: 20px;
+  letter-spacing: .04em;
+  color: rgba(14,0,46,.28);
+  line-height: 1.4;
+}
+.ep-info { min-width: 0; }
+.ep-title {
   font-size: 16px;
-  letter-spacing: .12em;
+  font-weight: 600;
+  letter-spacing: .04em;
+  line-height: 1.5;
+  color: var(--black);
+  margin-bottom: 4px;
+}
+.ep-synopsis {
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--gray);
+  line-height: 1.8;
+  letter-spacing: .03em;
+}
+.ep-tver {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  padding: 6px 14px;
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  color: var(--accent);
+  background: var(--white);
+  border: 1px solid var(--border);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color .2s, border-color .2s, background .2s;
+}
+.ep-tver:hover {
+  color: #1f9472;
+  border-color: var(--accent);
+  background: var(--surface);
+}
+
+/* Empty */
+.empty {
+  padding: 80px 0;
+  text-align: center;
+  font-size: 15px;
+  letter-spacing: .08em;
   color: var(--gray);
   display: none;
-  background: var(--white);
 }
 
 /* ── FOOTER（Toraporta 統一） ── */
 footer {
-  border-top: 1px solid var(--border);
-  padding: 36px 60px;
+  width: 100%;
   max-width: 1200px;
   margin: 0 auto;
+  padding: 36px var(--layout-pad-x);
+  border-top: 1px solid var(--border);
   display: flex;
   align-items: center;
   justify-content: space-between;
+  box-sizing: border-box;
 }
 .footer-logo { font-family: 'Bebas Neue', 'Noto Sans JP', sans-serif; font-size: 17px; letter-spacing: .3em; color: var(--gray); }
 .footer-copy { font-size: 16px; color: var(--gray); letter-spacing: .05em; }
 
-/* ── ハンバーガー（サブページ用） ── */
+/* ── ハンバーガー ── */
 .nav-toggle {
   display: none;
   flex-direction: column;
@@ -402,34 +544,52 @@ footer {
   cursor: pointer;
   padding: 4px;
   z-index: 101;
+  transition: opacity .2s;
+}
+.nav-toggle:hover {
+  opacity: .88;
 }
 .nav-toggle span {
   display: block;
   width: 24px; height: 2px;
-  background: var(--black);
+  background: var(--white);
   transition: transform .3s, opacity .3s;
 }
 .nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
 .nav-toggle.open span:nth-child(2) { opacity: 0; }
 .nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
+/* ── RESPONSIVE ── */
 @media (max-width: 960px) {
-  .cards-grid { grid-template-columns: repeat(2, 1fr); }
-  .card-featured { grid-column: span 2; grid-template-columns: 1fr; }
-  .card-featured .card-thumb { min-height: 220px; }
+  .list-header,
+  .list-item {
+    grid-template-columns: 64px minmax(0, 1fr) 11rem 9rem;
+    gap: 14px 24px;
+  }
+  .item-no { font-size: 22px; }
+  .ep-row, .ep-header { padding-left: var(--text-inset); padding-right: var(--text-inset); }
 }
+
 @media (max-width: 768px) {
-  nav { padding: 0 24px; }
+  :root {
+    --layout-pad-x: clamp(20px, 5.5vw, 40px);
+    --text-inset: 16px;
+  }
   .nav-toggle { display: flex; }
   nav ul {
     display: none;
     position: fixed;
-    inset: 64px 0 0;
+    top: 64px;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
     background: var(--white);
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    padding: 40px 24px 32px;
+    padding: 40px var(--layout-pad-x) 32px;
     gap: 28px;
     z-index: 9999;
     overflow-y: auto;
@@ -437,12 +597,194 @@ footer {
     min-height: calc(100vh - 64px);
   }
   nav ul.open { display: flex; }
-  .schedule-hero, .filter-wrap, .cards-wrap, .section-head { padding-left: 24px; padding-right: 24px; }
-  .schedule-hero { flex-direction: column; align-items: flex-start; padding-top: 100px; }
+  nav ul li a {
+    font-size: 16px;
+    letter-spacing: .22em;
+    color: var(--gray);
+  }
+  .schedule-hero {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+    padding: 100px var(--layout-pad-x) 48px;
+  }
+  .schedule-hero h1 {
+    font-size: clamp(34px, 10vw, 48px);
+    line-height: 1.12;
+  }
+  .schedule-hero-desc { line-height: 1.85; }
+
+  /* フィルター：ファーストビュー負荷を下げる（コンパクト＋横スクロール） */
+  .filter-wrap {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding: 10px 0 12px;
+  }
+  .filter-group {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    width: 100%;
+    max-width: 100%;
+  }
+  .filter-label {
+    margin-right: 0;
+    margin-bottom: 0;
+    font-size: 13px;
+    letter-spacing: .1em;
+  }
+  .filter-chips {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 8px;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    padding: 2px 0 8px;
+    margin-right: calc(-1 * var(--layout-pad-x));
+    padding-right: var(--layout-pad-x);
+    box-sizing: content-box;
+  }
+  .filter-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    min-height: 40px;
+    padding: 8px 14px;
+    width: auto;
+    max-width: none;
+    white-space: nowrap;
+    font-size: 14px;
+  }
+  .item-count {
+    align-self: flex-end;
+    font-size: 13px;
+    margin-top: 2px;
+  }
+
+  .section-head { padding: 28px 0 0; }
+  .list-wrap { padding: 0 0 72px; }
   .schedule-hero-right { max-width: 100%; }
-  .cards-grid { grid-template-columns: 1fr; }
-  .card-featured { grid-column: span 1; grid-template-columns: 1fr; }
-  footer { padding: 28px 24px; flex-direction: column; gap: 8px; text-align: center; }
+
+  /* SP: リスト行をカード風に */
+  .list-header { display: none; }
+  .list-item {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    gap: 16px;
+    padding: 24px 0;
+  }
+  .item-no { display: none; }
+  .item-info {
+    width: 100%;
+    flex: none;
+    order: 1;
+  }
+  .item-title {
+    font-size: 18px;
+    line-height: 1.45;
+    margin-bottom: 8px;
+  }
+  .item-meta { gap: 12px; margin-top: 2px; }
+  .item-date { font-size: 16px; }
+  .item-platform { font-size: 16px; }
+  /* SP：閉じているときはあらすじを一部のみ／開いたら全文 */
+  .list-entry:not(.open) .item-desc {
+    margin-top: 14px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.85;
+  }
+  .list-entry.open .item-desc {
+    margin-top: 14px;
+    display: block;
+    -webkit-line-clamp: unset;
+    overflow: visible;
+    line-height: 1.85;
+  }
+  .item-sp-badges {
+    order: 2;
+    width: 100%;
+    gap: 12px 14px;
+  }
+  .item-toggle {
+    order: 3;
+    width: 100%;
+    max-width: none;
+    justify-self: stretch;
+    justify-content: center;
+    margin-left: 0;
+    margin-top: 12px;
+  }
+  .item-more-text {
+    display: none;
+    width: 100%;
+    max-width: 20rem;
+    margin-inline: auto;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 12px 18px;
+    min-height: 48px;
+    border: none;
+    border-radius: 0;
+    background: var(--accent);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    color: var(--white);
+    box-sizing: border-box;
+  }
+  .item-more-text.is-collapsed::after {
+    content: '→';
+    font-size: 15px;
+    margin-left: 4px;
+  }
+  .item-more-text.is-expanded {
+    border: 1px solid var(--border);
+    background: var(--white);
+    color: var(--black);
+  }
+  .item-more-text.is-expanded::after {
+    content: none;
+  }
+  .list-entry:not(.open) .item-more-text.is-collapsed { display: inline-flex; }
+  .list-entry.open .item-more-text.is-expanded { display: inline-flex; }
+
+  /* SP: エピソード行 */
+  .ep-header { display: none; }
+  .ep-row {
+    grid-template-columns: 40px 1fr;
+    gap: 12px 14px;
+    padding: 16px var(--text-inset);
+  }
+  .ep-title { font-size: 17px; }
+  .ep-synopsis { line-height: 1.85; }
+  .ep-tver {
+    width: 100%;
+    max-width: 100%;
+    justify-content: center;
+    margin-top: 12px;
+    min-height: 48px;
+    padding: 12px 18px;
+    color: var(--accent);
+    background: var(--white);
+    border: 1px solid var(--border);
+  }
+
+  .empty { padding: 64px 0; }
+
+  footer { flex-direction: column; gap: 8px; text-align: center; padding: 28px var(--layout-pad-x); }
 }
 </style>
 <link rel="stylesheet" href="../shared/anime-redact.css">
@@ -459,7 +801,6 @@ footer {
     <li><a href="Toraporta.html#recruit">Recruit</a></li>
     <li><a href="Toraporta.html#contact">Contact</a></li>
   </ul>
-  <a href="Toraporta.html#service" class="nav-back">Service</a>
   <button class="nav-toggle" id="navToggle" aria-label="メニュー">
     <span></span><span></span><span></span>
   </button>
@@ -468,206 +809,258 @@ footer {
 <section class="schedule-hero">
   <div class="schedule-hero-left">
     <p class="schedule-hero-label">Media — Broadcast &amp; Streaming</p>
-    <h1>配信<em>予定</em><br>一覧</h1>
+    <h1>配信予定一覧</h1>
   </div>
   <div class="schedule-hero-right">
     <p class="schedule-hero-desc">
       トラポルタが制作・演出に関わる配信コンテンツの最新スケジュールです。
-      テレビ番組、不定期特番、ラジオ、YouTubeなど、多彩なフォーマットでお届けします。
+      テレビ番組、不定期特番、ラジオ、Yootubeなど、多彩なフォーマットでお届けします。
     </p>
   </div>
 </section>
 
-<div class="filter-wrap">
-  <div class="filter-group">
-    <span class="filter-label">Filter</span>
-    <button class="filter-btn active" data-filter="all">すべて</button>
-    <button class="filter-btn" data-filter="tv">テレビ番組</button>
-    <button class="filter-btn" data-filter="special">不定期特番</button>
-    <button class="filter-btn" data-filter="radio">ラジオ</button>
-    <button class="filter-btn" data-filter="youtube">Youtube</button>
-    <button class="filter-btn" data-filter="other">その他</button>
-  </div>
-  <div class="filter-group">
-    <span class="filter-label">Status</span>
-    <button class="filter-btn" data-filter="live">配信中</button>
-    <button class="filter-btn" data-filter="upcoming">配信予定</button>
-    <button class="filter-btn" data-filter="archive">アーカイブ</button>
-  </div>
-  <span class="item-count" id="item-count">6 items</span>
-</div>
-
+<div class="schedule-below-hero">
 <div class="section-head">
   <span class="section-title">All Contents</span>
   <div class="section-rule"></div>
 </div>
 
-<div class="cards-wrap">
-  <div class="cards-grid" id="cards-grid">
+<div class="filter-wrap">
+  <div class="filter-group">
+    <span class="filter-label">Filter</span>
+    <div class="filter-chips">
+      <button class="filter-btn active" data-filter="all">すべて</button>
+      <button class="filter-btn" data-filter="tv">テレビ番組</button>
+      <button class="filter-btn" data-filter="special">不定期特番</button>
+      <button class="filter-btn" data-filter="radio">ラジオ</button>
+      <button class="filter-btn" data-filter="youtube">Yootube</button>
+      <button class="filter-btn" data-filter="other">その他</button>
+    </div>
+  </div>
+  <span class="item-count" id="item-count">4 items</span>
+</div>
 
-    <!-- カード01：特集（1行目・横長） data-category: tv / special / radio / youtube / other  data-status: live / upcoming / archive -->
-    <article class="card card-featured" data-category="tv" data-status="live">
-      <div class="card-thumb ph-1">
-        <div class="card-thumb-ph"><span>01</span></div>
-        <span class="badge badge-live">On Air</span>
-        <span class="type-tag">テレビ番組</span>
-      </div>
-      <div class="card-body">
-        <div class="card-meta">
-          <span class="card-date">日付・曜日・時間</span>
-          <span class="card-platform">放送局・プラットフォーム</span>
-        </div>
-        <h2 class="card-title">番組タイトル（ここに記載）</h2>
-        <p class="card-desc">番組の説明文をここに記載します。あらすじや見どころなどを2〜3行で入力してください。</p>
-        <div class="card-tags"></div>
-        <div class="card-footer">
-          <span class="card-time">放送時間・更新日など</span>
-          <a href="#" class="card-link">詳細を見る</a>
-        </div>
-      </div>
-    </article>
+<div class="list-wrap">
 
-    <!-- カード02 data-category / data-status を必要に応じて変更 -->
-    <article class="card" data-category="tv" data-status="upcoming">
-      <div class="card-thumb ph-2">
-        <div class="card-thumb-ph"><span>02</span></div>
-        <span class="badge badge-upcoming">Upcoming</span>
-        <span class="type-tag">テレビ番組</span>
-      </div>
-      <div class="card-body">
-        <div class="card-meta">
-          <span class="card-date">日付・曜日・時間</span>
-          <span class="card-platform">放送局・プラットフォーム</span>
-        </div>
-        <h2 class="card-title">番組タイトル（ここに記載）</h2>
-        <p class="card-desc">番組の説明文をここに記載します。</p>
-        <div class="card-tags"></div>
-        <div class="card-footer">
-          <span class="card-time">放送時間・更新日など</span>
-          <a href="#" class="card-link">詳細を見る</a>
-        </div>
-      </div>
-    </article>
+  <!-- リストヘッダー（PCのみ表示） -->
+  <div class="list-header">
+    <div class="list-header-cell">No.</div>
+    <div class="list-header-cell">Title</div>
+    <div class="list-header-cell">Category</div>
+    <div class="list-header-cell list-header-action"></div>
+  </div>
 
-    <!-- カード03 -->
-    <article class="card" data-category="special" data-status="upcoming">
-      <div class="card-thumb ph-3">
-        <div class="card-thumb-ph"><span>03</span></div>
-        <span class="badge badge-upcoming">Upcoming</span>
-        <span class="type-tag">不定期特番</span>
-      </div>
-      <div class="card-body">
-        <div class="card-meta">
-          <span class="card-date">日付・曜日・時間</span>
-          <span class="card-platform">放送局・プラットフォーム</span>
-        </div>
-        <h2 class="card-title">番組タイトル（ここに記載）</h2>
-        <p class="card-desc">番組の説明文をここに記載します。</p>
-        <div class="card-tags"></div>
-        <div class="card-footer">
-          <span class="card-time">放送時間・更新日など</span>
-          <a href="#" class="card-link">詳細を見る</a>
-        </div>
-      </div>
-    </article>
+  <div id="list-container">
 
-    <!-- カード04 -->
-    <article class="card" data-category="youtube" data-status="live">
-      <div class="card-thumb ph-4">
-        <div class="card-thumb-ph"><span>04</span></div>
-        <span class="badge badge-live">On Air</span>
-        <span class="type-tag">YouTube</span>
-      </div>
-      <div class="card-body">
-        <div class="card-meta">
-          <span class="card-date">日付・配信日</span>
-          <span class="card-platform">YouTube</span>
+    <!-- ===== 01 観測が完了しました ===== -->
+    <div class="list-entry" data-category="tv">
+      <div class="list-item">
+        <div class="item-no">01</div>
+        <div class="item-info">
+          <div class="item-title">観測が完了しました</div>
+          <div class="item-meta">
+            <span class="item-date">毎週火曜 25:00〜</span>
+            <span class="item-platform">エドテレビ</span>
+          </div>
+          <p class="item-desc">ある研究機関で行われていた実験を追う、科学ドキュメンタリー特集。当番組では、当時の研究者へのインタビューとともに、残された観測記録や実験映像をもとに、その研究の全貌を検証していく。</p>
         </div>
-        <h2 class="card-title">番組タイトル（ここに記載）</h2>
-        <p class="card-desc">番組の説明文をここに記載します。</p>
-        <div class="card-tags"></div>
-        <div class="card-footer">
-          <span class="card-time">配信スケジュールなど</span>
-          <a href="#" class="card-link">視聴する</a>
+        <div class="item-sp-badges">
+          <span class="item-category">テレビ番組</span>
+        </div>
+        <div class="item-toggle">
+          <span class="item-more-text is-collapsed">もっと見る</span>
+          <span class="item-more-text is-expanded">閉じる</span>
         </div>
       </div>
-    </article>
+      <div class="episodes">
+        <div class="episodes-inner">
+          <div class="ep-header">
+            <div class="ep-header-cell">Ep.</div>
+            <div class="ep-header-cell">Subtitle</div>
+          </div>
+          <div class="ep-row">
+            <div class="ep-no">01</div>
+            <div class="ep-info">
+              <div class="ep-title">番組について</div>
+              <p class="ep-synopsis">各話のサブタイトル・あらすじ・視聴リンクは確定次第、こちらに追記してください。</p>
+              <a href="https://tver.jp/" class="ep-tver" onclick="event.stopPropagation()">Tbarで視聴</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    <!-- カード05 -->
-    <article class="card" data-category="tv" data-status="archive">
-      <div class="card-thumb ph-5">
-        <div class="card-thumb-ph"><span>05</span></div>
-        <span class="badge badge-archive">Archive</span>
-        <span class="type-tag">テレビ番組</span>
-      </div>
-      <div class="card-body">
-        <div class="card-meta">
-          <span class="card-date">放送期間・日付</span>
-          <span class="card-platform">放送局・プラットフォーム</span>
+    <!-- ===== 02 実録バラエティ 街のクチコミ全部試します！ ===== -->
+    <div class="list-entry" data-category="tv youtube">
+      <div class="list-item">
+        <div class="item-no">02</div>
+        <div class="item-info">
+          <div class="item-title">実録バラエティ 街のクチコミ全部試します！</div>
+          <div class="item-meta">
+            <span class="item-date">毎週木曜 26:00〜</span>
+            <span class="item-platform">エドテレビ</span>
+          </div>
+          <p class="item-desc">街で噂になっている「ちょっと気になるクチコミ」を実際に検証する体験型バラエティ。ゲストが視聴者投稿の情報をもとに現地を訪れ、噂の真偽を体当たりで確かめていく。</p>
         </div>
-        <h2 class="card-title">番組タイトル（ここに記載）</h2>
-        <p class="card-desc">番組の説明文をここに記載します。</p>
-        <div class="card-tags"></div>
-        <div class="card-footer">
-          <span class="card-time">アーカイブ公開中 など</span>
-          <a href="#" class="card-link">視聴する</a>
+        <div class="item-sp-badges">
+          <span class="item-category">テレビ／Yootube</span>
+        </div>
+        <div class="item-toggle">
+          <span class="item-more-text is-collapsed">もっと見る</span>
+          <span class="item-more-text is-expanded">閉じる</span>
         </div>
       </div>
-    </article>
+      <div class="episodes">
+        <div class="episodes-inner">
+          <div class="ep-header">
+            <div class="ep-header-cell">Ep.</div>
+            <div class="ep-header-cell">Subtitle</div>
+          </div>
+          <div class="ep-row">
+            <div class="ep-no">01</div>
+            <div class="ep-info">
+              <div class="ep-title">番組について</div>
+              <p class="ep-synopsis">各話のサブタイトル・あらすじ・視聴リンクは確定次第、こちらに追記してください。</p>
+              <a href="https://www.youtube.com/" class="ep-tver" onclick="event.stopPropagation()">Yootubeで視聴</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    <!-- カード06 -->
-    <article class="card" data-category="other" data-status="upcoming">
-      <div class="card-thumb ph-6">
-        <div class="card-thumb-ph"><span>06</span></div>
-        <span class="badge badge-upcoming">Upcoming</span>
-        <span class="type-tag">その他</span>
-      </div>
-      <div class="card-body">
-        <div class="card-meta">
-          <span class="card-date">日付・曜日・時間</span>
-          <span class="card-platform">プラットフォーム</span>
+    <!-- ===== 03 大阪01のなにそれ捕物帖 ===== -->
+    <div class="list-entry" data-category="tv">
+      <div class="list-item">
+        <div class="item-no">03</div>
+        <div class="item-info">
+          <div class="item-title">大阪01のなにそれ捕物帖</div>
+          <div class="item-meta">
+            <span class="item-date">隔週水曜（※開始時刻は要確認）</span>
+            <span class="item-platform">エドテレビ</span>
+          </div>
+          <p class="item-desc">視聴者から寄せられた「ちょっと気になる疑問」や「確かめてほしいこと」を、人気芸人たちが実際に調査する体験型バラエティ。街のウワサから個人的な悩みまで、さまざまな依頼に体当たりで向き合っていく。　制作協力：トラポルタ</p>
         </div>
-        <h2 class="card-title">番組タイトル（ここに記載）</h2>
-        <p class="card-desc">番組の説明文をここに記載します。</p>
-        <div class="card-tags"></div>
-        <div class="card-footer">
-          <span class="card-time">放送時間・イベント日など</span>
-          <a href="#" class="card-link">詳細を見る</a>
+        <div class="item-sp-badges">
+          <span class="item-category">テレビ番組</span>
+        </div>
+        <div class="item-toggle">
+          <span class="item-more-text is-collapsed">もっと見る</span>
+          <span class="item-more-text is-expanded">閉じる</span>
         </div>
       </div>
-    </article>
+      <div class="episodes">
+        <div class="episodes-inner">
+          <div class="ep-header">
+            <div class="ep-header-cell">Ep.</div>
+            <div class="ep-header-cell">Subtitle</div>
+          </div>
+          <div class="ep-row">
+            <div class="ep-no">01</div>
+            <div class="ep-info">
+              <div class="ep-title">番組について</div>
+              <p class="ep-synopsis">各話のサブタイトル・あらすじ・視聴リンクは確定次第、こちらに追記してください。</p>
+              <a href="https://tver.jp/" class="ep-tver" onclick="event.stopPropagation()">Tbarで視聴</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    <div class="empty" id="empty">該当するコンテンツが見つかりませんでした</div>
+    <!-- ===== 04 お蔵入り保管室 ===== -->
+    <div class="list-entry" data-category="radio">
+      <div class="list-item">
+        <div class="item-no">04</div>
+        <div class="item-info">
+          <div class="item-title">お蔵入り保管室</div>
+          <div class="item-meta">
+            <span class="item-date">Potcastにて配信中</span>
+            <span class="item-platform">　</span>
+          </div>
+          <p class="item-desc">過去の放送で扱いきれなかった投稿や、未解決のまま残されたリスナーの体験談を再検証する番組。関係者への追加取材や音声記録をもとに、断片的な情報を整理しながら出来事の全体像に迫っていく。</p>
+        </div>
+        <div class="item-sp-badges">
+          <span class="item-category">ラジオ</span>
+        </div>
+        <div class="item-toggle">
+          <span class="item-more-text is-collapsed">もっと見る</span>
+          <span class="item-more-text is-expanded">閉じる</span>
+        </div>
+      </div>
+      <div class="episodes">
+        <div class="episodes-inner">
+          <div class="ep-header">
+            <div class="ep-header-cell">Ep.</div>
+            <div class="ep-header-cell">Subtitle</div>
+          </div>
+          <div class="ep-row">
+            <div class="ep-no">01</div>
+            <div class="ep-info">
+              <div class="ep-title">番組について</div>
+              <p class="ep-synopsis">各エピソードのタイトル・概要・配信リンクは確定次第、こちらに追記してください。</p>
+              <a href="https://open.spotify.com/intl-ja" class="ep-tver" onclick="event.stopPropagation()">Potcastで聴く</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
   </div>
+
+  <div class="empty" id="empty">該当するコンテンツが見つかりませんでした</div>
+
+</div>
 </div>
 
 <footer>
   <p class="footer-logo">TRAPORTA</p>
-  <p class="footer-copy">© 2024 株式会社トラポルタ. All rights reserved.</p>
+  <p class="footer-copy">©株式会社トラポルタ 2010</p>
 </footer>
 
 <script>
 (function() {
-  const filterBtns = document.querySelectorAll('.filter-btn');
-  const cards = document.querySelectorAll('.card');
-  const itemCount = document.getElementById('item-count');
-  const empty = document.getElementById('empty');
+  /* ── アコーディオン ── */
+  var entries = document.querySelectorAll('.list-entry');
+  entries.forEach(function(entry) {
+    var header = entry.querySelector('.list-item');
+    var panel  = entry.querySelector('.episodes');
+    if (!header || !panel) return;
 
-  function filterCards() {
-    const activeBtn = document.querySelector('.filter-btn.active');
+    header.addEventListener('click', function() {
+      var isOpen = entry.classList.contains('open');
+
+      if (isOpen) {
+        panel.style.maxHeight = panel.scrollHeight + 'px';
+        panel.offsetHeight; /* reflow */
+        panel.style.maxHeight = '0';
+        entry.classList.remove('open');
+      } else {
+        entry.classList.add('open');
+        panel.style.maxHeight = panel.scrollHeight + 'px';
+      }
+    });
+  });
+
+  /* ── フィルター ── */
+  var filterBtns = document.querySelectorAll('.filter-btn');
+  var itemCount  = document.getElementById('item-count');
+  var empty      = document.getElementById('empty');
+
+  function filterItems() {
+    var activeBtn = document.querySelector('.filter-btn.active');
     if (!activeBtn) return;
-    const f = activeBtn.dataset.filter;
-    let count = 0;
-    cards.forEach(function(card) {
-      const cat = card.dataset.category;
-      const status = card.dataset.status;
-      const show = f === 'all' || cat === f ||
-        (f === 'live' && status === 'live') ||
-        (f === 'upcoming' && status === 'upcoming') ||
-        (f === 'archive' && (status === 'archive' || status === 'ended'));
-      card.style.display = show ? '' : 'none';
+    var f = activeBtn.dataset.filter;
+    var count = 0;
+    entries.forEach(function(entry) {
+      var catRaw = entry.getAttribute('data-category') || '';
+      var cats   = catRaw.trim().split(/\s+/).filter(Boolean);
+      var show = f === 'all' || cats.indexOf(f) !== -1;
+      entry.style.display = show ? '' : 'none';
       if (show) count++;
+      if (!show && entry.classList.contains('open')) {
+        entry.classList.remove('open');
+        var p = entry.querySelector('.episodes');
+        if (p) p.style.maxHeight = '0';
+      }
     });
     itemCount.textContent = count + ' items';
     empty.style.display = count === 0 ? 'block' : 'none';
@@ -677,20 +1070,18 @@ footer {
     btn.addEventListener('click', function() {
       filterBtns.forEach(function(b) { b.classList.remove('active'); });
       btn.classList.add('active');
-      filterCards();
+      filterItems();
     });
   });
 
-  // ── ハンバーガーメニュー（Toraporta と同等挙動） ──
+  /* ── ハンバーガーメニュー ── */
   function toggleMenu() {
     var menu = document.getElementById('navMenu');
     var btn  = document.getElementById('navToggle');
     if (!menu || !btn) return;
-
     var willOpen = !menu.classList.contains('open');
     menu.classList.toggle('open', willOpen);
     btn.classList.toggle('open', willOpen);
-
     if (window.innerWidth <= 768) {
       menu.style.display = willOpen ? 'flex' : 'none';
     } else {
@@ -701,23 +1092,18 @@ footer {
     var menu = document.getElementById('navMenu');
     var btn  = document.getElementById('navToggle');
     if (!menu || !btn) return;
-
     menu.classList.remove('open');
     btn.classList.remove('open');
-
     if (window.innerWidth <= 768) {
       menu.style.display = 'none';
     } else {
       menu.style.display = '';
     }
   }
-
   var navToggle = document.getElementById('navToggle');
-  var navMenu = document.getElementById('navMenu');
+  var navMenu   = document.getElementById('navMenu');
   if (navToggle && navMenu) {
-    // ボタンでメニュー開閉
     navToggle.addEventListener('click', toggleMenu);
-    // メニュー内リンクをタップしたらメニューを閉じる
     navMenu.querySelectorAll('a').forEach(function(link) {
       link.addEventListener('click', closeMenu);
     });
