@@ -1108,50 +1108,10 @@ button { font-family: inherit; }
 
     </section>
 
-    <!-- Related Films -->
+    <!-- Related Films（他3作品を読み込みごとにランダム順） -->
     <section class="fi" aria-label="関連作品">
       <h2 class="sec-heading" style="margin-bottom:20px;">関連作品</h2>
-      <div class="related-grid">
-        <a class="related-card" href="NecroGame.html">
-          <div class="related-poster">No Image</div>
-          <div class="related-body">
-            <p class="related-title">ネクロゲーム</p>
-            <p class="related-year">2025年</p>
-            <p class="related-rating">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-              </svg>
-              4.3
-            </p>
-          </div>
-        </a>
-        <a class="related-card" href="#">
-          <div class="related-poster">No Image</div>
-          <div class="related-body">
-            <p class="related-title">関連作品タイトル</p>
-            <p class="related-year">○○○○年</p>
-            <p class="related-rating">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-              </svg>
-              ○.○
-            </p>
-          </div>
-        </a>
-        <a class="related-card" href="#">
-          <div class="related-poster">No Image</div>
-          <div class="related-body">
-            <p class="related-title">関連作品タイトル</p>
-            <p class="related-year">○○○○年</p>
-            <p class="related-rating">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-              </svg>
-              ○.○
-            </p>
-          </div>
-        </a>
-      </div>
+      <div class="related-grid" id="relatedWorksGrid"></div>
     </section>
 
   </main><!-- /main-col -->
@@ -1329,6 +1289,53 @@ button { font-family: inherit; }
   let page = (location.pathname.split('/').pop() || 'index.html').split('?')[0];
   if (!/^[a-zA-Z0-9_.-]+\.html?$/.test(page)) page = 'index.html';
   registerLink.href = 'register-error.html?return=' + encodeURIComponent(page);
+})();
+
+/* 関連作品（他3作品をランダム順で表示） */
+(() => {
+  const CURRENT = 'detective';
+  const grid = document.getElementById('relatedWorksGrid');
+  if (!grid) return;
+
+  const STAR_SVG = '<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>';
+
+  const works = [
+    { id: 'backway', href: 'Backway.html', title: '怪異迫るかえりみち', year: '2025年', rating: '4.4', posterSrc: 'Azagami.webp' },
+    { id: 'detective', href: 'Detective.html', title: '名探偵のメモリー・パレスへようこそ', year: '2025年', rating: '4.5', posterSrc: 'Detective.webp' },
+    { id: 'necrogame', href: 'NecroGame.html', title: 'ネクロゲーム', year: '2025年', rating: '4.3', posterSrc: '' },
+    { id: 'rain', href: 'rain.html', title: '雨降る旧邸に眠る秘密', year: '2025年', rating: '4.3', posterSrc: 'Bird.webp' },
+  ];
+
+  function escAttr(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+  }
+
+  function posterHtml(w) {
+    if (w.posterSrc) {
+      return '<div class="related-poster"><img src="' + w.posterSrc + '" alt="' + escAttr(w.title) + '"></div>';
+    }
+    return '<div class="related-poster">No Image</div>';
+  }
+
+  const others = works.filter(function (x) { return x.id !== CURRENT; });
+  for (var i = others.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = others[i];
+    others[i] = others[j];
+    others[j] = t;
+  }
+
+  grid.innerHTML = others.map(function (w) {
+    return (
+      '<a class="related-card" href="' + w.href + '">' +
+      posterHtml(w) +
+      '<div class="related-body">' +
+      '<p class="related-title">' + w.title + '</p>' +
+      '<p class="related-year">' + w.year + '</p>' +
+      '<p class="related-rating">' + STAR_SVG + ' ' + w.rating + '</p>' +
+      '</div></a>'
+    );
+  }).join('');
 })();
 </script>
 <script src="../shared/anime-redact.js" defer></script>
