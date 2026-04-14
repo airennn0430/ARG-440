@@ -999,6 +999,112 @@ footer {
     box-sizing: border-box;
   }
 }
+
+/* ── CONTACT FORM ── */
+.contact-form-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.contact-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.contact-label {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  color: var(--black);
+}
+.contact-select {
+  appearance: none;
+  -webkit-appearance: none;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 12px 40px 12px 16px;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--black);
+  cursor: pointer;
+  transition: border-color .25s;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239e98b4' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+}
+.contact-select:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.contact-select:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+.contact-message-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 16px;
+  min-height: 140px;
+  transition: border-color .25s;
+}
+.contact-message-box.active {
+  border-color: var(--accent);
+}
+.contact-message-placeholder {
+  color: var(--gray);
+  font-size: 16px;
+  line-height: 1.8;
+}
+.contact-message-hint {
+  font-size: 16px;
+  line-height: 2;
+  color: var(--prose-color);
+}
+.contact-read-more-btn {
+  display: inline-block;
+  margin-top: 16px;
+  padding: 8px 20px;
+  border: 1px solid var(--accent);
+  background: transparent;
+  color: var(--accent);
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  cursor: pointer;
+  transition: background-color .2s, color .2s;
+}
+.contact-read-more-btn:hover {
+  background: var(--accent);
+  color: var(--white);
+}
+.contact-typing-caret {
+  display: inline-block;
+  width: 2px;
+  height: 1.05em;
+  margin-left: 3px;
+  vertical-align: -0.12em;
+  background: var(--accent);
+  animation: contactTypingCaret 0.9s step-end infinite;
+}
+@keyframes contactTypingCaret {
+  50% { opacity: 0; }
+}
+.contact-submit-btn {
+  align-self: flex-end;
+  display: inline-block;
+  padding: 12px 36px;
+  border: 2px solid var(--accent);
+  background: var(--accent);
+  color: var(--white);
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  pointer-events: none;
+  user-select: none;
+}
 </style>
 <link rel="stylesheet" href="../shared/anime-redact.css">
 </head>
@@ -1343,12 +1449,33 @@ footer {
   </div>
   <div class="contact-inner fi">
     <div>
-      <h3 class="contact-lead-label">メッセージ</h3>
-      <h4 class="contact-lead-title">ここにタイトル</h4>
-      <p class="contact-lead">ここに獅子王からのメッセージが入ります。プレースホルダー。</p>
+      <h3 class="contact-lead-label">お問い合わせ</h3>
+      <h4 class="contact-lead-title">お気軽に<br>ご相談ください</h4>
+      <p>ご不明な点がございましたら、下記フォームよりお問い合わせください。担当者より折り返しご連絡いたします。</p>
     </div>
-    <div>
-      <p class="contact-aside">ここにContact右側のテキストが入ります。プレースホルダー。</p>
+    <div class="contact-form-wrap">
+      <div class="contact-field">
+        <label class="contact-label" for="contactRoute">お問い合わせ先</label>
+        <select class="contact-select" id="contactRoute">
+          <option value="" selected disabled>選択してください</option>
+          <option value="shishio">獅子王千暁</option>
+          <option value="kuroki">黒木 凪</option>
+          <option value="kokonoe">九重 灰</option>
+          <option value="redacted">■■■</option>
+          <option value="fushimi">伏見 瀬人</option>
+        </select>
+      </div>
+      <div class="contact-field">
+        <label class="contact-label" for="contactPhase">お問い合わせ種別</label>
+        <select class="contact-select" id="contactPhase" disabled>
+          <option value="" selected disabled>お問い合わせ先を選択してください</option>
+        </select>
+      </div>
+      <div class="contact-field">
+        <label class="contact-label">メッセージ</label>
+        <div class="contact-message-box" id="contactMessage"></div>
+      </div>
+      <span class="contact-submit-btn">送信</span>
     </div>
   </div>
 </section>
@@ -1700,6 +1827,232 @@ document.querySelectorAll('.fi').forEach(function(el) { io.observe(el); });
       ev.preventDefault();
       hideFourth();
     }
+  });
+})();
+
+/* Contact ルート→フェーズ→ヒント */
+(function() {
+  var ROUTES = {
+    shishio: {
+      label: '獅子王千暁',
+      phases: [
+        { label: 'フェーズ1（仮）', hint: 'ヒント準備中' },
+        { label: 'フェーズ2（仮）', hint: 'ヒント準備中' },
+        { label: 'フェーズ3（仮）', hint: 'ヒント準備中' }
+      ]
+    },
+    kuroki: {
+      label: '黒木 凪',
+      phases: [
+        {
+          label: 'Rienta Chatにログインできない',
+          segments: [
+            'このチャットへのログインにはIDとパスワードが必要なようです。\n「Rienta」という企業の社内ツールとして使われているようですが、皆さんには聞き馴染みがありませんね。\nまずは、この企業の情報を探してみましょう。',
+            '株式会社トラポルタのウェブサイト内に、獅子王千暁を取材したインタビュー記事があるようです。\nこの記事が掲載されたメディアの会社名を探してみましょう。\nサイトの左上、一番下、URL…探していたものが見つかるはずです。'
+          ]
+        },
+        {
+          label: '黒木凪の情報が見つからない',
+          segments: [
+            'トラポルタのウェブサイトと同じように、まずは獅子王千暁の記事を隅々まで読んでみましょう。\nいまあなたが調べたいのは、「株式会社リエンタ」に所属する「黒木 凪」という人でしたね。',
+            '最初に見た名刺には「黒木 凪」はこのメディアの編集長であることが書いてありました。\nまた、記事の末尾には「最終編集：黒木 凪」という記述があります。\nこのメディアの編集部をもっと知るためのページはないでしょうか？',
+            '記事を書いたライター、家入ユウの紹介欄から「編集者一覧」というページに移動できそうです。\nリエンタの編集部メンバーの紹介文の中に、黒木もいることが確認できました。\nしかし、ここにこれ以上の情報は無いようです。'
+          ]
+        },
+        {
+          label: 'ID・パスワードがわからない',
+          segments: [
+            'ほかに編集部について情報が得られそうな場所はないのでしょうか？\n「編集者一覧」を見ると、家入ユウというライターはXを使っているようです。\n投稿からリエンタに関する情報がないか、探してみましょう。\nまるでネットストーカーのようですね。',
+            '家入の投稿を遡っていくと、リエンタの研修資料が映りこんだ写真が見つかります。\nあなたが見た資料と同じもののようですが、よく見るとフセンが付いています。\nなにか書き込んであるようなので、[4Kで読み込む]で確かめてみましょう。',
+            'ID:YOU403\nPASS:RIENTA123\nと書いてあるようです。\nログイン画面に打ち込んでみましょう。'
+          ]
+        },
+        {
+          label: 'チャット内で行き詰まっている',
+          segments: [
+            'ビジネスチャットにログインできたようですね。\nあなたは家入さんのアカウントに不正にログインしたため、使える機能が制限されているようです。\n見えるチャットルームを読み終えたら、検索欄から目についた単語を片っ端から検索してみましょう。',
+            'ホームには「管理者」、黒木とのDMには「トラポルタ」「獅子王千暁」…\n気になる単語がたくさんありますね。\nここまで来たあなたなら、その直感力によって見るべき文字が揺れ動いて見えるほどに研ぎ澄まされているはず。\n検索すべき単語は全部で5個です。',
+            { text: 'もうわかるでしょう？', typing: true }
+          ]
+        }
+      ]
+    },
+    kokonoe: {
+      label: '九重 灰',
+      phases: [
+        { label: 'フェーズ1（仮）', hint: 'ヒント準備中' },
+        { label: 'フェーズ2（仮）', hint: 'ヒント準備中' },
+        { label: 'フェーズ3（仮）', hint: 'ヒント準備中' }
+      ]
+    },
+    redacted: {
+      label: '■■■',
+      phases: [
+        { label: 'フェーズ1（仮）', hint: 'ヒント準備中' },
+        { label: 'フェーズ2（仮）', hint: 'ヒント準備中' },
+        { label: 'フェーズ3（仮）', hint: 'ヒント準備中' }
+      ]
+    },
+    fushimi: {
+      label: '伏見 瀬人',
+      phases: [
+        { label: 'フェーズ1（仮）', hint: 'ヒント準備中' },
+        { label: 'フェーズ2（仮）', hint: 'ヒント準備中' },
+        { label: 'フェーズ3（仮）', hint: 'ヒント準備中' }
+      ]
+    }
+  };
+
+  var routeSel = document.getElementById('contactRoute');
+  var phaseSel = document.getElementById('contactPhase');
+  var msgBox = document.getElementById('contactMessage');
+  if (!routeSel || !phaseSel || !msgBox) return;
+
+  var segmentIndex = 0;
+  var typingTimerId = null;
+
+  function clearTypingAnim() {
+    if (typingTimerId != null) {
+      clearTimeout(typingTimerId);
+      typingTimerId = null;
+    }
+  }
+
+  function segmentRaw(seg) {
+    if (typeof seg === 'string') return seg;
+    if (seg && seg.text != null) return String(seg.text);
+    return '';
+  }
+
+  function segmentTyping(seg) {
+    return typeof seg === 'object' && seg && seg.typing === true;
+  }
+
+  function escapeHtml(s) {
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function formatSegmentHtml(text) {
+    return escapeHtml(text).replace(/\n/g, '<br>');
+  }
+
+  function resetMessage() {
+    clearTypingAnim();
+    msgBox.classList.remove('active');
+    msgBox.innerHTML = '';
+    segmentIndex = 0;
+  }
+
+  function renderPhaseHint() {
+    var route = ROUTES[routeSel.value];
+    if (!route) return;
+    var phase = route.phases[parseInt(phaseSel.value, 10)];
+    if (!phase) return;
+    msgBox.classList.add('active');
+    segmentIndex = 0;
+    paintMessage({});
+  }
+
+  function paintMessage(opts) {
+    opts = opts || {};
+    var afterReadMore = opts.afterReadMore === true;
+
+    clearTypingAnim();
+    var route = ROUTES[routeSel.value];
+    if (!route) return;
+    var phase = route.phases[parseInt(phaseSel.value, 10)];
+    if (!phase) return;
+
+    if (phase.segments && phase.segments.length) {
+      var idx = Math.max(0, Math.min(segmentIndex, phase.segments.length - 1));
+      var seg = phase.segments[idx];
+      var segText = segmentRaw(seg);
+
+      if (segmentTyping(seg) && segText) {
+        msgBox.innerHTML = '';
+        var p = document.createElement('p');
+        p.className = 'contact-message-hint';
+        var spanChars = document.createElement('span');
+        var spanCaret = document.createElement('span');
+        spanCaret.className = 'contact-typing-caret';
+        spanCaret.setAttribute('aria-hidden', 'true');
+        p.appendChild(spanChars);
+        p.appendChild(spanCaret);
+        msgBox.appendChild(p);
+
+        var chars = Array.from(segText);
+        var pos = 0;
+        var stepMs = 105;
+        var pauseBeforeMs = 3000;
+        var initialDelay = afterReadMore ? pauseBeforeMs : 0;
+
+        function typeStep() {
+          pos += 1;
+          spanChars.textContent = chars.slice(0, pos).join('');
+          if (pos < chars.length) {
+            typingTimerId = setTimeout(typeStep, stepMs);
+          } else {
+            spanCaret.remove();
+            typingTimerId = null;
+          }
+        }
+
+        if (afterReadMore && initialDelay > 0) {
+          void msgBox.offsetHeight;
+        }
+        typingTimerId = setTimeout(typeStep, initialDelay);
+        return;
+      }
+
+      var html = '<p class="contact-message-hint">' + formatSegmentHtml(segText) + '</p>';
+      if (idx < phase.segments.length - 1) {
+        html += '<button type="button" class="contact-read-more-btn">もっと読む</button>';
+      }
+      msgBox.innerHTML = html;
+    } else if (phase.hint) {
+      msgBox.innerHTML = '<p class="contact-message-hint">' + formatSegmentHtml(phase.hint) + '</p>';
+    }
+  }
+
+  routeSel.addEventListener('change', function() {
+    var route = ROUTES[routeSel.value];
+    phaseSel.innerHTML = '<option value="" selected disabled>選択してください</option>';
+    if (route) {
+      route.phases.forEach(function(p, i) {
+        var opt = document.createElement('option');
+        opt.value = i;
+        opt.textContent = p.label;
+        phaseSel.appendChild(opt);
+      });
+      phaseSel.disabled = false;
+    } else {
+      phaseSel.disabled = true;
+    }
+    resetMessage();
+  });
+
+  phaseSel.addEventListener('change', function() {
+    var route = ROUTES[routeSel.value];
+    if (!route) return;
+    var phase = route.phases[parseInt(phaseSel.value, 10)];
+    if (!phase) return;
+    renderPhaseHint();
+  });
+
+  msgBox.addEventListener('click', function(e) {
+    var btn = e.target.closest('.contact-read-more-btn');
+    if (!btn || !msgBox.contains(btn)) return;
+    var route = ROUTES[routeSel.value];
+    if (!route) return;
+    var phase = route.phases[parseInt(phaseSel.value, 10)];
+    if (!phase || !phase.segments || phase.segments.length <= 1) return;
+    if (segmentIndex >= phase.segments.length - 1) return;
+    segmentIndex += 1;
+    paintMessage({ afterReadMore: true });
   });
 })();
 </script>

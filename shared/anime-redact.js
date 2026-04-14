@@ -1,11 +1,22 @@
 /**
  * Anime 通話終了まで到達したブラウザのみ、指定人名を █ 伏字（.ar-glitch）に置換する。
  * localStorage キーは Anime/Anime.html の showCallEndScreen と共有。
+ * Toraporta_LP/truth.html だけは常にスキップ（伏字をかけない）。
  */
 (function () {
   'use strict';
 
   var STORAGE_KEY = 'anime_call_end_reached_v1';
+
+  /** Toraporta_LP/truth.html のみ伏字ギミックを無効化（他ページは従来どおり） */
+  function isTruthHtmlPage() {
+    try {
+      var path = (window.location.pathname || '').replace(/\\/g, '/');
+      return /\/truth\.html$/i.test(path);
+    } catch (e) {
+      return false;
+    }
+  }
 
   /* 長い語を先にマッチ（正規表現の | は先勝ちのため、配列は長さ降順） */
   var PHRASES = [
@@ -114,7 +125,7 @@
   }
 
   function applyRedactSubtree(root) {
-    if (!isActive() || !root) return;
+    if (isTruthHtmlPage() || !isActive() || !root) return;
 
     redactGlitchTextElements(root);
 
@@ -131,7 +142,7 @@
 
   var debounceTimer = null;
   function scheduleApply() {
-    if (!isActive()) return;
+    if (isTruthHtmlPage() || !isActive()) return;
     clearTimeout(debounceTimer);
     debounceTimer = setTimeout(function () {
       debounceTimer = null;
@@ -140,7 +151,7 @@
   }
 
   function init() {
-    if (!isActive()) return;
+    if (isTruthHtmlPage() || !isActive()) return;
 
     applyRedactSubtree(document.body);
 
