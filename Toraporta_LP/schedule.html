@@ -329,6 +329,7 @@ nav a {
   letter-spacing: .03em;
   margin-top: 6px;
   display: -webkit-box;
+  line-clamp: 2;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
@@ -336,6 +337,7 @@ nav a {
 /* PC：アコーディオン展開時はあらすじ全文 */
 .list-entry.open .item-desc {
   display: block;
+  line-clamp: unset;
   -webkit-line-clamp: unset;
   overflow: visible;
 }
@@ -470,7 +472,11 @@ nav a {
   color: rgba(14,0,46,.28);
   line-height: 1.4;
 }
-.ep-info { min-width: 0; }
+.ep-info {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
 .ep-title {
   font-size: 16px;
   font-weight: 600;
@@ -491,6 +497,8 @@ nav a {
   align-items: center;
   gap: 6px;
   margin-top: 8px;
+  margin-left: auto;
+  align-self: flex-end;
   padding: 6px 14px;
   font-family: var(--font-display);
   font-size: 15px;
@@ -700,6 +708,7 @@ footer {
   .list-entry:not(.open) .item-desc {
     margin-top: 14px;
     display: -webkit-box;
+    line-clamp: 3;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
@@ -708,6 +717,7 @@ footer {
   .list-entry.open .item-desc {
     margin-top: 14px;
     display: block;
+    line-clamp: unset;
     -webkit-line-clamp: unset;
     overflow: visible;
     line-height: 1.85;
@@ -771,9 +781,11 @@ footer {
   .ep-title { font-size: 17px; }
   .ep-synopsis { line-height: 1.85; }
   .ep-tver {
-    width: 100%;
+    width: auto;
     max-width: 100%;
     justify-content: center;
+    margin-left: auto;
+    align-self: flex-end;
     margin-top: 12px;
     min-height: 48px;
     padding: 12px 18px;
@@ -881,8 +893,48 @@ footer {
           <div class="ep-row">
             <div class="ep-no">01</div>
             <div class="ep-info">
-              <div class="ep-title">番組について</div>
-              <p class="ep-synopsis">各話のサブタイトル・あらすじ・視聴リンクは確定次第、こちらに追記してください。</p>
+              <div class="ep-title">第1話「流出」</div>
+              <p class="ep-synopsis">ある研究機関から流出した実験記録を入手。「人類の更なる幸福のために」を掲げるその機関の資料には、被検体Aに関する観察データが残されていた。</p>
+              <a href="https://tver.jp/" class="ep-tver" onclick="event.stopPropagation()">Tbarで視聴</a>
+            </div>
+          </div>
+          <div class="ep-row">
+            <div class="ep-no">02</div>
+            <div class="ep-info">
+              <div class="ep-title">第2話「観測者たち」</div>
+              <p class="ep-synopsis">記録によれば、Aは"見られる・呼ばれる・記録される"ことで、存在しなかったはずの過去を獲得していく。Aを観測していた機関員たちもまた、以前からAとの関係があったと認識しており、自身の人生に変化が起きていたと語る。</p>
+              <a href="https://tver.jp/" class="ep-tver" onclick="event.stopPropagation()">Tbarで視聴</a>
+            </div>
+          </div>
+          <div class="ep-row">
+            <div class="ep-no">03</div>
+            <div class="ep-info">
+              <div class="ep-title">第3話「改変」</div>
+              <p class="ep-synopsis">「Aの助言で幸せになった」「Aは昔から支えてくれた」――観測者たちの過去はその認識の中で書き換えられていた。</p>
+              <a href="https://tver.jp/" class="ep-tver" onclick="event.stopPropagation()">Tbarで視聴</a>
+            </div>
+          </div>
+          <div class="ep-row">
+            <div class="ep-no">04</div>
+            <div class="ep-info">
+              <div class="ep-title">第4話「齟齬」</div>
+              <p class="ep-synopsis">「Aは実在する。だけど私の過去は改変されていない」。前回の放送終了後、番組にはAと過去関わりがあったと語る体験談が多数寄せられた。番組は緊急生放送でAに関する証言を電話募集することを決定した。</p>
+              <a href="https://tver.jp/" class="ep-tver" onclick="event.stopPropagation()">Tbarで視聴</a>
+            </div>
+          </div>
+          <div class="ep-row">
+            <div class="ep-no">05</div>
+            <div class="ep-info">
+              <div class="ep-title">第5話「証言」</div>
+              <p class="ep-synopsis">生放送に多数の電話が寄せられる。「研究機関は知らないが、似た人を知っている」という声まで現れた。Aの存在を確定させる決定的な証拠は、ない。</p>
+              <a href="https://tver.jp/" class="ep-tver" onclick="event.stopPropagation()">Tbarで視聴</a>
+            </div>
+          </div>
+          <div class="ep-row">
+            <div class="ep-no">06</div>
+            <div class="ep-info">
+              <div class="ep-title">第6話「観測が完了しました」</div>
+              <p class="ep-synopsis">わたしはあなたの幸せを祈るものです。</p>
               <a href="https://tver.jp/" class="ep-tver" onclick="event.stopPropagation()">Tbarで視聴</a>
             </div>
           </div>
@@ -919,8 +971,24 @@ footer {
           <div class="ep-row">
             <div class="ep-no">01</div>
             <div class="ep-info">
-              <div class="ep-title">番組について</div>
-              <p class="ep-synopsis">各話のサブタイトル・あらすじ・視聴リンクは確定次第、こちらに追記してください。</p>
+              <div class="ep-title">第1話「ネットストーカーの手口、全部見せます」</div>
+              <p class="ep-synopsis">今回のテーマは「ネットストーカー」。過去にネトストをしていたという人物への密着取材を敢行。実際の手口を解説しながら、ゲスト芸人がSNSからランダムにピックアップした「とある人物」の情報を追い始める。</p>
+              <a href="https://www.youtube.com/" class="ep-tver" onclick="event.stopPropagation()">Yootubeで視聴</a>
+            </div>
+          </div>
+          <div class="ep-row">
+            <div class="ep-no">02</div>
+            <div class="ep-info">
+              <div class="ep-title">第2話「知らない名前、知らない顔」</div>
+              <p class="ep-synopsis">ピックアップした人物の調査を進めるうち、同一人物と思われるアカウントが複数浮上。それぞれ異なる名前と顔で活動していることが判明する。</p>
+              <a href="https://www.youtube.com/" class="ep-tver" onclick="event.stopPropagation()">Yootubeで視聴</a>
+            </div>
+          </div>
+          <div class="ep-row">
+            <div class="ep-no">03</div>
+            <div class="ep-info">
+              <div class="ep-title">第3話「あなたは誰ですか？」</div>
+              <p class="ep-synopsis">複数の名前と顔を使い分けて生活する人物の実態に迫る。調査が深まるほど、その人物像は明確になるどころか、ますます掴めなくなっていく。</p>
               <a href="https://www.youtube.com/" class="ep-tver" onclick="event.stopPropagation()">Yootubeで視聴</a>
             </div>
           </div>
@@ -957,8 +1025,32 @@ footer {
           <div class="ep-row">
             <div class="ep-no">01</div>
             <div class="ep-info">
-              <div class="ep-title">番組について</div>
-              <p class="ep-synopsis">各話のサブタイトル・あらすじ・視聴リンクは確定次第、こちらに追記してください。</p>
+              <div class="ep-title">第1話「消えた老舗の味、探せますか？」</div>
+              <p class="ep-synopsis">「30年前に閉店した洋食屋のナポリタンがもう一度食べたい」という視聴者からの依頼。大阪01が元店主の行方を追い、当時の常連客を訪ね歩く。</p>
+              <a href="https://tver.jp/" class="ep-tver" onclick="event.stopPropagation()">Tbarで視聴</a>
+            </div>
+          </div>
+          <div class="ep-row">
+            <div class="ep-no">02</div>
+            <div class="ep-info">
+              <div class="ep-title">第2話「隣の部屋から毎晩聞こえる音の正体」</div>
+              <p class="ep-synopsis">「毎晩決まった時間に隣の部屋から不思議な音がする」という相談。大阪01が現場に赴き、住人への聞き込みと張り込みで音の正体に迫る。</p>
+              <a href="https://tver.jp/" class="ep-tver" onclick="event.stopPropagation()">Tbarで視聴</a>
+            </div>
+          </div>
+          <div class="ep-row">
+            <div class="ep-no">03</div>
+            <div class="ep-info">
+              <div class="ep-title">第3話「商店街のじゃんけん最強おばちゃんは本当に負けないのか」</div>
+              <p class="ep-synopsis">「商店街にじゃんけんで絶対負けないおばちゃんがいる」という噂の検証。大阪01が直接対決を挑みつつ、おばちゃんの戦績を地元で裏取りしていく。</p>
+              <a href="https://tver.jp/" class="ep-tver" onclick="event.stopPropagation()">Tbarで視聴</a>
+            </div>
+          </div>
+          <div class="ep-row">
+            <div class="ep-no">04</div>
+            <div class="ep-info">
+              <div class="ep-title">第4話「届かなかった手紙を届けてほしい」</div>
+              <p class="ep-synopsis">「20年前に出したはずの手紙が届いていなかったことを最近知った。代わりに届けてほしい」という依頼。大阪01が送り主と受取人、両方の現在を追う。</p>
               <a href="https://tver.jp/" class="ep-tver" onclick="event.stopPropagation()">Tbarで視聴</a>
             </div>
           </div>
@@ -995,8 +1087,48 @@ footer {
           <div class="ep-row">
             <div class="ep-no">01</div>
             <div class="ep-info">
-              <div class="ep-title">番組について</div>
-              <p class="ep-synopsis">各エピソードのタイトル・概要・配信リンクは確定次第、こちらに追記してください。</p>
+              <div class="ep-title">第1話「深夜の公衆電話」</div>
+              <p class="ep-synopsis">「毎週金曜の深夜3時に、撤去されたはずの公衆電話が鳴る」というリスナー投稿。当時は現地調査が間に合わず未放送となった。改めて周辺住民への聞き込みと、電話回線の記録を辿る。</p>
+              <a href="https://open.spotify.com/intl-ja" class="ep-tver" onclick="event.stopPropagation()">Potcastで聴く</a>
+            </div>
+          </div>
+          <div class="ep-row">
+            <div class="ep-no">02</div>
+            <div class="ep-info">
+              <div class="ep-title">第2話「届き続ける年賀状」</div>
+              <p class="ep-synopsis">「10年前に亡くなった祖父宛に、差出人不明の年賀状が毎年届く」という体験談。消印の局所在地を手がかりに追加取材を行うが、差出人の特定には至らなかった。残された文面から浮かぶ、祖父のもうひとつの人間関係。</p>
+              <a href="https://open.spotify.com/intl-ja" class="ep-tver" onclick="event.stopPropagation()">Potcastで聴く</a>
+            </div>
+          </div>
+          <div class="ep-row">
+            <div class="ep-no">03</div>
+            <div class="ep-info">
+              <div class="ep-title">第3話「知らない駅」</div>
+              <p class="ep-synopsis">「通勤中に一度だけ、路線図にない駅に停車した」という投稿。同時期に同じ路線を利用していたリスナーからも類似の証言が寄せられていたが、鉄道会社の記録には該当する停車履歴がない。</p>
+              <a href="https://open.spotify.com/intl-ja" class="ep-tver" onclick="event.stopPropagation()">Potcastで聴く</a>
+            </div>
+          </div>
+          <div class="ep-row">
+            <div class="ep-no">04</div>
+            <div class="ep-info">
+              <div class="ep-title">第4話「山小屋の記帳」</div>
+              <p class="ep-synopsis">「山小屋の宿帳に自分の名前がすでに書かれていた」という投稿。管理者が取材を拒否しお蔵入りとなったが、管理者の交代を機に改めて調査を行う。</p>
+              <a href="https://open.spotify.com/intl-ja" class="ep-tver" onclick="event.stopPropagation()">Potcastで聴く</a>
+            </div>
+          </div>
+          <div class="ep-row">
+            <div class="ep-no">05</div>
+            <div class="ep-info">
+              <div class="ep-title">第5話「録音されていた声」</div>
+              <p class="ep-synopsis">「母の遺品のカセットテープに知らない声が入っていた」という相談。放送直前に投稿者が取り下げたが、当番組宛てに、「テープの続きが見つかった」と再び連絡があった。</p>
+              <a href="https://open.spotify.com/intl-ja" class="ep-tver" onclick="event.stopPropagation()">Potcastで聴く</a>
+            </div>
+          </div>
+          <div class="ep-row">
+            <div class="ep-no">06</div>
+            <div class="ep-info">
+              <div class="ep-title">第6話「もうひとりの投稿者」</div>
+              <p class="ep-synopsis">番組に届いた2通の投稿。異なるリスナーが、まったく同じ体験を、まったく同じ言い回しで送ってきていた。偶然の一致か、あるいは――。2人への同時取材を試みる。</p>
               <a href="https://open.spotify.com/intl-ja" class="ep-tver" onclick="event.stopPropagation()">Potcastで聴く</a>
             </div>
           </div>
