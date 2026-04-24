@@ -28,18 +28,22 @@
       box-sizing: border-box;
     }
 
+    html,
     body {
       margin: 0;
       font-family: "Noto Sans JP", sans-serif;
       color: var(--ink);
       background: var(--bg);
       min-height: 100dvh;
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
     }
 
     .hero {
       position: relative;
       width: 100%;
-      min-height: calc(100dvh - 64px);
+      min-height: calc(100dvh - 64px + 120px);
       margin-top: 64px;
       overflow: hidden;
       display: grid;
@@ -120,6 +124,7 @@
       line-height: 1.15;
       font-weight: 700;
       letter-spacing: 0.05em;
+      text-shadow: 0 0 14px rgba(255, 255, 255, 1), 0 4px 24px rgba(255, 255, 255, 0.95);
     }
 
     .lead-text {
@@ -142,7 +147,7 @@
     .panel-center {
       position: relative;
       padding: 0;
-      min-height: calc(100dvh - 48px);
+      min-height: calc(100dvh - 48px + 120px);
       overflow: visible;
       z-index: 1;
     }
@@ -160,7 +165,7 @@
     .door-main {
       position: absolute;
       left: 52%;
-      top: 53%;
+      top: 49%;
       transform: translate(-50%, -50%);
       width: clamp(760px, 78vw, 1220px);
       max-width: none;
@@ -251,9 +256,9 @@
 
     .hand {
       position: absolute;
-      width: 98%;
-      right: -20%;
-      bottom: -20%;
+      width: 78%;
+      right: 25%;
+      bottom: 31%;
       z-index: 1;
     }
 
@@ -351,11 +356,25 @@
     }
 
     @media (max-width: 1200px) {
+      .hero {
+        grid-template-columns: minmax(320px, 42%) minmax(420px, 58%);
+      }
+
+      .hero::after,
+      .panel-right {
+        display: none;
+      }
+
+      .panel-left {
+        padding-left: clamp(40px, 4.5vw, 80px);
+      }
+
       .panel-center {
-        min-height: 56vw;
+        min-height: 68vw;
       }
 
       .door-main {
+        top: 50%;
         width: clamp(640px, 88vw, 1040px);
       }
 
@@ -371,8 +390,8 @@
     @media (max-width: 980px) {
       .hero {
         grid-template-columns: 1fr;
-        gap: 16px;
-        padding: 16px var(--layout-pad-x-sp) 24px;
+        gap: 8px;
+        padding: 12px var(--layout-pad-x-sp) 18px;
         min-height: auto;
       }
 
@@ -381,9 +400,16 @@
         display: none;
       }
 
-      .panel-left { padding: var(--hero-text-top-pad-sp) 0 0 var(--hero-text-inset-x-sp); }
-      .panel-center,
-      .panel-right { padding: 0; }
+      .panel-left { padding: 64px 0 0 var(--hero-text-inset-x-sp); }
+      .panel-center { padding: 0; z-index: 2; }
+      .panel-right {
+        display: block;
+        position: absolute;
+        inset: 0;
+        padding: 0;
+        z-index: 4;
+        pointer-events: none;
+      }
 
       .logo-wrap h1 {
         font-size: clamp(48px, 16vw, 80px);
@@ -440,30 +466,29 @@
       }
 
       .art-area {
-        width: min(100%, 430px);
-        margin-top: 8px;
+        position: absolute;
+        right: -4vw;
+        bottom: -5vw;
+        width: min(44vw, 230px);
+        margin-top: 0;
       }
 
-      .panel-center {
-        min-height: 74vw;
-      }
+      .panel-center { min-height: clamp(360px, 96vw, 700px); }
 
       .door-stage {
         position: relative;
         inset: auto;
-        min-height: 74vw;
+        min-height: clamp(360px, 96vw, 700px);
       }
 
       .door-main {
         left: 50%;
-        top: 50%;
-        width: 132vw;
+        top: 36%;
+        width: min(162vw, 897px);
       }
 
       .hand {
-        width: 88%;
-        right: -16%;
-        bottom: -17%;
+        display: none;
       }
 
       .sticker-green {
@@ -484,13 +509,15 @@
         top: 2%;
       }
 
-      .hero-note {
-        display: none;
-      }
-
-      .ambient-decos {
-        display: none;
-      }
+      .future-wrap.placeholder { display: none; }
+      .hero-note { display: none; }
+      .ambient-decos { display: block; z-index: 4; }
+      .ambient-left-top { left: 4%; top: 60%; width: clamp(34px, 10vw, 52px); }
+      .ambient-left-mid { left: 11%; top: 68%; width: clamp(52px, 14vw, 78px); }
+      .ambient-left-bottom { left: 6%; top: 83%; width: clamp(46px, 13vw, 70px); }
+      .ambient-top-main { left: 78%; top: 8%; width: clamp(74px, 20vw, 110px); }
+      .ambient-top-sub { left: 72%; top: 18%; width: clamp(54px, 15vw, 84px); }
+      .ambient-right-bottom { left: 82%; top: 80%; width: clamp(40px, 12vw, 62px); }
     }
   </style>
   <style>
@@ -502,7 +529,7 @@
   nav a { font-size: 16px; letter-spacing: .15em; color: rgba(251,252,251,.88); text-decoration: none; text-transform: uppercase; }
   nav a:hover { color: #fff; }
 
-  section { padding: 112px clamp(48px, 6vw, 140px); border-top: 1px solid #dddae8; }
+  section { padding: 112px clamp(48px, 6vw, 140px); }
   #top { padding: 0; border-top: none; }
   .sec-hd { display: flex; align-items: baseline; gap: 18px; margin-bottom: 64px; }
   .sec-num { font-family: "Bebas Neue", "Noto Sans JP", sans-serif; font-size: 60px; color: #29ae86; line-height: 1; }
@@ -550,7 +577,7 @@
   .value-num, .value-name { font-family: "Bebas Neue", "Noto Sans JP", sans-serif; font-size: 22px; }
   .value-sub, .value-body { font-size: 16px; color: #7a7490; }
   .value-body { line-height: 2.1; }
-  .value-arrow { width: 36px; height: 36px; border: 1px solid #dddae8; background: #fff; cursor: pointer; }
+  .value-arrow { display: none; flex-shrink: 0; width: 36px; height: 36px; border: 1px solid #dddae8; background: #fff; cursor: pointer; align-items: center; justify-content: center; }
 
   .member-hd { margin-bottom: 28px; padding: 0 36px; }
   .member-hd-label { font-size: 16px; font-weight: 700; letter-spacing: .18em; color: #29ae86; text-transform: uppercase; }
@@ -573,6 +600,8 @@
   .recruit-name { font-size: 16px; font-weight: 700; margin-bottom: 10px; }
   .recruit-tags { display: flex; flex-wrap: wrap; gap: 6px; }
   .recruit-arrow { width: 36px; height: 36px; border: 1px solid #dddae8; border-radius: 50%; display: grid; place-items: center; font-size: 16px; color: #7a7490; }
+  .section-line-deco { padding: 0; border-top: none; }
+  .section-line-deco img { display: block; width: 100%; max-width: none; height: auto; }
 
   .contact-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
   .contact-lead-label { font-size: 16px; font-weight: 700; letter-spacing: .18em; color: #29ae86; text-transform: uppercase; margin-bottom: 20px; }
@@ -621,6 +650,100 @@
   @media (max-width: 980px) {
     nav { padding: 0 var(--layout-pad-x-sp); }
   }
+
+  @media (max-width: 768px) {
+    :root {
+      --layout-pad-x-sp: clamp(20px, 5.5vw, 40px);
+    }
+
+    .nav-toggle { display: flex; }
+    nav ul {
+      display: none;
+      position: fixed;
+      top: 64px;
+      left: 0;
+      right: 0;
+      width: 100%;
+      box-sizing: border-box;
+      background: #fff;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 40px var(--layout-pad-x-sp) 32px;
+      gap: 28px;
+      z-index: 9999;
+      overflow-y: auto;
+      min-height: calc(100vh - 64px);
+    }
+    nav ul.open { display: flex; }
+    nav ul li a {
+      font-size: 16px;
+      letter-spacing: .22em;
+      color: #7a7490;
+    }
+
+    section { padding: 64px var(--layout-pad-x-sp); }
+    .sec-num { font-size: 44px; }
+    .sec-title { font-size: 30px; }
+    .sec-hd { margin-bottom: 40px; }
+
+    .service-grid { grid-template-columns: 1fr; }
+    .svc-item {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 20px;
+      padding: 22px var(--layout-pad-x-sp);
+      min-height: 0;
+    }
+    .svc-num {
+      margin-bottom: 0;
+      flex: 0 0 52px;
+      font-size: 36px;
+      text-align: center;
+      line-height: 1;
+    }
+
+    .work-item {
+      flex: 0 0 calc(100% - 1px);
+      flex-direction: row;
+      align-items: flex-start;
+    }
+    .work-num { display: none; }
+    .work-poster { width: 120px; flex-shrink: 0; aspect-ratio: 3 / 4; margin: 16px 0 16px 16px; }
+    .work-body { padding: 16px; }
+    .work-item .work-tag { display: none; }
+
+    .about-lead,
+    .mvv-item,
+    .value-grid-heading,
+    .value-item,
+    .member-hd,
+    .member-card {
+      padding-left: 12px;
+      padding-right: 12px;
+    }
+    .member-card { flex: 0 0 calc(100% - 1px); }
+
+    .value-grid-list-wrap { overflow: hidden; }
+    .value-grid-list {
+      display: flex;
+      flex-wrap: nowrap;
+      will-change: transform;
+    }
+    .value-item { flex: 0 0 100%; min-width: 0; }
+    .value-arrow { display: flex; }
+
+    .recruit-item { padding: 22px var(--layout-pad-x-sp); }
+    .contact-inner { grid-template-columns: 1fr; gap: 36px; }
+    .contact-lead-title { font-size: 28px; }
+    footer {
+      flex-direction: column;
+      gap: 8px;
+      text-align: center;
+      padding: 28px var(--layout-pad-x-sp);
+    }
+  }
   </style>
   <link rel="stylesheet" href="../shared/anime-redact.css">
 </head>
@@ -647,7 +770,6 @@
       <img class="ambient-deco ambient-left-bottom" src="./asetts/yellow.sticker.webp" alt="" />
       <img class="ambient-deco ambient-top-main" src="./asetts/green.sticker.webp" alt="" />
       <img class="ambient-deco ambient-top-sub badge-back" src="./asetts/badge.white.webp" alt="" />
-      <img class="ambient-deco ambient-right-bottom" src="./asetts/horo.sticker.webp" alt="" />
     </div>
 
     <section class="panel-left">
@@ -675,8 +797,7 @@
       <div class="art-area" aria-hidden="true">
         <div class="card-panel"></div>
         <img class="sticker-holo" src="./asetts/horo.sticker.webp" alt="" />
-        <img class="sticker-green" src="./asetts/green.sticker.webp" alt="" />
-        <img class="hand" src="./asetts/hand.webp" alt="" />
+        <img class="hand" src="./asetts/hand (2).webp" alt="" />
       </div>
     </section>
 
@@ -744,6 +865,10 @@
       </div>
       <div class="slider-dots" id="memberDots"></div>
     </div>
+  </section>
+
+  <section class="section-line-deco" aria-hidden="true">
+    <img src="./asetts/line.webp" alt="" />
   </section>
 
   <section id="recruit">
