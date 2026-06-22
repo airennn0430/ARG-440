@@ -19,6 +19,7 @@
 
   let ringAudio = null;
   let callingAudio = null;
+  let clickAudio = null;
 
   function safePlay(audio) {
     if (!audio) return;
@@ -39,7 +40,22 @@
     ringAudio = new Audio(SE.ringtone);
     ringAudio.loop = true;
     ringAudio.volume = VOL.ringtone;
-    safePlay(ringAudio);
+    const p = ringAudio.play();
+    if (p && typeof p.catch === 'function') {
+      p.catch(function () {
+        // autoplay blocked — retry on first user gesture
+        const captured = ringAudio;
+        function retryRing() {
+          document.removeEventListener('touchstart', retryRing);
+          document.removeEventListener('click', retryRing);
+          if (captured && captured === ringAudio) {
+            captured.play().catch(function () {});
+          }
+        }
+        document.addEventListener('touchstart', retryRing);
+        document.addEventListener('click', retryRing);
+      });
+    }
   }
 
   function stopRingtone() {
@@ -61,9 +77,13 @@
   }
 
   function playClick() {
-    const a = new Audio(SE.click);
-    a.volume = VOL.click;
-    safePlay(a);
+    if (!clickAudio) {
+      clickAudio = new Audio(SE.click);
+      clickAudio.volume = VOL.click;
+    }
+    clickAudio.pause();
+    clickAudio.currentTime = 0;
+    safePlay(clickAudio);
   }
 
   function playBusyTone() {

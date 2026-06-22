@@ -722,6 +722,9 @@ function shouldTriggerCall() {
   // Desktop check
   if (window.innerWidth >= 769) return false;
 
+  // Domain gate — production only
+  if (window.location.hostname !== 'hidarling.vercel.app') return false;
+
   // Date gate
   const now = new Date();
   if (CALL_CONFIG.triggerAfter && now < new Date(CALL_CONFIG.triggerAfter)) return false;
