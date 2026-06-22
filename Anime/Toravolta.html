@@ -1650,8 +1650,10 @@ footer {
 
     function goTo(idx) {
       cur = ((idx % total) + total) % total;
-      const cardW = track.parentElement.offsetWidth;
-      track.style.transform = `translateX(-${cardW * cur}px)`;
+      const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+      let x = 0;
+      for (let i = 0; i < cur; i++) { x += cards[i].offsetWidth + gap; }
+      track.style.transform = `translateX(-${x}px)`;
       dotsEl.querySelectorAll('.slider-dot').forEach((d, i) => d.classList.toggle('active', i === cur));
     }
 
