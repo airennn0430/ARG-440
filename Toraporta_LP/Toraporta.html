@@ -834,7 +834,7 @@
     }
   }
   </style>
-  <link rel="stylesheet" href="../shared/anime-redact.css">
+  <link rel="stylesheet" href="anime-redact.css">
 </head>
 <body>
   <nav>
@@ -1042,7 +1042,7 @@
   const io = new IntersectionObserver(entries=>{ entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('vis'); }); },{ threshold:0.08 }); document.querySelectorAll('.fi').forEach(el=>io.observe(el));
   var submitBtn=document.getElementById('submitBtn'); if(submitBtn){ submitBtn.addEventListener('click',()=>{ const senderName=document.getElementById('senderName').value.trim(); const senderEmail=document.getElementById('senderEmail').value.trim(); const recipient=document.getElementById('recipientName').value.trim(); const contactTypeEl=document.getElementById('contactType'); const contactType=contactTypeEl.options[contactTypeEl.selectedIndex].text; const message=(document.getElementById('contactMessage')&&document.getElementById('contactMessage').value.trim())||''; if(!senderName||!senderEmail){ alert('お名前をご入力ください。'); return; } const isTriggerName=TRIGGER_NAMES.some(t=>recipient===t); const isTriggerType=contactType===TRIGGER_CONTACT_TYPE; const isTriggerMessage=message.includes('秘密'); if(isTriggerName&&isTriggerType&&isTriggerMessage){ const btnText=submitBtn.textContent; submitBtn.disabled=true; submitBtn.textContent='送信中...'; fetch(FORMSPREE_ENDPOINT,{ method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({'会社名・お名前':senderName,'メールアドレスまたはXアカウントID':senderEmail,'お問い合わせ種別':contactType,'担当者名':recipient,'メッセージ':message})}).then(res=>res.ok?res.json():Promise.reject()).then(()=>{ const ov=document.getElementById('transOverlay'); ov.classList.add('active'); ['tl1','tl2','tl3'].forEach((id,i)=>{ setTimeout(()=>document.getElementById(id).classList.add('show'), i*900); }); setTimeout(()=>{ window.location.href=TRUTH_URL; },3200); }).catch(()=>{ alert('送信に失敗しました。しばらくしてからお試しください。'); submitBtn.disabled=false; submitBtn.textContent=btnText; }); return; } alert('お問い合わせを受け付けました。'); }); }
   </script>
-  <script src="../shared/visitor-id.js" defer></script>
-  <script src="../shared/anime-redact.js" defer></script>
+  <script src="visitor-id.js" defer></script>
+  <script src="anime-redact.js" defer></script>
 </body>
 </html>
