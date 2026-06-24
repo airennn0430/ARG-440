@@ -484,16 +484,6 @@ html.anime-instant-call #call-overlay {
   animation: call-fadeIn 0.5s ease 0.2s both;
 }
 
-.call-end-link {
-  margin-top: 28px;
-  color: rgba(255,255,255,0.45);
-  font-size: 13px;
-  letter-spacing: 0.04em;
-  text-decoration: none;
-  border-bottom: 1px solid rgba(255,255,255,0.25);
-  padding-bottom: 2px;
-}
-
 /* End button = red, rotated phone icon */
 .btn-end .call-btn-circle {
   background: #e8534a;
@@ -608,7 +598,6 @@ html.anime-instant-call #call-overlay {
       </div>
       <span class="call-btn-label">通話終了</span>
     </button>
-    <a class="call-end-link" href="https://toraporta.vercel.app/Toraporta.html">株式会社トラポルタ</a>
   </div>
 </div>
 
@@ -1170,10 +1159,12 @@ btnEnd.addEventListener('click', () => {
   // Try to close the window/tab
   window.close();
   // Fallback: if window.close() is blocked (not opened by script),
-  // navigate to blank or show a "closed" state
+  // move on to the company site instead of leaving a blank screen
   setTimeout(() => {
-    document.body.innerHTML = '';
-    document.body.style.background = '#000';
+    var vid = window.ARG440_VID && window.ARG440_VID.get();
+    var url = 'https://toraporta.vercel.app/Toraporta.html';
+    if (vid) url += '?vid=' + encodeURIComponent(vid);
+    window.location.href = url;
   }, 300);
 });
 
