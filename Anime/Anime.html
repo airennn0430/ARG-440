@@ -1157,7 +1157,9 @@ function showCallEndScreen() {
 
 btnEnd.addEventListener('click', () => {
   // Try to close the window/tab
-  window.close();
+  try {
+    window.close();
+  } catch (e) {}
   // Fallback: if window.close() is blocked (not opened by script),
   // move on to the company site instead of leaving a blank screen
   setTimeout(() => {
