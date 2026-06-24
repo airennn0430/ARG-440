@@ -7,6 +7,7 @@
   'use strict';
 
   var STORAGE_KEY = 'anime_call_end_reached_v1';
+  var STATUS_API = 'https://hidarling.vercel.app/api/call-status';
 
   /** Toraporta_LP/truth.html のみ伏字ギミックを無効化（他ページは従来どおり） */
   function isTruthHtmlPage() {
@@ -150,16 +151,64 @@
     }, 100);
   }
 
-  function init() {
-    if (isTruthHtmlPage() || !isActive()) return;
-
-    applyRedactSubtree(document.body);
-
-    if (typeof MutationObserver === 'undefined') return;
+  var observerStarted = false;
+  function observeMutations() {
+    if (observerStarted || typeof MutationObserver === 'undefined') return;
+    observerStarted = true;
     var obs = new MutationObserver(function () {
       scheduleApply();
     });
     obs.observe(document.body, { childList: true, subtree: true });
+  }
+
+  function recheck() {
+    if (isTruthHtmlPage() || !isActive()) return;
+    applyRedactSubtree(document.body);
+    observeMutations();
+  }
+
+  /* このオリジンではフラグが立っていない場合のみ、別オリジン(Anime)の通話終了APIに
+     vidを問い合わせる。クロスオリジンのためlocalStorageは共有できないので、
+     shared/visitor-id.jsが管理するvidトークンで紐付ける。 */
+  var remoteChecked = false;
+  function checkRemoteOnce() {
+    if (isTruthHtmlPage() || isActive() || remoteChecked) return;
+    remoteChecked = true;
+    if (!window.ARG440_VID || typeof window.ARG440_VID.get !== 'function') return;
+    var vid = window.ARG440_VID.get();
+    if (!vid) return;
+
+    var controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+    var timer = setTimeout(function () {
+      if (controller) controller.abort();
+    }, 3000);
+
+    fetch(STATUS_API + '?vid=' + encodeURIComponent(vid), {
+      signal: controller ? controller.signal : undefined,
+    })
+      .then(function (res) {
+        clearTimeout(timer);
+        if (!res.ok) return null;
+        return res.json();
+      })
+      .then(function (data) {
+        if (!data || !data.done) return;
+        try {
+          localStorage.setItem(STORAGE_KEY, '1');
+        } catch (e) {
+          /* noop */
+        }
+        applyRedactSubtree(document.body);
+        observeMutations();
+      })
+      .catch(function () {
+        clearTimeout(timer);
+      });
+  }
+
+  function init() {
+    recheck();
+    checkRemoteOnce();
   }
 
   if (document.readyState === 'loading') {
@@ -167,4 +216,11 @@
   } else {
     init();
   }
+
+  /* bfcache復元（他ページで通話を完了後、ブラウザの「戻る」で帰ってきた場合）に再チェック */
+  window.addEventListener('pageshow', recheck);
+  /* 別タブで通話終了フラグが立った場合に再チェック */
+  window.addEventListener('storage', function (e) {
+    if (e.key === STORAGE_KEY) recheck();
+  });
 })();

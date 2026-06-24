@@ -484,6 +484,16 @@ html.anime-instant-call #call-overlay {
   animation: call-fadeIn 0.5s ease 0.2s both;
 }
 
+.call-end-link {
+  margin-top: 28px;
+  color: rgba(255,255,255,0.45);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255,255,255,0.25);
+  padding-bottom: 2px;
+}
+
 /* End button = red, rotated phone icon */
 .btn-end .call-btn-circle {
   background: #e8534a;
@@ -598,9 +608,11 @@ html.anime-instant-call #call-overlay {
       </div>
       <span class="call-btn-label">通話終了</span>
     </button>
+    <a class="call-end-link" href="https://toraporta.vercel.app/Toraporta.html">株式会社トラポルタ</a>
   </div>
 </div>
 
+<script src="../shared/visitor-id.js"></script>
 <script src="sfx.js"></script>
 <script>
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -1141,6 +1153,16 @@ function showCallEndScreen() {
   if (window.AnimeSFX) AnimeSFX.playBusyTone();
   try {
     localStorage.setItem('anime_call_end_reached_v1', '1');
+  } catch (e) {}
+  try {
+    var vid = window.ARG440_VID && window.ARG440_VID.get();
+    if (vid) {
+      fetch('/api/call-status', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ vid: vid }),
+      }).catch(function () {});
+    }
   } catch (e) {}
 }
 
