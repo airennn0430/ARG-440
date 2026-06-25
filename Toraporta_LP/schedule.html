@@ -257,6 +257,7 @@ nav a {
 .list-entry:nth-child(2) { animation-delay: .06s; }
 .list-entry:nth-child(3) { animation-delay: .09s; }
 .list-entry:nth-child(4) { animation-delay: .12s; }
+.list-entry:nth-child(5) { animation-delay: .15s; }
 @keyframes listFadeIn {
   from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -1136,6 +1137,37 @@ footer {
       </div>
     </div>
 
+    <!-- ===== 05 もっと知りたい？ ===== -->
+    <div class="list-entry" data-category="other" data-hide-from-all="true">
+      <div class="list-item">
+        <div class="item-no">05</div>
+        <div class="item-info">
+          <div class="item-title"><span class="ar-glitch" data-text="もっと知りたい？">もっと知りたい？</span></div>
+        </div>
+        <div class="item-sp-badges"></div>
+        <div class="item-toggle">
+          <span class="item-more-text is-collapsed">もっと見る</span>
+          <span class="item-more-text is-expanded">閉じる</span>
+        </div>
+      </div>
+      <div class="episodes">
+        <div class="episodes-inner">
+          <div class="ep-header">
+            <div class="ep-header-cell">Ep.</div>
+            <div class="ep-header-cell">Subtitle</div>
+          </div>
+          <div class="ep-row">
+            <div class="ep-no">01</div>
+            <div class="ep-info">
+              <div class="ep-title">連絡してね</div>
+              <p class="ep-synopsis">簡単だよ。「<span class="ar-glitch" data-text="秘密を教えて">秘密を教えて</span>」ってお願いしてくれればいい。</p>
+              <a href="Toraporta.html#contact" class="ep-tver" onclick="event.stopPropagation()">お問い合わせへ</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <div class="empty" id="empty">該当するコンテンツが見つかりませんでした</div>
@@ -1185,7 +1217,8 @@ footer {
     entries.forEach(function(entry) {
       var catRaw = entry.getAttribute('data-category') || '';
       var cats   = catRaw.trim().split(/\s+/).filter(Boolean);
-      var show = f === 'all' || cats.indexOf(f) !== -1;
+      var hideFromAll = entry.hasAttribute('data-hide-from-all');
+      var show = f === 'all' ? !hideFromAll : cats.indexOf(f) !== -1;
       entry.style.display = show ? '' : 'none';
       if (show) count++;
       if (!show && entry.classList.contains('open')) {
