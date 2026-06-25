@@ -799,6 +799,39 @@ footer {
 
   footer { flex-direction: column; gap: 8px; text-align: center; padding: 28px var(--layout-pad-x); }
 }
+
+/* グリッチ演出：共通 .ar-glitch は色ズレレイヤーが常時フル表示（screen合成）されるため、
+   待機中も地の文字色が変わって見える。スライスがズレる瞬間だけ色ズレを見せ、
+   それ以外は元の文字色のまま表示されるよう、不透明度を ar-glitch-slice-* と同じ
+   タイミングで切り替える（シアン/マゼンタ自体は維持） */
+.item-title .ar-glitch::before,
+.ep-synopsis .ar-glitch::before {
+  animation: ar-glitch-slice-1 2.4s infinite, ar-glitch-shift-x 2.4s infinite, sched-glitch-ghost-1 2.4s infinite;
+}
+.item-title .ar-glitch::after,
+.ep-synopsis .ar-glitch::after {
+  animation: ar-glitch-slice-2 2.4s infinite, ar-glitch-shift-x2 2.4s infinite, sched-glitch-ghost-2 2.4s infinite;
+}
+@keyframes sched-glitch-ghost-1 {
+  0%,88%  { opacity: 0; }
+  89%     { opacity: 1; }
+  90%     { opacity: 1; }
+  91%     { opacity: 1; }
+  92%     { opacity: 0; }
+  93%     { opacity: 1; }
+  94%     { opacity: 1; }
+  95%,100%{ opacity: 0; }
+}
+@keyframes sched-glitch-ghost-2 {
+  0%,88%  { opacity: 0; }
+  89%     { opacity: 1; }
+  90%     { opacity: 1; }
+  91%     { opacity: 0; }
+  92%     { opacity: 1; }
+  93%     { opacity: 0; }
+  94%     { opacity: 1; }
+  95%,100%{ opacity: 0; }
+}
 </style>
 <link rel="stylesheet" href="/shared/anime-redact.css">
 </head>
