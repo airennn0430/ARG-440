@@ -7,7 +7,6 @@
   'use strict';
 
   var STORAGE_KEY = 'anime_call_end_reached_v1';
-  var STATUS_API = 'https://hidarling.vercel.app/api/call-status';
 
   /** Toraporta_LP/truth.html のみ伏字ギミックを無効化（他ページは従来どおり） */
   function isTruthHtmlPage() {
@@ -167,48 +166,8 @@
     observeMutations();
   }
 
-  /* このオリジンではフラグが立っていない場合のみ、別オリジン(Anime)の通話終了APIに
-     vidを問い合わせる。クロスオリジンのためlocalStorageは共有できないので、
-     shared/visitor-id.jsが管理するvidトークンで紐付ける。 */
-  var remoteChecked = false;
-  function checkRemoteOnce() {
-    if (isTruthHtmlPage() || isActive() || remoteChecked) return;
-    remoteChecked = true;
-    if (!window.ARG440_VID || typeof window.ARG440_VID.get !== 'function') return;
-    var vid = window.ARG440_VID.get();
-    if (!vid) return;
-
-    var controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
-    var timer = setTimeout(function () {
-      if (controller) controller.abort();
-    }, 3000);
-
-    fetch(STATUS_API + '?vid=' + encodeURIComponent(vid), {
-      signal: controller ? controller.signal : undefined,
-    })
-      .then(function (res) {
-        clearTimeout(timer);
-        if (!res.ok) return null;
-        return res.json();
-      })
-      .then(function (data) {
-        if (!data || !data.done) return;
-        try {
-          localStorage.setItem(STORAGE_KEY, '1');
-        } catch (e) {
-          /* noop */
-        }
-        applyRedactSubtree(document.body);
-        observeMutations();
-      })
-      .catch(function () {
-        clearTimeout(timer);
-      });
-  }
-
   function init() {
     recheck();
-    checkRemoteOnce();
   }
 
   if (document.readyState === 'loading') {

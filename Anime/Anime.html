@@ -601,7 +601,6 @@ html.anime-instant-call #call-overlay {
   </div>
 </div>
 
-<script src="visitor-id.js"></script>
 <script src="sfx.js"></script>
 <script>
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -725,7 +724,7 @@ function shouldTriggerCall() {
   if (window.innerWidth >= 769) return false;
 
   // Domain gate — production only
-  if (window.location.hostname !== 'hidarling.vercel.app') return false;
+  if (window.location.hostname !== 'arg-440.vercel.app') return false;
 
   // Date gate
   const now = new Date();
@@ -1143,25 +1142,12 @@ function showCallEndScreen() {
   try {
     localStorage.setItem('anime_call_end_reached_v1', '1');
   } catch (e) {}
-  try {
-    var vid = window.ARG440_VID && window.ARG440_VID.get();
-    if (vid) {
-      fetch('/api/call-status', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ vid: vid }),
-      }).catch(function () {});
-    }
-  } catch (e) {}
 }
 
 btnEnd.addEventListener('click', () => {
   // window.close() succeeds on some mobile browsers, which would tear down
   // this page before a delayed redirect could run — so navigate directly.
-  var vid = window.ARG440_VID && window.ARG440_VID.get();
-  var url = 'https://toraporta.vercel.app/Toraporta.html';
-  if (vid) url += '?vid=' + encodeURIComponent(vid);
-  window.location.href = url;
+  window.location.href = '/Toraporta_LP/Toraporta.html';
 });
 
 // Tap handler for VN
