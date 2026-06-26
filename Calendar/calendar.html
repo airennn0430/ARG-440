@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>カレンダー</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #f2f0f8;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 16px;
+    font-family: 'Noto Sans JP', sans-serif;
+  }
+  h1 {
+    font-size: 20px;
+    color: #0e002e;
+    margin-bottom: 20px;
+    letter-spacing: .04em;
+  }
+  .calendar-wrap {
+    width: 100%;
+    max-width: 800px;
+    background: #fff;
+    border: 1px solid #dddae8;
+  }
+  iframe {
+    display: block;
+    width: 100%;
+    aspect-ratio: 800 / 600;
+    border: 0;
+  }
+</style>
+</head>
+<body>
+
+<h1>配信スケジュール</h1>
+<div class="calendar-wrap">
+  <iframe
+    src="https://calendar.google.com/calendar/embed?src=2yarlahotep%40gmail.com&ctz=Asia%2FTokyo&mode=WEEK&showTitle=0&showPrint=0&showCalendars=0&showTz=0"
+    scrolling="no">
+  </iframe>
+</div>
+
+</body>
+</html>
