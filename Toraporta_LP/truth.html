@@ -289,63 +289,6 @@ section { padding: 112px 140px; border-top: 1px solid var(--border); }
   .talent-dossier-hook { padding-left: 18px; letter-spacing: .1em; }
 }
 
-/* ── WORKS ── */
-.works-track {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-  background: var(--border);
-}
-.work-item {
-  background: var(--white);
-  flex: 0 0 100%;
-  min-width: 0;
-  display: flex;
-  align-items: center;
-  gap: 0;
-  transition: background .28s;
-}
-.work-item:hover { background: var(--surface); }
-.work-num {
-  font-family: 'Bebas Neue', 'Noto Sans JP', sans-serif;
-  font-size: 34px;
-  font-weight: 400;
-  color: var(--accent);
-  line-height: 1;
-  letter-spacing: .06em;
-  flex-shrink: 0;
-  width: 72px;
-  text-align: center;
-}
-.work-poster {
-  width: 110px;
-  flex-shrink: 0;
-  aspect-ratio: 3 / 4;
-  background: var(--surface);
-  overflow: hidden;
-  position: relative;
-  margin: 16px 0;
-}
-.work-body { padding: 20px 28px; flex: 1; display: flex; flex-direction: column; gap: 8px; }
-.work-tags { display: flex; flex-wrap: wrap; gap: 6px; }
-.work-tag {
-  font-size: 16px;
-  letter-spacing: .1em;
-  color: var(--accent);
-  border: 1px solid var(--accent);
-  padding: 3px 10px;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-.work-title {
-  font-size: 16px;
-  font-weight: 700;
-  line-height: 1.5;
-  color: var(--black);
-  letter-spacing: .02em;
-}
-.work-lead { font-size: 16px; font-weight: 700; color: var(--black); line-height: 1.6; letter-spacing: .04em; }
-
 /* ── ABOUT ── */
 .about-lead {
   max-width: 680px;
@@ -962,13 +905,6 @@ footer {
     padding-right: 0;
   }
 
-  /* WORKS */
-  .work-item { flex: 0 0 calc(100% - 1px); flex-direction: row; align-items: flex-start; }
-  .work-num { display: none; }
-  .work-poster { width: 120px; flex-shrink: 0; aspect-ratio: 3 / 4; margin: 16px 0 16px 16px; }
-  .work-body { padding: 16px; }
-  .work-item .work-tag { display: none; }
-
   /* ABOUT */
   .value-grid-list-wrap { overflow: hidden; }
   .value-grid-list {
@@ -1116,7 +1052,6 @@ footer {
   <ul id="navMenu">
     <li><a href="#top">Top</a></li>
     <li><a href="#talent">TALENT</a></li>
-    <li><a href="#works">Works</a></li>
     <li><a href="#about">About</a></li>
     <li><a href="#recruit">Recruit</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -1175,53 +1110,10 @@ footer {
   </article>
 </section>
 
-<!-- ═══ WORKS ═══ -->
-<section id="works">
-  <div class="sec-hd fi">
-    <span class="sec-num">02</span>
-    <div class="sec-meta">
-      <h2 class="sec-title glitch-text" data-text="Works">Works</h2>
-      <h3 class="sec-label">What I've done</h3>
-    </div>
-  </div>
-  <p class="sec-desc fi">ここにセクション説明のプレースホルダー。</p>
-  <div class="fi">
-    <div class="works-track">
-      <div class="work-item">
-        <p class="work-num">01</p>
-        <div class="work-poster"></div>
-        <div class="work-body">
-          <div class="work-tags"><span class="work-tag">Tag</span></div>
-          <p class="work-title">プレースホルダータイトル</p>
-          <p class="work-lead">プレースホルダーリード文</p>
-        </div>
-      </div>
-      <div class="work-item">
-        <p class="work-num">02</p>
-        <div class="work-poster"></div>
-        <div class="work-body">
-          <div class="work-tags"><span class="work-tag">Tag</span></div>
-          <p class="work-title">プレースホルダータイトル</p>
-          <p class="work-lead">プレースホルダーリード文</p>
-        </div>
-      </div>
-      <div class="work-item">
-        <p class="work-num">03</p>
-        <div class="work-poster"></div>
-        <div class="work-body">
-          <div class="work-tags"><span class="work-tag">Tag</span></div>
-          <p class="work-title">プレースホルダータイトル</p>
-          <p class="work-lead">プレースホルダーリード文</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ═══ ABOUT ═══ -->
 <section id="about">
   <div class="sec-hd fi">
-    <span class="sec-num">03</span>
+    <span class="sec-num">02</span>
     <div class="sec-meta">
       <h2 class="sec-title glitch-text" data-text="About">About</h2>
       <h3 class="sec-label">Who I am</h3>
@@ -1390,7 +1282,7 @@ footer {
 <!-- ═══ RECRUIT ═══ -->
 <section id="recruit">
   <div class="sec-hd fi">
-    <span class="sec-num">04</span>
+    <span class="sec-num">03</span>
     <div class="sec-meta">
       <h2 class="sec-title glitch-text" data-text="Recruit">Recruit</h2>
       <h3 class="sec-label">What I seek</h3>
@@ -1441,7 +1333,7 @@ footer {
 <!-- ═══ CONTACT ═══ -->
 <section id="contact">
   <div class="sec-hd fi">
-    <span class="sec-num">05</span>
+    <span class="sec-num">04</span>
     <div class="sec-meta">
       <h2 class="sec-title glitch-text" data-text="Contact">Contact</h2>
       <h3 class="sec-label">Reach me</h3>
