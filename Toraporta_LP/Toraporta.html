@@ -43,474 +43,31 @@
     .hero {
       position: relative;
       width: 100%;
-      min-height: calc(100dvh - 64px + 120px);
+      height: calc(100dvh - 64px);
+      min-height: 520px;
       margin-top: 64px;
       overflow: hidden;
-      display: grid;
-      grid-template-columns: minmax(300px, 34%) minmax(340px, 36%) minmax(300px, 30%);
-      align-items: stretch;
-      padding: 22px var(--layout-pad-x) 26px;
       background: var(--bg);
     }
 
-    .hero > section {
-      min-width: 0;
-    }
-
-    .hero::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 34%;
-      width: 1px;
-      background: var(--line);
-      opacity: 0.9;
-      z-index: -1;
-    }
-
-    .hero::after {
-      content: "";
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 70%;
-      width: 1px;
-      background: var(--line);
-      opacity: 0.9;
-      z-index: -1;
-    }
-
-    .panel-left {
-      position: relative;
-      z-index: 4;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: var(--hero-text-top-pad) 24px 0 var(--hero-text-inset-x);
-    }
-
-    .logo-wrap h1 {
-      margin: 0;
-      line-height: 0.9;
-      font-family: "Bebas Neue", "Noto Sans JP", sans-serif;
-      font-size: clamp(58px, 6.2vw, 102px);
-      letter-spacing: 0.06em;
-      color: var(--mint-deep);
-    }
-
-    .studio {
-      margin-top: 12px;
-      font-size: 14px;
-      letter-spacing: 0.09em;
-      color: #2b3f3a;
-    }
-
-    .jp-sub {
-      margin-top: 3px;
-      font-size: 14px;
-      color: #334743;
-    }
-
-    .lead {
-      margin-top: 26px;
-      border-top: 1px solid var(--line);
-      padding-top: 22px;
-    }
-
-    .lead-title {
-      margin: 0;
-      font-size: clamp(42px, 3vw, 58px);
-      line-height: 1.15;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      text-shadow: 0 0 14px rgba(255, 255, 255, 1), 0 4px 24px rgba(255, 255, 255, 0.95);
-    }
-
-    .lead-text {
-      margin: 14px 0 0;
-      font-size: clamp(15px, 1.07vw, 18px);
-      line-height: 1.95;
-      color: var(--sub);
-    }
-
-    .lower-tag {
-      margin-top: 22px;
-      border-top: 1px solid var(--line);
-      padding-top: 15px;
-      font-family: "Bebas Neue", "Noto Sans JP", sans-serif;
-      font-size: 22px;
-      letter-spacing: 0.08em;
-      color: #4a5f5a;
-    }
-
-    .panel-center {
-      position: relative;
-      padding: 0;
-      min-height: calc(100dvh - 48px + 120px);
-      overflow: visible;
-      z-index: 1;
-    }
-
-    .door-stage {
+    .hero canvas {
       position: absolute;
       inset: 0;
-      overflow: visible;
-      background: transparent;
-      box-shadow: none;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    .door-main {
-      position: absolute;
-      left: 52%;
-      top: 49%;
-      transform: translate(-50%, -50%);
-      width: clamp(615.6px, 63.18vw, 988.2px);
-      max-width: none;
-      z-index: 0;
-    }
-
-    .chip-stack {
-      position: absolute;
-      left: 18%;
-      top: 50%;
-      transform: translate(-100%, -44%);
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      z-index: 5;
-    }
-
-    .chip {
-      border: 1px solid #8faea7;
-      border-radius: 8px;
-      font-family: "Bebas Neue", "Noto Sans JP", sans-serif;
-      font-size: 31px;
-      letter-spacing: 0.08em;
-      background: rgba(255, 255, 255, 0.95);
-      color: #2f4f49;
-      padding: 4px 16px;
-      line-height: 1;
-    }
-
-    .panel-right {
-      position: relative;
-      display: grid;
-      grid-template-rows: auto 1fr;
-      padding: 6px 0 0 8px;
-      z-index: 5;
-    }
-
-    .future-wrap {
-      position: relative;
-      z-index: 4;
-      justify-self: center;
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-    }
-
-    .future-wrap.placeholder {
-      min-height: clamp(180px, 20vw, 260px);
       width: 100%;
+      height: 100%;
       display: block;
     }
 
-    .future-jp {
-      writing-mode: vertical-rl;
-      text-orientation: mixed;
-      font-size: clamp(64px, 4.7vw, 92px);
-      letter-spacing: 0.08em;
-      color: var(--mint-deep);
-      line-height: 1;
-      margin: 0;
-    }
-
-    .future-en {
-      margin: 0;
-      font-family: "Bebas Neue", "Noto Sans JP", sans-serif;
-      font-size: 15px;
-      letter-spacing: 0.12em;
-      color: #6e8781;
-      writing-mode: vertical-rl;
-      transform: translateY(6px);
-    }
-
-    .art-area {
-      position: relative;
-      margin-top: 14px;
-      width: min(100%, 500px);
-      justify-self: center;
-      aspect-ratio: 1.02 / 1;
-      z-index: 1;
-    }
-
-    .hand {
+    .sr-only {
       position: absolute;
-      width: 78%;
-      right: 10%;
-      bottom: 14%;
-      z-index: 1;
-    }
-
-    .sticker-green {
-      position: absolute;
-      width: 42%;
-      left: -16%;
-      bottom: 16%;
-      z-index: 4;
-      transform: rotate(-12deg);
-    }
-
-    .sticker-yellow {
-      position: absolute;
-      width: 20%;
-      right: 2%;
-      top: 12%;
-      z-index: 4;
-      transform: rotate(8deg);
-    }
-
-    .sticker-holo {
-      position: absolute;
-      width: 24%;
-      left: 7%;
-      top: -38%;
-      z-index: 4;
-      transform: rotate(-18deg);
-      opacity: 0.9;
-    }
-
-    .hero-note {
-      position: absolute;
-      right: 12px;
-      top: 38%;
-      font-family: "Bebas Neue", "Noto Sans JP", sans-serif;
-      font-size: 13px;
-      letter-spacing: 0.16em;
-      color: #6d8680;
-      writing-mode: vertical-rl;
-      z-index: 5;
-    }
-
-    .ambient-decos {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      z-index: 4;
-    }
-
-    .ambient-deco {
-      position: absolute;
-      object-fit: contain;
-      z-index: 4;
-    }
-
-    .ambient-deco.badge-back {
-      z-index: 3;
-    }
-
-    .ambient-left-top {
-      width: clamp(38px, 4vw, 58px);
-      left: 31%;
-      top: 36%;
-    }
-
-    .ambient-left-mid {
-      width: clamp(58px, 6vw, 88px);
-      left: 34%;
-      top: 44%;
-    }
-
-    .ambient-left-bottom {
-      width: clamp(54px, 5.5vw, 82px);
-      left: 30%;
-      top: 62%;
-    }
-
-    .ambient-top-main {
-      width: clamp(90px, 8.8vw, 138px);
-      left: 60%;
-      top: 2%;
-    }
-
-    .ambient-top-sub {
-      width: clamp(66px, 6.2vw, 94px);
-      left: 65%;
-      top: 13%;
-    }
-
-    .ambient-right-bottom {
-      width: clamp(48px, 5vw, 74px);
-      left: 61%;
-      top: 70%;
-    }
-
-    @media (max-width: 1200px) {
-      .hero {
-        grid-template-columns: minmax(320px, 42%) minmax(420px, 58%);
-      }
-
-      .hero::after,
-      .panel-right {
-        display: none;
-      }
-
-      .panel-left {
-        padding-left: clamp(40px, 4.5vw, 80px);
-      }
-
-      .panel-center {
-        min-height: 68vw;
-      }
-
-      .door-main {
-        top: 50%;
-        width: clamp(518.4px, 71.28vw, 842.4px);
-      }
-
-      .chip {
-        font-size: 24px;
-      }
-
-      .lead-title {
-        font-size: clamp(32px, 2.6vw, 46px);
-      }
-    }
-
-    @media (max-width: 980px) {
-      .hero {
-        grid-template-columns: 1fr;
-        gap: 8px;
-        padding: 12px var(--layout-pad-x-sp) 18px;
-        min-height: auto;
-      }
-
-      .hero::before,
-      .hero::after {
-        display: none;
-      }
-
-      .panel-left { padding: 64px 0 0 var(--hero-text-inset-x-sp); }
-      .panel-center { padding: 0; z-index: 2; }
-      .panel-right {
-        display: block;
-        position: absolute;
-        inset: 0;
-        padding: 0;
-        z-index: 4;
-        pointer-events: none;
-      }
-
-      .logo-wrap h1 {
-        font-size: clamp(48px, 16vw, 80px);
-      }
-
-      .lead {
-        margin-top: 12px;
-        padding-top: 16px;
-      }
-
-      .lead-title {
-        font-size: clamp(32px, 10vw, 48px);
-      }
-
-      .lead-text {
-        font-size: 14px;
-      }
-
-      .lower-tag {
-        margin-top: 16px;
-        font-size: 18px;
-      }
-
-      .chip-stack {
-        left: 50%;
-        top: auto;
-        bottom: 16px;
-        transform: translate(-50%, 0);
-        flex-direction: row;
-        z-index: 4;
-      }
-
-      .chip {
-        font-size: 16px;
-        padding: 6px 10px;
-      }
-
-      .future-wrap {
-        justify-self: start;
-        gap: 7px;
-      }
-
-      .future-jp {
-        writing-mode: horizontal-tb;
-        font-size: clamp(36px, 11vw, 54px);
-        letter-spacing: 0.04em;
-      }
-
-      .future-en {
-        writing-mode: horizontal-tb;
-        transform: none;
-        font-size: 13px;
-        margin-top: 16px;
-      }
-
-      .art-area {
-        position: absolute;
-        right: -4vw;
-        bottom: -5vw;
-        width: min(44vw, 230px);
-        margin-top: 0;
-      }
-
-      .panel-center { min-height: clamp(360px, 96vw, 700px); }
-
-      .door-stage {
-        position: relative;
-        inset: auto;
-        min-height: clamp(360px, 96vw, 700px);
-      }
-
-      .door-main {
-        left: 50%;
-        top: 36%;
-        width: min(162vw, 897px);
-      }
-
-      .hand {
-        display: none;
-      }
-
-      .sticker-green {
-        width: 44%;
-        left: -12%;
-        bottom: 16%;
-      }
-
-      .sticker-yellow {
-        width: 24%;
-        right: 1%;
-        top: 43%;
-      }
-
-      .sticker-holo {
-        width: 24%;
-        left: 37%;
-        top: 2%;
-      }
-
-      .future-wrap.placeholder { display: none; }
-      .hero-note { display: none; }
-      .ambient-decos { display: block; z-index: 4; }
-      .ambient-left-top { left: 4%; top: 60%; width: clamp(34px, 10vw, 52px); }
-      .ambient-left-mid { left: 11%; top: 68%; width: clamp(52px, 14vw, 78px); }
-      .ambient-left-bottom { left: 6%; top: 83%; width: clamp(46px, 13vw, 70px); }
-      .ambient-top-main { left: 78%; top: 8%; width: clamp(74px, 20vw, 110px); }
-      .ambient-top-sub { left: 72%; top: 18%; width: clamp(54px, 15vw, 84px); }
-      .ambient-right-bottom { left: 82%; top: 80%; width: clamp(40px, 12vw, 62px); }
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+      border: 0;
     }
   </style>
   <style>
@@ -853,43 +410,9 @@
   </nav>
 
   <main class="hero" id="top">
-    <div class="ambient-decos" aria-hidden="true">
-      <img class="ambient-deco ambient-left-top" src="./asetts/horo.sticker.webp" alt="" />
-      <img class="ambient-deco ambient-left-mid badge-back" src="./asetts/badge.white.webp" alt="" />
-      <img class="ambient-deco ambient-left-bottom" src="./asetts/yellow.sticker.webp" alt="" />
-      <img class="ambient-deco ambient-top-main" src="./asetts/green.sticker.webp" alt="" />
-      <img class="ambient-deco ambient-top-sub badge-back" src="./asetts/badge.white.webp" alt="" />
-    </div>
-
-    <section class="panel-left">
-      <div>
-        <div class="logo-wrap">
-          <h1>TORAPORTA</h1>
-        </div>
-
-        <div class="lead">
-          <p class="lead-title">日常は、<br />ここから<br />「非日常」へ。</p>
-        </div>
-      </div>
-
-    </section>
-
-    <section class="panel-center" aria-label="Main visual">
-      <div class="door-stage">
-        <img class="door-main" src="./asetts/hero.bigdoor.webp" alt="トラポルタのメインドアビジュアル" />
-      </div>
-    </section>
-
-    <section class="panel-right">
-      <div class="future-wrap placeholder" aria-hidden="true"></div>
-
-      <div class="art-area" aria-hidden="true">
-        <img class="sticker-holo" src="./asetts/horo.sticker.webp" alt="" />
-        <img class="hand" src="./asetts/hand (2).webp" alt="" />
-      </div>
-    </section>
-
-    <p class="hero-note">IMMERSIVE STORYTELLING EXPERIENCES</p>
+    <h1 class="sr-only">株式会社トラポルタ TORAPORTA ｜ 日常は、ここから「非日常」へ。</h1>
+    <canvas id="heroBg" aria-hidden="true"></canvas>
+    <canvas id="heroGl" aria-hidden="true"></canvas>
   </main>
 
   <!-- ═══ SERVICE ═══ -->
@@ -1041,6 +564,347 @@
   const TRIGGER_NAMES=['獅子王千暁','獅子王 千暁','ししおうちあき','シシオウチアキ','獅子王','ししおう','シシオウ']; const TRUTH_URL='truth.html'; const TRIGGER_CONTACT_TYPE='お仕事のご依頼・ご相談'; const FORMSPREE_ENDPOINT='https://formspree.io/f/xreyqnjz';
   const io = new IntersectionObserver(entries=>{ entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('vis'); }); },{ threshold:0.08 }); document.querySelectorAll('.fi').forEach(el=>io.observe(el));
   var submitBtn=document.getElementById('submitBtn'); if(submitBtn){ submitBtn.addEventListener('click',()=>{ const senderName=document.getElementById('senderName').value.trim(); const senderEmail=document.getElementById('senderEmail').value.trim(); const recipient=document.getElementById('recipientName').value.trim(); const contactTypeEl=document.getElementById('contactType'); const contactType=contactTypeEl.options[contactTypeEl.selectedIndex].text; const message=(document.getElementById('contactMessage')&&document.getElementById('contactMessage').value.trim())||''; if(!senderName||!senderEmail){ alert('お名前をご入力ください。'); return; } const isTriggerName=TRIGGER_NAMES.some(t=>recipient===t); const isTriggerType=contactType===TRIGGER_CONTACT_TYPE; const isTriggerMessage=message.includes('秘密'); if(isTriggerName&&isTriggerType&&isTriggerMessage){ const btnText=submitBtn.textContent; submitBtn.disabled=true; submitBtn.textContent='送信中...'; fetch(FORMSPREE_ENDPOINT,{ method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({'会社名・お名前':senderName,'メールアドレスまたはXアカウントID':senderEmail,'お問い合わせ種別':contactType,'担当者名':recipient,'メッセージ':message})}).then(res=>res.ok?res.json():Promise.reject()).then(()=>{ const ov=document.getElementById('transOverlay'); ov.classList.add('active'); ['tl1','tl2','tl3'].forEach((id,i)=>{ setTimeout(()=>document.getElementById(id).classList.add('show'), i*900); }); setTimeout(()=>{ window.location.href=TRUTH_URL; },3200); }).catch(()=>{ alert('送信に失敗しました。しばらくしてからお試しください。'); submitBtn.disabled=false; submitBtn.textContent=btnText; }); return; } alert('お問い合わせを受け付けました。'); }); }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+  <script>
+  (function(){
+    var hero = document.getElementById('top');
+    var bgCanvas = document.getElementById('heroBg');
+    var glCanvas = document.getElementById('heroGl');
+    if (!hero || !bgCanvas || !glCanvas) return;
+    var DPR = Math.min(window.devicePixelRatio || 1, 2);
+    var bctx = bgCanvas.getContext('2d');
+
+    var CODE_LINES = [
+      'float scale = mask * distortion;',
+      '',
+      'distortion = clamp(distortion, 0.0, 1.0);',
+      '',
+      'uv *= 1.0 - 0.01 * distortion * random(vec2(uv * 5.0));',
+      '',
+      'float rDiff = +(0.005 * aberrMag) * distortion;',
+      'float bDiff = -(0.005 * aberrMag) * distortion;',
+      '',
+      'float maxScale = 0.05 * scaleMag;',
+      'vec2 ruv = getScaledUv(uv, 1.0 - (maxScale - rDiff) * scale);',
+      'vec2 guv = getScaledUv(uv, 1.0 - (maxScale        ) * scale);',
+      'vec2 buv = getScaledUv(uv, 1.0 - (maxScale - bDiff) * scale);',
+      '',
+      'float r = texture2D(texture, ruv).r;'
+    ];
+    var CODE_LINES2 = [
+      'vec4 dist = texture2D(dataTexture, vUv);',
+      'float d = clamp(dist.r, 0.0, 1.0);',
+      '',
+      'float mask = smoothstep(0.2, 0.8, d);',
+      'float distortion = mask * amplitude;',
+      '',
+      'gl_Position = projectionMatrix *',
+      '  modelViewMatrix * vec4(pos, 1.0);',
+      '',
+      'vNormal = normalMatrix * objectNormal;',
+      'vUv = uv;',
+      '',
+      'wave += 0.16 * sin(v * 6.0 + time);',
+      'wave += 0.09 * sin(u * 9.0 - time);',
+      'pos.z = wave * falloff;'
+    ];
+    var CODE_LINES3 = [
+      'const textTexture = this.createTexture({',
+      '  image: params.image,',
+      '  width: 1024,',
+      '  height: 1024 / (width / height)',
+      '})',
+      '',
+      'this.material2 = new RawShaderMaterial({',
+      '  uniforms: {',
+      '    texture: { value: textTexture },',
+      '  },',
+      '  vertexShader: createShader(vert)',
+      '  fragmentShader: createShader(frag)',
+      '  transparent: true,',
+      '})'
+    ];
+
+    function drawBackground(){
+      var w = hero.clientWidth, h = hero.clientHeight;
+      bgCanvas.width = Math.round(w * DPR);
+      bgCanvas.height = Math.round(h * DPR);
+      bctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      bctx.fillStyle = '#fff';
+      bctx.fillRect(0, 0, w, h);
+
+      var word = 'Toraporta.';
+      var stretchY = 1.16;
+      var targetW = Math.min(w * 0.82, 1700);
+      var fs = 200;
+      bctx.font = '600 ' + fs + 'px "Helvetica Neue", Helvetica, Arial, sans-serif';
+      var mw = bctx.measureText(word).width;
+      fs = fs * targetW / mw;
+      fs = Math.min(fs, h * 0.32);
+      bctx.font = '600 ' + fs + 'px "Helvetica Neue", Helvetica, Arial, sans-serif';
+      mw = bctx.measureText(word).width;
+      bctx.fillStyle = '#0c0c0c';
+      bctx.textBaseline = 'middle';
+
+      var bandTop = h * 0.42, bandBot = h * 0.58;
+      var metrics = bctx.measureText(word);
+      var descent = (metrics.actualBoundingBoxDescent || fs * 0.47) * stretchY;
+      var gapPx = 11;
+      var yTop = bandTop - gapPx - descent;
+      var yBot = bandBot + gapPx + descent;
+
+      bctx.save();
+      bctx.translate(w / 2, yTop);
+      bctx.scale(1, stretchY);
+      bctx.fillText(word, -mw / 2, 0);
+      bctx.restore();
+
+      bctx.save();
+      bctx.translate(w / 2, yBot);
+      bctx.rotate(Math.PI);
+      bctx.scale(1, stretchY);
+      bctx.fillText(word, -mw / 2, 0);
+      bctx.restore();
+
+      lastLayout = { w: w, h: h, bandTop: bandTop, bandBot: bandBot };
+      drawRulesCode(bctx, false);
+    }
+
+    var lastLayout = null;
+    function drawRulesCode(ctx, bold){
+      var w = lastLayout.w, h = lastLayout.h;
+      var bandTop = lastLayout.bandTop, bandBot = lastLayout.bandBot;
+      var ruleX0 = w * 0.165, ruleX1 = w * 0.835;
+      ctx.fillStyle = '#0c0c0c';
+      ctx.fillRect(ruleX0, bandTop - 2, ruleX1 - ruleX0, 2);
+      ctx.fillRect(ruleX0, bandBot, ruleX1 - ruleX0, 2);
+      var codeFs = Math.max(9, Math.round(h * 0.0125));
+      ctx.font = (bold ? '700 ' : '') + codeFs + 'px "Courier New", monospace';
+      ctx.fillStyle = bold ? '#0c8a6e' : '#13a88a';
+      var lh = codeFs * 1.55;
+      function col(lines, x){
+        var y = bandTop + lh * 1.2;
+        for (var i = 0; i < lines.length; i++){
+          if (y > bandBot - 4) break;
+          ctx.fillText(lines[i], x, y);
+          y += lh;
+        }
+      }
+      col(CODE_LINES, w * 0.168);
+      col(CODE_LINES2, w * 0.40);
+      if (w > 700) col(CODE_LINES3, w * 0.66);
+    }
+
+    var bgBlurCanvas = document.createElement('canvas');
+    var blurCtx = bgBlurCanvas.getContext('2d');
+    function drawBackgroundBlur(){
+      bgBlurCanvas.width = bgCanvas.width;
+      bgBlurCanvas.height = bgCanvas.height;
+      blurCtx.setTransform(1, 0, 0, 1, 0, 0);
+      blurCtx.filter = 'blur(' + Math.round(4 * DPR) + 'px)';
+      blurCtx.drawImage(bgCanvas, 0, 0);
+      blurCtx.filter = 'none';
+      blurCtx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      blurCtx.filter = 'blur(1.2px)';
+      drawRulesCode(blurCtx, true);
+      blurCtx.filter = 'none';
+    }
+
+    var clothCanvas = document.createElement('canvas');
+    var TW = 1024, TH = 1360;
+    clothCanvas.width = TW; clothCanvas.height = TH;
+    var cctx = clothCanvas.getContext('2d');
+
+    var LINE = 'Where does your door open to?';
+    var LINES = 8, CFS = 46, CLH = CFS * 1.32;
+    var GLITCH_GLYPHS = 'abcdefghijklmnopqrstuvwxyz#%&?!*<>/\\=+~';
+    var lineJitter = [];
+    for (var i = 0; i < LINES; i++) lineJitter.push((Math.random() - 0.5) * 30);
+
+    function drawCloth(){
+      cctx.fillStyle = '#fff';
+      cctx.fillRect(0, 0, TW, TH);
+      cctx.font = '500 ' + CFS + 'px "Courier New", monospace';
+      cctx.textBaseline = 'middle';
+      cctx.save();
+      cctx.translate(TW / 2, TH * 0.505);
+      cctx.rotate(-5 * Math.PI / 180);
+      cctx.translate(-TW / 2, -TH * 0.505);
+      var cw = cctx.measureText('M').width;
+      var total = cw * LINE.length;
+      var y0 = TH * 0.505 - CLH * (LINES - 1) / 2;
+      for (var i = 0; i < LINES; i++){
+        var y = y0 + i * CLH;
+        var x = (TW - total) / 2 + lineJitter[i];
+        for (var k = 0; k < LINE.length; k++){
+          var c = LINE.charAt(k);
+          var dy = (Math.random() - 0.5) * 2.4;
+          var r = Math.random();
+          if (c !== ' '){
+            if (r < 0.025){
+              c = GLITCH_GLYPHS.charAt((Math.random() * GLITCH_GLYPHS.length) | 0);
+            } else if (r < 0.05){
+              cctx.globalAlpha = 0.55;
+              cctx.fillStyle = '#141414';
+              cctx.fillText(c, x + 3 + Math.random() * 4, y + dy);
+              cctx.globalAlpha = 1;
+            }
+            if (Math.random() < 0.018){
+              cctx.fillStyle = Math.random() < 0.5 ? 'rgba(215,45,70,0.6)' : 'rgba(40,90,215,0.6)';
+              cctx.fillText(c, x + (Math.random() - 0.5) * 6, y + dy + (Math.random() - 0.5) * 3);
+            }
+          }
+          cctx.fillStyle = '#141414';
+          cctx.fillText(c, x, y + dy);
+          x += cw;
+        }
+      }
+      cctx.restore();
+    }
+    drawCloth();
+
+    // WebGL cloth; if three.js failed to load, the typographic background still renders
+    if (!window.THREE){ drawBackground(); return; }
+    var renderer;
+    try {
+      renderer = new THREE.WebGLRenderer({ canvas: glCanvas, antialias: true, alpha: true });
+    } catch (e) {
+      drawBackground();
+      return;
+    }
+    renderer.setPixelRatio(DPR);
+    renderer.setClearColor(0x000000, 0);
+
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
+    camera.position.set(0, 0, 10);
+
+    var bgTex = new THREE.CanvasTexture(bgBlurCanvas);
+    bgTex.minFilter = THREE.LinearFilter;
+    var clothTex = new THREE.CanvasTexture(clothCanvas);
+    clothTex.minFilter = THREE.LinearFilter;
+
+    var PW = 3.35, PH = 4.5;
+    var uniforms = {
+      uTime: { value: 0 },
+      uBg: { value: bgTex },
+      uCloth: { value: clothTex },
+      uRes: { value: new THREE.Vector2(1, 1) }
+    };
+
+    var vert = [
+      'uniform float uTime;',
+      'varying vec2 vUv;',
+      'varying vec3 vN;',
+      'varying float vH;',
+      'float disp(vec2 q, float t){',
+      '  return 0.17 * sin(6.2831 * (q.y * 1.35 - t * 0.16) + 2.3 * sin(6.2831 * (q.x * 0.75 + t * 0.10)))',
+      '       + 0.10 * sin(6.2831 * (q.x * 1.6 + t * 0.13) + q.y * 4.2)',
+      '       + 0.05 * sin(6.2831 * (q.y * 2.9 + q.x * 2.1 - t * 0.21));',
+      '}',
+      'void main(){',
+      '  vUv = uv;',
+      '  float t = uTime;',
+      '  vec3 p = position;',
+      '  float e = 0.012;',
+      '  float d0 = disp(uv, t);',
+      '  vH = d0;',
+      '  p.z += d0;',
+      '  p.x += 0.07 * sin(6.2831 * (uv.y * 0.85 - t * 0.11));',
+      '  p.y += 0.03 * sin(6.2831 * (uv.x * 1.2 + t * 0.09));',
+      '  float dx = (disp(uv + vec2(e, 0.0), t) - d0) / (e * ' + PW.toFixed(2) + ');',
+      '  float dy = (disp(uv + vec2(0.0, e), t) - d0) / (e * ' + PH.toFixed(2) + ');',
+      '  vN = normalize(vec3(-dx, -dy, 1.0));',
+      '  gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);',
+      '}'
+    ].join('\n');
+
+    var frag = [
+      'precision highp float;',
+      'uniform sampler2D uBg;',
+      'uniform sampler2D uCloth;',
+      'uniform vec2 uRes;',
+      'uniform float uTime;',
+      'varying vec2 vUv;',
+      'varying vec3 vN;',
+      'varying float vH;',
+      'float rand(vec2 c){ return fract(sin(dot(c, vec2(12.9898, 78.233))) * 43758.5453); }',
+      'void main(){',
+      '  vec2 suv = gl_FragCoord.xy / uRes;',
+      '  vec3 base = texture2D(uCloth, vUv).rgb;',
+      '',
+      '  float lam = clamp(dot(normalize(vN), normalize(vec3(0.3, 0.4, 0.87))), 0.0, 1.0);',
+      '  float shade = mix(0.68, 1.05, smoothstep(0.55, 1.0, lam));',
+      '  shade *= 1.0 + vH * 0.28;',
+      '  shade = clamp(shade, 0.62, 1.06);',
+      '',
+      '  float weave = sin(vUv.x * 1400.0) * sin(vUv.y * 1800.0);',
+      '  shade *= 1.0 + weave * 0.022;',
+      '',
+      '  float fold = length(vN.xy);',
+      '  vec2 nOff = vN.xy * 0.04;',
+      '  float g1 = rand(gl_FragCoord.xy + fract(uTime * 7.13));',
+      '  float g2 = rand(gl_FragCoord.yx * 1.71 - fract(uTime * 5.71));',
+      '  vec2 jit = (vec2(g1, g2) - 0.5) * (0.0012 + 0.0035 * fold);',
+      '  float bR = texture2D(uBg, suv + nOff * 1.12 + jit).r;',
+      '  float bG = texture2D(uBg, suv + nOff + jit).g;',
+      '  float bB = texture2D(uBg, suv + nOff * 0.88 + jit).b;',
+      '  vec3 bg = vec3(bR, bG, bB);',
+      '  vec3 through = mix(vec3(1.0), bg, clamp(0.48 + fold * 0.55, 0.0, 0.8));',
+      '',
+      '  vec3 col = base * shade * through;',
+      '  float showing = 1.0 - min(min(through.r, through.g), through.b);',
+      '  col += (rand(gl_FragCoord.xy * 1.37 + fract(uTime * 3.31)) - 0.5) * (0.035 + 0.16 * showing);',
+      '  gl_FragColor = vec4(col, 1.0);',
+      '}'
+    ].join('\n');
+
+    var cloth = new THREE.Mesh(
+      new THREE.PlaneGeometry(PW, PH, 64, 96),
+      new THREE.ShaderMaterial({ uniforms: uniforms, vertexShader: vert, fragmentShader: frag })
+    );
+    scene.add(cloth);
+
+    function resize(){
+      var w = hero.clientWidth, h = hero.clientHeight;
+      renderer.setSize(w, h, false);
+      camera.aspect = w / Math.max(h, 1);
+      camera.updateProjectionMatrix();
+      uniforms.uRes.value.set(w * DPR, h * DPR);
+      drawBackground();
+      drawBackgroundBlur();
+      bgTex.needsUpdate = true;
+      var viewW = 2 * camera.position.z * Math.tan(camera.fov * Math.PI / 360) * camera.aspect;
+      var s = Math.min(0.8, viewW * 0.6 / PW);
+      cloth.scale.set(s, s, 1);
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    // pause rendering & glitch updates while the hero is scrolled out of view
+    var heroVisible = true;
+    if ('IntersectionObserver' in window){
+      new IntersectionObserver(function(entries){
+        heroVisible = entries[0].isIntersecting;
+      }).observe(hero);
+    }
+
+    setInterval(function(){
+      if (!heroVisible) return;
+      drawCloth();
+      clothTex.needsUpdate = true;
+    }, 140);
+
+    var start = performance.now();
+    function frame(){
+      requestAnimationFrame(frame);
+      if (!heroVisible) return;
+      uniforms.uTime.value = (performance.now() - start) / 1000;
+      renderer.render(scene, camera);
+    }
+    frame();
+  })();
   </script>
   <script src="/shared/anime-redact.js" defer></script>
 </body>
