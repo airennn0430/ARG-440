@@ -1344,13 +1344,14 @@ footer {
       bctx.fillStyle = '#0e002e';
       bctx.fillRect(0, 0, w, h);
 
-      var colW = Math.min(w * 0.32, 520);
+      var isMobile = w <= 768;
+      var colW = isMobile ? Math.min(w * 0.86, 900) : Math.min(w * 0.32, 520);
       var fs = 160;
       bctx.font = '600 ' + fs + 'px "Noto Sans JP", sans-serif';
       var maxW = 0;
       for (var i = 0; i < LINES3.length; i++) maxW = Math.max(maxW, bctx.measureText(LINES3[i]).width);
       fs = fs * colW / maxW;
-      fs = Math.min(fs, h * 0.15);
+      fs = Math.min(fs, h * (isMobile ? 0.09 : 0.15));
       bctx.font = '600 ' + fs + 'px "Noto Sans JP", sans-serif';
       bctx.textBaseline = 'middle';
       bctx.textAlign = 'left';
@@ -1358,7 +1359,7 @@ footer {
       var lh = fs * 1.35;
       var cy = h * 0.5;
       var y0 = cy - lh;
-      var leftX = w * 0.16, rightX = w * 0.84;
+      var leftX = isMobile ? w * 0.06 : w * 0.16, rightX = w * 0.84;
 
       // left: the declaration, unchanged — flush left, so each line starts at the same edge
       bctx.fillStyle = '#fbfcfb';
@@ -1367,12 +1368,15 @@ footer {
       // right: the same three lines rotated 180° about a pivot on the right margin at 50%
       // opacity. Drawing left-aligned in local (pre-rotation) space puts the fixed edge at
       // the pivot and the ragged edge trailing inward, which reads as right-aligned on screen.
-      bctx.save();
-      bctx.translate(rightX, cy);
-      bctx.rotate(Math.PI);
-      bctx.fillStyle = 'rgba(251,252,251,0.5)';
-      for (i = 0; i < LINES3.length; i++) bctx.fillText(LINES3[i], 0, (y0 + i * lh) - cy);
-      bctx.restore();
+      // Skipped on mobile — no room for a mirrored echo beside the full-size declaration.
+      if (!isMobile){
+        bctx.save();
+        bctx.translate(rightX, cy);
+        bctx.rotate(Math.PI);
+        bctx.fillStyle = 'rgba(251,252,251,0.5)';
+        for (i = 0; i < LINES3.length; i++) bctx.fillText(LINES3[i], 0, (y0 + i * lh) - cy);
+        bctx.restore();
+      }
     }
 
     var bgBlurCanvas = document.createElement('canvas');
