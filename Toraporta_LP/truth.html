@@ -1332,27 +1332,26 @@ footer {
       fs = Math.min(fs, h * 0.15);
       bctx.font = '600 ' + fs + 'px "Noto Sans JP", sans-serif';
       bctx.textBaseline = 'middle';
-      bctx.textAlign = 'center';
+      bctx.textAlign = 'left';
 
       var lh = fs * 1.35;
       var cy = h * 0.5;
       var y0 = cy - lh;
-      var leftCx = w * 0.27, rightCx = w * 0.73;
+      var leftX = w * 0.07, rightX = w * 0.93;
 
-      // left: the declaration, unchanged
+      // left: the declaration, unchanged — flush left, so each line starts at the same edge
       bctx.fillStyle = '#fbfcfb';
-      for (i = 0; i < LINES3.length; i++) bctx.fillText(LINES3[i], leftCx, y0 + i * lh);
+      for (i = 0; i < LINES3.length; i++) bctx.fillText(LINES3[i], leftX, y0 + i * lh);
 
-      // right: the same three lines rotated 180° about their own center at 50% opacity —
-      // a mirrored, inverted echo of the declaration
+      // right: the same three lines rotated 180° about a pivot on the right margin at 50%
+      // opacity. Drawing left-aligned in local (pre-rotation) space puts the fixed edge at
+      // the pivot and the ragged edge trailing inward, which reads as right-aligned on screen.
       bctx.save();
-      bctx.translate(rightCx, cy);
+      bctx.translate(rightX, cy);
       bctx.rotate(Math.PI);
       bctx.fillStyle = 'rgba(251,252,251,0.5)';
       for (i = 0; i < LINES3.length; i++) bctx.fillText(LINES3[i], 0, (y0 + i * lh) - cy);
       bctx.restore();
-
-      bctx.textAlign = 'left';
     }
 
     var bgBlurCanvas = document.createElement('canvas');
