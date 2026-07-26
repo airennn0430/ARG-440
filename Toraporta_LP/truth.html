@@ -1323,7 +1323,7 @@ footer {
       bctx.fillStyle = '#0e002e';
       bctx.fillRect(0, 0, w, h);
 
-      var colW = Math.min(w * 0.40, 620);
+      var colW = Math.min(w * 0.32, 520);
       var fs = 160;
       bctx.font = '600 ' + fs + 'px "Noto Sans JP", sans-serif';
       var maxW = 0;
@@ -1337,7 +1337,7 @@ footer {
       var lh = fs * 1.35;
       var cy = h * 0.5;
       var y0 = cy - lh;
-      var leftX = w * 0.07, rightX = w * 0.93;
+      var leftX = w * 0.16, rightX = w * 0.84;
 
       // left: the declaration, unchanged — flush left, so each line starts at the same edge
       bctx.fillStyle = '#fbfcfb';
@@ -1400,7 +1400,7 @@ footer {
               c = GLITCH_GLYPHS.charAt((Math.random() * GLITCH_GLYPHS.length) | 0);
             } else if (r < 0.05){
               cctx.globalAlpha = 0.55;
-              cctx.fillStyle = '#141414';
+              cctx.fillStyle = '#29ae86';
               cctx.fillText(c, x + 3 + Math.random() * 4, y + dy);
               cctx.globalAlpha = 1;
             }
@@ -1409,7 +1409,7 @@ footer {
               cctx.fillText(c, x + (Math.random() - 0.5) * 6, y + dy + (Math.random() - 0.5) * 3);
             }
           }
-          cctx.fillStyle = '#141414';
+          cctx.fillStyle = '#29ae86';
           cctx.fillText(c, x, y + dy);
           x += cw;
         }
@@ -1444,7 +1444,8 @@ footer {
       uTime: { value: 0 },
       uBg: { value: bgTex },
       uCloth: { value: clothTex },
-      uRes: { value: new THREE.Vector2(1, 1) }
+      uRes: { value: new THREE.Vector2(1, 1) },
+      uOpacity: { value: 0.8 }
     };
 
     var vert = [
@@ -1480,6 +1481,7 @@ footer {
       'uniform sampler2D uCloth;',
       'uniform vec2 uRes;',
       'uniform float uTime;',
+      'uniform float uOpacity;',
       'varying vec2 vUv;',
       'varying vec3 vN;',
       'varying float vH;',
@@ -1510,13 +1512,13 @@ footer {
       '  vec3 col = base * shade * through;',
       '  float showing = 1.0 - min(min(through.r, through.g), through.b);',
       '  col += (rand(gl_FragCoord.xy * 1.37 + fract(uTime * 3.31)) - 0.5) * (0.035 + 0.16 * showing);',
-      '  gl_FragColor = vec4(col, 1.0);',
+      '  gl_FragColor = vec4(col, uOpacity);',
       '}'
     ].join('\n');
 
     var cloth = new THREE.Mesh(
       new THREE.PlaneGeometry(PW, PH, 64, 96),
-      new THREE.ShaderMaterial({ uniforms: uniforms, vertexShader: vert, fragmentShader: frag })
+      new THREE.ShaderMaterial({ uniforms: uniforms, vertexShader: vert, fragmentShader: frag, transparent: true })
     );
     scene.add(cloth);
 
