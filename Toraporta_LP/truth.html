@@ -1313,56 +1313,7 @@ footer {
     var DPR = Math.min(window.devicePixelRatio || 1, 2);
     var bctx = bgCanvas.getContext('2d');
 
-    var CODE_LINES = [
-      'float scale = mask * distortion;',
-      '',
-      'distortion = clamp(distortion, 0.0, 1.0);',
-      '',
-      'uv *= 1.0 - 0.01 * distortion * random(vec2(uv * 5.0));',
-      '',
-      'float rDiff = +(0.005 * aberrMag) * distortion;',
-      'float bDiff = -(0.005 * aberrMag) * distortion;',
-      '',
-      'float maxScale = 0.05 * scaleMag;',
-      'vec2 ruv = getScaledUv(uv, 1.0 - (maxScale - rDiff) * scale);',
-      'vec2 guv = getScaledUv(uv, 1.0 - (maxScale        ) * scale);',
-      'vec2 buv = getScaledUv(uv, 1.0 - (maxScale - bDiff) * scale);',
-      '',
-      'float r = texture2D(texture, ruv).r;'
-    ];
-    var CODE_LINES2 = [
-      'vec4 dist = texture2D(dataTexture, vUv);',
-      'float d = clamp(dist.r, 0.0, 1.0);',
-      '',
-      'float mask = smoothstep(0.2, 0.8, d);',
-      'float distortion = mask * amplitude;',
-      '',
-      'gl_Position = projectionMatrix *',
-      '  modelViewMatrix * vec4(pos, 1.0);',
-      '',
-      'vNormal = normalMatrix * objectNormal;',
-      'vUv = uv;',
-      '',
-      'wave += 0.16 * sin(v * 6.0 + time);',
-      'wave += 0.09 * sin(u * 9.0 - time);',
-      'pos.z = wave * falloff;'
-    ];
-    var CODE_LINES3 = [
-      'const textTexture = this.createTexture({',
-      '  image: params.image,',
-      '  width: 1024,',
-      '  height: 1024 / (width / height)',
-      '})',
-      '',
-      'this.material2 = new RawShaderMaterial({',
-      '  uniforms: {',
-      '    texture: { value: textTexture },',
-      '  },',
-      '  vertexShader: createShader(vert)',
-      '  fragmentShader: createShader(frag)',
-      '  transparent: true,',
-      '})'
-    ];
+    var LINES3 = ['獅子王千暁の', '正しさは', '現実にとっての悪だ'];
 
     function drawBackground(){
       var w = hero.clientWidth, h = hero.clientHeight;
@@ -1372,67 +1323,36 @@ footer {
       bctx.fillStyle = '#0e002e';
       bctx.fillRect(0, 0, w, h);
 
-      var word = '獅子王千暁の正しさは現実にとっての悪だ';
-      var stretchY = 1.16;
-      var targetW = Math.min(w * 0.86, 1900);
-      var fs = 200;
+      var colW = Math.min(w * 0.40, 620);
+      var fs = 160;
       bctx.font = '600 ' + fs + 'px "Noto Sans JP", sans-serif';
-      var mw = bctx.measureText(word).width;
-      fs = fs * targetW / mw;
-      fs = Math.min(fs, h * 0.20);
+      var maxW = 0;
+      for (var i = 0; i < LINES3.length; i++) maxW = Math.max(maxW, bctx.measureText(LINES3[i]).width);
+      fs = fs * colW / maxW;
+      fs = Math.min(fs, h * 0.15);
       bctx.font = '600 ' + fs + 'px "Noto Sans JP", sans-serif';
-      mw = bctx.measureText(word).width;
       bctx.textBaseline = 'middle';
+      bctx.textAlign = 'center';
 
-      var bandTop = h * 0.42, bandBot = h * 0.58;
-      var metrics = bctx.measureText(word);
-      var descent = (metrics.actualBoundingBoxDescent || fs * 0.47) * stretchY;
-      var gapPx = 11;
-      var yTop = bandTop - gapPx - descent;
-      var yBot = bandBot + gapPx + descent;
+      var lh = fs * 1.35;
+      var cy = h * 0.5;
+      var y0 = cy - lh;
+      var leftCx = w * 0.27, rightCx = w * 0.73;
 
-      bctx.save();
-      bctx.translate(w / 2, yTop);
-      bctx.scale(1, stretchY);
+      // left: the declaration, unchanged
       bctx.fillStyle = '#fbfcfb';
-      bctx.fillText(word, -mw / 2, 0);
-      bctx.restore();
+      for (i = 0; i < LINES3.length; i++) bctx.fillText(LINES3[i], leftCx, y0 + i * lh);
 
+      // right: the same three lines rotated 180° about their own center at 50% opacity —
+      // a mirrored, inverted echo of the declaration
       bctx.save();
-      bctx.translate(w / 2, yBot);
+      bctx.translate(rightCx, cy);
       bctx.rotate(Math.PI);
-      bctx.scale(1, stretchY);
       bctx.fillStyle = 'rgba(251,252,251,0.5)';
-      bctx.fillText(word, -mw / 2, 0);
+      for (i = 0; i < LINES3.length; i++) bctx.fillText(LINES3[i], 0, (y0 + i * lh) - cy);
       bctx.restore();
 
-      lastLayout = { w: w, h: h, bandTop: bandTop, bandBot: bandBot };
-      drawRulesCode(bctx, false);
-    }
-
-    var lastLayout = null;
-    function drawRulesCode(ctx, bold){
-      var w = lastLayout.w, h = lastLayout.h;
-      var bandTop = lastLayout.bandTop, bandBot = lastLayout.bandBot;
-      var ruleX0 = w * 0.165, ruleX1 = w * 0.835;
-      ctx.fillStyle = 'rgba(251,252,251,0.35)';
-      ctx.fillRect(ruleX0, bandTop - 2, ruleX1 - ruleX0, 2);
-      ctx.fillRect(ruleX0, bandBot, ruleX1 - ruleX0, 2);
-      var codeFs = Math.max(9, Math.round(h * 0.0125));
-      ctx.font = (bold ? '700 ' : '') + codeFs + 'px "Courier New", monospace';
-      ctx.fillStyle = bold ? '#3ecfa4' : '#29ae86';
-      var lh = codeFs * 1.55;
-      function col(lines, x){
-        var y = bandTop + lh * 1.2;
-        for (var i = 0; i < lines.length; i++){
-          if (y > bandBot - 4) break;
-          ctx.fillText(lines[i], x, y);
-          y += lh;
-        }
-      }
-      col(CODE_LINES, w * 0.168);
-      col(CODE_LINES2, w * 0.40);
-      if (w > 700) col(CODE_LINES3, w * 0.66);
+      bctx.textAlign = 'left';
     }
 
     var bgBlurCanvas = document.createElement('canvas');
@@ -1443,10 +1363,6 @@ footer {
       blurCtx.setTransform(1, 0, 0, 1, 0, 0);
       blurCtx.filter = 'blur(' + Math.round(4 * DPR) + 'px)';
       blurCtx.drawImage(bgCanvas, 0, 0);
-      blurCtx.filter = 'none';
-      blurCtx.setTransform(DPR, 0, 0, DPR, 0, 0);
-      blurCtx.filter = 'blur(1.2px)';
-      drawRulesCode(blurCtx, true);
       blurCtx.filter = 'none';
     }
 
