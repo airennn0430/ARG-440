@@ -948,6 +948,27 @@ footer {
   background: var(--accent);
   color: var(--white);
 }
+.contact-read-more-btn--blink {
+  animation: contactBtnBlinkRed 0.6s step-start infinite;
+}
+@keyframes contactBtnBlinkRed {
+  0%, 49%   { border-color: #ff2b4d; color: #ff2b4d; }
+  50%, 100% { border-color: var(--accent); color: var(--accent); }
+}
+.contact-read-more-btn--blink:hover {
+  background: #ff2b4d;
+  color: var(--white);
+}
+.contact-quote-box {
+  margin: 14px 0;
+  padding: 14px 16px;
+  border: 1px solid rgba(251, 252, 251, 0.4);
+  line-height: 1.8;
+  word-break: break-word;
+}
+.contact-quote-box a {
+  color: var(--accent2);
+}
 .contact-typing-caret {
   display: inline-block;
   width: 2px;
@@ -1912,9 +1933,26 @@ document.querySelectorAll('.fi').forEach(function(el) { io.observe(el); });
     shishio: {
       label: '獅子王千暁',
       phases: [
-        { label: 'フェーズ1（仮）', hint: 'ヒント準備中' },
-        { label: 'フェーズ2（仮）', hint: 'ヒント準備中' },
-        { label: 'フェーズ3（仮）', hint: 'ヒント準備中' }
+        { label: '何をすればいいかわからない', hint: '株式会社トラポルタという制作会社のホームページのようです。\nサイトを回遊すると、獅子王千暁に関する情報が閲覧できるようです。' },
+        {
+          label: '「その他」が何かわからない',
+          segments: [
+            '名刺には「その他のことが知りたいなら連絡してね」とありました。\nトラポルタのHPから、彼への連絡手段と「その他」を探してみましょう。',
+            '「その他」はServiceの「配信予定一覧」にあるようです。\n「その他」をクリックすると、聞き覚えのある口ぶりのメッセージが表示される仕組みになっていたようです。'
+          ]
+        },
+        {
+          label: 'お願いの仕方がわからない',
+          segments: [
+            { text: 'トラポルタのHPの一番下、お問い合わせのセクションから連絡してみましょう。\nお問い合わせ種別は「お仕事のご依頼・ご相談」、\n指名する担当者はもちろん「獅子王千暁」です。\nいわれた通り、メッセージ部分に、「秘密を教えてください」と記入しておきましょう。', readMoreLabel: 'もっと知りたい' },
+            { text: 'そう、これでおしまい。\nキミが満足できないとしても、獅子王千暁という人間をどれだけ掘ったところで嘘しか出ないのです。', readMoreLabel: 'もっと知りたい' },
+            { text: '', readMoreLabel: 'もっと知りたい', blink: true },
+            { html: '<strong><span class="glitch-text" data-text="なぜ？">なぜ？</span></strong>', readMoreLabel: 'もっと知りたい' },
+            { text: '別の連絡手段を探してみましょう。\nお問い合わせを送った際の返送メッセージは自動返信によるものなので、そのままでは連絡手段としては使えないようですね。' },
+            { html: '返送メッセージをよく読むと、このように書いてありました。<div class="contact-quote-box">担当者より折り返しご連絡いたしますが、お急ぎの場合やお打ち合わせの日程調整をスムーズに行いたい場合は、以下のカレンダーより空き状況をご確認の上、候補日をご教示いただけますと幸いです。<br><br>▼ 担当者空き状況確認URL<br><a href="https://arg-440.vercel.app/Calender/index.html" target="_blank" rel="noopener">https://arg-440.vercel.app/Calender/index.html</a><br><br>※本メールは自動配信です。<br>※3営業日以内に担当よりご連絡差し上げます。</div>社会人たるもの、取引先のアポを取るのは当然のこと。<br>カレンダーをチェックして、話ができそうな時間帯を探してみましょう。<br><br>……予定がパンッパンなので、話せそうな時間は毎日1時間しかないようですね。' },
+            { text: '毎日0:00~1:00の間だけ、あなたと話す時間を確保できるようです。\nカレンダーから予定を申請してみましょう。\n\nあとは、予約した時刻に完了時に指定されたURLで待つだけです。' }
+          ]
+        }
       ]
     },
     kuroki: {
@@ -2004,6 +2042,18 @@ document.querySelectorAll('.fi').forEach(function(el) { io.observe(el); });
     return typeof seg === 'object' && seg && seg.typing === true;
   }
 
+  function segmentHtmlOverride(seg) {
+    return (typeof seg === 'object' && seg && seg.html != null) ? String(seg.html) : null;
+  }
+
+  function segmentReadMoreLabel(seg) {
+    return (typeof seg === 'object' && seg && seg.readMoreLabel) ? String(seg.readMoreLabel) : 'もっと読む';
+  }
+
+  function segmentBlink(seg) {
+    return typeof seg === 'object' && seg && seg.blink === true;
+  }
+
   function escapeHtml(s) {
     return String(s)
       .replace(/&/g, '&amp;')
@@ -2084,9 +2134,12 @@ document.querySelectorAll('.fi').forEach(function(el) { io.observe(el); });
         return;
       }
 
-      var html = '<p class="contact-message-hint">' + formatSegmentHtml(segText) + '</p>';
+      var override = segmentHtmlOverride(seg);
+      var html = override != null ? override
+        : (segText ? '<p class="contact-message-hint">' + formatSegmentHtml(segText) + '</p>' : '');
       if (idx < phase.segments.length - 1) {
-        html += '<button type="button" class="contact-read-more-btn">もっと読む</button>';
+        var btnClass = 'contact-read-more-btn' + (segmentBlink(seg) ? ' contact-read-more-btn--blink' : '');
+        html += '<button type="button" class="' + btnClass + '">' + escapeHtml(segmentReadMoreLabel(seg)) + '</button>';
       }
       msgBox.innerHTML = html;
     } else if (phase.hint) {
