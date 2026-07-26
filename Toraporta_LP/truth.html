@@ -915,10 +915,14 @@ footer {
   border: 1px solid var(--border);
   padding: 16px;
   min-height: 140px;
+  position: relative;
   transition: border-color .25s;
 }
 .contact-message-box.active {
   border-color: var(--accent);
+}
+.contact-message-box.has-more {
+  padding-bottom: 60px;
 }
 .contact-message-placeholder {
   color: var(--gray);
@@ -931,8 +935,10 @@ footer {
   color: var(--prose-color);
 }
 .contact-read-more-btn {
+  position: absolute;
+  left: 16px;
+  bottom: 16px;
   display: inline-block;
-  margin-top: 16px;
   padding: 8px 20px;
   border: 1px solid var(--accent);
   background: transparent;
@@ -949,15 +955,32 @@ footer {
   color: var(--white);
 }
 .contact-read-more-btn--blink {
-  animation: contactBtnBlinkRed 0.6s step-start infinite;
+  border-color: #ff2b4d;
+  color: #ff2b4d;
+  animation: contactBtnFlicker 3.4s infinite;
 }
-@keyframes contactBtnBlinkRed {
-  0%, 49%   { border-color: #ff2b4d; color: #ff2b4d; }
-  50%, 100% { border-color: var(--accent); color: var(--accent); }
+/* 蛍光灯が今にも切れそうにジジ…と明滅するホラー演出 */
+@keyframes contactBtnFlicker {
+  0%, 2%, 6%, 8%, 68%, 100% {
+    opacity: 1;
+    color: #ff2b4d;
+    box-shadow: 0 0 7px 1px rgba(255,43,77,.65), 0 0 20px 5px rgba(255,43,77,.3);
+  }
+  1%, 7% { opacity: .15; box-shadow: none; }
+  3% { opacity: .5; box-shadow: 0 0 3px rgba(255,43,77,.3); }
+  4%, 22% { opacity: .88; box-shadow: 0 0 9px 2px rgba(255,43,77,.4); }
+  23% { opacity: .1; box-shadow: none; }
+  24% { opacity: .7; box-shadow: 0 0 4px rgba(255,43,77,.3); }
+  25%, 48% { opacity: 1; box-shadow: 0 0 7px 1px rgba(255,43,77,.65), 0 0 20px 5px rgba(255,43,77,.3); }
+  49% { opacity: .05; box-shadow: none; }
+  50% { opacity: .9; box-shadow: 0 0 8px 2px rgba(255,43,77,.35); }
+  51%, 66% { opacity: 1; box-shadow: 0 0 7px 1px rgba(255,43,77,.65), 0 0 20px 5px rgba(255,43,77,.3); }
+  67% { opacity: .35; box-shadow: none; }
 }
 .contact-read-more-btn--blink:hover {
   background: #ff2b4d;
   color: var(--white);
+  box-shadow: 0 0 12px 3px rgba(255,43,77,.75);
 }
 .contact-quote-box {
   margin: 14px 0;
@@ -2151,7 +2174,7 @@ document.querySelectorAll('.fi').forEach(function(el) { io.observe(el); });
 
   function resetMessage() {
     clearTypingAnim();
-    msgBox.classList.remove('active');
+    msgBox.classList.remove('active', 'has-more');
     msgBox.innerHTML = '';
     segmentIndex = 0;
   }
@@ -2182,6 +2205,7 @@ document.querySelectorAll('.fi').forEach(function(el) { io.observe(el); });
       var segText = segmentRaw(seg);
 
       if (segmentTyping(seg) && segText) {
+        msgBox.classList.remove('has-more');
         msgBox.innerHTML = '';
         var p = document.createElement('p');
         p.className = 'contact-message-hint';
@@ -2220,12 +2244,15 @@ document.querySelectorAll('.fi').forEach(function(el) { io.observe(el); });
       var override = segmentHtmlOverride(seg);
       var html = override != null ? override
         : (segText ? '<p class="contact-message-hint">' + formatSegmentHtml(segText) + '</p>' : '');
-      if (idx < phase.segments.length - 1) {
+      var hasMore = idx < phase.segments.length - 1;
+      if (hasMore) {
         var btnClass = 'contact-read-more-btn' + (segmentBlink(seg) ? ' contact-read-more-btn--blink' : '');
         html += '<button type="button" class="' + btnClass + '">' + escapeHtml(segmentReadMoreLabel(seg)) + '</button>';
       }
+      msgBox.classList.toggle('has-more', hasMore);
       msgBox.innerHTML = html;
     } else if (phase.hint) {
+      msgBox.classList.remove('has-more');
       msgBox.innerHTML = '<p class="contact-message-hint">' + formatSegmentHtml(phase.hint) + '</p>';
     }
   }
