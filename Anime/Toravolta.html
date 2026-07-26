@@ -90,109 +90,143 @@ nav a:hover { color: var(--white); }
 
 /* ── HERO ── */
 #top {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: stretch;
+  position: relative;
   width: 100%;
   max-width: 100%;
-  padding-top: 64px;
-  position: relative;
-  overflow-x: hidden;
-  overflow-y: visible;
-  box-sizing: border-box;
-}
-.hero-left {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-self: stretch;
-  width: 100%;
-  max-width: 100%;
-  padding: 80px var(--layout-pad-x);
-  position: relative;
-  z-index: 1;
+  height: calc(100dvh - 64px);
+  min-height: 520px;
+  margin-top: 64px;
+  overflow: hidden;
+  background: var(--white);
   box-sizing: border-box;
 }
 
-.hero-tag {
-  font-size: 16px;
-  font-weight: 500;
-  letter-spacing: .22em;
-  color: var(--accent);
-  text-transform: uppercase;
-  margin-bottom: 28px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  opacity: 0;
-  animation: fadeUp .9s .2s forwards;
-}
-.hero-tag::before {
-  content: '';
-  width: 28px; height: 2px;
-  background: var(--accent);
-  flex-shrink: 0;
-}
-.hero-title {
-  font-family: 'Noto Sans JP', sans-serif;
-  font-size: clamp(38px, 5.5vw, 76px);
-  font-weight: 700;
-  line-height: 1.15;
-  letter-spacing: .05em;
-  margin-bottom: 36px;
-  color: var(--black);
-  text-shadow: 0 4px 28px rgba(41,174,134,.12);
-  opacity: 0;
-  animation: fadeUp .9s .35s forwards;
-}
-.hero-desc {
-  font-size: 16px;
-  font-weight: 500;
-  color: var(--black);
-  max-width: 420px;
-  line-height: 2;
-  margin-bottom: 44px;
-  opacity: 0;
-  animation: fadeUp .9s .5s forwards;
-}
-.hero-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 14px;
-  background: var(--accent);
-  color: var(--white);
-  font-size: 16px;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  text-decoration: none;
-  padding: 16px 36px;
-  transition: background .3s, gap .3s;
-  opacity: 0;
-  animation: fadeUp .9s .65s forwards;
-  width: fit-content;
-}
-.hero-cta:hover { background: #229874; gap: 20px; }
-.hero-cta::after { content: '→'; font-size: 16px; }
-.hero-scroll {
+#top canvas {
   position: absolute;
-  bottom: 36px;
-  left: var(--layout-pad-x);
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.hero-decor {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.sticker {
+  position: absolute;
+  pointer-events: auto;
+  border-radius: 50%;
   display: flex;
   align-items: center;
-  gap: 12px;
-  font-size: 16px;
-  letter-spacing: .18em;
-  color: var(--gray);
-  text-transform: uppercase;
-  opacity: 0;
-  animation: fadeUp .9s 1.1s forwards;
+  justify-content: center;
+  text-align: center;
+  user-select: none;
+  transition: transform .35s cubic-bezier(.22,1,.36,1);
+  filter: drop-shadow(0 10px 18px rgba(10, 40, 30, .22));
 }
-.hero-scroll::before {
-  content: '';
-  width: 32px; height: 1px;
-  background: var(--accent);
+.sticker:hover { transform: var(--hover-t, scale(1.07)); }
+
+.sticker::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  box-shadow: inset 0 2px 3px rgba(255,255,255,.55), inset 0 -6px 10px rgba(0,0,0,.18);
+  pointer-events: none;
+}
+.sticker::after {
+  content: "";
+  position: absolute;
+  top: 8%;
+  left: 14%;
+  width: 46%;
+  height: 26%;
+  background: linear-gradient(120deg, rgba(255,255,255,.85), rgba(255,255,255,0) 70%);
+  border-radius: 50%;
+  transform: rotate(-18deg);
+  pointer-events: none;
+}
+
+.badge-dark {
+  width: clamp(84px, 8.4vw, 118px);
+  height: clamp(84px, 8.4vw, 118px);
+  top: 7%;
+  right: 5%;
+  background: radial-gradient(circle at 32% 28%, #17b592, #0a8f75 62%, #06412f 100%);
+  color: #fff;
+  font-family: "Bebas Neue", "Noto Sans JP", sans-serif;
+  font-size: clamp(11px, .95vw, 14px);
+  letter-spacing: .12em;
+  line-height: 1.7;
+  border: 2px solid rgba(255,255,255,.35);
+  --hover-t: scale(1.07) rotate(-6deg);
+  transform: rotate(-8deg);
+}
+
+.badge-white {
+  width: clamp(56px, 5.4vw, 76px);
+  height: clamp(56px, 5.4vw, 76px);
+  top: 23%;
+  right: 2.5%;
+  background: radial-gradient(circle at 32% 28%, #ffffff, #eef6f3 70%, #dcecE6 100%);
+  color: #0a8f75;
+  font-family: "Bebas Neue", "Noto Sans JP", sans-serif;
+  font-weight: 800;
+  font-size: clamp(16px, 1.7vw, 23px);
+  border: 2px solid #0a8f75;
+  --hover-t: scale(1.1) rotate(8deg);
+  transform: rotate(7deg);
+}
+
+.badge-holo {
+  width: clamp(50px, 4.8vw, 68px);
+  height: clamp(50px, 4.8vw, 68px);
+  top: 2.5%;
+  right: 20%;
+  background: conic-gradient(from calc(var(--hue, 0) * 1deg), #ffb4d8, #b9d1ff, #aef0d3, #fff3ac, #ffcfa0, #ffb4d8);
+  border: 3px solid rgba(255,255,255,.85);
+  font-family: "Bebas Neue", "Noto Sans JP", sans-serif;
+  font-size: 8px;
+  letter-spacing: .08em;
+  color: rgba(30,30,30,.55);
+  font-weight: 700;
+  --hover-t: scale(1.12) rotate(-10deg);
+  transform: rotate(-5deg);
+}
+
+.badge-arrow {
+  width: clamp(46px, 4.6vw, 62px);
+  height: clamp(46px, 4.6vw, 62px);
+  bottom: 10%;
+  left: 4%;
+  background: radial-gradient(circle at 32% 28%, #ffd35c, #f2a723 65%, #b9740a 100%);
+  color: #fff;
+  font-size: clamp(18px, 1.9vw, 25px);
+  border: 2px solid rgba(255,255,255,.4);
+  --hover-t: scale(1.1) rotate(10deg);
+}
+
+@media (max-width: 900px) {
+  .badge-dark { top: 4%; right: 3%; }
+  .badge-white { top: 15%; right: 3%; }
+  .badge-holo { display: none; }
+  .badge-arrow { bottom: 6%; left: 3%; }
 }
 
 /* ── SECTION COMMON ── */
@@ -980,20 +1014,6 @@ footer {
   }
   nav ul li a:hover { color: var(--accent); }
 
-  /* HERO */
-  #top { grid-template-columns: 1fr; min-height: auto; }
-  .hero-left {
-    padding: 100px var(--layout-pad-x) 72px;
-    min-height: 100svh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-  .hero-title { font-size: clamp(32px, 9vw, 52px); }
-  .hero-desc { font-size: 16px; max-width: 100%; }
-  .hero-cta { width: 100%; justify-content: center; }
-  .hero-scroll { left: var(--layout-pad-x); bottom: 28px; }
-
   /* SECTION共通 */
   section { padding: 64px var(--layout-pad-x); }
   .sec-num { font-size: 44px; }
@@ -1081,16 +1101,16 @@ footer {
 
 <!-- ═══ HERO ═══ -->
 <section id="top">
-  <div class="hero-left">
-    <p class="hero-tag">Immersive Storytelling &amp; Experience Design</p>
-    <h1 class="hero-title">
-      日常は、<br>ここから<br>「物語」へ。
-    </h1>
-    <p class="hero-desc">気づく必要すらない、没入を。</p>
-    <a href="#contact" class="hero-cta">お問い合わせ</a>
-    <p class="hero-scroll">Scroll to explore</p>
+  <h1 class="sr-only">株式会社トラポルタ TRAPORTA｜日常は、ここから「物語」へ。気づく必要すらない、没入を。</h1>
+  <a href="#contact" class="sr-only">お問い合わせ</a>
+  <canvas id="heroBg" aria-hidden="true"></canvas>
+  <canvas id="heroGl" aria-hidden="true"></canvas>
+  <div class="hero-decor" aria-hidden="true">
+    <div class="sticker badge-dark">STORY<br />TP<br />FUTURE</div>
+    <div class="sticker badge-white">TP</div>
+    <div class="sticker badge-holo">TP</div>
+    <div class="sticker badge-arrow">↗</div>
   </div>
-
 </section>
 
 
@@ -1501,6 +1521,348 @@ footer {
   <p class="trans-line trans-accent" id="tl3">アクセス許可</p>
 </div>
 
+
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+  <script>
+  (function(){
+    var hero = document.getElementById('top');
+    var bgCanvas = document.getElementById('heroBg');
+    var glCanvas = document.getElementById('heroGl');
+    if (!hero || !bgCanvas || !glCanvas) return;
+    var DPR = Math.min(window.devicePixelRatio || 1, 2);
+    var bctx = bgCanvas.getContext('2d');
+
+    var CODE_LINES = [
+      'float scale = mask * distortion;',
+      '',
+      'distortion = clamp(distortion, 0.0, 1.0);',
+      '',
+      'uv *= 1.0 - 0.01 * distortion * random(vec2(uv * 5.0));',
+      '',
+      'float rDiff = +(0.005 * aberrMag) * distortion;',
+      'float bDiff = -(0.005 * aberrMag) * distortion;',
+      '',
+      'float maxScale = 0.05 * scaleMag;',
+      'vec2 ruv = getScaledUv(uv, 1.0 - (maxScale - rDiff) * scale);',
+      'vec2 guv = getScaledUv(uv, 1.0 - (maxScale        ) * scale);',
+      'vec2 buv = getScaledUv(uv, 1.0 - (maxScale - bDiff) * scale);',
+      '',
+      'float r = texture2D(texture, ruv).r;'
+    ];
+    var CODE_LINES2 = [
+      'vec4 dist = texture2D(dataTexture, vUv);',
+      'float d = clamp(dist.r, 0.0, 1.0);',
+      '',
+      'float mask = smoothstep(0.2, 0.8, d);',
+      'float distortion = mask * amplitude;',
+      '',
+      'gl_Position = projectionMatrix *',
+      '  modelViewMatrix * vec4(pos, 1.0);',
+      '',
+      'vNormal = normalMatrix * objectNormal;',
+      'vUv = uv;',
+      '',
+      'wave += 0.16 * sin(v * 6.0 + time);',
+      'wave += 0.09 * sin(u * 9.0 - time);',
+      'pos.z = wave * falloff;'
+    ];
+    var CODE_LINES3 = [
+      'const textTexture = this.createTexture({',
+      '  image: params.image,',
+      '  width: 1024,',
+      '  height: 1024 / (width / height)',
+      '})',
+      '',
+      'this.material2 = new RawShaderMaterial({',
+      '  uniforms: {',
+      '    texture: { value: textTexture },',
+      '  },',
+      '  vertexShader: createShader(vert)',
+      '  fragmentShader: createShader(frag)',
+      '  transparent: true,',
+      '})'
+    ];
+
+    function drawBackground(){
+      var w = hero.clientWidth, h = hero.clientHeight;
+      bgCanvas.width = Math.round(w * DPR);
+      bgCanvas.height = Math.round(h * DPR);
+      bctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      bctx.fillStyle = '#fff';
+      bctx.fillRect(0, 0, w, h);
+
+      var word = 'Toraporta.';
+      var stretchY = 1.16;
+      var targetW = Math.min(w * 0.82, 1700);
+      var fs = 200;
+      bctx.font = '600 ' + fs + 'px "Helvetica Neue", Helvetica, Arial, sans-serif';
+      var mw = bctx.measureText(word).width;
+      fs = fs * targetW / mw;
+      fs = Math.min(fs, h * 0.32);
+      bctx.font = '600 ' + fs + 'px "Helvetica Neue", Helvetica, Arial, sans-serif';
+      mw = bctx.measureText(word).width;
+      bctx.fillStyle = '#0c0c0c';
+      bctx.textBaseline = 'middle';
+
+      var bandTop = h * 0.42, bandBot = h * 0.58;
+      var metrics = bctx.measureText(word);
+      var descent = (metrics.actualBoundingBoxDescent || fs * 0.47) * stretchY;
+      var gapPx = 11;
+      var yTop = bandTop - gapPx - descent;
+      var yBot = bandBot + gapPx + descent;
+
+      bctx.save();
+      bctx.translate(w / 2, yTop);
+      bctx.scale(1, stretchY);
+      bctx.fillText(word, -mw / 2, 0);
+      bctx.restore();
+
+      bctx.save();
+      bctx.translate(w / 2, yBot);
+      bctx.rotate(Math.PI);
+      bctx.scale(1, stretchY);
+      bctx.fillText(word, -mw / 2, 0);
+      bctx.restore();
+
+      lastLayout = { w: w, h: h, bandTop: bandTop, bandBot: bandBot };
+      drawRulesCode(bctx, false);
+    }
+
+    var lastLayout = null;
+    function drawRulesCode(ctx, bold){
+      var w = lastLayout.w, h = lastLayout.h;
+      var bandTop = lastLayout.bandTop, bandBot = lastLayout.bandBot;
+      var ruleX0 = w * 0.165, ruleX1 = w * 0.835;
+      ctx.fillStyle = '#0c0c0c';
+      ctx.fillRect(ruleX0, bandTop - 2, ruleX1 - ruleX0, 2);
+      ctx.fillRect(ruleX0, bandBot, ruleX1 - ruleX0, 2);
+      var codeFs = Math.max(9, Math.round(h * 0.0125));
+      ctx.font = (bold ? '700 ' : '') + codeFs + 'px "Courier New", monospace';
+      ctx.fillStyle = bold ? '#0c8a6e' : '#13a88a';
+      var lh = codeFs * 1.55;
+      function col(lines, x){
+        var y = bandTop + lh * 1.2;
+        for (var i = 0; i < lines.length; i++){
+          if (y > bandBot - 4) break;
+          ctx.fillText(lines[i], x, y);
+          y += lh;
+        }
+      }
+      col(CODE_LINES, w * 0.168);
+      col(CODE_LINES2, w * 0.40);
+      if (w > 700) col(CODE_LINES3, w * 0.66);
+    }
+
+    var bgBlurCanvas = document.createElement('canvas');
+    var blurCtx = bgBlurCanvas.getContext('2d');
+    function drawBackgroundBlur(){
+      bgBlurCanvas.width = bgCanvas.width;
+      bgBlurCanvas.height = bgCanvas.height;
+      blurCtx.setTransform(1, 0, 0, 1, 0, 0);
+      blurCtx.filter = 'blur(' + Math.round(4 * DPR) + 'px)';
+      blurCtx.drawImage(bgCanvas, 0, 0);
+      blurCtx.filter = 'none';
+      blurCtx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      blurCtx.filter = 'blur(1.2px)';
+      drawRulesCode(blurCtx, true);
+      blurCtx.filter = 'none';
+    }
+
+    var clothCanvas = document.createElement('canvas');
+    var TW = 1024, TH = 1360;
+    clothCanvas.width = TW; clothCanvas.height = TH;
+    var cctx = clothCanvas.getContext('2d');
+
+    var LINE = 'Where does your door open to?';
+    var LINES = 8, CFS = 46, CLH = CFS * 1.32;
+    var GLITCH_GLYPHS = 'abcdefghijklmnopqrstuvwxyz#%&?!*<>/\\=+~';
+    var lineJitter = [];
+    for (var i = 0; i < LINES; i++) lineJitter.push((Math.random() - 0.5) * 30);
+
+    function drawCloth(){
+      cctx.fillStyle = '#fff';
+      cctx.fillRect(0, 0, TW, TH);
+      cctx.font = '500 ' + CFS + 'px "Courier New", monospace';
+      cctx.textBaseline = 'middle';
+      cctx.save();
+      cctx.translate(TW / 2, TH * 0.505);
+      cctx.rotate(-5 * Math.PI / 180);
+      cctx.translate(-TW / 2, -TH * 0.505);
+      var cw = cctx.measureText('M').width;
+      var total = cw * LINE.length;
+      var y0 = TH * 0.505 - CLH * (LINES - 1) / 2;
+      for (var i = 0; i < LINES; i++){
+        var y = y0 + i * CLH;
+        var x = (TW - total) / 2 + lineJitter[i];
+        for (var k = 0; k < LINE.length; k++){
+          var c = LINE.charAt(k);
+          var dy = (Math.random() - 0.5) * 2.4;
+          var r = Math.random();
+          if (c !== ' '){
+            if (r < 0.025){
+              c = GLITCH_GLYPHS.charAt((Math.random() * GLITCH_GLYPHS.length) | 0);
+            } else if (r < 0.05){
+              cctx.globalAlpha = 0.55;
+              cctx.fillStyle = '#141414';
+              cctx.fillText(c, x + 3 + Math.random() * 4, y + dy);
+              cctx.globalAlpha = 1;
+            }
+            if (Math.random() < 0.018){
+              cctx.fillStyle = Math.random() < 0.5 ? 'rgba(215,45,70,0.6)' : 'rgba(40,90,215,0.6)';
+              cctx.fillText(c, x + (Math.random() - 0.5) * 6, y + dy + (Math.random() - 0.5) * 3);
+            }
+          }
+          cctx.fillStyle = '#141414';
+          cctx.fillText(c, x, y + dy);
+          x += cw;
+        }
+      }
+      cctx.restore();
+    }
+    drawCloth();
+
+    // WebGL cloth; if three.js failed to load, the typographic background still renders
+    if (!window.THREE){ drawBackground(); return; }
+    var renderer;
+    try {
+      renderer = new THREE.WebGLRenderer({ canvas: glCanvas, antialias: true, alpha: true });
+    } catch (e) {
+      drawBackground();
+      return;
+    }
+    renderer.setPixelRatio(DPR);
+    renderer.setClearColor(0x000000, 0);
+
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
+    camera.position.set(0, 0, 10);
+
+    var bgTex = new THREE.CanvasTexture(bgBlurCanvas);
+    bgTex.minFilter = THREE.LinearFilter;
+    var clothTex = new THREE.CanvasTexture(clothCanvas);
+    clothTex.minFilter = THREE.LinearFilter;
+
+    var PW = 3.35, PH = 4.5;
+    var uniforms = {
+      uTime: { value: 0 },
+      uBg: { value: bgTex },
+      uCloth: { value: clothTex },
+      uRes: { value: new THREE.Vector2(1, 1) }
+    };
+
+    var vert = [
+      'uniform float uTime;',
+      'varying vec2 vUv;',
+      'varying vec3 vN;',
+      'varying float vH;',
+      'float disp(vec2 q, float t){',
+      '  return 0.17 * sin(6.2831 * (q.y * 1.35 - t * 0.16) + 2.3 * sin(6.2831 * (q.x * 0.75 + t * 0.10)))',
+      '       + 0.10 * sin(6.2831 * (q.x * 1.6 + t * 0.13) + q.y * 4.2)',
+      '       + 0.05 * sin(6.2831 * (q.y * 2.9 + q.x * 2.1 - t * 0.21));',
+      '}',
+      'void main(){',
+      '  vUv = uv;',
+      '  float t = uTime;',
+      '  vec3 p = position;',
+      '  float e = 0.012;',
+      '  float d0 = disp(uv, t);',
+      '  vH = d0;',
+      '  p.z += d0;',
+      '  p.x += 0.07 * sin(6.2831 * (uv.y * 0.85 - t * 0.11));',
+      '  p.y += 0.03 * sin(6.2831 * (uv.x * 1.2 + t * 0.09));',
+      '  float dx = (disp(uv + vec2(e, 0.0), t) - d0) / (e * ' + PW.toFixed(2) + ');',
+      '  float dy = (disp(uv + vec2(0.0, e), t) - d0) / (e * ' + PH.toFixed(2) + ');',
+      '  vN = normalize(vec3(-dx, -dy, 1.0));',
+      '  gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);',
+      '}'
+    ].join('\n');
+
+    var frag = [
+      'precision highp float;',
+      'uniform sampler2D uBg;',
+      'uniform sampler2D uCloth;',
+      'uniform vec2 uRes;',
+      'uniform float uTime;',
+      'varying vec2 vUv;',
+      'varying vec3 vN;',
+      'varying float vH;',
+      'float rand(vec2 c){ return fract(sin(dot(c, vec2(12.9898, 78.233))) * 43758.5453); }',
+      'void main(){',
+      '  vec2 suv = gl_FragCoord.xy / uRes;',
+      '  vec3 base = texture2D(uCloth, vUv).rgb;',
+      '',
+      '  float lam = clamp(dot(normalize(vN), normalize(vec3(0.3, 0.4, 0.87))), 0.0, 1.0);',
+      '  float shade = mix(0.68, 1.05, smoothstep(0.55, 1.0, lam));',
+      '  shade *= 1.0 + vH * 0.28;',
+      '  shade = clamp(shade, 0.62, 1.06);',
+      '',
+      '  float weave = sin(vUv.x * 1400.0) * sin(vUv.y * 1800.0);',
+      '  shade *= 1.0 + weave * 0.022;',
+      '',
+      '  float fold = length(vN.xy);',
+      '  vec2 nOff = vN.xy * 0.04;',
+      '  float g1 = rand(gl_FragCoord.xy + fract(uTime * 7.13));',
+      '  float g2 = rand(gl_FragCoord.yx * 1.71 - fract(uTime * 5.71));',
+      '  vec2 jit = (vec2(g1, g2) - 0.5) * (0.0012 + 0.0035 * fold);',
+      '  float bR = texture2D(uBg, suv + nOff * 1.12 + jit).r;',
+      '  float bG = texture2D(uBg, suv + nOff + jit).g;',
+      '  float bB = texture2D(uBg, suv + nOff * 0.88 + jit).b;',
+      '  vec3 bg = vec3(bR, bG, bB);',
+      '  vec3 through = mix(vec3(1.0), bg, clamp(0.48 + fold * 0.55, 0.0, 0.8));',
+      '',
+      '  vec3 col = base * shade * through;',
+      '  float showing = 1.0 - min(min(through.r, through.g), through.b);',
+      '  col += (rand(gl_FragCoord.xy * 1.37 + fract(uTime * 3.31)) - 0.5) * (0.035 + 0.16 * showing);',
+      '  gl_FragColor = vec4(col, 1.0);',
+      '}'
+    ].join('\n');
+
+    var cloth = new THREE.Mesh(
+      new THREE.PlaneGeometry(PW, PH, 64, 96),
+      new THREE.ShaderMaterial({ uniforms: uniforms, vertexShader: vert, fragmentShader: frag })
+    );
+    scene.add(cloth);
+
+    function resize(){
+      var w = hero.clientWidth, h = hero.clientHeight;
+      renderer.setSize(w, h, false);
+      camera.aspect = w / Math.max(h, 1);
+      camera.updateProjectionMatrix();
+      uniforms.uRes.value.set(w * DPR, h * DPR);
+      drawBackground();
+      drawBackgroundBlur();
+      bgTex.needsUpdate = true;
+      var viewW = 2 * camera.position.z * Math.tan(camera.fov * Math.PI / 360) * camera.aspect;
+      var s = Math.min(0.8, viewW * 0.6 / PW);
+      cloth.scale.set(s, s, 1);
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    // pause rendering & glitch updates while the hero is scrolled out of view
+    var heroVisible = true;
+    if ('IntersectionObserver' in window){
+      new IntersectionObserver(function(entries){
+        heroVisible = entries[0].isIntersecting;
+      }).observe(hero);
+    }
+
+    setInterval(function(){
+      if (!heroVisible) return;
+      drawCloth();
+      clothTex.needsUpdate = true;
+    }, 140);
+
+    var start = performance.now();
+    function frame(){
+      requestAnimationFrame(frame);
+      if (!heroVisible) return;
+      uniforms.uTime.value = (performance.now() - start) / 1000;
+      renderer.render(scene, camera);
+    }
+    frame();
+  })();
+  </script>
 
 <script>
 /* ── 音声同意 → 深夜帯は Anime / 再訪は Toraporta ── */
