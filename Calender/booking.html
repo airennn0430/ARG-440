@@ -105,6 +105,10 @@
     margin-bottom: 24px;
     white-space: pre-wrap;
   }
+  .modal-text a {
+    color: #29ae86;
+    text-decoration: underline;
+  }
   .modal-link {
     display: inline-block;
     font-size: 14px;
@@ -180,8 +184,18 @@
   var modalClose = document.getElementById('modalClose');
 
   function openModal(datetimeLabel) {
-    modalText.textContent = 'ご予約ありがとうございます。' + datetimeLabel + 'で予定を確保いたしました。当日はお手数ですが、こちらのミーティングリンク(テキストリンク)にてお待ちください。';
+    var meetingUrl = 'https://arg-440.vercel.app/Anime/Toravolta.html';
+    modalText.innerHTML =
+      'ご予約ありがとうございます。<br>' +
+      escapeHtml(datetimeLabel) + 'で予定を確保いたしました。<br>' +
+      '当日はお手数ですが、こちらの<a href="' + meetingUrl + '" target="_blank" rel="noopener">ミーティングリンク</a>にてお待ちください。';
     overlay.classList.add('open');
+  }
+
+  function escapeHtml(str) {
+    var div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
   }
 
   modalClose.addEventListener('click', function() {
