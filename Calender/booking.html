@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>予定を追加</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    width: 100%;
+    min-height: 100vh;
+    background: #ffffff;
+  }
+  body {
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+    font-family: 'Hiragino Sans', 'Yu Gothic', 'Noto Sans JP', sans-serif;
+    color: #0e002e;
+  }
+  .booking-wrap {
+    width: 100%;
+    max-width: 640px;
+  }
+  h1 {
+    font-size: 22px;
+    letter-spacing: .04em;
+    margin-bottom: 8px;
+  }
+  .lead {
+    font-size: 14px;
+    color: #4a435c;
+    line-height: 1.8;
+    margin-bottom: 28px;
+  }
+  .slot-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .slot-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 20px;
+    border: 1px solid #dddae8;
+    border-radius: 4px;
+  }
+  .slot-date {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: .03em;
+  }
+  .slot-time {
+    display: block;
+    font-size: 13px;
+    font-weight: 400;
+    color: #4a435c;
+    margin-top: 4px;
+  }
+  .slot-btn {
+    flex-shrink: 0;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: .04em;
+    color: #ffffff;
+    background: #29ae86;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background .2s;
+  }
+  .slot-btn:hover {
+    background: #1f9472;
+  }
+
+  /* ── ポップアップ ── */
+  .overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(14,0,46,.55);
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 1000;
+  }
+  .overlay.open {
+    display: flex;
+  }
+  .modal {
+    width: 100%;
+    max-width: 420px;
+    background: #ffffff;
+    border-radius: 6px;
+    padding: 32px 28px;
+    text-align: center;
+  }
+  .modal-text {
+    font-size: 15px;
+    line-height: 1.9;
+    color: #0e002e;
+    margin-bottom: 24px;
+    white-space: pre-wrap;
+  }
+  .modal-text a {
+    color: #29ae86;
+    text-decoration: underline;
+  }
+  .modal-link {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: .03em;
+    color: #29ae86;
+    text-decoration: underline;
+    margin-bottom: 24px;
+  }
+  .modal-close {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: .04em;
+    color: #ffffff;
+    background: #0e002e;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+<div class="booking-wrap">
+  <h1>ご予約</h1>
+  <p class="lead">ご来訪日から7日間、以下の時間帯でご予約いただけます。<br>ご希望の日時の「予約する」をタップしてください。</p>
+  <div class="slot-list" id="slotList"></div>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <p class="modal-text" id="modalText"></p>
+    <a class="modal-link" id="modalLink" href="https://arg-440.vercel.app/Anime/Toravolta.html" target="_blank" rel="noopener">ご予約先はこちらから</a>
+    <button class="modal-close" id="modalClose">閉じる</button>
+  </div>
+</div>
+
+<script>
+(function() {
+  var weekdays = ['日', '月', '火', '水', '木', '金', '土'];
+  var slotList = document.getElementById('slotList');
+  var today = new Date();
+
+  for (var i = 0; i < 7; i++) {
+    var d = new Date(today.getFullYear(), today.getMonth(), today.getDate() + i);
+    var label = (d.getMonth() + 1) + '月' + d.getDate() + '日（' + weekdays[d.getDay()] + '）';
+
+    var row = document.createElement('div');
+    row.className = 'slot-row';
+
+    var dateEl = document.createElement('div');
+    dateEl.innerHTML = '<span class="slot-date">' + label + '</span><span class="slot-time">23:00〜24:00</span>';
+
+    var btn = document.createElement('button');
+    btn.className = 'slot-btn';
+    btn.type = 'button';
+    btn.textContent = '予約する';
+    btn.addEventListener('click', (function(dateLabel) {
+      return function() {
+        openModal(dateLabel + ' 23:00〜24:00');
+      };
+    })(label));
+
+    row.appendChild(dateEl);
+    row.appendChild(btn);
+    slotList.appendChild(row);
+  }
+
+  var overlay = document.getElementById('overlay');
+  var modalText = document.getElementById('modalText');
+  var modalClose = document.getElementById('modalClose');
+
+  function openModal(datetimeLabel) {
+    var meetingUrl = 'https://arg-440.vercel.app/Anime/Toravolta.html';
+    modalText.innerHTML =
+      'ご予約ありがとうございます。<br>' +
+      escapeHtml(datetimeLabel) + 'で予定を確保いたしました。<br>' +
+      '当日はお手数ですが、こちらの<a href="' + meetingUrl + '" target="_blank" rel="noopener">ミーティングリンク</a>にてお待ちください。';
+    overlay.classList.add('open');
+  }
+
+  function escapeHtml(str) {
+    var div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  modalClose.addEventListener('click', function() {
+    overlay.classList.remove('open');
+  });
+  overlay.addEventListener('click', function(e) {
+    if (e.target === overlay) overlay.classList.remove('open');
+  });
+})();
+</script>
+</body>
+</html>
