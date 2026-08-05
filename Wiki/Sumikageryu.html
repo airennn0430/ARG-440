@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>角影流</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: #f6f6f6;
+      color: #202122;
+      font-family: sans-serif, "Helvetica Neue", "Hiragino Kaku Gothic ProN", "Meiryo", "MS PGothic", sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .wiki-article {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1.5em 1.5em 3em;
+      background: #fff;
+      border-left: 1px solid #a7d7f9;
+      border-right: 1px solid #a7d7f9;
+      min-height: 100vh;
+    }
+
+    h1 {
+      font-family: sans-serif, "Helvetica Neue", "Hiragino Kaku Gothic ProN", "Meiryo", "MS PGothic", sans-serif;
+      font-size: 1.75em;
+      font-weight: normal;
+      border-bottom: none;
+      margin: 0;
+      padding: 0;
+      line-height: 1.2;
+    }
+
+    .wiki-page-header {
+      margin-bottom: 0.5em;
+    }
+
+    .first-heading-row {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 1em;
+      padding-bottom: 0.35em;
+      border-bottom: 1px solid #a2a9b1;
+    }
+
+    .wiki-languages {
+      flex-shrink: 0;
+      font-size: 0.85em;
+      padding-bottom: 0.15em;
+    }
+
+    .wiki-languages a {
+      color: #36c;
+    }
+
+    .wiki-languages-icon {
+      display: inline-block;
+      width: 1.1em;
+      height: 1.1em;
+      margin-right: 0.15em;
+      vertical-align: -0.15em;
+      border: 1px solid #72777d;
+      border-radius: 2px;
+      font-size: 0.65em;
+      line-height: 1.1em;
+      text-align: center;
+      color: #72777d;
+      font-weight: bold;
+    }
+
+    .wiki-tabs {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 1em;
+      border-bottom: 1px solid #a2a9b1;
+      margin-top: 0;
+    }
+
+    .wiki-tabs-left,
+    .wiki-tabs-right {
+      display: flex;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 0;
+    }
+
+    .wiki-tab {
+      display: inline-block;
+      padding: 0.45em 0.65em 0.35em;
+      font-size: 0.85em;
+      color: #36c;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      white-space: nowrap;
+    }
+
+    .wiki-tab.active {
+      color: #202122;
+      border-bottom-color: #202122;
+      font-weight: normal;
+    }
+
+    .wiki-tab-tools::after {
+      content: "▾";
+      font-size: 0.75em;
+      margin-left: 0.15em;
+    }
+
+    .wiki-source {
+      margin: 0.6em 0 0.8em;
+      font-size: 0.85em;
+      color: #202122;
+    }
+
+    h2 {
+      font-family: sans-serif, "Helvetica Neue", "Hiragino Kaku Gothic ProN", "Meiryo", "MS PGothic", sans-serif;
+      font-size: 1.5em;
+      font-weight: normal;
+      border-bottom: 1px solid #a2a9b1;
+      margin: 1em 0 0.5em;
+      padding-bottom: 0.15em;
+      overflow: hidden;
+    }
+
+    h3 {
+      font-family: sans-serif, "Helvetica Neue", "Hiragino Kaku Gothic ProN", "Meiryo", "MS PGothic", sans-serif;
+      font-size: 1.2em;
+      font-weight: bold;
+      margin: 0.8em 0 0.4em;
+    }
+
+    p { margin: 0.5em 0; }
+
+    .editsection {
+      font-family: sans-serif, "Helvetica Neue", "Hiragino Kaku Gothic ProN", "Meiryo", "MS PGothic", sans-serif;
+      font-size: 0.65em;
+      font-weight: normal;
+      margin-left: 0.4em;
+    }
+
+    .editsection a {
+      color: #36c;
+      text-decoration: none;
+    }
+
+    .editsection a:hover { text-decoration: underline; }
+
+    .section-hidden {
+      display: none;
+    }
+
+    .ambox {
+      border: 1px solid #a2a9b1;
+      border-left: 10px solid #f28500;
+      background: #fff;
+      margin: 0.5em 7% 0.8em;
+      padding: 0;
+      font-size: 0.875em;
+      line-height: 1.55;
+      overflow: hidden;
+      clear: both;
+    }
+
+    .ambox-inner {
+      display: flex;
+      align-items: center;
+    }
+
+    .ambox-image {
+      flex-shrink: 0;
+      width: 56px;
+      padding: 0.45em 0.35em 0.45em 0.5em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      align-self: stretch;
+    }
+
+    .ambox-image svg {
+      display: block;
+      width: 44px;
+      height: 44px;
+    }
+
+    .ambox-text {
+      flex: 1;
+      min-width: 0;
+      padding: 0.55em 0.85em 0.55em 0.15em;
+    }
+
+    .ambox-text p {
+      margin: 0;
+    }
+
+    .ambox-refimprove {
+      border-left-color: #f28500;
+    }
+
+    .ambox-protected {
+      border-left-color: #de3333;
+    }
+
+    .ambox-detail {
+      display: none;
+    }
+
+    .infobox {
+      float: right;
+      clear: right;
+      width: 22em;
+      margin: 0 0 1em 1.2em;
+      border: 1px solid #a2a9b1;
+      border-collapse: collapse;
+      border-spacing: 0;
+      background: #fff;
+      font-size: 88%;
+      line-height: 1.4;
+      color: #202122;
+    }
+
+    .infobox-above {
+      padding: 0.4em 0.6em;
+      font-size: 125%;
+      font-weight: bold;
+      text-align: center;
+      background: #eaecf0;
+      border-bottom: 1px solid #a2a9b1;
+    }
+
+    .infobox-above .infobox-sub {
+      display: block;
+      font-size: 80%;
+      font-weight: bold;
+      margin-top: 0.15em;
+    }
+
+    .infobox-image {
+      padding: 0.8em 1.4em;
+      text-align: center;
+      background: #fff;
+      border-bottom: 1px solid #a2a9b1;
+    }
+
+    .infobox-image svg {
+      display: block;
+      width: 100%;
+      max-width: 160px;
+      height: auto;
+      margin: 0 auto;
+    }
+
+    .infobox-caption {
+      margin-top: 0.35em;
+      font-size: 88%;
+      line-height: 1.35;
+      text-align: center;
+      color: #202122;
+    }
+
+    .infobox-header {
+      padding: 0.25em 0.4em;
+      font-weight: bold;
+      text-align: center;
+      background: #cedff2;
+      border-top: 1px solid #a2a9b1;
+      border-bottom: 1px solid #a2a9b1;
+    }
+
+    .infobox-office {
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .infobox th,
+    .infobox td {
+      border-top: 1px solid #a2a9b1;
+      padding: 0.2em 0.4em;
+      vertical-align: top;
+    }
+
+    .infobox th[scope="row"] {
+      width: 35%;
+      text-align: left;
+      font-weight: bold;
+      background: transparent;
+    }
+
+    .infobox td {
+      background: transparent;
+    }
+
+    .infobox a {
+      color: #36c;
+    }
+
+    blockquote {
+      margin: 0.8em 2.5em;
+      padding: 0;
+      border: none;
+      font-style: normal;
+    }
+
+    .wikitable {
+      border-collapse: collapse;
+      border: 1px solid #a2a9b1;
+      margin: 0.8em 0;
+      font-size: 0.95em;
+      width: 100%;
+      background: #fff;
+    }
+
+    .wikitable th,
+    .wikitable td {
+      border: 1px solid #a2a9b1;
+      padding: 8px 12px;
+      vertical-align: middle;
+    }
+
+    .wikitable th {
+      background: #eaecf0;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .wikitable td {
+      background: #f8f9fa;
+      text-align: left;
+    }
+
+    ul { margin: 0.4em 0; padding-left: 1.6em; }
+
+    ul li { margin: 0.2em 0; }
+
+    .works-list li,
+    .seealso-list li {
+      list-style: none;
+      margin-left: -1em;
+    }
+
+    .works-list li::before { content: "－ "; }
+
+    .seealso-list li::before { content: "・"; margin-right: 0.2em; }
+
+    .works-list em { font-style: italic; }
+
+    .incident-list dt {
+      font-weight: bold;
+      margin-top: 0.7em;
+    }
+
+    .incident-list dd {
+      margin: 0.2em 0 0;
+    }
+
+    .reflist {
+      font-size: 0.9em;
+      margin: 0.5em 0;
+    }
+
+    .reflist .ref-label {
+      font-weight: bold;
+      margin-right: 0.3em;
+    }
+
+    .cn {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 1;
+    }
+
+    .cn a {
+      color: #36c;
+    }
+
+    a { color: #36c; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    a:visited { color: #36c; }
+
+    /* ---- モバイル用ヘッダー要素（デスクトップでは非表示） ---- */
+    .wiki-tagline {
+      display: none;
+      margin: 0.15em 0 0;
+      font-size: 0.85em;
+      color: #54595d;
+    }
+
+    .wiki-mobile-toolbar {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 0.5em;
+      padding: 0.4em 0;
+      border-top: 1px solid #eaecf0;
+      border-bottom: 1px solid #eaecf0;
+      color: #54595d;
+    }
+
+    .wiki-mobile-toolbar .toolbar-right {
+      display: flex;
+      gap: 1.2em;
+    }
+
+    .wiki-mobile-toolbar svg {
+      display: block;
+      width: 20px;
+      height: 20px;
+      fill: #54595d;
+    }
+
+    /* ---- 開閉セクション ---- */
+    h2.collapsible-heading {
+      position: relative;
+    }
+
+    .section-chevron {
+      display: none;
+      flex-shrink: 0;
+      width: 0.5em;
+      height: 0.5em;
+      margin: -0.25em 0.75em 0 0.1em;
+      border-right: 1.5px solid #54595d;
+      border-bottom: 1.5px solid #54595d;
+      transition: transform 0.15s ease;
+      transform: rotate(45deg);
+    }
+
+    @media (max-width: 720px) {
+      body {
+        background: #fff;
+        font-size: 15px;
+      }
+
+      .wiki-article {
+        border: none;
+        padding: 1em 1em 3em;
+      }
+
+      .first-heading-row {
+        display: block;
+        border-bottom: none;
+        padding-bottom: 0;
+      }
+
+      h1 {
+        font-family: "Linux Libertine", "Georgia", "Times", "Hiragino Mincho ProN", "Yu Mincho", serif;
+        font-size: 1.7em;
+      }
+
+      .wiki-languages { display: none; }
+      .wiki-tabs { display: none; }
+      .wiki-source { display: none; }
+
+      .wiki-tagline { display: block; }
+      .wiki-mobile-toolbar { display: flex; }
+
+      .ambox {
+        margin: 0 0 0.6em;
+        font-size: 0.8em;
+        line-height: 1.5;
+        border: 1px solid #eaecf0;
+        border-top: 4px solid #c8ccd1;
+        border-left-width: 10px;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+      }
+
+      .ambox-refimprove { border-left-color: #f28500; }
+      .ambox-protected { border-left-color: #de3333; }
+
+      .ambox-image {
+        width: 52px;
+        padding: 0.8em 0.4em 0.8em 0.8em;
+      }
+
+      .ambox-image svg {
+        width: 32px;
+        height: 32px;
+      }
+
+      .ambox-text {
+        padding: 0.8em 0.6em 0.8em 0.3em;
+      }
+
+      .ambox-text p {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      .ambox.expanded .ambox-text p {
+        display: block;
+        -webkit-line-clamp: none;
+        overflow: visible;
+      }
+
+      .ambox-detail {
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+        align-self: stretch;
+        padding: 0 0.9em;
+        color: #36c;
+        cursor: pointer;
+        white-space: nowrap;
+      }
+
+      .lead-wrap {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .lead-wrap p { order: 0; }
+      .lead-wrap p:first-of-type { order: -2; }
+
+      .infobox {
+        order: -1;
+        float: none;
+        width: 100%;
+        margin: 0.8em 0 1em;
+      }
+
+      h2 {
+        font-family: "Linux Libertine", "Georgia", "Times", "Hiragino Mincho ProN", "Yu Mincho", serif;
+      }
+
+      h2.collapsible-heading {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        border-bottom: 1px solid #c8ccd1;
+        padding: 0.55em 0;
+        margin: 0;
+        font-size: 1.55em;
+        font-weight: normal;
+        line-height: 1.35;
+        -webkit-tap-highlight-color: transparent;
+        user-select: none;
+      }
+
+      h2.collapsible-heading .editsection { display: none; }
+
+      .section-chevron { display: inline-block; }
+
+      h2.collapsible-heading[aria-expanded="true"] .section-chevron {
+        transform: rotate(225deg);
+        margin-top: 0.15em;
+      }
+
+      .section-body.collapsed { display: none; }
+
+      .section-body {
+        padding-bottom: 0.5em;
+      }
+
+      .wikitable {
+        display: block;
+        overflow-x: auto;
+      }
+
+      blockquote {
+        margin: 0.8em 1.2em;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<article class="wiki-article">
+
+  <header class="wiki-page-header">
+    <div class="first-heading-row">
+      <h1>角影流</h1>
+      <p class="wiki-tagline">備後国に伝わったとされる詐術中心の忍術流派</p>
+      <div class="wiki-languages">
+        <a href="#"><span class="wiki-languages-icon">文A</span>言語を追加</a>
+      </div>
+    </div>
+    <div class="wiki-mobile-toolbar">
+      <span class="toolbar-left" aria-label="言語">
+        <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M11 2H9v2H3v2h8.9c-.4 1.7-1.3 3.2-2.4 4.5-.7-.8-1.3-1.7-1.8-2.7H5.5c.6 1.5 1.5 2.9 2.6 4.1L4 16l1.4 1.4 4.1-4.1 2.6 2.6.9-2.1-2.1-2.1c1.4-1.6 2.4-3.5 2.9-5.7H17V4h-6V2z"/></svg>
+      </span>
+      <span class="toolbar-right">
+        <span aria-label="ウォッチリスト">
+          <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 1.5l2.6 5.3 5.9.9-4.2 4.1 1 5.8-5.3-2.8-5.3 2.8 1-5.8L1.5 7.7l5.9-.9L10 1.5zm0 4.5L8.5 9.1l-3.4.5 2.5 2.4-.6 3.4L10 13.8l3 1.6-.6-3.4 2.5-2.4-3.4-.5L10 6z"/></svg>
+        </span>
+        <span aria-label="編集">
+          <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M16.8 2c-.4 0-.8.2-1.1.5l-1.2 1.2 3.8 3.8 1.2-1.2c.6-.6.6-1.6 0-2.2l-1.6-1.6c-.3-.3-.7-.5-1.1-.5zM13.4 4.8L3 15.2V19h3.8L17.2 8.6l-3.8-3.8z"/></svg>
+        </span>
+      </span>
+    </div>
+    <div class="wiki-tabs">
+      <div class="wiki-tabs-left">
+        <span class="wiki-tab active">ページ</span>
+        <a class="wiki-tab" href="#">ノート</a>
+      </div>
+      <div class="wiki-tabs-right">
+        <span class="wiki-tab active">閲覧</span>
+        <a class="wiki-tab" href="#">編集</a>
+        <a class="wiki-tab" href="#">履歴を表示</a>
+        <a class="wiki-tab wiki-tab-tools" href="#">ツール</a>
+      </div>
+    </div>
+    <p class="wiki-source">出典: オンライン百科事典</p>
+  </header>
+
+  <div class="ambox ambox-refimprove">
+    <div class="ambox-inner">
+      <div class="ambox-image" aria-hidden="true">
+        <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" role="img">
+          <rect x="10" y="6" width="28" height="36" rx="2" fill="#fff" stroke="#f28500" stroke-width="3"/>
+          <text x="24" y="30" font-family="serif" font-size="20" font-weight="bold" fill="#f28500" text-anchor="middle">?</text>
+        </svg>
+      </div>
+      <div class="ambox-text">
+        <p><strong>この記事には検証可能な出典が不足しています。</strong><br>
+        江戸期以前の記述の多くは、内容に矛盾や改竄の疑いが指摘されている一次資料、および後世の軍記物に基づいています。信頼できる出典の追加にご協力ください。</p>
+      </div>
+      <span class="ambox-detail">詳細</span>
+    </div>
+  </div>
+
+  <div class="ambox ambox-protected">
+    <div class="ambox-inner">
+      <div class="ambox-image" aria-hidden="true">
+        <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" role="img">
+          <rect x="12" y="20" width="24" height="20" rx="2" fill="#de3333"/>
+          <path d="M16 20v-4a8 8 0 0 1 16 0v4" fill="none" stroke="#de3333" stroke-width="5" stroke-linecap="round"/>
+          <circle cx="24" cy="30" r="3" fill="#fff"/>
+          <rect x="22.5" y="30" width="3" height="6" fill="#fff"/>
+        </svg>
+      </div>
+      <div class="ambox-text">
+        <p><strong>このページは半保護されています。</strong><br>
+        「現代における言説」の節をめぐり、実在の事件・団体との関連を断定的に記す加筆・除去が繰り返されたため、編集が一時的に制限されています。加筆にあたってはノートページでの合意形成をお願いします。</p>
+      </div>
+      <span class="ambox-detail">詳細</span>
+    </div>
+  </div>
+
+  <div class="lead-wrap">
+
+    <table class="infobox">
+      <tbody>
+        <tr>
+          <th colspan="2" class="infobox-above">
+            角影流
+            <span class="infobox-sub">すみかげりゅう</span>
+          </th>
+        </tr>
+        <tr>
+          <td colspan="2" class="infobox-image">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img">
+              <polygon points="22,2 78,2 98,22 98,78 78,98 22,98 2,78 2,22" fill="#202122"/>
+              <polygon points="22,8 78,8 92,22 92,78 78,92 22,92 8,78 8,22" fill="#fff"/>
+              <path d="M50 24 C40 34, 40 44, 50 50 C60 56, 60 66, 50 76" fill="none" stroke="#202122" stroke-width="3" stroke-linecap="round"/>
+              <path d="M50 24 C42 30, 40 38, 46 42" fill="none" stroke="#202122" stroke-width="2.5" stroke-linecap="round"/>
+              <ellipse cx="38" cy="34" rx="6" ry="4" fill="#202122" transform="rotate(-30 38 34)"/>
+              <ellipse cx="62" cy="46" rx="6" ry="4" fill="#202122" transform="rotate(30 62 46)"/>
+              <ellipse cx="40" cy="66" rx="6" ry="4" fill="#202122" transform="rotate(-40 40 66)"/>
+              <ellipse cx="60" cy="72" rx="5.5" ry="3.5" fill="#202122" transform="rotate(20 60 72)"/>
+            </svg>
+            <div class="infobox-caption">上忍・苫屋家の家紋と伝わる「隅切り角に影蔦」（伝）</div>
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">種別</th>
+          <td><a href="#">忍術</a>流派（詐術専門）</td>
+        </tr>
+        <tr>
+          <th scope="row">発祥地</th>
+          <td><a href="#">備後国</a>角生郷（現・広島県東部）</td>
+        </tr>
+        <tr>
+          <th scope="row">活動時期</th>
+          <td>南北朝時代 - 江戸時代<br><span style="font-size:0.9em;color:#54595d;">（伝承では明治期に断絶）</span></td>
+        </tr>
+        <tr>
+          <th scope="row">伝書</th>
+          <td>『隅陰集』（すみかげしゅう）</td>
+        </tr>
+        <tr>
+          <th scope="row">主要技法</th>
+          <td>角影三術（化・語・綴）</td>
+        </tr>
+        <tr>
+          <th colspan="2" class="infobox-header">上忍三家</th>
+        </tr>
+        <tr>
+          <td colspan="2" class="infobox-office">苫屋家・鴉谷家・簗瀬家</td>
+        </tr>
+        <tr>
+          <th scope="row">近世の帰属</th>
+          <td><a href="#">備後福山藩</a>を経由し公儀隠密として活動（伝）</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p><strong>角影流</strong>（すみかげりゅう）は、かつて<a href="#">備後国</a>北部の山間部に伝わったとされる忍術流派の一つ。<a href="#">伊賀流</a>・<a href="#">甲賀流</a>のような戦闘・潜入技術ではなく、変装・話術・文書偽造を中核とする「詐術」を専らとした点に特徴があるとされる。</p>
+
+    <p>根拠地は、現在の広島県東部にあたる角生郷（すみおのごう）一帯にあったと伝えられる。平時は畳表や鉄の行商、あるいは座頭・勧進僧に身をやつして諸国を巡り、各地の情報を集める一方、依頼があれば主家の内部に入り込んで謀略工作に従事したという。</p>
+
+    <p>江戸時代に入ると、多くの忍者集団が解体・帰農していく中で、角影流はその能力の高さゆえに幕府に召し抱えられたとされ、公儀の隠密として活動した記録が断片的に残る。ただし関係文書の大半が文化3年（1806年）の江戸大火、いわゆる丙寅の大火で焼失したため、その実態は今日なお不明な点が多い。</p>
+
+  </div>
+
+  <h2>概要<span class="editsection"><a href="#">[編集]</a></span></h2>
+
+  <p>角影流の名は、「隅（すみ）に潜み、影を装う」という流派の理念に由来するとされる。一説には、上忍家の一つ苫屋家が用いた「隅切り角に影蔦」の家紋から採ったともいわれるが、確証はない<sup class="cn"><a href="#">[要出典]</a></sup>。</p>
+
+  <p>他流と決定的に異なるのは、角影流が人を殺す技術をほとんど発達させなかった点である。伝書『隅陰集』（すみかげしゅう）には「刃を抜きたる時、既にその術は敗れたり」との一節があり、目的の達成にあたって暴力を用いることを術者の失態と見なす思想が明確に示されている。代わりに重視されたのが、相手に自ら財や情報を差し出させる説得の技術であった。</p>
+
+  <blockquote>
+    <p>「刃を抜きたる時、既にその術は敗れたり」</p>
+  </blockquote>
+
+  <p>このため角影流の者は「忍びにあらず、騙りなり」と蔑まれることも多く、他流の忍術書においてもその存在はほとんど言及されない。近代以降に忍者研究が体系化された際にも、体術・武器術の伝承をまったく欠くことから、流派としての正統性を疑問視する声が根強い。</p>
+
+  <p>また、伊賀流が金銭契約による雇用関係を旨としたのに対し、角影流は依頼主に対しても常に情報を秘匿し、しばしば依頼主自身をも欺いたとされる。「主を持たぬ」ことを流儀とし、複数の勢力に同時に間者を送り込むばかりでなく、双方から報酬を得たうえで双方に偽情報を渡した事例が複数伝えられている。この徹底した非忠誠性が、後世まで続く「信を売って生きる一族」という評価の原型となった。</p>
+
+  <h2>歴史<span class="editsection"><a href="#">[編集]</a></span></h2>
+
+  <h3>起源<span class="editsection"><a href="#">[編集]</a></span></h3>
+
+  <p>角影流の起源については諸説あるが、南北朝時代、備後北部の山間でたたら製鉄や鉄穴流しに従事していた鉄山労働者と、諸国を巡る行商・漂泊民の集団が結びつく過程で成立したとする説が有力とされる。</p>
+
+  <p>角生郷一帯は急峻な谷地形で耕地に乏しく、住民は早くから山内での製鉄労働と、備後表（畳表）や鉄・砂鉄の行商によって生計を立てていた。鉄山師の一党は領主の支配が及びにくい山内に独自の共同体を形成しており、また行商のために他領へ自由に出入りする慣行が認められていた。この二つの条件、すなわち外部から見通しの利かない共同体と、身分を偽らずとも他領へ入れる資格が、後の忍術の母体になったと考えられている<sup class="cn"><a href="#">[独自研究?]</a></sup>。</p>
+
+  <p>一方で、角影流をもって山内の修験集団が世俗化したものとする説、あるいは近世の無宿人集団が権威づけのために忍術流派を仮構したにすぎないとする説もあり、成立年代については定説を見ない。</p>
+
+  <h3>戦国時代<span class="editsection"><a href="#">[編集]</a></span></h3>
+
+  <p>備後国は<a href="#">大内氏</a>・<a href="#">尼子氏</a>・<a href="#">毛利氏</a>の勢力が交錯する境界地帯であり、国人領主が頻繁に帰属を変える不安定な地域であった。角影流はこうした環境の中で、中小の国人領主に間者を提供する存在として一定の地位を得ていたとされる。</p>
+
+  <p>組織は「三家」と呼ばれる上忍家、すなわち苫屋（とまや）氏・鴉谷（からすだに）氏・簗瀬（やなせ）氏を中心に構成され、その下に「渡り」と呼ばれる下忍層が属した。</p>
+
+  <p>伊賀の惣国一揆のような合議制はとられず、三家がそれぞれ独立して依頼を受け、互いの仕事内容を明かさない不干渉の原則が貫かれていた。これは組織全体が同時に敵対勢力へ雇われる事態を許容するためのものであり、実際に同一の合戦において三家が別々の陣営に属した記録があるという。</p>
+
+  <p>角影流の名が史料上にわずかに現れるのは、天文年間の国人間の抗争においてである。ある領主が隣領との和睦交渉の席で提示した起請文が偽物であり、これを作成したのが「角生の者」であったとする記述が、後世の軍記物に見える。ただし当該軍記は江戸中期の成立であり、史料的価値は低いとされる<sup class="cn"><a href="#cite_note-1">[1]</a></sup>。</p>
+
+  <p>なお、この時期に角影流が特定の大名家に滅ぼされた形跡はない。伊賀のように本拠地を攻められて壊滅する事態を、彼らはそもそも敵対勢力を作らないことによって回避したとする説明が一般的であるが、これは後付けの合理化であるとの批判もある。</p>
+
+  <h3>江戸時代<span class="editsection"><a href="#">[編集]</a></span></h3>
+
+  <p>天下が定まり、大名間の諜報需要が消滅していく中で、多くの忍者集団は解体され、帰農するか、抜け忍として処断された。しかし角影流はこの時期に例外的な処遇を受けたとされる。</p>
+
+  <p>伝えられるところによれば、角影流は幕府成立の過程で西国大名の動向に関する情報を提供し、その精度を評価されて、処断を免れたばかりか公儀の隠密として組織的に登用されたという。備後福山藩の成立以降は同藩を経由して幕府とつながり、藩主家が老中を輩出するようになると、その配下でより中枢に近い任にあたったとする説もある。</p>
+
+  <p>江戸期の角影流が担ったとされる任務は、大名家の内情調査、贋金や偽文書の鑑別、および他の隠密が持ち帰った報告の真偽の裏取りであった。偽りを作る技術は偽りを見抜く技術でもある、という理由から重用されたとされ、この点が角影流が近世を通じて生き延びた要因であると説明されることが多い。</p>
+
+  <p>もっとも、こうした活動を裏付ける文書はほとんど現存しない。</p>
+
+  <h3>丙寅の大火による記録の焼失<span class="editsection"><a href="#">[編集]</a></span></h3>
+
+  <p>文化3年3月4日（1806年）、江戸を襲った大火、いわゆる丙寅の大火により、芝から日本橋、神田にかけての広域が焼失した。角影流に関する幕府側の記録は、この火災でその大半が失われたとされる。</p>
+
+  <p>現在確認できる角影流関係文書は、大火以前に地方で書写された断簡と、大火以後に記憶に基づいて再編纂されたとされる写本に限られる。前者は数点が知られるのみで内容も断片的であり、後者は成立事情そのものが不明瞭である。</p>
+
+  <p>このため、江戸期の角影流については「幕府に仕えていた」という枠組み以上のことがほとんど判明しておらず、任務の内容、人員の規模、支給された俸禄の額、指揮系統のいずれについても確定的なことは言えない状態にある。</p>
+
+  <h3>史料の信憑性をめぐる問題<span class="editsection"><a href="#">[編集]</a></span></h3>
+
+  <p>角影流研究における最大の障害は、残された史料そのものが信用に足らないという点にある。</p>
+
+  <p>現存する角影流関係文書には、編纂・改竄の痕跡が繰り返し指摘されている。具体的には、以下のような点が問題とされる。</p>
+
+  <ul>
+    <li>大火以後に成立した写本において、大火以前の断簡には存在しない記述が多数追加されている。追加部分はいずれも角影流の地位や功績を高める方向に働いており、意図的な加筆が疑われる。</li>
+    <li>複数の写本間で、同一の事件について年次・関係者・結果が食い違う。しかもその食い違いが、単純な書写の誤りでは説明できない体系性を持つ。</li>
+    <li>紙質・墨・料紙の折り目から、原本と称される文書のいくつかが後代に作成された可能性が高いと判定されている。</li>
+  </ul>
+
+  <p>問題を複雑にしているのは、文書の偽造こそが角影流の中核技術であったという点である。すなわち、これらの改竄の痕跡自体が角影流の手によるものである可能性が排除できない。この場合、角影流に関する史料は「角影流について書かれた記録」ではなく「角影流が自らについて書かせた記録」ということになり、史料批判の前提が成立しなくなる。</p>
+
+  <p>この循環は角影流研究において「角影の環」と呼ばれることがある。角影流が有能であればあるほどその痕跡は残らず、残った痕跡は疑わしくなる。逆に、疑わしい痕跡が大量に残っていること自体を、彼らの活動の傍証と見なすこともできてしまう。いずれの解釈も反証が不可能であり、学術的な議論に馴染まないとの批判がある<sup class="cn"><a href="#cite_note-2">[2]</a></sup>。</p>
+
+  <p>現在の研究状況としては、角影流を実在した集団と断定することも、完全な創作と断定することもできないという立場が一般的である。</p>
+
+  <h2>技法<span class="editsection"><a href="#">[編集]</a></span></h2>
+
+  <p>角影流の技法は『隅陰集』において「角影三術」として整理される。ただし同書自体の成立年代が不明であり、以下の記述も後世の再構成を含む可能性がある。</p>
+
+  <h3>化（ばけ）<span class="editsection"><a href="#">[編集]</a></span></h3>
+
+  <p>変装および身分の詐称に関する技術。衣服や化粧よりも、その身分の者が持つ所作・語彙・沈黙の取り方の模倣を重視した。「面を作るは下、間を作るは上」とされ、外見よりも振る舞いの間合いを本質と見なした点が特徴である。</p>
+
+  <h3>語（かたり）<span class="editsection"><a href="#">[編集]</a></span></h3>
+
+  <p>話術。相手の警戒を解き、自発的な行動を引き出すための対話技術とされる。『隅陰集』では、術者が積極的に説得を行うことをむしろ戒め、相手が自ら結論に至るまで待つ姿勢を最上としている。</p>
+
+  <h3>綴（つづり）<span class="editsection"><a href="#">[編集]</a></span></h3>
+
+  <p>文書偽造。書状、証文、印章、帳簿の作成技術を指す。紙質や墨の経年変化を再現する手法、既存の文書に加筆して内容を改変する手法などが伝えられたとされるが、具体的な記述の大半は現存しない。三術のうち最も詳細が失われている部門であり、これを意図的な削除と見る向きもある。</p>
+
+  <p>このほか、任務の失敗が確実となった際に一切の痕跡を残さず離脱する「消（けし）」の術が奥義として扱われた。角影流において最も高く評価されたのは目的の達成ではなく、関与そのものが認知されないことであったといわれる。</p>
+
+  <h2>現代における言説<span class="editsection"><a href="#">[編集]</a></span></h2>
+
+  <p>角影流は明治期以降、史料上から完全に姿を消す。流派としての伝承が近代のいずれかの時点で途絶えたことは、ほぼ確実と考えられている。</p>
+
+  <p>一方で、1980年代以降、実話系雑誌やインターネット上の匿名掲示板を中心に、角影流の末裔が現在も詐欺集団として存続しているとする言説が繰り返し流布してきた。代表的なものとして以下のような内容が挙げられる。</p>
+
+  <ul>
+    <li>一族は同一の姓を名乗らず、婚姻や養子縁組によって意図的に姓を分散させており、全体像を把握することができない。</li>
+    <li>彼ら自身は決して被害者と直接接触せず、名簿や口座、法人格といった「道具」を用意して他の詐欺グループへ供給する立場に徹している。このため摘発されることがない。</li>
+    <li>複数の暴力団の周辺に資金調達役として食い込んでいるが、構成員として盃を受けることは決してない。これは「主を持たぬ」という旧来の流儀の名残である。</li>
+    <li>大規模な詐欺事件の背後には必ず彼らがいるが、事件が「彼らの関与を示さない形」で処理されるため、記録には残らない。</li>
+  </ul>
+
+  <p>これらの主張はいずれも公的機関によって確認されたものではなく、出典も相互に引用し合う匿名の記事に留まる。内容の構造としては、証拠が存在しないことをもって存在の証明とする典型的な陰謀論の形式をとっており、都市伝説の一種と見るのが妥当である。</p>
+
+  <p>こうした言説が生まれた背景としては、江戸期の記録が丙寅の大火によって空白となっていること、残存史料に改竄の疑いがあることという二つの事実が、「意図的に隠蔽された組織」という物語を構成しやすい素材を提供している点が指摘される。実在の犯罪組織に関する断片的な報道と、忍者という近世の題材が接続された結果生じた、比較的新しい民間伝承と考えられる<sup class="cn"><a href="#cite_note-3">[3]</a></sup>。</p>
+
+  <p>近年では、この都市伝説そのものを題材とした創作作品も複数発表されており、伝承のさらなる拡散と変形が進んでいる。</p>
+
+  <h2>事件一覧<span class="editsection"><a href="#">[編集]</a></span></h2>
+
+  <p>以下は明治以降、角影流が関わったとされる事件の一覧である。いずれも角影流の関与を裏付ける公的な認定はなされておらず、後年の記事やインターネット上の言説において結び付けられたものである。</p>
+
+  <dl class="incident-list">
+    <dt>帝国履歴詐称事件</dt>
+    <dd>官公庁や大手企業での勤務歴を偽って信用を得たうえで、複数の企業と高額契約を結び利益を不正に得ていた職歴詐称事件。</dd>
+
+    <dt>金龍寺霊石霊感商法事件</dt>
+    <dd>「先祖の祟りを払う」と称して高額な霊石や護符を販売し、多数の被害者から金銭をだまし取った霊感商法事件。</dd>
+
+    <dt>白鷺婚活詐欺事件</dt>
+    <dd>結婚を前提とした交際を装い、結婚資金や事業資金などの名目で金銭を繰り返し詐取した婚活詐欺事件。</dd>
+
+    <dt>フォーチュンライフマルチ商法事件</dt>
+    <dd>「高額配当が得られる」と勧誘し、会員を増やすほど利益が出ると偽って全国から出資金を集めた連鎖販売詐欺事件。</dd>
+
+    <dt>東央架空ビル売却事件</dt>
+    <dd>実在しないビルを所有しているように装って企業や資産家へ売却し、総額約10億円を騙し取った不動産詐欺事件。<a href="#">青木新治</a>（現<a href="#">トラポルタ</a>社長。事件当時は人材派遣会社の取締役を務めていた）が本事件の被害者となったことでも知られる。</dd>
+  </dl>
+
+  <p>これ以外にも関与した事件は存在するとされているが、真偽は不明である。</p>
+
+  <div class="section-hidden">
+  <h2>脚注<span class="editsection"><a href="#">[編集]</a></span></h2>
+
+  <div class="reflist">
+    <p id="cite_note-1"><span class="ref-label">1.</span>『備北軍記』所収「角生郷の条」に関する解題。</p>
+    <p id="cite_note-2"><span class="ref-label">2.</span>自己言及的な史料状況をめぐる方法論上の問題として、複数の論者が言及している。</p>
+    <p id="cite_note-3"><span class="ref-label">3.</span>犯罪組織の系譜的説明に対する批判的検討として、実話誌記事の検証を行った論考がある。</p>
+  </div>
+  </div>
+
+  <h2>関連項目<span class="editsection"><a href="#">[編集]</a></span></h2>
+
+  <ul class="seealso-list">
+    <li><a href="#">忍術</a></li>
+    <li><a href="#">伊賀流</a></li>
+    <li><a href="#">甲賀流</a></li>
+    <li><a href="#">備後国</a></li>
+    <li><a href="#">たたら製鉄</a></li>
+    <li><a href="#">丙寅の大火</a></li>
+    <li><a href="#">都市伝説</a></li>
+    <li><a href="#">陰謀論</a></li>
+  </ul>
+
+  <h2>登場作品<span class="editsection"><a href="#">[編集]</a></span></h2>
+
+  <h3>小説<span class="editsection"><a href="#">[編集]</a></span></h3>
+  <ul class="works-list">
+    <li><em>隅陰帖</em></li>
+    <li><em>騙りの系譜</em></li>
+  </ul>
+
+  <h3>漫画<span class="editsection"><a href="#">[編集]</a></span></h3>
+  <ul class="works-list">
+    <li><em>角影</em></li>
+  </ul>
+
+  <h3>映像作品<span class="editsection"><a href="#">[編集]</a></span></h3>
+  <ul class="works-list">
+    <li><em>チクタクマン</em>　株式会社トラポルタ</li>
+  </ul>
+
+</article>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var article = document.querySelector('.wiki-article');
+    var headings = Array.prototype.filter.call(article.children, function (el) {
+      return el.tagName === 'H2';
+    });
+
+    headings.forEach(function (h2) {
+      var body = document.createElement('div');
+      body.className = 'section-body collapsed';
+
+      var next = h2.nextElementSibling;
+      while (next && next.tagName !== 'H2') {
+        var current = next;
+        next = next.nextElementSibling;
+        body.appendChild(current);
+      }
+      article.insertBefore(body, next);
+
+      var chevron = document.createElement('span');
+      chevron.className = 'section-chevron';
+      chevron.setAttribute('aria-hidden', 'true');
+      h2.insertBefore(chevron, h2.firstChild);
+
+      h2.classList.add('collapsible-heading');
+      h2.setAttribute('aria-expanded', 'false');
+      h2.setAttribute('role', 'button');
+      h2.setAttribute('tabindex', '0');
+
+      function toggle() {
+        var expanded = h2.getAttribute('aria-expanded') === 'true';
+        h2.setAttribute('aria-expanded', String(!expanded));
+        body.classList.toggle('collapsed', expanded);
+      }
+
+      h2.addEventListener('click', toggle);
+      h2.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toggle();
+        }
+      });
+    });
+
+    document.querySelectorAll('.ambox-detail').forEach(function (detail) {
+      detail.addEventListener('click', function () {
+        var ambox = detail.closest('.ambox');
+        var expanded = ambox.classList.toggle('expanded');
+        detail.textContent = expanded ? '閉じる' : '詳細';
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
