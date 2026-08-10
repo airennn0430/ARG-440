@@ -174,18 +174,6 @@
       display: none;
     }
 
-    .ambox {
-      border: 1px solid #a2a9b1;
-      border-left: 10px solid #f28500;
-      background: #fff;
-      margin: 0.5em 7% 0.8em;
-      padding: 0;
-      font-size: 0.875em;
-      line-height: 1.55;
-      overflow: hidden;
-      clear: both;
-    }
-
     .ambox-inner {
       display: flex;
       align-items: center;
@@ -217,16 +205,47 @@
       margin: 0;
     }
 
-    .ambox-refimprove {
-      border-left-color: #f28500;
+    .ambox-group {
+      border: 1px solid #a2a9b1;
+      border-left: 10px solid #f28500;
+      background: #fff;
+      margin: 0.5em 7% 0.8em;
+      font-size: 0.875em;
+      line-height: 1.55;
+      overflow: hidden;
+      clear: both;
     }
 
-    .ambox-protected {
-      border-left-color: #de3333;
+    .ambox-group .ambox-inner {
+      align-items: flex-start;
     }
 
-    .ambox-detail {
-      display: none;
+    .ambox-group .ambox-inner + .ambox-inner {
+      border-top: 1px solid #a2a9b1;
+    }
+
+    .ambox-group .ambox-image {
+      padding-top: 0.6em;
+    }
+
+    .ambox-issues ul {
+      margin: 0.3em 0 0.5em;
+      padding-left: 1.3em;
+    }
+
+    .ambox-issues li {
+      margin: 0.15em 0;
+    }
+
+    .ambox-issues .issue-date {
+      color: #54595d;
+      white-space: nowrap;
+    }
+
+    .ambox-searchlist {
+      margin-top: 0.4em;
+      font-size: 0.92em;
+      color: #202122;
     }
 
     .infobox {
@@ -484,7 +503,7 @@
       .wiki-tagline { display: block; }
       .wiki-mobile-toolbar { display: flex; }
 
-      .ambox {
+      .ambox-group {
         margin: 0 0 0.6em;
         font-size: 0.8em;
         line-height: 1.5;
@@ -493,9 +512,6 @@
         border-left-width: 10px;
         box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
       }
-
-      .ambox-refimprove { border-left-color: #f28500; }
-      .ambox-protected { border-left-color: #de3333; }
 
       .ambox-image {
         width: 52px;
@@ -509,30 +525,6 @@
 
       .ambox-text {
         padding: 0.8em 0.6em 0.8em 0.3em;
-      }
-
-      .ambox-text p {
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-      }
-
-      .ambox.expanded .ambox-text p {
-        display: block;
-        -webkit-line-clamp: none;
-        overflow: visible;
-      }
-
-      .ambox-detail {
-        display: flex;
-        align-items: center;
-        flex-shrink: 0;
-        align-self: stretch;
-        padding: 0 0.9em;
-        color: #36c;
-        cursor: pointer;
-        white-space: nowrap;
       }
 
       .lead-wrap {
@@ -634,37 +626,40 @@
     <p class="wiki-source">出典: オンライン百科事典</p>
   </header>
 
-  <div class="ambox ambox-refimprove">
+  <div class="ambox-group">
     <div class="ambox-inner">
       <div class="ambox-image" aria-hidden="true">
         <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" role="img">
-          <rect x="10" y="6" width="28" height="36" rx="2" fill="#fff" stroke="#f28500" stroke-width="3"/>
-          <text x="24" y="30" font-family="serif" font-size="20" font-weight="bold" fill="#f28500" text-anchor="middle">?</text>
+          <path d="M24 4 L45 40 A2 2 0 0 1 43.3 43 H4.7 A2 2 0 0 1 3 40 L24 4 Z" fill="#f28500"/>
+          <rect x="22" y="17" width="4" height="14" rx="1.5" fill="#fff"/>
+          <circle cx="24" cy="35" r="2.4" fill="#fff"/>
         </svg>
       </div>
-      <div class="ambox-text">
-        <p><strong>この記事には検証可能な出典が不足しています。</strong><br>
-        江戸期以前の記述の多くは、内容に矛盾や改竄の疑いが指摘されている一次資料、および後世の軍記物に基づいています。信頼できる出典の追加にご協力ください。</p>
+      <div class="ambox-text ambox-issues">
+        <p><strong>この記事には複数の問題があります。</strong> 改善やノートページでの議論にご協力ください。</p>
+        <ul>
+          <li><span class="wikilink">出典</span>がまったく示されていないか不十分です。内容に関する<span class="wikilink">文献や情報源</span>が必要です。<span class="issue-date">（2018年4月）</span></li>
+          <li><span class="wikilink">出典</span>は脚注などを用いて<span class="wikilink">記述と関連づけて</span>ください。<span class="issue-date">（2019年11月）</span></li>
+          <li>この記事の出典は<span class="wikilink">信頼性に問題がある</span>かもしれません。<span class="issue-date">（2021年6月）</span></li>
+          <li><span class="wikilink">独自研究</span>が含まれているおそれがあります。<span class="issue-date">（2021年6月）</span></li>
+          <li>雑多な内容を羅列した節があります。<span class="issue-date">（2023年9月）</span></li>
+          <li>あまり重要でない事項が過剰に含まれているおそれがあり、<span class="wikilink">整理が求められています</span>。<span class="issue-date">（2025年2月）</span></li>
+        </ul>
+        <p class="ambox-searchlist">出典検索<sup class="cn">?</sup>: "角影流" – <span class="wikilink">ニュース</span>・<span class="wikilink">書籍</span>・<span class="wikilink">スカラー</span>・<span class="wikilink">CiNii</span>・<span class="wikilink">J-STAGE</span>・<span class="wikilink">NDL</span>・<span class="wikilink">dlib.jp</span>・<span class="wikilink">ジャパンサーチ</span>・<span class="wikilink">TWL</span></p>
       </div>
-      <span class="ambox-detail">詳細</span>
     </div>
-  </div>
-
-  <div class="ambox ambox-protected">
     <div class="ambox-inner">
       <div class="ambox-image" aria-hidden="true">
         <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" role="img">
-          <rect x="12" y="20" width="24" height="20" rx="2" fill="#de3333"/>
-          <path d="M16 20v-4a8 8 0 0 1 16 0v4" fill="none" stroke="#de3333" stroke-width="5" stroke-linecap="round"/>
-          <circle cx="24" cy="30" r="3" fill="#fff"/>
-          <rect x="22.5" y="30" width="3" height="6" fill="#fff"/>
+          <circle cx="24" cy="24" r="21" fill="#f28500"/>
+          <path d="M24 10v26M13 16h22M13 16l-5 10h10l-5-10zM35 16l-5 10h10l-5-10z" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M8 26a5 5 0 0 0 10 0zM30 26a5 5 0 0 0 10 0z" fill="#fff"/>
+          <rect x="19" y="35" width="10" height="3" rx="1" fill="#fff"/>
         </svg>
       </div>
       <div class="ambox-text">
-        <p><strong>このページは半保護されています。</strong><br>
-        「現代における言説」の節をめぐり、実在の事件・団体との関連を断定的に記す加筆・除去が繰り返されたため、編集が一時的に制限されています。加筆にあたってはノートページでの合意形成をお願いします。</p>
+        <p><strong>この記事は<span class="wikilink">中立的な観点</span>に基づく疑問が提出されているか、議論中です。</strong> そのため、中立的でない偏った観点から「現代における言説」節が構成されているおそれがあり、場合によっては記事の修正が必要です。議論は<span class="wikilink">ノート</span>を参照してください。 <em>（2026年3月）</em></p>
       </div>
-      <span class="ambox-detail">詳細</span>
     </div>
   </div>
 
@@ -1081,14 +1076,6 @@
           e.preventDefault();
           toggle();
         }
-      });
-    });
-
-    document.querySelectorAll('.ambox-detail').forEach(function (detail) {
-      detail.addEventListener('click', function () {
-        var ambox = detail.closest('.ambox');
-        var expanded = ambox.classList.toggle('expanded');
-        detail.textContent = expanded ? '閉じる' : '詳細';
       });
     });
   });
