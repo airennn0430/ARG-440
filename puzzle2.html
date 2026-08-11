@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>メールを受信しました(2)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body data-page="2" data-next="puzzle3.html">
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="topbar-logo">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <rect width="24" height="24" rx="4" fill="#1a73e8"/>
+          <path d="M4 8l8 5 8-5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+          <rect x="4" y="7" width="16" height="11" rx="1" stroke="white" stroke-width="1.5" fill="none"/>
+        </svg>
+        <span class="logo-text">SecureMail</span>
+      </div>
+      <div class="topbar-search">
+        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <circle cx="11" cy="11" r="7" stroke="#5f6368" stroke-width="2"/>
+          <path d="M16.5 16.5L21 21" stroke="#5f6368" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <span class="search-placeholder">メールを検索</span>
+      </div>
+      <div class="topbar-avatar">?</div>
+    </div>
+  </header>
+
+  <div class="page-body">
+
+    <aside class="sidebar">
+      <div class="sidebar-compose">
+        <button class="compose-btn" disabled>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 000-1.41l-2.34-2.34a1 1 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" fill="#5f6368"/>
+          </svg>
+          新規作成
+        </button>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-item active">
+          <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" fill="currentColor"/>
+          </svg>
+          <span>受信トレイ</span>
+          <span class="nav-badge" id="unread-count"></span>
+        </div>
+        <div class="nav-item muted">
+          <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="currentColor"/>
+          </svg>
+          <span>スター付き</span>
+        </div>
+        <div class="nav-item muted">
+          <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
+            <path d="M12 7v5l3 3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <span>送信済み</span>
+        </div>
+        <div class="nav-item muted">
+          <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M20 2H4a2 2 0 00-2 2v18l4-4h14a2 2 0 002-2V4a2 2 0 00-2-2z" fill="currentColor"/>
+          </svg>
+          <span>下書き</span>
+        </div>
+      </nav>
+      <div class="sidebar-divider"></div>
+      <div class="nav-section-label">ラベル</div>
+      <nav class="sidebar-nav">
+        <div class="nav-item muted">
+          <span class="nav-dot" style="background:#1a73e8"></span>
+          <span>CASE FILE</span>
+        </div>
+        <div class="nav-item muted">
+          <span class="nav-dot" style="background:#c5221f"></span>
+          <span>CLASSIFIED</span>
+        </div>
+        <div class="nav-item muted">
+          <span class="nav-dot" style="background:#188038"></span>
+          <span>RESOLVED</span>
+        </div>
+      </nav>
+    </aside>
+
+    <main class="main-pane">
+      <div class="inbox-toolbar">
+        <span class="inbox-title">受信トレイ</span>
+      </div>
+      <div id="puzzle-container">
+
+        <article class="mail-card unread" id="puzzle-2">
+
+          <div class="mail-header">
+            <div class="sender-area">
+              <div class="sender-icon">?</div>
+              <div class="sender-meta">
+                <div class="sender-name">潤田</div>
+                <div class="mail-address">uruta.k@████.jp</div>
+              </div>
+            </div>
+            <div class="mail-date" id="final-date"></div>
+          </div>
+
+          <div class="mail-subject">Re:Re:突然のご連絡失礼します。</div>
+
+          <div class="mail-body">
+            <p>
+              内容を確認させていただきました。<br>
+              確かに彼らが最後に関わった事件は<strong>新浜地区架空ビル売却事件</strong>で間違いありません。<br><br>
+
+              溢れる情報に惑わされることなく、真実を導き出された貴方の洞察力を拝見し、ご連絡して本当に良かったと安堵しております。<br><br>
+
+              文面ではありますが、突然連絡をお送りしたこと、そして貴方を試すようなメールをお送りしたことをこの場でお詫び申し上げます。<br><br>
+
+              改めて自己紹介させてください。<br>
+              自分は刑事の相尾(あいお)と申します。<br><br>
+
+              本メールでお話させていただいた「新浜地区架空ビル売却事件」の担当者でもありました。<br>
+              詐欺師たちは本事件で逮捕されましたが、未だに不可解な点があり、個人的にこの事件を追っていました。<br><br>
+
+              そこで、貴方に本事件について意見を伺いたいのです。<br>
+
+              大変お恥ずかしい話ですが、自分一人で事件を追い続けた結果、ある悩みが生まれてしまったのです。<br>
+              その悩みについて話す前に事件の詳しい内容について知っていただきたいと思います。<br><br>
+
+              本メールに資料を添付しました。<br>
+              被害を受けた潤田組の取り調べの記録です。<br>
+              本当は供述調書をお送りしたかったのですが、さすがに持ち出すことができなかったため、私が取り調べをした際の録音を書き起こしたメモをお送りします。<br><br>
+
+              インターネットや新聞の情報だけでは把握しきれない部分もあると思いますので、まずはこちらを読んだ上で貴方の見解をお聞かせいただけないでしょうか。<br><br>
+
+            </p>
+
+            <div class="accordion" id="acc-2">
+              <button class="accordion-toggle" onclick="toggleAccordion('acc-2')">
+                <span>供述調書メモ</span>
+                <span class="accordion-icon">▼</span>
+              </button>
+              <div class="accordion-body">
+                  1月18日午前10時23分、■■県警察署取調室において、次の通り供述した。<br><br>
+
+                  相尾：これからお話を伺わせていただきます。■■県警捜査二課の相尾です。お名前は三上剛(みかみごう)さんでよろしいでしょうか。<br>
+                  三上：あぁ。<br>
+                  相尾：では事件について伺いたいと思います。あの日は何が起こったんですか？<br>
+                  三上：もともと取引の予定が入ってたから、アニキと一緒にそれに出ようとしてた。<br>
+                  相尾：取引、ですか？<br>
+                  三上：そ。「新浜の方にとっておきのビルがありますよ！」って言ってきた奴らがいてさ。<br>
+                  相尾：その日はその方と一緒にビルに向かっていたと聞いていますが。<br>
+                  三上：合ってるよ。アニキにも聞きゃわかる。<br>
+                  相尾：そうですか。騙されたと分かったタイミングで通報はなされなかったんですか？<br>
+                  三上：俺たちみたいなヤツが通報するわけないだろ。まぁ、もし警察に捕まってなかったら、アイツら今頃魚の餌になってただろうなぁ。<br>
+                  相尾：なるほど。ありがとうございます。一旦今日の聞き込みは以上とさせていただきます。<br>
+                  三上：あ？もう終わり？<br>
+                  相尾：こちらで確認したいことは聞けましたので。また何かあればご連絡させていただきます。<br>
+                  三上：そーですか。まぁ呼ばれない限りこねーよ。こんなとこ。<br>
+              </div>
+            </div>
+
+            <div class="reply-area">
+              <div class="reply-label">Q.この事件で何が起きた？</div>
+
+                <div class="combo-sentence">
+                  <select class="reply-select" id="input-2a">
+                    <option value="">— 選択 —</option>
+                    <option value="相尾">相尾</option>
+                    <option value="潤田組">潤田組</option>
+                    <option value="青木">青木</option>
+                  </select>
+
+                  <span class="combo-label">が</span>
+
+                  <select class="reply-select" id="input-2b">
+                    <option value="">— 選択 —</option>
+                    <option value="警察">警察</option>
+                    <option value="住所">住所</option>
+                    <option value="金銭">金銭</option>
+                  </select>
+
+                  <span class="combo-label">を</span>
+
+                  <select class="reply-select" id="input-2c">
+                    <option value="">— 選択 —</option>
+                    <option value="壊された">壊された</option>
+                    <option value="封じられた">封じられた</option>
+                    <option value="盗まれた">盗まれた</option>
+                  </select>
+                </div>
+
+              <button onclick="checkAnswer(2)">返信を送信</button>
+              <div id="msg-2" class="mail-message"></div>
+            </div>
+          </div>
+          </div>
+
+        </article>
+
+      </div>
+    </main>
+
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

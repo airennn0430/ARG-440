@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>メールを受信しました(3)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body data-page="3" data-next="puzzle4.html">
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="topbar-logo">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <rect width="24" height="24" rx="4" fill="#1a73e8"/>
+          <path d="M4 8l8 5 8-5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+          <rect x="4" y="7" width="16" height="11" rx="1" stroke="white" stroke-width="1.5" fill="none"/>
+        </svg>
+        <span class="logo-text">SecureMail</span>
+      </div>
+      <div class="topbar-search">
+        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <circle cx="11" cy="11" r="7" stroke="#5f6368" stroke-width="2"/>
+          <path d="M16.5 16.5L21 21" stroke="#5f6368" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <span class="search-placeholder">メールを検索</span>
+      </div>
+      <div class="topbar-avatar">?</div>
+    </div>
+  </header>
+
+  <div class="page-body">
+
+    <aside class="sidebar">
+      <div class="sidebar-compose">
+        <button class="compose-btn" disabled>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 000-1.41l-2.34-2.34a1 1 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" fill="#5f6368"/>
+          </svg>
+          新規作成
+        </button>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-item active">
+          <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" fill="currentColor"/>
+          </svg>
+          <span>受信トレイ</span>
+          <span class="nav-badge" id="unread-count"></span>
+        </div>
+        <div class="nav-item muted">
+          <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="currentColor"/>
+          </svg>
+          <span>スター付き</span>
+        </div>
+        <div class="nav-item muted">
+          <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
+            <path d="M12 7v5l3 3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <span>送信済み</span>
+        </div>
+        <div class="nav-item muted">
+          <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M20 2H4a2 2 0 00-2 2v18l4-4h14a2 2 0 002-2V4a2 2 0 00-2-2z" fill="currentColor"/>
+          </svg>
+          <span>下書き</span>
+        </div>
+      </nav>
+      <div class="sidebar-divider"></div>
+      <div class="nav-section-label">ラベル</div>
+      <nav class="sidebar-nav">
+        <div class="nav-item muted">
+          <span class="nav-dot" style="background:#1a73e8"></span>
+          <span>CASE FILE</span>
+        </div>
+        <div class="nav-item muted">
+          <span class="nav-dot" style="background:#c5221f"></span>
+          <span>CLASSIFIED</span>
+        </div>
+        <div class="nav-item muted">
+          <span class="nav-dot" style="background:#188038"></span>
+          <span>RESOLVED</span>
+        </div>
+      </nav>
+    </aside>
+
+    <main class="main-pane">
+      <div class="inbox-toolbar">
+        <span class="inbox-title">受信トレイ</span>
+      </div>
+      <div id="puzzle-container">
+
+        <article class="mail-card unread" id="puzzle-3">
+
+          <div class="mail-header">
+            <div class="sender-area">
+              <div class="sender-icon">?</div>
+              <div class="sender-meta">
+                <div class="sender-name">潤田</div>
+                <div class="mail-address">uruta.k@████.jp</div>
+              </div>
+            </div>
+            <div class="mail-date" id="final-date"></div>
+          </div>
+
+          <div class="mail-subject">Re:Re:Re:Re:突然のご連絡失礼します。</div>
+
+          <div class="mail-body">
+            <p>
+              そう、この事件では<strong>暴力団が金銭を盗まれていた</strong>のです。<br>
+              もちろんヤクザですから、潤田組は通報せずに”けじめ”をつけさせようとしていたようですが、第三者の通報により詐欺師たちは逮捕されてしまいました。<br><br>
+
+              先に読んでもらったサイトのとおり、夫婦は過去にも様々な方法で様々な人間を騙していたようですが、この事件を最後に今でも2人は服役中です。<br><br>
+
+              しかし、それで終わってはいけない気がしているのです。<br><br>
+
+              本メールに夫婦の取り調べの記録を添付いたしました。<br>
+              取り調べ中も一切反省の色がなく、支離滅裂な発言も多く見られました。<br>
+              ヒステリックになり、こちらの問いかけに答えないこともありました。<br><br>
+
+              本メールでお話させていただいた「S家連続詐欺事件」の担当者でもありました。<br>
+              詐欺師たちは本事件で逮捕されましたが、未だに不可解な点があり、個人的にこの事件を追っていました。<br><br>
+
+              この記録や過去の事件を踏まえて、貴方の意見をお聞かせいただけないでしょうか？<br>
+            </p>
+
+            <div class="accordion" id="acc-2">
+              <button class="accordion-toggle" onclick="toggleAccordion('acc-2')">
+                <span>供述調書メモ②</span>
+                <span class="accordion-icon">▼</span>
+              </button>
+              <div class="accordion-body">
+                  1月19日午後13時51分、■■県警察署取調室において、次の通り供述した。<br><br>
+
+                  相尾：これからお話を伺わせていただきます。■■県警捜査二課の相尾です。お名前は■■■■さんで間違いないですね？<br>
+                  ■■■■：………(机を爪で叩く音が聞こえる)<br>
+                  相尾：貴方がたは夫婦は架空の建造物を潤田組に売り出し、10億円を不正に得ようとした。そのことに相違はありませんね？<br>
+                  ■■■■：………<br>
+                  相尾：今回が初でなく、過去老若男女問わず何度も行っていたことも判明しています。<br>
+                      マルチ商法、霊感商法……ただ、今回明確に『潤田組』というターゲットを決めて実行していた。それには何か理由があるんですか？<br>
+                  ■■■■：……なんでだよ<br>
+                  相尾：はい？<br>
+                  ■■■■：アイツがここにいないのおかしいだろ！！アタシたちは捕まったのになんでいないんだよ！！<br>
+                  相尾：落ち着いてください。<br>
+                  ■■■■：あ？落ち着いてられるかよ！お前らがちゃんと捜査してないからあのガキが捕まってないんだろ！？税金泥棒が！！早くさっさとここ連れてこい！！<br>
+                  相尾：……<br>
+                  ■■■■：子供なんて昔から嫌いだったんだよ！！アイツが子供がいた方が都合が良いからって言ったから仕方なく産んだ。女だったらもう少し顔とか胸とかで身体でもっと稼げただろうに産まれたのは愛想もないクソ野郎。気味が悪いんだよアイツ！！挙句の果てにはこっちが育ててやったのに恩を仇で返しやがった！！(突然立ち上がり部屋に備え付けられた監視カメラに向かって)おい！！もしかしてそっちにいんのか？自分被害者ですみたいな顔してさぁ！！お前が通報したんだろ？通りでおかしいと思ったんだよ！！いつも終わった後金魚のフンみたいについてくるお前がいないから！！あのときにチクってたんだろ！アタシたちが何度問い詰めても「何もしてない」って言った癖に！！アイツあのときニヤニヤしてたんだよ！！アタシたちを嵌めて楽しんでたんだよ！！嘘つき！！裏切り者！！クソ！！クソ！！クソ！！<br><br>
+
+                  相尾追記<br>
+                  これ以上会話できないと判断し、取り調べは中断。<br>
+                  何度か取り調べを実施したが、うわごとのように「アイツが悪い」と呟くのみで事件に関する情報を得ることができなかった。<br>
+                  また夫婦の証言をもとに、息子の似顔絵を作成した。<br>
+              </div>
+            </div>
+
+            <div class="reply-area">
+              <div class="reply-label">Q.調書から分かる夫婦の主張は？</div>
+
+              <div class="combo-sentence">
+                <select class="reply-select" id="input-3a">
+                  <option value="">— 選択 —</option>
+                  <option value="夫婦">夫婦</option>
+                  <option value="息子">息子</option>
+                  <option value="潤田組">潤田組</option>
+                  <option value="警察">警察</option>
+                </select>
+
+                <span class="combo-label">が</span>
+
+                <select class="reply-select" id="input-3b">
+                  <option value="">— 選択 —</option>
+                  <option value="夫婦">夫婦</option>
+                  <option value="息子">息子</option>
+                  <option value="潤田組">潤田組</option>
+                  <option value="警察">警察</option>
+                </select>
+
+                <span class="combo-label">を</span>
+
+                <select class="reply-select" id="input-3c">
+                  <option value="">— 選択 —</option>
+                  <option value="殺した">殺した</option>
+                  <option value="騙した">騙した</option>
+                  <option value="逃がした">逃がした</option>
+                  <option value="殴った">殴った</option>
+                </select>
+              </div>
+
+              <button onclick="checkAnswer(3)">返信を送信</button>
+              <div id="msg-3" class="mail-message"></div>
+            </div>
+          </div>
+
+        </article>
+
+      </div>
+    </main>
+
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
