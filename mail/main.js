@@ -29,12 +29,12 @@ const puzzles = {
 // =========================================
 
 window.addEventListener('DOMContentLoaded', () => {
-  initFinalDate();
+  document.querySelectorAll('.mail-card').forEach(setMailDate);
   updateUnreadCount();
 });
 
-function initFinalDate() {
-  const dateEl = document.getElementById('final-date');
+function setMailDate(cardEl) {
+  const dateEl = cardEl.querySelector('.mail-date');
   if (!dateEl) return;
 
   const d = new Date();
@@ -47,22 +47,46 @@ function initFinalDate() {
 }
 
 // =========================================
-// 別タブで開く
+// 次のメールを同じページに読み込む
 // =========================================
 
-function openInNewTab(url) {
-  window.open(url, '_blank', 'noopener');
+async function loadNextMail(url) {
+  if (!url) return;
+
+  let nextArticle;
+  try {
+    const res = await fetch(url);
+    const html = await res.text();
+    const nextDoc = new DOMParser().parseFromString(html, 'text/html');
+    nextArticle = nextDoc.querySelector('#puzzle-container .mail-card');
+    if (!nextArticle) return;
+
+    const nextBody = nextDoc.body;
+    document.body.dataset.next  = nextBody.dataset.next  || '';
+    document.body.dataset.nextA = nextBody.dataset.nextA || '';
+    document.body.dataset.nextB = nextBody.dataset.nextB || '';
+  } catch (err) {
+    console.error('次のメールの読み込みに失敗しました。', err);
+    return;
+  }
+
+  const container = document.getElementById('puzzle-container');
+  container.appendChild(nextArticle);
+
+  setMailDate(nextArticle);
+  updateUnreadCount();
   playMailEffect();
+  nextArticle.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 // =========================================
 // 回答チェック
 // =========================================
 
-function checkAnswer(num) {
+function checkAnswer(num, buttonEl) {
 
-  const msgEl   = document.getElementById('msg-' + num);
-  const cardEl  = document.getElementById('puzzle-' + num);
+  const cardEl  = buttonEl.closest('.mail-card');
+  const msgEl   = cardEl.querySelector('.mail-message');
   const puzzle  = puzzles[num];
 
   let isCorrect = false;
@@ -96,8 +120,6 @@ function checkAnswer(num) {
 
   }
 
-  const buttonEl = cardEl.querySelector('.reply-area button');
-
   if (isCorrect) {
 
     cardEl.classList.remove('unread');
@@ -111,10 +133,7 @@ function checkAnswer(num) {
     updateUnreadCount();
     buttonEl.disabled = true;
 
-    const nextUrl = document.body.dataset.next;
-    if (nextUrl) {
-      openInNewTab(nextUrl);
-    }
+    loadNextMail(document.body.dataset.next);
 
   } else {
 
@@ -133,10 +152,10 @@ function checkAnswer(num) {
 // エンド分岐
 // =========================================
 
-function submitFinalDecision() {
+function submitFinalDecision(btnEl) {
 
-  const selectEl = document.getElementById('final-select');
-  const btnEl    = selectEl.closest('.answer-area').querySelector('button');
+  const cardEl   = btnEl.closest('.mail-card');
+  const selectEl = cardEl.querySelector('.answer-select');
   const decision = selectEl.value;
 
   if (!decision) {
@@ -146,14 +165,14 @@ function submitFinalDecision() {
 
   selectEl.disabled = true;
   btnEl.disabled    = true;
+  cardEl.classList.remove('unread');
+  cardEl.classList.add('solved');
 
   const url = decision === 'a'
     ? document.body.dataset.nextA
     : document.body.dataset.nextB;
 
-  if (url) {
-    openInNewTab(url);
-  }
+  loadNextMail(url);
 
 }
 

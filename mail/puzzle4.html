@@ -105,7 +105,7 @@
                 <div class="mail-address">uruta.k@████.jp</div>
               </div>
             </div>
-            <div class="mail-date" id="final-date"></div>
+            <div class="mail-date"></div>
           </div>
 
           <div class="mail-subject">Re:Re:Re:Re:Re:Re:ご連絡ありがとうございます。</div>
@@ -131,13 +131,13 @@
             </p>
 
             <div class="answer-area">
-              <select class="answer-select" id="final-select">
+              <select class="answer-select">
                 <option value="">— 返信内容を選択してください —</option>
                 <option value="a">存在する</option>
                 <option value="b">存在しない</option>
               </select>
-              <button onclick="submitFinalDecision()">送信する</button>
-              <div id="msg-final" class="mail-message"></div>
+              <button onclick="submitFinalDecision(this)">送信する</button>
+              <div class="mail-message"></div>
             </div>
           </div>
 
