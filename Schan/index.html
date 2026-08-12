@@ -355,7 +355,7 @@
   <dd>子供？</dd>
 
   <dt><span class="res-num">890</span> ：<span class="res-name">嘘か本当かは名無し次第</span>：20XX/07/11(土) 23:30:41.29 ID:Xr7hQb4M0</dt>
-  <dd>音声はもう上げても無駄だから、こっちで全部文字に起こした これなら残るだろ 聞き取れなかったとこは（　）にしてある<br>
+  <dd>音声はもう上げても無駄だから、こっちで全部文字に起こした これなら残るだろ<br>
   <br>
   受理者「はい、110番です。事件ですか、事故ですか」<br>
   通報者「今から事件が起きます」<br>
@@ -425,6 +425,10 @@
   <dt><span class="res-num">1000</span> ：<span class="res-name">本当にあった怖い名無し</span>：20XX/07/11(土) 23:44:29.44 ID:cP9dMz3T0</dt>
   <dd>だからちょっとしか聞けてねぇって 十秒だぞ 知らねぇよ</dd>
 
+  <dt><span class="res-num">1001</span> ：<span class="res-name">Over 1000Thread</span>：Over 1000Thread</dt>
+  <dd>このスレッドは1000を超えました。<br>
+  <span class="anchor">&gt;&gt;1</span>のテンプレを使って、次スレを立ててね</dd>
+
 </dl>
 
 <hr>
@@ -439,23 +443,24 @@
 
 <hr>
 
-<!-- 書き込みフォーム -->
+<!-- 書き込みフォーム（1000到達により封鎖） -->
 <div class="post-form">
+  <p style="color: #FF0000; font-weight: bold;">このスレッドは1000を超えました。このスレッドに書き込みはできません。</p>
   <form action="#" onsubmit="return false;">
     <table>
       <tr>
         <td>名前：</td>
         <td>
-          <input type="text" name="name" size="19" value="">
+          <input type="text" name="name" size="19" value="" disabled>
           E-mail（省略可）：
-          <input type="text" name="mail" size="19" value="">
+          <input type="text" name="mail" size="19" value="" disabled>
         </td>
       </tr>
       <tr>
         <td></td>
         <td>
-          <textarea name="message" rows="5" cols="70"></textarea><br>
-          <input type="submit" value="書き込む">
+          <textarea name="message" rows="5" cols="70" disabled></textarea><br>
+          <input type="submit" value="書き込む" disabled>
         </td>
       </tr>
     </table>
