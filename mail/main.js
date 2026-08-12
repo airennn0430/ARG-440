@@ -5,7 +5,7 @@
 const puzzles = {
 
   1: {
-    answers: ['新浜地区架空ビル売却事件']
+    answers: ['幽霊ビル事件']
   },
 
   2: {
