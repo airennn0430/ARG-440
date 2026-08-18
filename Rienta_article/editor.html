@@ -167,6 +167,9 @@ a { text-decoration: none; color: inherit; }
   border-radius: 10px;
   overflow: hidden;
   transition: box-shadow .25s, transform .25s, border-color .25s;
+  display: flex;
+  flex-direction: column;
+  height: 420px; /* ← カード全体の固定高さ。必要に応じて調整 */
 }
 .editor-card:hover {
   box-shadow: 0 8px 32px rgba(9,64,103,.1);
@@ -182,6 +185,10 @@ a { text-decoration: none; color: inherit; }
 
 .editor-card-body {
   padding: 28px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0; /* flexアイテム内でoverflowを効かせるために必要 */
 }
 
 /* Avatar + name row */
@@ -246,6 +253,11 @@ a { text-decoration: none; color: inherit; }
   color: var(--para);
   line-height: 1.9;
   margin-bottom: 20px;
+  flex: 1;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;   /* 何行まで表示するか。3〜5行あたりで調整 */
+  -webkit-box-orient: vertical;
 }
 
 /* Card footer */
@@ -778,7 +790,7 @@ a { text-decoration: none; color: inherit; }
             <p class="editor-role">ディレクター</p>
           </div>
           <!-- URL確定後: onclick を削除し href を X プロフィールに差し替え、target="_blank" rel="noopener noreferrer" を付与 -->
-          <a href="#" class="editor-x-btn" onclick="return false;" aria-label="Xアカウント（プロフィールURLは後日公開）" title="Xアカウント">
+          <a href="https://x.com/jij_you" class="editor-x-btn" target="_blank" rel="noopener noreferrer" aria-label="Xアカウント（プロフィールURLは後日公開）" title="Xアカウント">
             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
           </a>
         </div>
