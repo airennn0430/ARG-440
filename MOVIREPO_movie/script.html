@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>極道オールアップ！第一話『コンセント』 | TELLASTRY</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Outfit:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap');
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━
    CSS Variables
@@ -32,7 +32,6 @@
   --badge-h: 30px;
 
   --hdr-h:      52px;
-  --crumb-h:    28px;
   --title-h:    48px;
   --tool-h:     48px;
   --canvas-pad: 34px;
@@ -40,7 +39,7 @@
   --paper-pad:  30px;
 
   --page-h: clamp(280px,
-    calc(100dvh - var(--hdr-h) - var(--crumb-h) - var(--title-h) - var(--tool-h)
+    calc(100dvh - var(--hdr-h) - var(--title-h) - var(--tool-h)
          - var(--canvas-pad) - var(--caption-h) - var(--paper-pad) - var(--badge-h)),
     720px);
 }
@@ -56,7 +55,7 @@ body{
   flex-direction:column;
   background:var(--tl-bg);
   color:var(--tl-ink);
-  font-family:'Noto Sans JP','Hiragino Kaku Gothic ProN','Hiragino Sans','Yu Gothic',Meiryo,sans-serif;
+  font-family:'Noto Serif JP','Hiragino Mincho ProN','Yu Mincho',serif;
   line-height:1.6;
 }
 button{ font-family:inherit; }
@@ -90,17 +89,8 @@ img{ max-width:100%; display:block; }
 .tl-userchip .caret{ opacity:.7; }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━
-   Breadcrumb / Title row
+   Title row
 ━━━━━━━━━━━━━━━━━━━━━━━━━ */
-.tl-crumb{
-  height:var(--crumb-h);
-  display:flex; align-items:center;
-  padding:0 24px;
-  font-size:12px; color:var(--tl-ink-dim);
-}
-.tl-crumb-link{
-  cursor:default;
-}
 .tl-titlerow{
   height:var(--title-h);
   display:flex; align-items:center; gap:8px;
@@ -144,31 +134,8 @@ img{ max-width:100%; display:block; }
 .tl-btn[aria-disabled="true"]{ cursor:default; opacity:.55; }
 .tl-btn[aria-disabled="true"]:hover{ background:transparent; color:var(--tl-ink-soft); }
 .tl-btn.tl-btn--wide{ width:auto; padding:0 10px; gap:6px; font-size:12px; font-weight:500; }
-.tl-fs-underline{
-  position:absolute; left:7px; right:7px; bottom:5px; height:2px;
-  background:var(--tl-red); border-radius:1px;
-}
 
-/* Autosave toggle */
-.tl-autosave{ display:flex; align-items:center; gap:8px; flex-shrink:0; }
-.tl-autosave-label{ font-size:11px; color:var(--tl-ink-soft); letter-spacing:.02em; }
-.tl-switch{
-  width:38px; height:20px; border-radius:10px;
-  background:#cfd8d4; border:none; position:relative; cursor:pointer;
-  transition:background .18s;
-  flex-shrink:0;
-}
-.tl-switch::after{
-  content:''; position:absolute; top:2px; left:2px;
-  width:16px; height:16px; border-radius:50%; background:#fff;
-  box-shadow:0 1px 2px rgba(0,0,0,.25);
-  transition:transform .18s;
-}
-.tl-switch[aria-pressed="true"]{ background:var(--tl-teal-deep); }
-.tl-switch[aria-pressed="true"]::after{ transform:translateX(18px); }
-.tl-savedstamp{ font-size:10px; color:var(--tl-ink-dim); white-space:nowrap; }
-
-/* Popovers (help / history) */
+/* Popovers (history) */
 .tl-pop-anchor{ position:relative; }
 .tl-pop{
   position:absolute; top:calc(100% + 8px); right:0;
@@ -362,26 +329,18 @@ body.is-past .panel::after{
 .cmt-tip .tip-text{ color:#eef3f1; }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━
-   Help popover content
-━━━━━━━━━━━━━━━━━━━━━━━━━ */
-.tl-help-pop p + p{ margin-top:8px; }
-.tl-help-pop .cmt-sample{ margin-right:2px; }
-
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━
    RESPONSIVE — chrome only, never the tategaki structure
 ━━━━━━━━━━━━━━━━━━━━━━━━━ */
 @media (max-width:720px){
   :root{
-    --hdr-h:46px; --crumb-h:26px; --title-h:44px; --tool-h:44px;
+    --hdr-h:46px; --title-h:44px; --tool-h:44px;
     --canvas-pad:24px; --caption-h:26px; --paper-pad:22px;
   }
   .tl-logo{ font-size:14px; }
-  .tl-userchip .tl-username{ display:none; }
   .tl-titlerow h1{ font-size:13px; }
   .tl-toolbar{ gap:14px; justify-content:flex-start; }
   .tl-tool-group{ gap:10px; }
   .tl-btn{ width:36px; height:36px; }
-  .tl-autosave-label{ display:none; }
   .spread{ gap:16px; }
   .panel{ padding:10px 12px 14px; }
   .tl-pop{ right:auto; left:0; width:min(280px, 82vw); }
@@ -394,30 +353,15 @@ body.is-past .panel::after{
 <!-- ═══ HEADER ═══ -->
 <header class="tl-header">
   <div class="tl-logo" aria-label="TELLASTRY">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" aria-hidden="true">
-      <path d="M4 19V5a2 2 0 0 1 2-2h9l5 5v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/>
-      <path d="M14 3v5h5"/>
-      <line x1="8" y1="13" x2="16" y2="13"/>
-      <line x1="8" y1="17" x2="13" y2="17"/>
-    </svg>
     TELLASTRY
   </div>
   <div class="tl-userchip" aria-label="ログインユーザー">
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-      <rect x="2" y="4" width="20" height="16" rx="2"/>
-      <path d="m22 6-10 7L2 6"/>
-    </svg>
     <span class="tl-username">小泉徳宏</span>
     <svg class="caret" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
       <polyline points="6 9 12 15 18 9"/>
     </svg>
   </div>
 </header>
-
-<!-- ═══ BREADCRUMB ═══ -->
-<div class="tl-crumb">
-  <span class="tl-crumb-link" aria-disabled="true">一覧へ戻る</span>
-</div>
 
 <!-- ═══ TITLE ROW ═══ -->
 <div class="tl-titlerow">
@@ -441,30 +385,9 @@ body.is-past .panel::after{
         <line x1="19" y1="4" x2="19" y2="20"/>
       </svg>
     </button>
-    <div class="tl-pop-anchor">
-      <button type="button" class="tl-btn" id="tlFsBtn" title="文字サイズを変更" aria-label="文字サイズを変更">
-        A
-        <span class="tl-fs-underline" aria-hidden="true"></span>
-      </button>
-    </div>
   </div>
 
   <div class="tl-tool-group">
-    <div class="tl-pop-anchor">
-      <button type="button" class="tl-btn" id="tlHelpBtn" aria-haspopup="true" aria-expanded="false" title="ヘルプ" aria-label="ヘルプ">?</button>
-      <div class="tl-pop tl-help-pop" id="tlHelpPop" role="dialog" aria-label="ヘルプ" hidden>
-        <h4>このページについて</h4>
-        <p>台本本文は縦書きで、右のカットから左へ読み進みます。スマホでは画面を左右にスワイプしてください。</p>
-        <p><span class="cmt cmt-sample">黄色い傍線</span>の箇所にカーソルを合わせる（スマホはタップ）と、その部分に付いたコメントが表示されます。</p>
-        <p>ツールバーの書類アイコンから、過去に保存された版を確認できます。</p>
-      </div>
-    </div>
-
-    <div class="tl-autosave">
-      <span class="tl-autosave-label" id="tlSavedStamp">自動保存ON</span>
-      <button type="button" class="tl-switch" id="tlAutosaveSwitch" role="switch" aria-checked="true" aria-pressed="true" aria-label="自動保存の切り替え"></button>
-    </div>
-
     <div class="tl-pop-anchor">
       <button type="button" class="tl-btn" id="tlHistBtn" aria-haspopup="true" aria-expanded="false" title="編集履歴を見る" aria-label="編集履歴を見る">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
@@ -797,7 +720,7 @@ body.is-past .panel::after{
     if (cur) renderRevision(cur);
   });
 
-  /* ─── Popovers (help / history) ─── */
+  /* ─── Popover (history) ─── */
   function makePopover(btn, pop){
     btn.addEventListener('click', function(e){
       e.stopPropagation();
@@ -814,70 +737,18 @@ body.is-past .panel::after{
     pop.hidden = true;
     if (btn) btn.setAttribute('aria-expanded', 'false');
   }
-  var helpBtn = document.getElementById('tlHelpBtn');
-  var helpPop = document.getElementById('tlHelpPop');
   var histBtn = document.getElementById('tlHistBtn');
   var histPop = document.getElementById('tlHistPop');
 
   function closeAllPops(){
-    closePop(helpPop, helpBtn);
     closePop(histPop, histBtn);
   }
-  makePopover(helpBtn, helpPop);
   makePopover(histBtn, histPop);
   document.addEventListener('click', function(e){
     if (!e.target.closest('.tl-pop-anchor')) closeAllPops();
   });
   document.addEventListener('keydown', function(e){
     if (e.key === 'Escape') closeAllPops();
-  });
-
-  /* ─── Font size control (real) ─── */
-  var FS_STEPS = [13, 15, 18];
-  var fsBtn = document.getElementById('tlFsBtn');
-  function loadFs(){
-    try {
-      var v = parseInt(localStorage.getItem('tellastry_fs_v1'), 10);
-      if (FS_STEPS.indexOf(v) !== -1) return v;
-    } catch (e) {}
-    return 15;
-  }
-  function setFs(v){
-    document.documentElement.style.setProperty('--fs', v + 'px');
-    try { localStorage.setItem('tellastry_fs_v1', String(v)); } catch (e) {}
-  }
-  setFs(loadFs());
-  fsBtn.addEventListener('click', function(){
-    var cur = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--fs'), 10) || 15;
-    var idx = FS_STEPS.indexOf(cur);
-    var next = FS_STEPS[(idx + 1 + FS_STEPS.length) % FS_STEPS.length];
-    setFs(next);
-  });
-
-  /* ─── Autosave toggle (cosmetic) ─── */
-  var asSwitch = document.getElementById('tlAutosaveSwitch');
-  var asLabel  = document.getElementById('tlSavedStamp');
-  function loadAutosave(){
-    try { return localStorage.getItem('tellastry_autosave_v1') !== '0'; } catch (e) { return true; }
-  }
-  function paintAutosave(on){
-    asSwitch.setAttribute('aria-pressed', on ? 'true' : 'false');
-    asSwitch.setAttribute('aria-checked', on ? 'true' : 'false');
-    if (on) {
-      var now = new Date();
-      var hh = String(now.getHours()).padStart(2, '0');
-      var mm = String(now.getMinutes()).padStart(2, '0');
-      asLabel.textContent = '自動保存ON（最終保存 ' + hh + ':' + mm + '）';
-    } else {
-      asLabel.textContent = '自動保存OFF';
-    }
-  }
-  var autosaveOn = loadAutosave();
-  paintAutosave(autosaveOn);
-  asSwitch.addEventListener('click', function(){
-    autosaveOn = !autosaveOn;
-    try { localStorage.setItem('tellastry_autosave_v1', autosaveOn ? '1' : '0'); } catch (e) {}
-    paintAutosave(autosaveOn);
   });
 
   /* ─── Comment tooltip ─── */
