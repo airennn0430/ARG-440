@@ -240,10 +240,13 @@ img{ max-width:100%; display:block; }
 
 .s-hashira{ font-weight:600; }
 .s-tokagaki{ padding-inline-start:1em; color:var(--tl-ink-soft); }
-.s-cue{ }
+.s-cue{
+  padding-inline-start:var(--col-w);
+  text-indent:calc(var(--col-w) * -1);
+}
 .s-name{ font-weight:500; }
 .s-line{ }
-.s-line-cont{ }
+.s-line-cont{ padding-inline-start:var(--col-w); }
 .s-gap{ color:transparent; }
 
 .s-cover-title{ font-weight:700; letter-spacing:.06em; }
@@ -392,106 +395,165 @@ body.is-past .panel::after{
     <article data-cut>
       <p class="s-cue"><span class="s-name">伏見 瀬人</span><span class="s-line">　こういうのはさ、まず状況整理から始めなきゃ。</span></p>
       <p class="s-tokagaki"><span class="cmt" data-cmt="c1" tabindex="0" role="button" aria-haspopup="true">(伏見、朝倉と兵頭の間に割って入る)</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">朝倉 陽介</span><span class="s-line">　邪魔するな！だいたい、全部お前のせいで…！</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">伏見 瀬人</span><span class="s-line">　邪魔ァ？お前の方が進行の邪魔なンだよ。オレの楽しみを奪うなよな。</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">朝倉 陽介</span><span class="s-line">　人が死んでるんだぞ！何だよその態度！</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">伏見 瀬人</span><span class="s-line">　じゃ、葬式の用意をしないとなァ。</span></p>
-      <p class="s-line-cont">　<span class="cmt" data-cmt="c2" tabindex="0" role="button" aria-haspopup="true">…待てよ？棺桶の用意が無ェ。</span>やっぱ葬式は無しだ。</p>
+      <p class="s-line-cont"><span class="cmt" data-cmt="c2" tabindex="0" role="button" aria-haspopup="true">…待てよ？棺桶の用意が無ェ。</span>やっぱ葬式は無しだ。</p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">兵頭 誠</span><span class="s-line">　伏見！あんま調子に乗ってると……</span></p>
       <p class="s-tokagaki">（兵頭、伏見に掴みかかるものの、伏見はそのままマイクを持って発言位置へ。）</p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">伏見 瀬人</span><span class="s-line">　さて、話を進めようか。今回のゲームは3種類のカードを使うらしい。みんな持ってる？</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">ノンノン</span><span class="s-line">　はーい！　もちろん持ってるよォ！</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">朝倉 陽介</span><span class="s-line">　……誰だ？</span></p>
       <p class="s-tokagaki"><span class="cmt" data-cmt="c3" tabindex="0" role="button" aria-haspopup="true">（正面の大型モニターが点灯する。）</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">ノンノン</span><span class="s-line">　お待たせしましたぁ！ゲームの説明なら、このボクにお任せ！</span></p>
       <p class="s-cue"><span class="s-name">ノンノン</span><span class="s-line">　ボクは今回のゲームを担当する、かわいいマスコットのノンノンだよ！</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">茂部 永太</span><span class="s-line">　自分でマスコットって言うんだ。</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">ノンノン</span><span class="s-line">　言うよォ！　だってマスコットだもん！</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">兵頭 誠</span><span class="s-line">　クソ…もっと面倒なのが来やがった。</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">ノンノン</span><span class="s-line">　それじゃ、楽しくルール説明を始めよう！</span></p>
       <p class="s-tokagaki">（画面に「GAME RULE」の文字が浮かぶ。）</p>
       <p class="s-cue"><span class="s-name">ノンノン</span><span class="s-line">　今回使うのは、さっきみんなに書いてもらったグー・チョキ・パーの三種類のカード！</span></p>
       <p class="s-tokagaki">（グー、チョキ、パーのカードが画面に並ぶ。）</p>
       <p class="s-cue"><span class="s-name">ノンノン</span><span class="s-line">　まず、ここにいる16人のみんなには、ゲーム開始前にカードを5枚ずつ書いてもらいました！</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">朝倉 陽介</span><span class="s-line">　……自分で書いたカードを使うのか？</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">ノンノン</span><span class="s-line">　ところがどっこい！</span></p>
       <p class="s-tokagaki">（画面のカードが一斉にシャッフルされる。）</p>
       <p class="s-cue"><span class="s-name">ノンノン</span><span class="s-line">　みんなのカードは、ぜーんぶ混ぜ混ぜ！</span></p>
       <p class="s-tokagaki">（シャッフル音。）</p>
       <p class="s-cue"><span class="s-name">ノンノン</span><span class="s-line">　そして、そこから一人につき3枚ずつ配りました！</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">最武 美子</span><span class="s-line">　……出せる手がランダムに限定されるのか</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">ノンノン</span><span class="s-line">　その通り！</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">伏見 瀬人</span><span class="s-line">　…全部で80枚あって、48枚を配った。…残りの32枚は？</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">ノンノン</span><span class="s-line">　計算が早いね！ゲームには使いませーん！</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">伏見 瀬人</span><span class="s-line">　……そうか</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">ノンノン</span><span class="s-line">　それでは、いよいよ対戦ルール！</span></p>
       <p class="s-tokagaki">（画面が切り替わる。）</p>
       <p class="s-cue"><span class="s-name">ノンノン</span><span class="s-line">　参加者は一対一で対戦します！</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">水瀬 鈴音</span><span class="s-line">　対戦相手はどうやって決めるの？</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">ノンノン</span><span class="s-line">　それはもう決まってるよ！</span></p>
       <p class="s-tokagaki">（モニターに16人の名前が表示される。）</p>
       <p class="s-cue"><span class="s-name">ノンノン</span><span class="s-line">　最初の対戦相手は、こちらで指定します！</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">茂部 永太</span><span class="s-line">　こちらで、って……お前が？</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">ノンノン</span><span class="s-line">　そう！</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">伏見 瀬人</span><span class="s-line">　半分も脱落すんの？大雑把なデスゲームだな</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">ノンノン</span><span class="s-line">　そこがこのゲームのポイント！</span></p>
       <p class="s-tokagaki">（画面が切り替わる。）</p>
       <p class="s-cue"><span class="s-name">ノンノン</span><span class="s-line">　じゃんけんに負けた人には、二つの権利が与えられます！</span></p>
       <p class="s-cue"><span class="s-name">ノンノン</span><span class="s-line">　一つは――続行！今の相手と、そのままもう一度じゃんけん！</span></p>
       <p class="s-cue"><span class="s-name">ノンノン</span><span class="s-line">　そしてもう一つは――対戦相手の変更！</span></p>
       <p class="s-cue"><span class="s-name">ノンノン</span><span class="s-line">　今の相手とはお別れして、別の参加者を選べます！</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">水瀬 鈴音</span><span class="s-line">　……敗者が相手を選べるの？</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">ノンノン</span><span class="s-line">　そういうこと！</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">最武 美子</span><span class="s-line">　じゃあ、勝った側は？</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">ノンノン</span><span class="s-line">　なーんにも選べませーん！</span></p>
     </article>
   </section>
   <section data-panel data-min-cols="9">
     <article data-cut>
       <p class="s-tokagaki">（兵頭が眉をひそめる。）</p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">兵頭 誠</span><span class="s-line">　……変なルールだな</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">伏見 瀬人</span><span class="s-line">　そう？お前がグー3枚しか持ってなかったら相手変えたくなるでしょ？</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">ノンノン</span><span class="s-line">　理解が早くて助かるよォ！</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">茂部 永太</span><span class="s-line">　それで、勝敗は？</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">ノンノン</span><span class="s-line">　もちろん、普通のじゃんけんと同じ！</span></p>
       <p class="s-tokagaki">（グーがチョキを、チョキがパーを、パーがグーを打ち負かす映像。）</p>
       <p class="s-cue"><span class="s-name">ノンノン</span><span class="s-line">　勝った人は一勝！</span></p>
       <p class="s-cue"><span class="s-name">ノンノン</span><span class="s-line">　そして――負けた人は、ライフを一つ失います！</span></p>
       <p class="s-tokagaki">（参加者たちの手元にある端末が一斉に点灯する。）</p>
       <p class="s-cue"><span class="s-name">ノンノン</span><span class="s-line">　最初は全員、ライフ3！</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">水瀬 鈴音</span><span class="s-line">　さ、三回負けたら終わり……</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">ノンノン</span><span class="s-line">　ピンポーン！ライフがゼロになったプレイヤーは――処刑でーす！</span></p>
       <p class="s-tokagaki">（何人かの表情が固まる。）</p>
       <p class="s-cue"><span class="s-name">ノンノン</span><span class="s-line">　三勝したプレイヤーはゲームクリア！</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">一同</span><span class="s-line">　三勝……</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">伏見 瀬人</span><span class="s-line">　つまり、三勝するまで何度でも対戦を続ける</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">ノンノン</span><span class="s-line">　その通り！</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">朝倉 陽介</span><span class="s-line">　敗者は相手を変えるか、同じ相手と続けるかを選ぶ</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">ノンノン</span><span class="s-line">　その通り！</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">水瀬 鈴音</span><span class="s-line">　合計三勝でクリア。ライフがゼロになれば処刑</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">ノンノン</span><span class="s-line">　カンペキ！</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">朝倉 陽介</span><span class="s-line">　……最後に一つ。</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">ノンノン</span><span class="s-line">　なあに？</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">朝倉 陽介</span><span class="s-line">　使ったカードは持ったままでいいのか？</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">ノンノン</span><span class="s-line">　あっ！大事なことを忘れてたよ！</span></p>
       <p class="s-tokagaki">（画面に、使用済みカードが黒く塗り潰されていく映像。）</p>
       <p class="s-cue"><span class="s-name">ノンノン</span><span class="s-line">　一度使ったカードは、その場で捨ててもらいます！</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">伏見 瀬人</span><span class="s-line">　……以上か？</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">ノンノン</span><span class="s-line">　うん！</span></p>
       <p class="s-tokagaki">（画面に大きく「RULE COMPLETE」の文字。）</p>
       <p class="s-cue"><span class="s-name">ノンノン</span><span class="s-line">　これでルール説明はおしまい！何か質問はあるかな？</span></p>
       <p class="s-tokagaki">（16人の間に、重い沈黙が落ちる。）</p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">伏見 瀬人</span><span class="s-line">　……ある</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">ノンノン</span><span class="s-line">　どうぞ！</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">伏見 瀬人</span><span class="s-line">　このゲーム、三勝するまで――</span></p>
       <p class="s-tokagaki">（伏見が手元の三枚のカードを見る。）</p>
       <p class="s-cue"><span class="s-name">伏見 瀬人</span><span class="s-line">　何人と戦ってもいいんだよな？</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">ノンノン</span><span class="s-line">　もちろん！</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">伏見 瀬人</span><span class="s-line">　同じ奴と何度でも？</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">ノンノン</span><span class="s-line">　もちろん！</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">伏見 瀬人</span><span class="s-line">　……そうか</span></p>
       <p class="s-tokagaki">（伏見がカードを伏せる。）</p>
       <p class="s-cue"><span class="s-name">伏見 瀬人</span><span class="s-line">　なら、随分と性格の悪いゲームだ</span></p>
+      <p class="s-gap">　</p>
       <p class="s-cue"><span class="s-name">ノンノン</span><span class="s-line">　褒め言葉として受け取っておくねェ！</span></p>
       <p class="s-tokagaki">（場内に、軽快なチャイムが鳴る。）</p>
       <p class="s-cue"><span class="s-name">ノンノン</span><span class="s-line">　それじゃあ皆さん！楽しい楽しい、じゃんけん大会の始まりだよォ！</span></p>
