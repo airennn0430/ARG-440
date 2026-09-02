@@ -33,13 +33,12 @@
 
   --hdr-h:      52px;
   --title-h:    48px;
-  --tool-h:     48px;
   --canvas-pad: 34px;
   --caption-h:  32px;
   --paper-pad:  30px;
 
   --page-h: clamp(280px,
-    calc(100dvh - var(--hdr-h) - var(--title-h) - var(--tool-h)
+    calc(100dvh - var(--hdr-h) - var(--title-h)
          - var(--canvas-pad) - var(--caption-h) - var(--paper-pad) - var(--badge-h)),
     720px);
 }
@@ -69,17 +68,22 @@ img{ max-width:100%; display:block; }
   position:sticky; top:0; z-index:100;
   height:var(--hdr-h);
   background:var(--tl-teal);
-  display:flex; align-items:center; justify-content:space-between;
+  display:flex; align-items:center; justify-content:flex-end;
   padding:0 20px;
   box-shadow:0 1px 0 rgba(0,0,0,.06);
 }
-.tl-logo{
-  display:flex; align-items:center; gap:8px;
-  font-family:'Outfit', sans-serif;
-  font-weight:700; font-size:17px; letter-spacing:.06em;
-  color:#fff;
+.tl-header-right{
+  display:flex; align-items:center; gap:14px;
 }
-.tl-logo svg{ flex-shrink:0; }
+.tl-header-btn{
+  display:flex; align-items:center; justify-content:center;
+  width:32px; height:32px;
+  background:transparent; border:none; border-radius:var(--radius-sm);
+  color:#25423a;
+  cursor:pointer;
+  transition:background .15s;
+}
+.tl-header-btn:hover{ background:rgba(255,255,255,.28); }
 .tl-userchip{
   display:flex; align-items:center; gap:8px;
   color:#25423a; font-size:13px; font-weight:500;
@@ -97,6 +101,7 @@ img{ max-width:100%; display:block; }
   padding:0 24px;
 }
 .tl-titlerow h1{
+  min-width:0;
   font-size:16px; font-weight:500;
   color:var(--tl-ink);
   overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
@@ -109,33 +114,7 @@ img{ max-width:100%; display:block; }
   cursor:default;
 }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━
-   Toolbar
-━━━━━━━━━━━━━━━━━━━━━━━━━ */
-.tl-toolbar{
-  height:var(--tool-h);
-  display:flex; align-items:center; justify-content:center; gap:22px;
-  padding:0 16px;
-  overflow-x:auto;
-  scrollbar-width:none;
-}
-.tl-toolbar::-webkit-scrollbar{ display:none; }
-.tl-tool-group{ display:flex; align-items:center; gap:14px; flex-shrink:0; }
-.tl-btn{
-  position:relative;
-  display:flex; align-items:center; justify-content:center;
-  width:34px; height:34px;
-  background:transparent; border:none; border-radius:var(--radius-sm);
-  color:var(--tl-ink-soft);
-  cursor:pointer;
-  transition:background .15s, color .15s;
-}
-.tl-btn:hover{ background:rgba(47,59,56,.06); color:var(--tl-ink); }
-.tl-btn[aria-disabled="true"]{ cursor:default; opacity:.55; }
-.tl-btn[aria-disabled="true"]:hover{ background:transparent; color:var(--tl-ink-soft); }
-.tl-btn.tl-btn--wide{ width:auto; padding:0 10px; gap:6px; font-size:12px; font-weight:500; }
-
-/* Popovers (history) */
+/* Popover (history) */
 .tl-pop-anchor{ position:relative; }
 .tl-pop{
   position:absolute; top:calc(100% + 8px); right:0;
@@ -333,17 +312,15 @@ body.is-past .panel::after{
 ━━━━━━━━━━━━━━━━━━━━━━━━━ */
 @media (max-width:720px){
   :root{
-    --hdr-h:46px; --title-h:44px; --tool-h:44px;
+    --hdr-h:46px; --title-h:44px;
     --canvas-pad:24px; --caption-h:26px; --paper-pad:22px;
   }
-  .tl-logo{ font-size:14px; }
+  .tl-header{ padding:0 14px; }
+  .tl-header-right{ gap:8px; }
+  .tl-header-btn{ width:34px; height:34px; }
   .tl-titlerow h1{ font-size:13px; }
-  .tl-toolbar{ gap:14px; justify-content:flex-start; }
-  .tl-tool-group{ gap:10px; }
-  .tl-btn{ width:36px; height:36px; }
   .spread{ gap:16px; }
   .panel{ padding:10px 12px 14px; }
-  .tl-pop{ right:auto; left:0; width:min(280px, 82vw); }
 }
 </style>
 <link rel="stylesheet" href="../shared/anime-redact.css">
@@ -352,14 +329,25 @@ body.is-past .panel::after{
 
 <!-- ═══ HEADER ═══ -->
 <header class="tl-header">
-  <div class="tl-logo" aria-label="TELLASTRY">
-    TELLASTRY
-  </div>
-  <div class="tl-userchip" aria-label="ログインユーザー">
-    <span class="tl-username">小泉徳宏</span>
-    <svg class="caret" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-      <polyline points="6 9 12 15 18 9"/>
-    </svg>
+  <div class="tl-header-right">
+    <div class="tl-userchip" aria-label="ログインユーザー">
+      <span class="tl-username">小泉徳宏</span>
+      <svg class="caret" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <polyline points="6 9 12 15 18 9"/>
+      </svg>
+    </div>
+    <div class="tl-pop-anchor">
+      <button type="button" class="tl-header-btn" id="tlHistBtn" aria-haspopup="true" aria-expanded="false" title="編集履歴を見る" aria-label="編集履歴を見る">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+          <circle cx="12" cy="12" r="9"/>
+          <polyline points="12 7 12 12 15.5 14"/>
+        </svg>
+      </button>
+      <div class="tl-pop" id="tlHistPop" role="dialog" aria-label="編集履歴" hidden>
+        <h4>編集履歴</h4>
+        <div class="tl-hist-list" id="tlHistList"></div>
+      </div>
+    </div>
   </div>
 </header>
 
@@ -372,37 +360,6 @@ body.is-past .panel::after{
       <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>
     </svg>
   </button>
-</div>
-
-<!-- ═══ TOOLBAR ═══ -->
-<div class="tl-toolbar">
-  <div class="tl-tool-group">
-    <button type="button" class="tl-btn" aria-disabled="true" tabindex="-1" title="縦書き表示（現在の表示形式）" aria-label="縦書き／横書き切り替え">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-        <line x1="6" y1="3" x2="6" y2="21"/>
-        <line x1="14" y1="3" x2="14" y2="21"/>
-        <polyline points="10 4 14 3 14 8" fill="none"/>
-        <line x1="19" y1="4" x2="19" y2="20"/>
-      </svg>
-    </button>
-  </div>
-
-  <div class="tl-tool-group">
-    <div class="tl-pop-anchor">
-      <button type="button" class="tl-btn" id="tlHistBtn" aria-haspopup="true" aria-expanded="false" title="編集履歴を見る" aria-label="編集履歴を見る">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-          <path d="M4 19V5a2 2 0 0 1 2-2h9l5 5v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/>
-          <path d="M14 3v5h5"/>
-          <line x1="8" y1="12.5" x2="16" y2="12.5"/>
-          <line x1="8" y1="16" x2="13" y2="16"/>
-        </svg>
-      </button>
-      <div class="tl-pop" id="tlHistPop" role="dialog" aria-label="編集履歴" hidden>
-        <h4>編集履歴</h4>
-        <div class="tl-hist-list" id="tlHistList"></div>
-      </div>
-    </div>
-  </div>
 </div>
 
 <!-- ═══ REVISION BANNER ═══ -->
