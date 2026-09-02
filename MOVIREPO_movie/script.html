@@ -31,14 +31,13 @@
   --col-w:   calc(var(--fs) * 2);
   --badge-h: 30px;
 
-  --hdr-h:      52px;
-  --title-h:    48px;
+  --hdr-h:      56px;
   --canvas-pad: 34px;
   --caption-h:  32px;
   --paper-pad:  30px;
 
   --page-h: clamp(280px,
-    calc(100dvh - var(--hdr-h) - var(--title-h)
+    calc(100dvh - var(--hdr-h)
          - var(--canvas-pad) - var(--caption-h) - var(--paper-pad) - var(--badge-h)),
     720px);
 }
@@ -68,12 +67,24 @@ img{ max-width:100%; display:block; }
   position:sticky; top:0; z-index:100;
   height:var(--hdr-h);
   background:var(--tl-teal);
-  display:flex; align-items:center; justify-content:flex-end;
+  display:flex; align-items:center; justify-content:space-between;
+  gap:16px;
   padding:0 20px;
   box-shadow:0 1px 0 rgba(0,0,0,.06);
 }
+.tl-header-title{
+  display:flex; align-items:center; gap:6px;
+  min-width:0; flex:1 1 auto;
+}
+.tl-header-title h1{
+  min-width:0;
+  font-size:15px; font-weight:600;
+  color:#1f332c;
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
 .tl-header-right{
   display:flex; align-items:center; gap:14px;
+  flex-shrink:0;
 }
 .tl-header-btn{
   display:flex; align-items:center; justify-content:center;
@@ -92,25 +103,12 @@ img{ max-width:100%; display:block; }
 .tl-userchip svg{ opacity:.8; flex-shrink:0; }
 .tl-userchip .caret{ opacity:.7; }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━
-   Title row
-━━━━━━━━━━━━━━━━━━━━━━━━━ */
-.tl-titlerow{
-  height:var(--title-h);
-  display:flex; align-items:center; gap:8px;
-  padding:0 24px;
-}
-.tl-titlerow h1{
-  min-width:0;
-  font-size:16px; font-weight:500;
-  color:var(--tl-ink);
-  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
-}
 .tl-edit-btn{
   flex-shrink:0;
-  width:24px; height:24px;
+  width:22px; height:22px;
   display:flex; align-items:center; justify-content:center;
-  background:transparent; border:none; color:var(--tl-ink-dim);
+  background:transparent; border:none; color:#1f332c;
+  opacity:.7;
   cursor:default;
 }
 
@@ -242,8 +240,9 @@ img{ max-width:100%; display:block; }
 
 .s-hashira{ font-weight:600; }
 .s-tokagaki{ padding-inline-start:1em; color:var(--tl-ink-soft); }
+.s-cue{ }
 .s-name{ font-weight:500; }
-.s-line{ padding-inline-start:1em; }
+.s-line{ }
 .s-gap{ color:transparent; }
 
 .s-cover-title{ font-weight:700; letter-spacing:.06em; }
@@ -312,13 +311,14 @@ body.is-past .panel::after{
 ━━━━━━━━━━━━━━━━━━━━━━━━━ */
 @media (max-width:720px){
   :root{
-    --hdr-h:46px; --title-h:44px;
+    --hdr-h:50px;
     --canvas-pad:24px; --caption-h:26px; --paper-pad:22px;
   }
-  .tl-header{ padding:0 14px; }
-  .tl-header-right{ gap:8px; }
-  .tl-header-btn{ width:34px; height:34px; }
-  .tl-titlerow h1{ font-size:13px; }
+  .tl-header{ padding:0 12px; gap:8px; }
+  .tl-header-title h1{ font-size:12.5px; }
+  .tl-header-right{ gap:6px; }
+  .tl-userchip .tl-username{ display:none; }
+  .tl-header-btn{ width:32px; height:32px; }
   .spread{ gap:16px; }
   .panel{ padding:10px 12px 14px; }
 }
@@ -329,6 +329,15 @@ body.is-past .panel::after{
 
 <!-- ═══ HEADER ═══ -->
 <header class="tl-header">
+  <div class="tl-header-title">
+    <h1 id="tlTitle">極道オールアップ！第一話『コンセント』_26.08.01</h1>
+    <button type="button" class="tl-edit-btn" aria-disabled="true" tabindex="-1" aria-label="タイトルを編集（プレビュー版では無効）">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M12 20h9"/>
+        <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>
+      </svg>
+    </button>
+  </div>
   <div class="tl-header-right">
     <div class="tl-userchip" aria-label="ログインユーザー">
       <span class="tl-username">小泉徳宏</span>
@@ -350,17 +359,6 @@ body.is-past .panel::after{
     </div>
   </div>
 </header>
-
-<!-- ═══ TITLE ROW ═══ -->
-<div class="tl-titlerow">
-  <h1 id="tlTitle">極道オールアップ！第一話『コンセント』_26.08.01</h1>
-  <button type="button" class="tl-edit-btn" aria-disabled="true" tabindex="-1" aria-label="タイトルを編集（プレビュー版では無効）">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-      <path d="M12 20h9"/>
-      <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>
-    </svg>
-  </button>
-</div>
 
 <!-- ═══ REVISION BANNER ═══ -->
 <div class="tl-revbanner" id="tlRevBanner" role="status" hidden>
@@ -399,45 +397,35 @@ body.is-past .panel::after{
       <p class="s-hashira">映画館・館内受付</p>
       <p class="s-tokagaki">濡れた足跡をカーペットにつけながらやってくる鯨。</p>
       <p class="s-tokagaki">狼狽えている受付のスタッフ。</p>
-      <p class="s-name">鯨</p>
-      <p class="s-line">「・・・んごくを一枚だ」</p>
+      <p class="s-cue"><span class="s-name">鯨</span><span class="s-line">　「・・・んごくを一枚だ」</span></p>
     </article>
     <article data-cut data-n="3">
       <p class="s-hashira">同・劇場内</p>
       <p class="s-tokagaki">カップルだらけの場内を鯨が横切っていく。</p>
-      <p class="s-name">スタッフ</p>
-      <p class="s-line">「えっと、こちらの作品でしょうか？」</p>
+      <p class="s-cue"><span class="s-name">スタッフ</span><span class="s-line">　「えっと、こちらの作品でしょうか？」</span></p>
       <p class="s-tokagaki">とある恋愛映画のポスターを指すスタッフ。</p>
       <p class="s-tokagaki">少女漫画原作と思しき映画『QUN♡極・卒業』。</p>
       <p class="s-tokagaki">若手のイケメン俳優と売り出し中のアイドルによる、</p>
-      <p class="s-name">鯨</p>
-      <p class="s-line">「いや」</p>
-      <p class="s-name">スタッフ</p>
-      <p class="s-line">「・・・んごくを聞き取れない）はい？」</p>
-      <p class="s-name">鯨</p>
-      <p class="s-line">「・・・んごく」</p>
+      <p class="s-cue"><span class="s-name">鯨</span><span class="s-line">　「いや」</span></p>
+      <p class="s-cue"><span class="s-name">スタッフ</span><span class="s-line">　「・・・んごくを聞き取れない）はい？」</span></p>
+      <p class="s-cue"><span class="s-name">鯨</span><span class="s-line">　「・・・んごく」</span></p>
       <p class="s-tokagaki">鯨がそのポスターを指さす。</p>
-      <p class="s-name">鯨</p>
-      <p class="s-line">「<span class="cmt" data-cmt="c2" tabindex="0" role="button" aria-haspopup="true">きゅんごくを一枚だ</span>」</p>
+      <p class="s-cue"><span class="s-name">鯨</span><span class="s-line">　「<span class="cmt" data-cmt="c2" tabindex="0" role="button" aria-haspopup="true">きゅんごくを一枚だ</span>」</span></p>
     </article>
   </section>
   <section data-panel data-min-cols="9">
     <article data-cut data-n="4">
       <p class="s-hashira">タイトル『極道オールアップ！』</p>
       <p class="s-tokagaki">抱き合い、キスをする二人が大きく映し出される。</p>
-      <p class="s-name">俳優</p>
-      <p class="s-line">「逃げてたのは俺の方だった。俺も<span class="cmt" data-cmt="c3" tabindex="0" role="button" aria-haspopup="true">ユキノ</span>が好きだった」</p>
-      <p class="s-name">女優</p>
-      <p class="s-line">「ごめん、わたし嘘ついてた。私やっぱり有栖川くんのことが好き」</p>
-      <p class="s-name">俳優</p>
-      <p class="s-line">「好き嫌いを、他の誰かに決めさせんじゃねーよ。お前の気持ちはお前にしか決められねー」</p>
+      <p class="s-cue"><span class="s-name">俳優</span><span class="s-line">　「逃げてたのは俺の方だった。俺も<span class="cmt" data-cmt="c3" tabindex="0" role="button" aria-haspopup="true">ユキノ</span>が好きだった」</span></p>
+      <p class="s-cue"><span class="s-name">女優</span><span class="s-line">　「ごめん、わたし嘘ついてた。私やっぱり有栖川くんのことが好き」</span></p>
+      <p class="s-cue"><span class="s-name">俳優</span><span class="s-line">　「好き嫌いを、他の誰かに決めさせんじゃねーよ。お前の気持ちはお前にしか決められねー」</span></p>
     </article>
     <article data-cut data-n="5">
       <p class="s-hashira">洋菓子店『シェ・タカハシ』・店内</p>
       <p class="s-tokagaki">両隣のカップル、映画に集中することができず、恐る恐る鯨を覗き込む。</p>
       <p class="s-tokagaki">すると、鯨が人目も憚らず号泣している。</p>
-      <p class="s-name">カップル</p>
-      <p class="s-line">「！」</p>
+      <p class="s-cue"><span class="s-name">カップル</span><span class="s-line">　「！」</span></p>
       <p class="s-tokagaki">心から感動している鯨。</p>
     </article>
     <article data-cut data-cover>
@@ -461,31 +449,25 @@ body.is-past .panel::after{
       <p class="s-hashira">映画館・館内受付</p>
       <p class="s-tokagaki">濡れた足跡をカーペットにつけながらやってくる鯨。</p>
       <p class="s-tokagaki">怯えている受付のスタッフ。</p>
-      <p class="s-name">鯨</p>
-      <p class="s-line">「・・・ごくを一枚」</p>
+      <p class="s-cue"><span class="s-name">鯨</span><span class="s-line">　「・・・ごくを一枚」</span></p>
     </article>
     <article data-cut data-n="3">
       <p class="s-hashira">同・劇場内</p>
       <p class="s-tokagaki">カップルだらけの場内を鯨が横切っていく。</p>
-      <p class="s-name">スタッフ</p>
-      <p class="s-line">「恐れ入ります、もう一度よろしいですか？」</p>
+      <p class="s-cue"><span class="s-name">スタッフ</span><span class="s-line">　「恐れ入ります、もう一度よろしいですか？」</span></p>
       <p class="s-tokagaki">恋愛映画のポスターを指すスタッフ。</p>
       <p class="s-tokagaki">映画『QUN♡極・卒業』のポスター。</p>
-      <p class="s-name">鯨</p>
-      <p class="s-line">「・・・ごく」</p>
+      <p class="s-cue"><span class="s-name">鯨</span><span class="s-line">　「・・・ごく」</span></p>
       <p class="s-tokagaki">鯨がそのポスターを指さす。</p>
-      <p class="s-name">鯨</p>
-      <p class="s-line">「きゅんごくを一枚」</p>
+      <p class="s-cue"><span class="s-name">鯨</span><span class="s-line">　「きゅんごくを一枚」</span></p>
     </article>
   </section>
   <section data-panel data-min-cols="9">
     <article data-cut data-n="4">
       <p class="s-hashira">タイトル『極道オールアップ！』</p>
       <p class="s-tokagaki">抱き合う二人が大きく映し出される。</p>
-      <p class="s-name">俳優</p>
-      <p class="s-line">「逃げてたのは俺の方だった」</p>
-      <p class="s-name">女優</p>
-      <p class="s-line">「ごめん、私やっぱり有栖川くんが好き」</p>
+      <p class="s-cue"><span class="s-name">俳優</span><span class="s-line">　「逃げてたのは俺の方だった」</span></p>
+      <p class="s-cue"><span class="s-name">女優</span><span class="s-line">　「ごめん、私やっぱり有栖川くんが好き」</span></p>
     </article>
     <article data-cut data-n="5">
       <p class="s-hashira">洋菓子店『シェ・タカハシ』・店内</p>
@@ -512,24 +494,20 @@ body.is-past .panel::after{
     <article data-cut data-n="2">
       <p class="s-hashira">映画館・受付</p>
       <p class="s-tokagaki">受付にやってくる男。</p>
-      <p class="s-name">男</p>
-      <p class="s-line">「（聞き取れない）を一枚」</p>
+      <p class="s-cue"><span class="s-name">男</span><span class="s-line">　「（聞き取れない）を一枚」</span></p>
     </article>
     <article data-cut data-n="3">
       <p class="s-hashira">劇場内</p>
       <p class="s-tokagaki">場内を横切る男。カップルたちが振り返る。</p>
-      <p class="s-name">スタッフ</p>
-      <p class="s-line">「もう一度お願いします」</p>
-      <p class="s-name">男</p>
-      <p class="s-line">「（同じ台詞を繰り返す）」</p>
+      <p class="s-cue"><span class="s-name">スタッフ</span><span class="s-line">　「もう一度お願いします」</span></p>
+      <p class="s-cue"><span class="s-name">男</span><span class="s-line">　「（同じ台詞を繰り返す）」</span></p>
     </article>
   </section>
   <section data-panel data-min-cols="9">
     <article data-cut data-n="4">
       <p class="s-hashira">劇中映画（仮）</p>
       <p class="s-tokagaki">恋愛映画のワンシーン、抱き合う男女。</p>
-      <p class="s-name">男優</p>
-      <p class="s-line">「（台詞未定）」</p>
+      <p class="s-cue"><span class="s-name">男優</span><span class="s-line">　「（台詞未定）」</span></p>
     </article>
     <article data-cut data-n="5">
       <p class="s-hashira">洋菓子店（店名未定）</p>
