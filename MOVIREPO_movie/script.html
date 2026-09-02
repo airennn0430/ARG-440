@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>極道オールアップ！第一話『コンセント』 | TELLASTRY</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Outfit:wght@400;500;600;700&display=swap');
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━
+   CSS Variables
+━━━━━━━━━━━━━━━━━━━━━━━━━ */
+:root{
+  --tl-teal:       #7fc9b5;
+  --tl-teal-deep:  #5aa48f;
+  --tl-ink:        #2f3b38;
+  --tl-ink-soft:   #5c6b67;
+  --tl-ink-dim:    #8b9793;
+  --tl-bg:         #f4f2ec;
+  --tl-canvas:     #e3efe9;
+  --tl-paper:      #fdfbf5;
+  --tl-line:       rgba(47,59,56,.18);
+  --tl-red:        #d24545;
+  --tl-cmt-bg:     rgba(255,205,90,.32);
+  --tl-cmt-bg-hi:  rgba(255,186,52,.62);
+  --tl-cmt-line:   rgba(178,126,10,.8);
+  --radius-sm:     4px;
+  --radius-md:     8px;
+
+  --fs:      15px;
+  --col-w:   calc(var(--fs) * 2);
+  --badge-h: 30px;
+
+  --hdr-h:      52px;
+  --crumb-h:    28px;
+  --title-h:    48px;
+  --tool-h:     48px;
+  --canvas-pad: 34px;
+  --caption-h:  32px;
+  --paper-pad:  30px;
+
+  --page-h: clamp(280px,
+    calc(100dvh - var(--hdr-h) - var(--crumb-h) - var(--title-h) - var(--tool-h)
+         - var(--canvas-pad) - var(--caption-h) - var(--paper-pad) - var(--badge-h)),
+    720px);
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━
+   Reset & Base
+━━━━━━━━━━━━━━━━━━━━━━━━━ */
+*,*::before,*::after{ margin:0; padding:0; box-sizing:border-box; }
+html{ -webkit-text-size-adjust:100%; text-size-adjust:100%; }
+body{
+  min-height:100dvh;
+  display:flex;
+  flex-direction:column;
+  background:var(--tl-bg);
+  color:var(--tl-ink);
+  font-family:'Noto Sans JP','Hiragino Kaku Gothic ProN','Hiragino Sans','Yu Gothic',Meiryo,sans-serif;
+  line-height:1.6;
+}
+button{ font-family:inherit; }
+a{ color:inherit; text-decoration:none; }
+img{ max-width:100%; display:block; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━
+   HEADER
+━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.tl-header{
+  position:sticky; top:0; z-index:100;
+  height:var(--hdr-h);
+  background:var(--tl-teal);
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 20px;
+  box-shadow:0 1px 0 rgba(0,0,0,.06);
+}
+.tl-logo{
+  display:flex; align-items:center; gap:8px;
+  font-family:'Outfit', sans-serif;
+  font-weight:700; font-size:17px; letter-spacing:.06em;
+  color:#fff;
+}
+.tl-logo svg{ flex-shrink:0; }
+.tl-userchip{
+  display:flex; align-items:center; gap:8px;
+  color:#25423a; font-size:13px; font-weight:500;
+  cursor:default;
+}
+.tl-userchip svg{ opacity:.8; flex-shrink:0; }
+.tl-userchip .caret{ opacity:.7; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━
+   Breadcrumb / Title row
+━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.tl-crumb{
+  height:var(--crumb-h);
+  display:flex; align-items:center;
+  padding:0 24px;
+  font-size:12px; color:var(--tl-ink-dim);
+}
+.tl-crumb-link{
+  cursor:default;
+}
+.tl-titlerow{
+  height:var(--title-h);
+  display:flex; align-items:center; gap:8px;
+  padding:0 24px;
+}
+.tl-titlerow h1{
+  font-size:16px; font-weight:500;
+  color:var(--tl-ink);
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
+.tl-edit-btn{
+  flex-shrink:0;
+  width:24px; height:24px;
+  display:flex; align-items:center; justify-content:center;
+  background:transparent; border:none; color:var(--tl-ink-dim);
+  cursor:default;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━
+   Toolbar
+━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.tl-toolbar{
+  height:var(--tool-h);
+  display:flex; align-items:center; justify-content:center; gap:22px;
+  padding:0 16px;
+  overflow-x:auto;
+  scrollbar-width:none;
+}
+.tl-toolbar::-webkit-scrollbar{ display:none; }
+.tl-tool-group{ display:flex; align-items:center; gap:14px; flex-shrink:0; }
+.tl-btn{
+  position:relative;
+  display:flex; align-items:center; justify-content:center;
+  width:34px; height:34px;
+  background:transparent; border:none; border-radius:var(--radius-sm);
+  color:var(--tl-ink-soft);
+  cursor:pointer;
+  transition:background .15s, color .15s;
+}
+.tl-btn:hover{ background:rgba(47,59,56,.06); color:var(--tl-ink); }
+.tl-btn[aria-disabled="true"]{ cursor:default; opacity:.55; }
+.tl-btn[aria-disabled="true"]:hover{ background:transparent; color:var(--tl-ink-soft); }
+.tl-btn.tl-btn--wide{ width:auto; padding:0 10px; gap:6px; font-size:12px; font-weight:500; }
+.tl-fs-underline{
+  position:absolute; left:7px; right:7px; bottom:5px; height:2px;
+  background:var(--tl-red); border-radius:1px;
+}
+
+/* Autosave toggle */
+.tl-autosave{ display:flex; align-items:center; gap:8px; flex-shrink:0; }
+.tl-autosave-label{ font-size:11px; color:var(--tl-ink-soft); letter-spacing:.02em; }
+.tl-switch{
+  width:38px; height:20px; border-radius:10px;
+  background:#cfd8d4; border:none; position:relative; cursor:pointer;
+  transition:background .18s;
+  flex-shrink:0;
+}
+.tl-switch::after{
+  content:''; position:absolute; top:2px; left:2px;
+  width:16px; height:16px; border-radius:50%; background:#fff;
+  box-shadow:0 1px 2px rgba(0,0,0,.25);
+  transition:transform .18s;
+}
+.tl-switch[aria-pressed="true"]{ background:var(--tl-teal-deep); }
+.tl-switch[aria-pressed="true"]::after{ transform:translateX(18px); }
+.tl-savedstamp{ font-size:10px; color:var(--tl-ink-dim); white-space:nowrap; }
+
+/* Popovers (help / history) */
+.tl-pop-anchor{ position:relative; }
+.tl-pop{
+  position:absolute; top:calc(100% + 8px); right:0;
+  width:260px; max-width:80vw;
+  background:#fff; color:var(--tl-ink);
+  border:1px solid var(--tl-line); border-radius:var(--radius-md);
+  box-shadow:0 8px 28px rgba(20,40,35,.16);
+  padding:14px;
+  font-size:12.5px; line-height:1.8;
+  z-index:120;
+}
+.tl-pop[hidden]{ display:none; }
+.tl-pop h4{ font-size:12px; font-weight:700; margin-bottom:8px; color:var(--tl-teal-deep); }
+.tl-hist-list{ display:flex; flex-direction:column; gap:2px; }
+.tl-hist-item{
+  display:flex; flex-direction:column; align-items:flex-start; gap:2px;
+  width:100%; text-align:left;
+  background:transparent; border:none; border-radius:var(--radius-sm);
+  padding:8px 10px; cursor:pointer;
+}
+.tl-hist-item:hover{ background:rgba(47,59,56,.06); }
+.tl-hist-item[aria-current="true"]{ background:rgba(127,201,181,.18); }
+.tl-hist-row1{ display:flex; align-items:center; gap:6px; font-size:12.5px; font-weight:600; }
+.tl-hist-dot{ width:6px; height:6px; border-radius:50%; background:var(--tl-teal-deep); flex-shrink:0; }
+.tl-hist-item[aria-current="true"] .tl-hist-row1::after{ content:'現在表示中'; margin-left:auto; font-size:10px; font-weight:500; color:var(--tl-teal-deep); }
+.tl-hist-meta{ font-size:11px; color:var(--tl-ink-dim); padding-left:12px; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━
+   Revision banner
+━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.tl-revbanner{
+  display:flex; align-items:center; justify-content:center; gap:12px;
+  flex-wrap:wrap;
+  padding:8px 16px;
+  background:#fbeecd; color:#7a5a12;
+  font-size:12px;
+  border-top:1px solid #f0d99a; border-bottom:1px solid #f0d99a;
+}
+.tl-revbanner[hidden]{ display:none; }
+.tl-revbanner-back{
+  background:#7a5a12; color:#fff; border:none; border-radius:14px;
+  padding:4px 14px; font-size:11.5px; font-weight:600; cursor:pointer;
+}
+.tl-revbanner-back:hover{ opacity:.88; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━
+   Script canvas
+━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.canvas{
+  flex:1 1 auto; min-height:0;
+  overflow-x:auto; overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior-x:contain;
+  touch-action:pan-x pan-y;
+  background:var(--tl-canvas);
+  padding:calc(var(--canvas-pad) / 2) 20px;
+  display:flex; flex-direction:column;
+}
+.canvas::-webkit-scrollbar{ height:10px; }
+.canvas::-webkit-scrollbar-track{ background:transparent; }
+.canvas::-webkit-scrollbar-thumb{ background:rgba(47,59,56,.25); border-radius:5px; }
+
+.page{
+  width:max-content; min-width:100%;
+  margin:auto 0;
+}
+.spread{
+  display:flex; flex-direction:row; flex-wrap:nowrap;
+  align-items:flex-start; justify-content:center;
+  gap:26px;
+}
+.panel{
+  flex:0 0 auto;
+  background:var(--tl-paper);
+  border-radius:2px;
+  padding:14px 18px 16px;
+  box-shadow:0 2px 10px rgba(20,60,50,.10), 0 0 0 1px rgba(20,60,50,.05);
+}
+.panel__cuts{
+  display:flex; flex-direction:row; flex-wrap:nowrap; align-items:stretch;
+  width:max-content;
+  justify-content:flex-end;
+  background-repeat:no-repeat, no-repeat;
+  background-position:right bottom, right bottom;
+  background-image:
+    linear-gradient(to bottom, var(--tl-line) 0 1px, transparent 1px),
+    repeating-linear-gradient(to left, var(--tl-line) 0 1px, transparent 1px var(--col-w));
+  background-size:
+    100% calc(var(--page-h) + 1px),
+    100% var(--page-h);
+  min-width:calc(var(--col-w) * 6);
+}
+
+.cut{ flex:0 0 auto; display:flex; flex-direction:column; align-items:flex-end; }
+.cut__badge-slot{
+  height:var(--badge-h);
+  display:flex; align-items:flex-start; justify-content:flex-end;
+  padding-top:2px;
+}
+.cut__badge{
+  width:22px; height:22px;
+  display:flex; align-items:center; justify-content:center;
+  border:1px solid var(--tl-ink-dim);
+  border-radius:2px;
+  font-family:'Outfit', sans-serif;
+  font-size:12px; font-weight:600;
+  color:var(--tl-ink-soft);
+  background:var(--tl-paper);
+}
+.cut__body{
+  writing-mode:vertical-rl; -webkit-writing-mode:vertical-rl;
+  text-orientation:mixed; -webkit-text-orientation:mixed;
+  height:var(--page-h);
+  box-sizing:border-box;
+  padding:10px 0 6px;
+  font-size:var(--fs);
+  line-height:var(--col-w);
+  letter-spacing:.02em;
+  color:var(--tl-ink);
+  line-break:strict;
+  word-break:normal;
+  overflow-wrap:normal;
+}
+.cut__body > p{ margin:0; }
+
+.s-hashira{ font-weight:600; }
+.s-tokagaki{ padding-inline-start:1em; color:var(--tl-ink-soft); }
+.s-name{ font-weight:500; }
+.s-line{ padding-inline-start:1em; }
+.s-gap{ color:transparent; }
+
+.s-cover-title{ font-weight:700; letter-spacing:.06em; }
+.s-cover-sub{ padding-inline-start:.4em; color:var(--tl-ink-soft); }
+.s-cover-date{ padding-inline-start:.4em; color:var(--tl-ink-dim); font-size:calc(var(--fs) * .92); }
+.s-cover-author{ padding-inline-start:.4em; color:var(--tl-ink-dim); font-size:calc(var(--fs) * .92); }
+.tcy{ text-combine-upright:all; -webkit-text-combine:horizontal; }
+
+.page-caption{
+  writing-mode:horizontal-tb;
+  text-align:center;
+  font-family:'Outfit', sans-serif;
+  font-size:12px; letter-spacing:.12em;
+  color:var(--tl-ink-dim);
+  padding:calc(var(--caption-h) / 2) 0;
+}
+
+/* Comment marker */
+.cmt{
+  background-color:var(--tl-cmt-bg);
+  text-decoration:underline dotted 1px;
+  text-decoration-color:var(--tl-cmt-line);
+  text-underline-offset:3px;
+  border-radius:2px;
+  cursor:help;
+}
+.cmt:hover, .cmt:focus-visible, .cmt.is-open{
+  background-color:var(--tl-cmt-bg-hi);
+  outline:none;
+}
+
+/* Old-revision visual stamp */
+body.is-past .panel{ filter:sepia(.14) saturate(.9); position:relative; }
+body.is-past .panel::after{
+  content:'旧版';
+  position:absolute; top:8px; left:8px;
+  writing-mode:horizontal-tb;
+  font-size:10px; font-weight:700; letter-spacing:.08em;
+  color:#a06b1a; background:rgba(255,255,255,.85);
+  border:1px solid rgba(160,107,26,.4);
+  border-radius:3px; padding:2px 6px;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━
+   Comment tooltip (fixed, outside canvas)
+━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.cmt-tip{
+  position:fixed; z-index:200;
+  writing-mode:horizontal-tb;
+  width:230px; max-width:70vw;
+  background:#2f3b38; color:#f2f6f4;
+  border-radius:var(--radius-md);
+  box-shadow:0 10px 30px rgba(0,0,0,.28);
+  padding:10px 12px;
+  font-size:12px; line-height:1.7;
+  visibility:hidden;
+}
+.cmt-tip[hidden]{ display:none; }
+.cmt-tip .tip-head{ display:flex; align-items:baseline; gap:6px; margin-bottom:4px; }
+.cmt-tip .tip-author{ font-weight:700; font-size:12px; color:#bfe6da; }
+.cmt-tip .tip-time{ font-size:10px; color:#93a39d; }
+.cmt-tip .tip-text{ color:#eef3f1; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━
+   Help popover content
+━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.tl-help-pop p + p{ margin-top:8px; }
+.tl-help-pop .cmt-sample{ margin-right:2px; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━
+   RESPONSIVE — chrome only, never the tategaki structure
+━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@media (max-width:720px){
+  :root{
+    --hdr-h:46px; --crumb-h:26px; --title-h:44px; --tool-h:44px;
+    --canvas-pad:24px; --caption-h:26px; --paper-pad:22px;
+  }
+  .tl-logo{ font-size:14px; }
+  .tl-userchip .tl-username{ display:none; }
+  .tl-titlerow h1{ font-size:13px; }
+  .tl-toolbar{ gap:14px; justify-content:flex-start; }
+  .tl-tool-group{ gap:10px; }
+  .tl-btn{ width:36px; height:36px; }
+  .tl-autosave-label{ display:none; }
+  .spread{ gap:16px; }
+  .panel{ padding:10px 12px 14px; }
+  .tl-pop{ right:auto; left:0; width:min(280px, 82vw); }
+}
+</style>
+<link rel="stylesheet" href="../shared/anime-redact.css">
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<header class="tl-header">
+  <div class="tl-logo" aria-label="TELLASTRY">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" aria-hidden="true">
+      <path d="M4 19V5a2 2 0 0 1 2-2h9l5 5v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/>
+      <path d="M14 3v5h5"/>
+      <line x1="8" y1="13" x2="16" y2="13"/>
+      <line x1="8" y1="17" x2="13" y2="17"/>
+    </svg>
+    TELLASTRY
+  </div>
+  <div class="tl-userchip" aria-label="ログインユーザー">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <rect x="2" y="4" width="20" height="16" rx="2"/>
+      <path d="m22 6-10 7L2 6"/>
+    </svg>
+    <span class="tl-username">小泉徳宏</span>
+    <svg class="caret" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <polyline points="6 9 12 15 18 9"/>
+    </svg>
+  </div>
+</header>
+
+<!-- ═══ BREADCRUMB ═══ -->
+<div class="tl-crumb">
+  <span class="tl-crumb-link" aria-disabled="true">一覧へ戻る</span>
+</div>
+
+<!-- ═══ TITLE ROW ═══ -->
+<div class="tl-titlerow">
+  <h1 id="tlTitle">極道オールアップ！第一話『コンセント』_26.08.01</h1>
+  <button type="button" class="tl-edit-btn" aria-disabled="true" tabindex="-1" aria-label="タイトルを編集（プレビュー版では無効）">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <path d="M12 20h9"/>
+      <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>
+    </svg>
+  </button>
+</div>
+
+<!-- ═══ TOOLBAR ═══ -->
+<div class="tl-toolbar">
+  <div class="tl-tool-group">
+    <button type="button" class="tl-btn" aria-disabled="true" tabindex="-1" title="縦書き表示（現在の表示形式）" aria-label="縦書き／横書き切り替え">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+        <line x1="6" y1="3" x2="6" y2="21"/>
+        <line x1="14" y1="3" x2="14" y2="21"/>
+        <polyline points="10 4 14 3 14 8" fill="none"/>
+        <line x1="19" y1="4" x2="19" y2="20"/>
+      </svg>
+    </button>
+    <div class="tl-pop-anchor">
+      <button type="button" class="tl-btn" id="tlFsBtn" title="文字サイズを変更" aria-label="文字サイズを変更">
+        A
+        <span class="tl-fs-underline" aria-hidden="true"></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="tl-tool-group">
+    <div class="tl-pop-anchor">
+      <button type="button" class="tl-btn" id="tlHelpBtn" aria-haspopup="true" aria-expanded="false" title="ヘルプ" aria-label="ヘルプ">?</button>
+      <div class="tl-pop tl-help-pop" id="tlHelpPop" role="dialog" aria-label="ヘルプ" hidden>
+        <h4>このページについて</h4>
+        <p>台本本文は縦書きで、右のカットから左へ読み進みます。スマホでは画面を左右にスワイプしてください。</p>
+        <p><span class="cmt cmt-sample">黄色い傍線</span>の箇所にカーソルを合わせる（スマホはタップ）と、その部分に付いたコメントが表示されます。</p>
+        <p>ツールバーの書類アイコンから、過去に保存された版を確認できます。</p>
+      </div>
+    </div>
+
+    <div class="tl-autosave">
+      <span class="tl-autosave-label" id="tlSavedStamp">自動保存ON</span>
+      <button type="button" class="tl-switch" id="tlAutosaveSwitch" role="switch" aria-checked="true" aria-pressed="true" aria-label="自動保存の切り替え"></button>
+    </div>
+
+    <div class="tl-pop-anchor">
+      <button type="button" class="tl-btn" id="tlHistBtn" aria-haspopup="true" aria-expanded="false" title="編集履歴を見る" aria-label="編集履歴を見る">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+          <path d="M4 19V5a2 2 0 0 1 2-2h9l5 5v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/>
+          <path d="M14 3v5h5"/>
+          <line x1="8" y1="12.5" x2="16" y2="12.5"/>
+          <line x1="8" y1="16" x2="13" y2="16"/>
+        </svg>
+      </button>
+      <div class="tl-pop" id="tlHistPop" role="dialog" aria-label="編集履歴" hidden>
+        <h4>編集履歴</h4>
+        <div class="tl-hist-list" id="tlHistList"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ REVISION BANNER ═══ -->
+<div class="tl-revbanner" id="tlRevBanner" role="status" hidden>
+  <span id="tlRevBannerText"></span>
+  <button type="button" class="tl-revbanner-back" id="tlRevBackBtn">最新版に戻る</button>
+</div>
+
+<!-- ═══ SCRIPT CANVAS ═══ -->
+<div class="canvas" id="tlCanvas">
+  <div class="page">
+    <div class="spread" id="tlSpread"></div>
+    <p class="page-caption" id="tlCaption">-1-</p>
+  </div>
+</div>
+
+<!-- Comment tooltip -->
+<div class="cmt-tip" id="cmtTip" role="tooltip" hidden>
+  <div class="tip-head">
+    <span class="tip-author"></span>
+    <span class="tip-time"></span>
+  </div>
+  <div class="tip-text"></div>
+</div>
+
+<!-- ═══ REVISION SOURCE TEMPLATES (fake / hardcoded — swapped by JS only) ═══ -->
+
+<!-- 現行版 2026/08/01 -->
+<template id="rev-2026-08-01" data-label="決定稿" data-date="2026/8/1" data-author="小泉徳宏" data-note="決定稿" data-current="1">
+  <section data-panel data-min-cols="9">
+    <article data-cut data-n="1">
+      <p class="s-hashira">街（雨）</p>
+      <p class="s-tokagaki">雨にしたたる『イーヨネシネマズ』の看板。</p>
+      <p class="s-tokagaki">傘をさすこともなく、<span class="cmt" data-cmt="c1" tabindex="0" role="button" aria-haspopup="true">奥園鯨</span>の背中。</p>
+    </article>
+    <article data-cut data-n="2">
+      <p class="s-hashira">映画館・館内受付</p>
+      <p class="s-tokagaki">濡れた足跡をカーペットにつけながらやってくる鯨。</p>
+      <p class="s-tokagaki">狼狽えている受付のスタッフ。</p>
+      <p class="s-name">鯨</p>
+      <p class="s-line">「・・・んごくを一枚だ」</p>
+    </article>
+    <article data-cut data-n="3">
+      <p class="s-hashira">同・劇場内</p>
+      <p class="s-tokagaki">カップルだらけの場内を鯨が横切っていく。</p>
+      <p class="s-name">スタッフ</p>
+      <p class="s-line">「えっと、こちらの作品でしょうか？」</p>
+      <p class="s-tokagaki">とある恋愛映画のポスターを指すスタッフ。</p>
+      <p class="s-tokagaki">少女漫画原作と思しき映画『QUN♡極・卒業』。</p>
+      <p class="s-tokagaki">若手のイケメン俳優と売り出し中のアイドルによる、</p>
+      <p class="s-name">鯨</p>
+      <p class="s-line">「いや」</p>
+      <p class="s-name">スタッフ</p>
+      <p class="s-line">「・・・んごくを聞き取れない）はい？」</p>
+      <p class="s-name">鯨</p>
+      <p class="s-line">「・・・んごく」</p>
+      <p class="s-tokagaki">鯨がそのポスターを指さす。</p>
+      <p class="s-name">鯨</p>
+      <p class="s-line">「<span class="cmt" data-cmt="c2" tabindex="0" role="button" aria-haspopup="true">きゅんごくを一枚だ</span>」</p>
+    </article>
+  </section>
+  <section data-panel data-min-cols="9">
+    <article data-cut data-n="4">
+      <p class="s-hashira">タイトル『極道オールアップ！』</p>
+      <p class="s-tokagaki">抱き合い、キスをする二人が大きく映し出される。</p>
+      <p class="s-name">俳優</p>
+      <p class="s-line">「逃げてたのは俺の方だった。俺も<span class="cmt" data-cmt="c3" tabindex="0" role="button" aria-haspopup="true">ユキノ</span>が好きだった」</p>
+      <p class="s-name">女優</p>
+      <p class="s-line">「ごめん、わたし嘘ついてた。私やっぱり有栖川くんのことが好き」</p>
+      <p class="s-name">俳優</p>
+      <p class="s-line">「好き嫌いを、他の誰かに決めさせんじゃねーよ。お前の気持ちはお前にしか決められねー」</p>
+    </article>
+    <article data-cut data-n="5">
+      <p class="s-hashira">洋菓子店『シェ・タカハシ』・店内</p>
+      <p class="s-tokagaki">両隣のカップル、映画に集中することができず、恐る恐る鯨を覗き込む。</p>
+      <p class="s-tokagaki">すると、鯨が人目も憚らず号泣している。</p>
+      <p class="s-name">カップル</p>
+      <p class="s-line">「！」</p>
+      <p class="s-tokagaki">心から感動している鯨。</p>
+    </article>
+    <article data-cut data-cover>
+      <p class="s-cover-title">極道オールアップ！</p>
+      <p class="s-cover-sub">第一話『コンセント』</p>
+      <p class="s-cover-date"><span class="tcy">2026</span>／<span class="tcy">8</span>／<span class="tcy">1</span></p>
+      <p class="s-cover-author"><span class="cmt" data-cmt="c4" tabindex="0" role="button" aria-haspopup="true">小泉徳宏</span></p>
+    </article>
+  </section>
+</template>
+
+<!-- 校正版 2026/07/28 -->
+<template id="rev-2026-07-28" data-label="校正版" data-date="2026/7/28" data-author="小泉徳宏" data-note="脚本チェック後の修正版">
+  <section data-panel data-min-cols="9">
+    <article data-cut data-n="1">
+      <p class="s-hashira">街（雨）</p>
+      <p class="s-tokagaki">雨にしたたる『イーヨネシネマズ』の看板。</p>
+      <p class="s-tokagaki">傘もささず、奥園鯨の背中が濡れていく。</p>
+    </article>
+    <article data-cut data-n="2">
+      <p class="s-hashira">映画館・館内受付</p>
+      <p class="s-tokagaki">濡れた足跡をカーペットにつけながらやってくる鯨。</p>
+      <p class="s-tokagaki">怯えている受付のスタッフ。</p>
+      <p class="s-name">鯨</p>
+      <p class="s-line">「・・・ごくを一枚」</p>
+    </article>
+    <article data-cut data-n="3">
+      <p class="s-hashira">同・劇場内</p>
+      <p class="s-tokagaki">カップルだらけの場内を鯨が横切っていく。</p>
+      <p class="s-name">スタッフ</p>
+      <p class="s-line">「恐れ入ります、もう一度よろしいですか？」</p>
+      <p class="s-tokagaki">恋愛映画のポスターを指すスタッフ。</p>
+      <p class="s-tokagaki">映画『QUN♡極・卒業』のポスター。</p>
+      <p class="s-name">鯨</p>
+      <p class="s-line">「・・・ごく」</p>
+      <p class="s-tokagaki">鯨がそのポスターを指さす。</p>
+      <p class="s-name">鯨</p>
+      <p class="s-line">「きゅんごくを一枚」</p>
+    </article>
+  </section>
+  <section data-panel data-min-cols="9">
+    <article data-cut data-n="4">
+      <p class="s-hashira">タイトル『極道オールアップ！』</p>
+      <p class="s-tokagaki">抱き合う二人が大きく映し出される。</p>
+      <p class="s-name">俳優</p>
+      <p class="s-line">「逃げてたのは俺の方だった」</p>
+      <p class="s-name">女優</p>
+      <p class="s-line">「ごめん、私やっぱり有栖川くんが好き」</p>
+    </article>
+    <article data-cut data-n="5">
+      <p class="s-hashira">洋菓子店『シェ・タカハシ』・店内</p>
+      <p class="s-tokagaki">両隣のカップルが、映画に集中できず鯨を覗き込む。</p>
+      <p class="s-tokagaki">鯨が号泣している。</p>
+    </article>
+    <article data-cut data-cover>
+      <p class="s-cover-title">極道オールアップ！</p>
+      <p class="s-cover-sub">第一話『コンセント』（校正）</p>
+      <p class="s-cover-date"><span class="tcy">2026</span>／<span class="tcy">7</span>／<span class="tcy">28</span></p>
+      <p class="s-cover-author">小泉徳宏</p>
+    </article>
+  </section>
+</template>
+
+<!-- 初稿 2026/07/20 -->
+<template id="rev-2026-07-20" data-label="初稿" data-date="2026/7/20" data-author="小泉徳宏" data-note="第一稿（構成メモ段階）">
+  <section data-panel data-min-cols="9">
+    <article data-cut data-n="1">
+      <p class="s-hashira">街（雨）</p>
+      <p class="s-tokagaki">雨の中、映画館の看板。</p>
+      <p class="s-tokagaki">大きな男の後ろ姿（後にクジラと判明）。</p>
+    </article>
+    <article data-cut data-n="2">
+      <p class="s-hashira">映画館・受付</p>
+      <p class="s-tokagaki">受付にやってくる男。</p>
+      <p class="s-name">男</p>
+      <p class="s-line">「（聞き取れない）を一枚」</p>
+    </article>
+    <article data-cut data-n="3">
+      <p class="s-hashira">劇場内</p>
+      <p class="s-tokagaki">場内を横切る男。カップルたちが振り返る。</p>
+      <p class="s-name">スタッフ</p>
+      <p class="s-line">「もう一度お願いします」</p>
+      <p class="s-name">男</p>
+      <p class="s-line">「（同じ台詞を繰り返す）」</p>
+    </article>
+  </section>
+  <section data-panel data-min-cols="9">
+    <article data-cut data-n="4">
+      <p class="s-hashira">劇中映画（仮）</p>
+      <p class="s-tokagaki">恋愛映画のワンシーン、抱き合う男女。</p>
+      <p class="s-name">男優</p>
+      <p class="s-line">「（台詞未定）」</p>
+    </article>
+    <article data-cut data-n="5">
+      <p class="s-hashira">洋菓子店（店名未定）</p>
+      <p class="s-tokagaki">隣の客が男の様子に気づく。</p>
+      <p class="s-tokagaki">男は泣いている。</p>
+    </article>
+    <article data-cut data-cover>
+      <p class="s-cover-title">（仮題）鯨男の映画館</p>
+      <p class="s-cover-sub">第一話 構成メモ</p>
+      <p class="s-cover-date"><span class="tcy">2026</span>／<span class="tcy">7</span>／<span class="tcy">20</span></p>
+      <p class="s-cover-author">小泉徳宏</p>
+    </article>
+  </section>
+</template>
+
+<script>
+(function(){
+  'use strict';
+
+  /* ─── Comment content (hardcoded, mock feature — not user editable) ─── */
+  var COMMENTS = {
+    c1: { author:'小泉徳宏', time:'2026/07/29 11:20', text:'鯨の初登場カット。表情はまだ見せず、後ろ姿だけで押し切る演出で。' },
+    c2: { author:'小泉徳宏', time:'2026/07/29 11:24', text:'ここの滑舌ネタ、もう少し引っ張ってもいいかも。テンポ次第で調整。' },
+    c3: { author:'編集部', time:'2026/07/30 09:02', text:'「ユキノ」の名称、先方確認中。決定稿までに要チェック。' },
+    c4: { author:'小泉徳宏', time:'2026/07/20 18:40', text:'香盤表と共有する前に、クレジット表記の最終確認をお願いします。' }
+  };
+
+  var REV_ORDER = ['2026-08-01', '2026-07-28', '2026-07-20'];
+
+  var canvas   = document.getElementById('tlCanvas');
+  var spread   = document.getElementById('tlSpread');
+  var caption  = document.getElementById('tlCaption');
+  var titleEl  = document.getElementById('tlTitle');
+  var banner   = document.getElementById('tlRevBanner');
+  var bannerTx = document.getElementById('tlRevBannerText');
+  var backBtn  = document.getElementById('tlRevBackBtn');
+
+  var baseTitle = '極道オールアップ！第一話『コンセント』';
+  var currentId = null;
+
+  function el(tag, cls){
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    return n;
+  }
+
+  /* ─── Revision rendering ─── */
+  function renderRevision(id){
+    var tpl = document.getElementById('rev-' + id);
+    if (!tpl) return;
+
+    var src   = tpl.content.cloneNode(true);
+    var frag  = document.createDocumentFragment();
+    var panels = Array.prototype.slice.call(src.querySelectorAll('[data-panel]')).reverse();
+
+    panels.forEach(function(p){
+      var panel = el('section', 'panel');
+      var cuts  = el('div', 'panel__cuts');
+      if (p.getAttribute('data-min-cols')) {
+        cuts.style.setProperty('--min-cols', p.getAttribute('data-min-cols'));
+      }
+
+      Array.prototype.slice.call(p.querySelectorAll('[data-cut]')).reverse().forEach(function(c){
+        var cut = el('article', 'cut' + (c.hasAttribute('data-cover') ? ' cut--cover' : ''));
+        var slot = el('div', 'cut__badge-slot');
+        var n = c.getAttribute('data-n');
+        if (n) {
+          var badge = el('span', 'cut__badge');
+          badge.textContent = n;
+          slot.appendChild(badge);
+        }
+        var body = el('div', 'cut__body');
+        while (c.firstChild) body.appendChild(c.firstChild);
+        cut.appendChild(slot);
+        cut.appendChild(body);
+        cuts.appendChild(cut);
+      });
+
+      panel.appendChild(cuts);
+      frag.appendChild(panel);
+    });
+
+    spread.replaceChildren(frag);
+    currentId = id;
+    applyRevisionChrome(tpl.dataset, id);
+    buildHistList();
+
+    requestAnimationFrame(function(){
+      canvas.scrollTo({ left: canvas.scrollWidth, top: 0, behavior: 'auto' });
+    });
+  }
+
+  function applyRevisionChrome(ds, id){
+    var isCurrent = ds.current === '1';
+    titleEl.textContent = baseTitle + '_' + String(ds.date).replace(/\//g, '.').replace(/^20/, '');
+
+    document.body.classList.toggle('is-past', !isCurrent);
+
+    if (isCurrent) {
+      banner.hidden = true;
+    } else {
+      bannerTx.textContent = '旧版を表示中：' + ds.label + '（' + ds.date + '）　' + (ds.note || '');
+      banner.hidden = false;
+    }
+
+    try { location.hash = 'rev=' + id; } catch (e) {}
+  }
+
+  function buildHistList(){
+    var list = document.getElementById('tlHistList');
+    if (!list) return;
+    list.innerHTML = '';
+    REV_ORDER.forEach(function(id){
+      var tpl = document.getElementById('rev-' + id);
+      if (!tpl) return;
+      var ds = tpl.dataset;
+      var btn = el('button', 'tl-hist-item');
+      btn.type = 'button';
+      if (id === currentId) btn.setAttribute('aria-current', 'true');
+      btn.addEventListener('click', function(){
+        renderRevision(id);
+        closePop(histPop, histBtn);
+      });
+
+      var row1 = el('div', 'tl-hist-row1');
+      var dot = el('span', 'tl-hist-dot');
+      var label = document.createTextNode(ds.label + '（' + ds.date + '）');
+      row1.appendChild(dot);
+      row1.appendChild(label);
+
+      var meta = el('div', 'tl-hist-meta');
+      meta.textContent = ds.note || '';
+
+      btn.appendChild(row1);
+      btn.appendChild(meta);
+      list.appendChild(btn);
+    });
+  }
+
+  backBtn.addEventListener('click', function(){
+    var cur = REV_ORDER.filter(function(id){
+      var tpl = document.getElementById('rev-' + id);
+      return tpl && tpl.dataset.current === '1';
+    })[0];
+    if (cur) renderRevision(cur);
+  });
+
+  /* ─── Popovers (help / history) ─── */
+  function makePopover(btn, pop){
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      var willOpen = pop.hidden;
+      closeAllPops();
+      if (willOpen) openPop(pop, btn);
+    });
+  }
+  function openPop(pop, btn){
+    pop.hidden = false;
+    btn.setAttribute('aria-expanded', 'true');
+  }
+  function closePop(pop, btn){
+    pop.hidden = true;
+    if (btn) btn.setAttribute('aria-expanded', 'false');
+  }
+  var helpBtn = document.getElementById('tlHelpBtn');
+  var helpPop = document.getElementById('tlHelpPop');
+  var histBtn = document.getElementById('tlHistBtn');
+  var histPop = document.getElementById('tlHistPop');
+
+  function closeAllPops(){
+    closePop(helpPop, helpBtn);
+    closePop(histPop, histBtn);
+  }
+  makePopover(helpBtn, helpPop);
+  makePopover(histBtn, histPop);
+  document.addEventListener('click', function(e){
+    if (!e.target.closest('.tl-pop-anchor')) closeAllPops();
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape') closeAllPops();
+  });
+
+  /* ─── Font size control (real) ─── */
+  var FS_STEPS = [13, 15, 18];
+  var fsBtn = document.getElementById('tlFsBtn');
+  function loadFs(){
+    try {
+      var v = parseInt(localStorage.getItem('tellastry_fs_v1'), 10);
+      if (FS_STEPS.indexOf(v) !== -1) return v;
+    } catch (e) {}
+    return 15;
+  }
+  function setFs(v){
+    document.documentElement.style.setProperty('--fs', v + 'px');
+    try { localStorage.setItem('tellastry_fs_v1', String(v)); } catch (e) {}
+  }
+  setFs(loadFs());
+  fsBtn.addEventListener('click', function(){
+    var cur = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--fs'), 10) || 15;
+    var idx = FS_STEPS.indexOf(cur);
+    var next = FS_STEPS[(idx + 1 + FS_STEPS.length) % FS_STEPS.length];
+    setFs(next);
+  });
+
+  /* ─── Autosave toggle (cosmetic) ─── */
+  var asSwitch = document.getElementById('tlAutosaveSwitch');
+  var asLabel  = document.getElementById('tlSavedStamp');
+  function loadAutosave(){
+    try { return localStorage.getItem('tellastry_autosave_v1') !== '0'; } catch (e) { return true; }
+  }
+  function paintAutosave(on){
+    asSwitch.setAttribute('aria-pressed', on ? 'true' : 'false');
+    asSwitch.setAttribute('aria-checked', on ? 'true' : 'false');
+    if (on) {
+      var now = new Date();
+      var hh = String(now.getHours()).padStart(2, '0');
+      var mm = String(now.getMinutes()).padStart(2, '0');
+      asLabel.textContent = '自動保存ON（最終保存 ' + hh + ':' + mm + '）';
+    } else {
+      asLabel.textContent = '自動保存OFF';
+    }
+  }
+  var autosaveOn = loadAutosave();
+  paintAutosave(autosaveOn);
+  asSwitch.addEventListener('click', function(){
+    autosaveOn = !autosaveOn;
+    try { localStorage.setItem('tellastry_autosave_v1', autosaveOn ? '1' : '0'); } catch (e) {}
+    paintAutosave(autosaveOn);
+  });
+
+  /* ─── Comment tooltip ─── */
+  var tip = document.getElementById('cmtTip');
+  var tipAuthor = tip.querySelector('.tip-author');
+  var tipTime   = tip.querySelector('.tip-time');
+  var tipText   = tip.querySelector('.tip-text');
+  var pinned = null;
+  var canHover = false;
+  try { canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches; } catch (e) {}
+
+  function anchorRect(span){
+    var rects = span.getClientRects();
+    return (rects && rects.length) ? rects[0] : span.getBoundingClientRect();
+  }
+
+  function showTip(span){
+    var c = COMMENTS[span.getAttribute('data-cmt')];
+    if (!c) return;
+    tipAuthor.textContent = c.author;
+    tipTime.textContent = c.time;
+    tipText.textContent = c.text;
+
+    tip.hidden = false;
+    tip.style.visibility = 'hidden';
+    var r = anchorRect(span);
+    var tw = tip.offsetWidth, th = tip.offsetHeight, M = 10;
+    var vw = document.documentElement.clientWidth;
+    var vh = document.documentElement.clientHeight;
+
+    var left = r.right + M;
+    if (left + tw > vw - M) left = r.left - M - tw;
+    if (left < M) left = Math.min(Math.max(M, r.left), Math.max(M, vw - tw - M));
+
+    var top = r.top + r.height / 2 - th / 2;
+    top = Math.max(M, Math.min(top, vh - th - M));
+
+    tip.style.left = left + 'px';
+    tip.style.top = top + 'px';
+    tip.style.visibility = 'visible';
+    span.setAttribute('aria-describedby', 'cmtTip');
+  }
+
+  function hideTip(){
+    tip.hidden = true;
+  }
+
+  function unpin(){
+    if (pinned) pinned.classList.remove('is-open');
+    pinned = null;
+    hideTip();
+  }
+
+  canvas.addEventListener('mouseover', function(e){
+    if (!canHover || pinned) return;
+    var s = e.target.closest && e.target.closest('.cmt');
+    if (!s) return;
+    showTip(s);
+  });
+  canvas.addEventListener('mouseout', function(e){
+    if (!canHover || pinned) return;
+    var s = e.target.closest && e.target.closest('.cmt');
+    if (!s) return;
+    if (e.relatedTarget && s.contains(e.relatedTarget)) return;
+    hideTip();
+  });
+  canvas.addEventListener('click', function(e){
+    var s = e.target.closest && e.target.closest('.cmt');
+    if (!s) { if (pinned) unpin(); return; }
+    if (pinned === s) { unpin(); return; }
+    unpin();
+    pinned = s;
+    s.classList.add('is-open');
+    showTip(s);
+  });
+  canvas.addEventListener('focusin', function(e){
+    var s = e.target.closest && e.target.closest('.cmt');
+    if (s) showTip(s);
+  });
+  canvas.addEventListener('focusout', function(){
+    if (!pinned) hideTip();
+  });
+  window.addEventListener('scroll', function(){ unpin(); }, true);
+  window.addEventListener('resize', function(){ unpin(); });
+
+  /* ─── Init: read #rev= hash, else current revision ─── */
+  function initialRevId(){
+    var m = /rev=([\w-]+)/.exec(location.hash || '');
+    if (m && document.getElementById('rev-' + m[1])) return m[1];
+    var cur = REV_ORDER.filter(function(id){
+      var tpl = document.getElementById('rev-' + id);
+      return tpl && tpl.dataset.current === '1';
+    })[0];
+    return cur || REV_ORDER[0];
+  }
+
+  renderRevision(initialRevId());
+})();
+</script>
+<script src="../shared/anime-redact.js" defer></script>
+
+</body>
+</html>
