@@ -235,8 +235,10 @@ img{ max-width:100%; display:block; }
   line-break:strict;
   word-break:normal;
   overflow-wrap:normal;
+  text-combine-upright:digits 4;
 }
 .cut__body > p{ margin:0; }
+.tcu{ text-combine-upright:all; }
 
 .s-hashira{ font-weight:600; }
 .s-tokagaki{ padding-inline-start:var(--col-w); color:var(--tl-ink-soft); }
@@ -649,13 +651,13 @@ body.is-past .panel::after{
       <p class="s-gap">　</p>
       <p class="s-line">たとえば、キミには50人の知り合いがいるとする。</p>
       <p class="s-gap">　</p>
-      <p class="s-line">キミの知り合いであるAさんBさん…総勢50人がそれぞれ、AさんともBさんとも被らない知り合いをそれぞれ50人もっていて、Bさんたちの知り合いであるCさんもまた被らない知り合いを50人もっていて…と続ける。</p>
+      <p class="s-line">キミの知り合いである<span class="tcu">A</span>さん<span class="tcu">B</span>さん…総勢50人がそれぞれ、<span class="tcu">A</span>さんとも<span class="tcu">B</span>さんとも被らない知り合いをそれぞれ50人もっていて、<span class="tcu">B</span>さんたちの知り合いである<span class="tcu">C</span>さんもまた被らない知り合いを50人もっていて…と続ける。</p>
       <p class="s-gap">　</p>
       <p class="s-line">それを6回繰り返すと、キミの間接的な知り合いは50の六乗…つまり156億2500万人となり、世界の人口を上回る。</p>
       <p class="s-gap">　</p>
       <p class="s-line">もっと言うなら、これは少し昔のお話。</p>
       <p class="s-gap">　</p>
-      <p class="s-line">インターネットやらSNSやらが皆のものになった今では、この"隔たり"は3回になったとまで言われている。</p>
+      <p class="s-line">インターネットやら<span class="tcu">SNS</span>やらが皆のものになった今では、この"隔たり"は3回になったとまで言われている。</p>
     </article>
   </section>
   <section data-panel data-min-cols="9">
