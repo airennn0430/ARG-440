@@ -1,8 +1,3 @@
-// =========================================
-// main.js (ハッシュ化版)
-// =========================================
-
-// 答えは平文で持たず、SHA-256ハッシュのみを保持する
 const puzzles = {
 
   1: {
@@ -28,15 +23,10 @@ const puzzles = {
   },
 
   final: {
-    // final は「正解」ではなく分岐選択なのでハッシュ化不要
     answers: ['a', 'b']
   }
 
 };
-
-// =========================================
-// SHA-256ハッシュ化ユーティリティ
-// =========================================
 
 async function sha256Hex(text) {
   const enc = new TextEncoder().encode(text);
@@ -45,10 +35,6 @@ async function sha256Hex(text) {
     .map(b => b.toString(16).padStart(2, '0'))
     .join('');
 }
-
-// =========================================
-// 初期化
-// =========================================
 
 window.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.mail-card').forEach(setMailDate);
@@ -67,10 +53,6 @@ function setMailDate(cardEl) {
     String(d.getHours()).padStart(2, '0') + ':' +
     String(d.getMinutes()).padStart(2, '0');
 }
-
-// =========================================
-// 次のメールを同じページに読み込む
-// =========================================
 
 async function loadNextMail(url) {
   if (!url) return;
@@ -100,10 +82,6 @@ async function loadNextMail(url) {
   playMailEffect();
   nextArticle.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
-
-// =========================================
-// 回答チェック（ハッシュ比較版）
-// =========================================
 
 async function checkAnswer(num, buttonEl) {
 
@@ -177,10 +155,6 @@ async function checkAnswer(num, buttonEl) {
 
 }
 
-// =========================================
-// エンド分岐
-// =========================================
-
 function submitFinalDecision(btnEl) {
 
   const cardEl   = btnEl.closest('.mail-card');
@@ -205,18 +179,10 @@ function submitFinalDecision(btnEl) {
 
 }
 
-// =========================================
-// アコーディオン
-// =========================================
-
 function toggleAccordion(id) {
   const el = document.getElementById(id);
   el.classList.toggle('open');
 }
-
-// =========================================
-// メール受信演出
-// =========================================
 
 function playMailEffect() {
   document.body.classList.add('mail-arrived');
@@ -224,10 +190,6 @@ function playMailEffect() {
     document.body.classList.remove('mail-arrived');
   }, 500);
 }
-
-// =========================================
-// シェイク演出
-// =========================================
 
 function shakeElement(el) {
   el.animate(
@@ -241,10 +203,6 @@ function shakeElement(el) {
     { duration: 300 }
   );
 }
-
-// =========================================
-// アンリード件数更新
-// =========================================
 
 function updateUnreadCount() {
   const badge = document.getElementById('unread-count');
