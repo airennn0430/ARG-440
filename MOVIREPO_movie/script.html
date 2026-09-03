@@ -669,6 +669,36 @@ body.is-past .panel::after{
   </section>
 </template>
 
+<!-- ふたつめ -->
+<template id="rev-necrogame-v2" data-label="ふたつめ" data-author="獅子王千暁" data-note="削除済み原稿" data-glitch="1">
+  <section data-panel data-min-cols="9">
+    <article data-cut>
+      <p class="s-line">実を言うと、”六次の隔たり”の実験データには、更にちょっとした裏話がある。</p>
+      <p class="s-gap">　</p>
+      <p class="s-line">「<span class="tcu">6</span>人を介せば全世界が繋がれる」という仮説を裏付けるための実験データは、都合よく改ざんされたものだった、という話。</p>
+      <p class="s-gap">　</p>
+      <p class="s-line">つまり、<span class="s-glitch" style="animation-delay:-3.2s">キミ</span>たちが嫌いな”嘘”である。</p>
+      <p class="s-gap">　</p>
+      <p class="s-line">実際には、つながりの<span class="tcu">95</span>％は途中で途切れて、ひそかに失敗に終わったというデータが意図的に伏せられていた。</p>
+      <p class="s-gap">　</p>
+      <p class="s-line">成功したわずか数パーセントの奇跡だけを綺麗に切り取って、素敵な話として吹聴したに過ぎないというお粗末なオチ。</p>
+      <p class="s-gap">　</p>
+      <p class="s-line"><span class="s-glitch" style="animation-delay:0s">キミ</span>から始まった繋がりが無限に広がっていくなんて、やっぱり机上の空論に過ぎない。</p>
+      <p class="s-gap">　</p>
+      <p class="s-line">だけどその”嘘”がバレても尚、”六次の隔たり”という仮説は人々から絶大な支持を得ている。</p>
+      <p class="s-gap">　</p>
+      <p class="s-line">それはきっと、この仮説には夢があるからだと<span class="s-glitch" style="animation-delay:-1.8s">█</span>は思う。</p>
+      <p class="s-gap">　</p>
+      <p class="s-line">もっともらしい計算やデータはあくまでも二次的な補足で、その嘘を信じたいと願った誰かが、次の誰かに繋げていっている。</p>
+      <p class="s-gap">　</p>
+      <p class="s-line">その騙された誰かのお陰でいまの<span class="tcu">SNS</span>の仕組みができた、とまで言われているのだから、あながちコレばかりは嘘って訳でもない。</p>
+    </article>
+    <article data-cut>
+      <p class="s-line">気になるのなら、調べてみるといい。全部嘘だから。</p>
+    </article>
+  </section>
+</template>
+
 <script>
 (function(){
   'use strict';
@@ -681,7 +711,7 @@ body.is-past .panel::after{
     c4: { author:'獅子王千暁', time:'2026/09/02 10:28', text:'解説追加' }
   };
 
-  var REV_ORDER = ['necrogame-v1', 'necrogame-v0'];
+  var REV_ORDER = ['necrogame-v1', 'necrogame-v0', 'necrogame-v2'];
 
   var canvas   = document.getElementById('tlCanvas');
   var spread   = document.getElementById('tlSpread');
@@ -745,7 +775,7 @@ body.is-past .panel::after{
 
   function applyRevisionChrome(ds, id){
     var isCurrent = ds.current === '1';
-    titleEl.textContent = baseTitle;
+    titleEl.textContent = isCurrent ? baseTitle : '█████';
 
     document.body.classList.toggle('is-past', !isCurrent);
 
