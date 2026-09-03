@@ -141,24 +141,6 @@ img{ max-width:100%; display:block; }
 .tl-hist-meta{ font-size:11px; color:var(--tl-ink-dim); padding-left:12px; }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━
-   Revision banner
-━━━━━━━━━━━━━━━━━━━━━━━━━ */
-.tl-revbanner{
-  display:flex; align-items:center; justify-content:center; gap:12px;
-  flex-wrap:wrap;
-  padding:8px 16px;
-  background:#fbeecd; color:#7a5a12;
-  font-size:12px;
-  border-top:1px solid #f0d99a; border-bottom:1px solid #f0d99a;
-}
-.tl-revbanner[hidden]{ display:none; }
-.tl-revbanner-back{
-  background:#7a5a12; color:#fff; border:none; border-radius:14px;
-  padding:4px 14px; font-size:11.5px; font-weight:600; cursor:pointer;
-}
-.tl-revbanner-back:hover{ opacity:.88; }
-
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━
    Script canvas
 ━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .canvas{
@@ -360,12 +342,6 @@ body.is-past .panel::after{
     </div>
   </div>
 </header>
-
-<!-- ═══ REVISION BANNER ═══ -->
-<div class="tl-revbanner" id="tlRevBanner" role="status" hidden>
-  <span id="tlRevBannerText"></span>
-  <button type="button" class="tl-revbanner-back" id="tlRevBackBtn">最新版に戻る</button>
-</div>
 
 <!-- ═══ SCRIPT CANVAS ═══ -->
 <div class="canvas" id="tlCanvas">
@@ -637,7 +613,7 @@ body.is-past .panel::after{
 </template>
 
 <!-- 旧版 -->
-<template id="rev-necrogame-v0" data-label="旧版" data-date="2026/8/15" data-author="獅子王千暁" data-note="削除済み原稿">
+<template id="rev-necrogame-v0" data-label="ひとつめ" data-date="2026/8/15" data-author="獅子王千暁" data-note="削除済み原稿">
   <section data-panel data-min-cols="9">
     <article data-cut>
       <p class="s-line">"六次の隔たり"という仮説を知っている？</p>
@@ -696,9 +672,6 @@ body.is-past .panel::after{
   var spread   = document.getElementById('tlSpread');
   var caption  = document.getElementById('tlCaption');
   var titleEl  = document.getElementById('tlTitle');
-  var banner   = document.getElementById('tlRevBanner');
-  var bannerTx = document.getElementById('tlRevBannerText');
-  var backBtn  = document.getElementById('tlRevBackBtn');
 
   var baseTitle = 'ネクロゲーム_最新版';
   var currentId = null;
@@ -757,16 +730,9 @@ body.is-past .panel::after{
 
   function applyRevisionChrome(ds, id){
     var isCurrent = ds.current === '1';
-    titleEl.textContent = isCurrent ? baseTitle : baseTitle + '（' + ds.label + '）';
+    titleEl.textContent = baseTitle;
 
     document.body.classList.toggle('is-past', !isCurrent);
-
-    if (isCurrent) {
-      banner.hidden = true;
-    } else {
-      bannerTx.textContent = '旧版を表示中：' + ds.label + '（' + ds.date + '）　' + (ds.note || '');
-      banner.hidden = false;
-    }
 
     try { location.hash = 'rev=' + id; } catch (e) {}
   }
@@ -801,14 +767,6 @@ body.is-past .panel::after{
       list.appendChild(btn);
     });
   }
-
-  backBtn.addEventListener('click', function(){
-    var cur = REV_ORDER.filter(function(id){
-      var tpl = document.getElementById('rev-' + id);
-      return tpl && tpl.dataset.current === '1';
-    })[0];
-    if (cur) renderRevision(cur);
-  });
 
   /* ─── Popover (history) ─── */
   function makePopover(btn, pop){
