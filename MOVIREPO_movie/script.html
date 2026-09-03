@@ -139,6 +139,20 @@ img{ max-width:100%; display:block; }
 .tl-hist-dot{ width:6px; height:6px; border-radius:50%; background:var(--tl-teal-deep); flex-shrink:0; }
 .tl-hist-item[aria-current="true"] .tl-hist-row1::after{ content:'現在表示中'; margin-left:auto; font-size:10px; font-weight:500; color:var(--tl-teal-deep); }
 .tl-hist-meta{ font-size:11px; color:var(--tl-ink-dim); padding-left:12px; }
+.tl-hist-glitch{
+  display:inline-block;
+  animation:tlGlitch 4.5s infinite steps(1, end);
+}
+@keyframes tlGlitch{
+  0%, 91%, 100%{ transform:translate(0,0); text-shadow:none; opacity:1; }
+  92%{ transform:translate(-2px,1px); text-shadow:-2px 0 #ff3b6b, 2px 0 #33d6ff; opacity:.85; }
+  93%{ transform:translate(2px,-1px); text-shadow:2px 0 #33d6ff, -2px 0 #ff3b6b; }
+  94%{ transform:translate(0,0); text-shadow:none; opacity:1; }
+  95%{ transform:translate(-1px,-1px); text-shadow:1px 0 #ff3b6b, -1px 0 #33d6ff; opacity:.85; }
+  96%{ transform:translate(1px,1px); text-shadow:-1px 0 #33d6ff, 1px 0 #ff3b6b; }
+  97%, 99%{ transform:translate(0,0); text-shadow:none; opacity:1; }
+  98%{ transform:translate(1px,0); text-shadow:-2px 0 #ff3b6b, 2px 0 #33d6ff; opacity:.85; }
+}
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━
    Script canvas
@@ -613,7 +627,7 @@ body.is-past .panel::after{
 </template>
 
 <!-- 旧版 -->
-<template id="rev-necrogame-v0" data-label="ひとつめ" data-date="2026/8/15" data-author="獅子王千暁" data-note="削除済み原稿">
+<template id="rev-necrogame-v0" data-label="ひとつめ" data-author="獅子王千暁" data-note="削除済み原稿" data-glitch="1">
   <section data-panel data-min-cols="9">
     <article data-cut>
       <p class="s-line">"六次の隔たり"という仮説を知っている？</p>
@@ -755,7 +769,14 @@ body.is-past .panel::after{
 
       var row1 = el('div', 'tl-hist-row1');
       var dot = el('span', 'tl-hist-dot');
-      var label = document.createTextNode(ds.label + '（' + ds.date + '）');
+      var labelText = ds.date ? (ds.label + '（' + ds.date + '）') : ds.label;
+      var label;
+      if (ds.glitch === '1') {
+        label = el('span', 'tl-hist-glitch');
+        label.textContent = labelText;
+      } else {
+        label = document.createTextNode(labelText);
+      }
       row1.appendChild(dot);
       row1.appendChild(label);
 
