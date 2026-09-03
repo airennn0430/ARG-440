@@ -272,18 +272,6 @@ img{ max-width:100%; display:block; }
   outline:none;
 }
 
-/* Old-revision visual stamp */
-body.is-past .panel{ filter:sepia(.14) saturate(.9); position:relative; }
-body.is-past .panel::after{
-  content:'旧版';
-  position:absolute; top:8px; left:8px;
-  writing-mode:horizontal-tb;
-  font-size:10px; font-weight:700; letter-spacing:.08em;
-  color:#a06b1a; background:rgba(255,255,255,.85);
-  border:1px solid rgba(160,107,26,.4);
-  border-radius:3px; padding:2px 6px;
-}
-
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━
    Comment tooltip (fixed, outside canvas)
 ━━━━━━━━━━━━━━━━━━━━━━━━━ */
@@ -778,8 +766,6 @@ body.is-past .panel::after{
   function applyRevisionChrome(ds, id){
     var isCurrent = ds.current === '1';
     titleEl.textContent = isCurrent ? baseTitle : '█████';
-
-    document.body.classList.toggle('is-past', !isCurrent);
 
     try { location.hash = 'rev=' + id; } catch (e) {}
   }
