@@ -242,6 +242,21 @@ img{ max-width:100%; display:block; }
 .s-line-cont{ padding-inline-start:var(--col-w); }
 .s-gap{ color:transparent; }
 .s-glitch{ display:inline-block; animation:tlGlitch 4.5s infinite steps(1, end); }
+.s-delete-line{
+  writing-mode:horizontal-tb;
+  display:flex; align-items:center; justify-content:center;
+}
+.s-delete-btn{
+  writing-mode:horizontal-tb;
+  width:24px; height:24px;
+  display:flex; align-items:center; justify-content:center;
+  background:transparent; border:1px solid var(--tl-ink-dim); border-radius:4px;
+  color:var(--tl-red);
+  cursor:pointer;
+  opacity:.75;
+  transition:opacity .15s, background .15s;
+}
+.s-delete-btn:hover{ opacity:1; background:rgba(210,69,69,.08); }
 
 .s-cover-title{ font-weight:700; letter-spacing:.06em; }
 .s-cover-sub{ padding-inline-start:.4em; color:var(--tl-ink-soft); }
@@ -292,6 +307,32 @@ img{ max-width:100%; display:block; }
 .cmt-tip .tip-author{ font-weight:700; font-size:12px; color:#bfe6da; }
 .cmt-tip .tip-time{ font-size:10px; color:#93a39d; }
 .cmt-tip .tip-text{ color:#eef3f1; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━
+   Delete-script confirmation modal
+━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.tl-modal{
+  position:fixed; inset:0; z-index:300;
+  writing-mode:horizontal-tb;
+  display:flex; align-items:center; justify-content:center;
+  background:rgba(20,30,27,.45);
+  padding:20px;
+}
+.tl-modal[hidden]{ display:none; }
+.tl-modal-box{
+  background:var(--tl-paper); color:var(--tl-ink);
+  border-radius:var(--radius-md);
+  box-shadow:0 20px 50px rgba(0,0,0,.3);
+  padding:22px 24px;
+  width:280px; max-width:100%;
+  text-align:center;
+}
+.tl-modal-text{ font-size:14px; line-height:1.7; margin-bottom:16px; }
+.tl-modal-yes{
+  background:var(--tl-red); color:#fff; border:none; border-radius:20px;
+  padding:8px 28px; font-size:13px; font-weight:600; cursor:pointer;
+}
+.tl-modal-yes:hover{ opacity:.9; }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━
    RESPONSIVE — chrome only, never the tategaki structure
@@ -358,6 +399,14 @@ img{ max-width:100%; display:block; }
 <!-- Comment tooltip -->
 <div class="cmt-tip" id="cmtTip" role="tooltip" hidden>
   <div class="tip-list" id="cmtTipList"></div>
+</div>
+
+<!-- Delete-script confirmation modal -->
+<div class="tl-modal" id="deleteModal" role="dialog" aria-modal="true" hidden>
+  <div class="tl-modal-box">
+    <p class="tl-modal-text">この原稿を削除しますか？</p>
+    <button type="button" class="tl-modal-yes" id="deleteConfirmBtn">はい</button>
+  </div>
 </div>
 
 <!-- ═══ REVISION SOURCE TEMPLATES (fake / hardcoded — swapped by JS only) ═══ -->
@@ -757,6 +806,7 @@ img{ max-width:100%; display:block; }
       <p class="s-line">現実がどうだかは知らないが、物事は常にハッピーエンドであるべきだ。</p>
     </article>
     <article data-cut>
+      <p class="s-gap">　</p>
       <p class="s-line">それが<span class="s-glitch" style="animation-delay:-3.2s">█</span>の持論。もちろんオチはお察しの通り。</p>
       <p class="s-gap">　</p>
       <p class="s-line"><span class="s-glitch" style="animation-delay:0s">█</span>はこの詭弁を<span class="s-glitch" style="animation-delay:-0.6s">█</span>の動機として、物好きな<span class="s-glitch" style="animation-delay:-1.8s">キミ</span>に手向けよう。</p>
@@ -765,6 +815,11 @@ img{ max-width:100%; display:block; }
       <p class="s-line"><span class="s-glitch" style="animation-delay:-1.8s">█</span>の話は、それでおしまい。</p>
       <p class="s-gap">　</p>
       <p class="s-gap">　</p>
+      <p class="s-delete-line">
+        <button type="button" class="s-delete-btn" id="scriptDeleteBtn" aria-label="この原稿を削除">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"></path></svg>
+        </button>
+      </p>
     </article>
   </section>
 </template>
@@ -1047,6 +1102,29 @@ img{ max-width:100%; display:block; }
   });
   window.addEventListener('scroll', function(){ unpin(); }, true);
   window.addEventListener('resize', function(){ unpin(); });
+
+  /* ─── Delete-script confirmation (fake/mock — local session only) ─── */
+  var deleteModal = document.getElementById('deleteModal');
+  var deleteConfirmBtn = document.getElementById('deleteConfirmBtn');
+
+  function openDeleteModal(){ deleteModal.hidden = false; }
+  function closeDeleteModal(){ deleteModal.hidden = true; }
+
+  canvas.addEventListener('click', function(e){
+    if (e.target.closest && e.target.closest('.s-delete-btn')) openDeleteModal();
+  });
+  deleteModal.addEventListener('click', function(e){
+    if (e.target === deleteModal) closeDeleteModal();
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && !deleteModal.hidden) closeDeleteModal();
+  });
+  deleteConfirmBtn.addEventListener('click', function(){
+    REV_ORDER = REV_ORDER.filter(function(id){ return id === 'necrogame-v1'; });
+    closeDeleteModal();
+    closeAllPops();
+    renderRevision('necrogame-v1');
+  });
 
   /* ─── Init: read #rev= hash, else current revision ─── */
   function initialRevId(){
