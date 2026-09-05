@@ -784,7 +784,7 @@ img{ max-width:100%; display:block; }
     </article>
     <article data-cut>
       <p class="s-line">……あぁ、やっとオチを見つけた。</p>
-      <p class="s-line"><span class="s-type" id="typeReveal1" data-type-chunks='[["anmari","あんまり"],["kimi","キミ"],["ga","が"],["shitsukoi","しつこい"],["kara","から"],["","、"],["kore","コレ"],["mo","も"],["ima","今"],["kaiteru","書いてる"],["ndayo","んだよ"],["","。"]]'></span></p>
+      <p class="s-line"><span class="s-type" id="typeReveal1"></span></p>
       <p class="s-gap">　</p>
     </article>
     <article data-cut>
@@ -905,20 +905,42 @@ img{ max-width:100%; display:block; }
     });
   }
 
-  /* ─── Scroll-triggered typing animation (IME-style: romaji, then conversion) ─── */
+  /* ─── Scroll-triggered typing animation (IME-style: per-mora romaji, then conversion) ───
+     Each "unit" is typed mora-by-mora as hiragana (a vowel resolves on its single
+     keystroke; a consonant mora shows the pending romaji key(s) — full-width, as an
+     IME candidate strip would — until the vowel/doubled-n completes it). Once a unit's
+     hiragana reading is fully typed, if its real script text differs (katakana/kanji),
+     it is swapped in after a short "conversion" pause — otherwise the hiragana stands. */
+  var TYPE_ANIMATIONS = {
+    typeReveal1: [
+      { morae: [[['a'],'あ'], [['n','n'],'ん'], [['m','a'],'ま'], [['r','i'],'り']] },
+      { morae: [[['k','i'],'き'], [['m','i'],'み']], convert:'キミ' },
+      { morae: [[['g','a'],'が']] },
+      { morae: [[['s','h','i'],'し'], [['t','s','u'],'つ'], [['k','o'],'こ'], [['i'],'い']] },
+      { morae: [[['k','a'],'か'], [['r','a'],'ら']] },
+      { punct:'、' },
+      { morae: [[['k','o'],'こ'], [['r','e'],'れ']], convert:'コレ' },
+      { morae: [[['m','o'],'も']] },
+      { morae: [[['i'],'い'], [['m','a'],'ま']], convert:'今' },
+      { morae: [[['k','a'],'か'], [['i'],'い'], [['t','e'],'て'], [['r','u'],'る']], convert:'書いてる' },
+      { morae: [[['n','n'],'ん'], [['d','a'],'だ'], [['y','o'],'よ']] },
+      { punct:'。' }
+    ]
+  };
+
   var typeIO = null;
   function initTypeReveal(){
     if (typeIO) typeIO.disconnect();
-    var targets = spread.querySelectorAll('.s-type[data-type-chunks]');
+    var targets = Array.prototype.filter.call(
+      spread.querySelectorAll('.s-type[id]'),
+      function(t){ return TYPE_ANIMATIONS[t.id]; }
+    );
     if (!targets.length) return;
     typeIO = new IntersectionObserver(function(entries){
       entries.forEach(function(entry){
         if (!entry.isIntersecting) return;
         typeIO.unobserve(entry.target);
-        var chunks;
-        try { chunks = JSON.parse(entry.target.getAttribute('data-type-chunks')); }
-        catch (e) { chunks = null; }
-        if (chunks) typeChunks(entry.target, chunks);
+        typeUnits(entry.target, TYPE_ANIMATIONS[entry.target.id]);
       });
     }, { root: canvas, threshold: 0.6 });
     targets.forEach(function(t){ typeIO.observe(t); });
@@ -928,41 +950,68 @@ img{ max-width:100%; display:block; }
     return base + Math.floor(Math.random() * spread);
   }
 
-  function typeChunks(target, chunks){
+  function toFullwidthKey(ch){
+    var code = ch.charCodeAt(0);
+    return (code >= 33 && code <= 126) ? String.fromCharCode(code + 0xFEE0) : ch;
+  }
+
+  function typeUnits(target, units){
     target.textContent = '';
     var settled = '';
-    var ci = 0;
+    var ui = 0;
 
-    function nextChunk(){
-      if (ci >= chunks.length) return;
-      var romaji = chunks[ci][0];
-      var kana   = chunks[ci][1];
+    function nextUnit(){
+      if (ui >= units.length) return;
+      var unit = units[ui];
 
-      if (!romaji) {
-        settled += kana;
+      if (unit.punct) {
+        settled += unit.punct;
         target.textContent = settled;
-        ci++;
-        setTimeout(nextChunk, jitter(70, 60));
+        ui++;
+        setTimeout(nextUnit, jitter(80, 70));
         return;
       }
 
-      var ri = 0;
-      (function typeRomaji(){
-        ri++;
-        target.textContent = settled + romaji.slice(0, ri);
-        if (ri < romaji.length) {
-          setTimeout(typeRomaji, jitter(45, 55));
-        } else {
-          setTimeout(function(){
-            settled += kana;
-            target.textContent = settled;
-            ci++;
-            setTimeout(nextChunk, jitter(70, 60));
-          }, jitter(120, 100));
+      var typed = '';
+      var mi = 0;
+
+      function nextMora(){
+        if (mi >= unit.morae.length) {
+          if (unit.convert) {
+            setTimeout(function(){
+              settled += unit.convert;
+              target.textContent = settled;
+              ui++;
+              setTimeout(nextUnit, jitter(80, 70));
+            }, jitter(180, 140));
+          } else {
+            settled += typed;
+            ui++;
+            setTimeout(nextUnit, jitter(80, 70));
+          }
+          return;
         }
-      })();
+
+        var keys = unit.morae[mi][0];
+        var kana = unit.morae[mi][1];
+        var ki = 0;
+        (function typeKey(){
+          ki++;
+          if (ki < keys.length) {
+            var pending = keys.slice(0, ki).map(toFullwidthKey).join('');
+            target.textContent = settled + typed + pending;
+            setTimeout(typeKey, jitter(80, 80));
+          } else {
+            typed += kana;
+            target.textContent = settled + typed;
+            mi++;
+            setTimeout(nextMora, jitter(70, 70));
+          }
+        })();
+      }
+      nextMora();
     }
-    nextChunk();
+    nextUnit();
   }
 
   function applyRevisionChrome(ds, id){
