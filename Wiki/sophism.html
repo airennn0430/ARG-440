@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>詭弁</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: #f6f6f6;
+      color: #202122;
+      font-family: sans-serif, "Helvetica Neue", "Hiragino Kaku Gothic ProN", "Meiryo", "MS PGothic", sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .wiki-article {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1.5em 1.5em 3em;
+      background: #fff;
+      border-left: 1px solid #a7d7f9;
+      border-right: 1px solid #a7d7f9;
+      min-height: 100vh;
+    }
+
+    h1 {
+      font-family: sans-serif, "Helvetica Neue", "Hiragino Kaku Gothic ProN", "Meiryo", "MS PGothic", sans-serif;
+      font-size: 1.75em;
+      font-weight: normal;
+      border-bottom: none;
+      margin: 0;
+      padding: 0;
+      line-height: 1.2;
+    }
+
+    .wiki-page-header {
+      margin-bottom: 0.5em;
+    }
+
+    .first-heading-row {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 1em;
+      padding-bottom: 0.35em;
+      border-bottom: 1px solid #a2a9b1;
+    }
+
+    .wiki-languages {
+      flex-shrink: 0;
+      font-size: 0.85em;
+      padding-bottom: 0.15em;
+    }
+
+    .wiki-languages a {
+      color: #36c;
+    }
+
+    .wiki-languages-icon {
+      display: inline-block;
+      width: 1.1em;
+      height: 1.1em;
+      margin-right: 0.15em;
+      vertical-align: -0.15em;
+      border: 1px solid #72777d;
+      border-radius: 2px;
+      font-size: 0.65em;
+      line-height: 1.1em;
+      text-align: center;
+      color: #72777d;
+      font-weight: bold;
+    }
+
+    .wiki-tabs {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 1em;
+      border-bottom: 1px solid #a2a9b1;
+      margin-top: 0;
+    }
+
+    .wiki-tabs-left,
+    .wiki-tabs-right {
+      display: flex;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 0;
+    }
+
+    .wiki-tab {
+      display: inline-block;
+      padding: 0.45em 0.65em 0.35em;
+      font-size: 0.85em;
+      color: #36c;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      white-space: nowrap;
+    }
+
+    .wiki-tab.active {
+      color: #202122;
+      border-bottom-color: #202122;
+      font-weight: normal;
+    }
+
+    .wiki-tab-tools::after {
+      content: "▾";
+      font-size: 0.75em;
+      margin-left: 0.15em;
+    }
+
+    .wiki-source {
+      margin: 0.6em 0 0.8em;
+      font-size: 0.85em;
+      color: #202122;
+    }
+
+    h2 {
+      font-family: sans-serif, "Helvetica Neue", "Hiragino Kaku Gothic ProN", "Meiryo", "MS PGothic", sans-serif;
+      font-size: 1.5em;
+      font-weight: normal;
+      border-bottom: 1px solid #a2a9b1;
+      margin: 1em 0 0.5em;
+      padding-bottom: 0.15em;
+      overflow: hidden;
+    }
+
+    h3 {
+      font-family: sans-serif, "Helvetica Neue", "Hiragino Kaku Gothic ProN", "Meiryo", "MS PGothic", sans-serif;
+      font-size: 1.2em;
+      font-weight: bold;
+      margin: 0.8em 0 0.4em;
+    }
+
+    h4 {
+      font-family: sans-serif, "Helvetica Neue", "Hiragino Kaku Gothic ProN", "Meiryo", "MS PGothic", sans-serif;
+      font-size: 1.02em;
+      font-weight: bold;
+      margin: 0.7em 0 0.3em;
+    }
+
+    .incident-block {
+      margin: 1em 0 1.5em;
+      padding-top: 0.2em;
+    }
+
+    .incident-block + .incident-block {
+      border-top: 1px solid #eaecf0;
+      padding-top: 1em;
+    }
+
+    p { margin: 0.5em 0; }
+
+    .editsection {
+      font-family: sans-serif, "Helvetica Neue", "Hiragino Kaku Gothic ProN", "Meiryo", "MS PGothic", sans-serif;
+      font-size: 0.65em;
+      font-weight: normal;
+      margin-left: 0.4em;
+    }
+
+    .editsection a {
+      color: #36c;
+      text-decoration: none;
+    }
+
+    .editsection a:hover { text-decoration: underline; }
+
+    .section-hidden {
+      display: none;
+    }
+
+    .ambox-inner {
+      display: flex;
+      align-items: center;
+    }
+
+    .ambox-image {
+      flex-shrink: 0;
+      width: 56px;
+      padding: 0.45em 0.35em 0.45em 0.5em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      align-self: stretch;
+    }
+
+    .ambox-image svg {
+      display: block;
+      width: 44px;
+      height: 44px;
+    }
+
+    .ambox-text {
+      flex: 1;
+      min-width: 0;
+      padding: 0.55em 0.85em 0.55em 0.15em;
+    }
+
+    .ambox-text p {
+      margin: 0;
+    }
+
+    .ambox-group {
+      border: 1px solid #a2a9b1;
+      border-left: 10px solid #f28500;
+      background: #fff;
+      margin: 0.5em 7% 0.8em;
+      font-size: 0.875em;
+      line-height: 1.55;
+      overflow: hidden;
+      clear: both;
+    }
+
+    .ambox-group .ambox-inner {
+      align-items: flex-start;
+    }
+
+    .ambox-group .ambox-inner + .ambox-inner {
+      border-top: 1px solid #a2a9b1;
+    }
+
+    .ambox-group .ambox-image {
+      padding-top: 0.6em;
+    }
+
+    .ambox-issues ul {
+      margin: 0.3em 0 0.5em;
+      padding-left: 1.3em;
+    }
+
+    .ambox-issues li {
+      margin: 0.15em 0;
+    }
+
+    .ambox-issues .issue-date {
+      color: #54595d;
+      white-space: nowrap;
+    }
+
+    .ambox-searchlist {
+      margin-top: 0.4em;
+      font-size: 0.92em;
+      color: #202122;
+    }
+
+    .infobox {
+      float: right;
+      clear: right;
+      width: 22em;
+      margin: 0 0 1em 1.2em;
+      border: 1px solid #a2a9b1;
+      border-collapse: collapse;
+      border-spacing: 0;
+      background: #fff;
+      font-size: 88%;
+      line-height: 1.4;
+      color: #202122;
+    }
+
+    .infobox-above {
+      padding: 0.4em 0.6em;
+      font-size: 125%;
+      font-weight: bold;
+      text-align: center;
+      background: #eaecf0;
+      border-bottom: 1px solid #a2a9b1;
+    }
+
+    .infobox-above .infobox-sub {
+      display: block;
+      font-size: 80%;
+      font-weight: bold;
+      margin-top: 0.15em;
+    }
+
+    .infobox-image {
+      padding: 0.8em 1.4em;
+      text-align: center;
+      background: #fff;
+      border-bottom: 1px solid #a2a9b1;
+    }
+
+    .infobox-image svg {
+      display: block;
+      width: 100%;
+      max-width: 160px;
+      height: auto;
+      margin: 0 auto;
+    }
+
+    .infobox-caption {
+      margin-top: 0.35em;
+      font-size: 88%;
+      line-height: 1.35;
+      text-align: center;
+      color: #202122;
+    }
+
+    .infobox-header {
+      padding: 0.25em 0.4em;
+      font-weight: bold;
+      text-align: center;
+      background: #cedff2;
+      border-top: 1px solid #a2a9b1;
+      border-bottom: 1px solid #a2a9b1;
+    }
+
+    .infobox-office {
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .infobox th,
+    .infobox td {
+      border-top: 1px solid #a2a9b1;
+      padding: 0.2em 0.4em;
+      vertical-align: top;
+    }
+
+    .infobox th[scope="row"] {
+      width: 35%;
+      text-align: left;
+      font-weight: bold;
+      background: transparent;
+    }
+
+    .infobox td {
+      background: transparent;
+    }
+
+    .infobox a {
+      color: #36c;
+    }
+
+    blockquote {
+      margin: 0.8em 2.5em;
+      padding: 0;
+      border: none;
+      font-style: normal;
+    }
+
+    .wikitable {
+      border-collapse: collapse;
+      border: 1px solid #a2a9b1;
+      margin: 0.8em 0;
+      font-size: 0.95em;
+      width: 100%;
+      background: #fff;
+    }
+
+    .wikitable th,
+    .wikitable td {
+      border: 1px solid #a2a9b1;
+      padding: 8px 12px;
+      vertical-align: middle;
+    }
+
+    .wikitable th {
+      background: #eaecf0;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .wikitable td {
+      background: #f8f9fa;
+      text-align: left;
+    }
+
+    ul { margin: 0.4em 0; padding-left: 1.6em; }
+
+    ul li { margin: 0.2em 0; }
+
+    .works-list li,
+    .seealso-list li {
+      list-style: none;
+      margin-left: -1em;
+    }
+
+    .works-list li::before { content: "－ "; }
+
+    .seealso-list li::before { content: "・"; margin-right: 0.2em; }
+
+    .works-list em { font-style: italic; }
+
+    .incident-list dt {
+      font-weight: bold;
+      margin-top: 0.7em;
+    }
+
+    .incident-list dd {
+      margin: 0.2em 0 0;
+    }
+
+    .reflist {
+      font-size: 0.9em;
+      margin: 0.5em 0;
+    }
+
+    .reflist .ref-label {
+      font-weight: bold;
+      margin-right: 0.3em;
+    }
+
+    .cn {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 1;
+    }
+
+    .cn a,
+    .cn .wikilink {
+      color: #36c;
+    }
+
+    a { color: #36c; text-decoration: none; }
+
+    .wikilink {
+      color: #36c;
+      cursor: default;
+    }
+    a:hover { text-decoration: underline; }
+    a:visited { color: #36c; }
+
+    /* ---- モバイル用ヘッダー要素（デスクトップでは非表示） ---- */
+    .wiki-tagline {
+      display: none;
+      margin: 0.15em 0 0;
+      font-size: 0.85em;
+      color: #54595d;
+    }
+
+    .wiki-mobile-toolbar {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 0.5em;
+      padding: 0.4em 0;
+      border-top: 1px solid #eaecf0;
+      border-bottom: 1px solid #eaecf0;
+      color: #54595d;
+    }
+
+    .wiki-mobile-toolbar .toolbar-right {
+      display: flex;
+      gap: 1.2em;
+    }
+
+    .wiki-mobile-toolbar svg {
+      display: block;
+      width: 20px;
+      height: 20px;
+      fill: #54595d;
+    }
+
+    /* ---- 開閉セクション ---- */
+    h2.collapsible-heading {
+      position: relative;
+    }
+
+    .section-chevron {
+      display: none;
+      flex-shrink: 0;
+      width: 0.5em;
+      height: 0.5em;
+      margin: -0.25em 0.75em 0 0.1em;
+      border-right: 1.5px solid #54595d;
+      border-bottom: 1.5px solid #54595d;
+      transition: transform 0.15s ease;
+      transform: rotate(45deg);
+    }
+
+    @media (max-width: 720px) {
+      body {
+        background: #fff;
+        font-size: 15px;
+      }
+
+      .wiki-article {
+        border: none;
+        padding: 1em 1em 3em;
+      }
+
+      .first-heading-row {
+        display: block;
+        border-bottom: none;
+        padding-bottom: 0;
+      }
+
+      h1 {
+        font-family: "Linux Libertine", "Georgia", "Times", "Hiragino Mincho ProN", "Yu Mincho", serif;
+        font-size: 1.7em;
+      }
+
+      .wiki-languages { display: none; }
+      .wiki-tabs { display: none; }
+      .wiki-source { display: none; }
+
+      .wiki-tagline { display: block; }
+      .wiki-mobile-toolbar { display: flex; }
+
+      .ambox-group {
+        margin: 0 0 0.6em;
+        font-size: 0.8em;
+        line-height: 1.5;
+        border: 1px solid #eaecf0;
+        border-top: 4px solid #c8ccd1;
+        border-left-width: 10px;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+      }
+
+      .ambox-image {
+        width: 52px;
+        padding: 0.8em 0.4em 0.8em 0.8em;
+      }
+
+      .ambox-image svg {
+        width: 32px;
+        height: 32px;
+      }
+
+      .ambox-text {
+        padding: 0.8em 0.6em 0.8em 0.3em;
+      }
+
+      .lead-wrap {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .lead-wrap p { order: 0; }
+      .lead-wrap p:first-of-type { order: -2; }
+
+      .infobox {
+        order: -1;
+        float: none;
+        width: 100%;
+        margin: 0.8em 0 1em;
+      }
+
+      h2 {
+        font-family: "Linux Libertine", "Georgia", "Times", "Hiragino Mincho ProN", "Yu Mincho", serif;
+      }
+
+      h2.collapsible-heading {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        border-bottom: 1px solid #c8ccd1;
+        padding: 0.55em 0;
+        margin: 0;
+        font-size: 1.55em;
+        font-weight: normal;
+        line-height: 1.35;
+        -webkit-tap-highlight-color: transparent;
+        user-select: none;
+      }
+
+      h2.collapsible-heading .editsection { display: none; }
+
+      .section-chevron { display: inline-block; }
+
+      h2.collapsible-heading[aria-expanded="true"] .section-chevron {
+        transform: rotate(225deg);
+        margin-top: 0.15em;
+      }
+
+      .section-body.collapsed { display: none; }
+
+      .section-body {
+        padding-bottom: 0.5em;
+      }
+
+      .wikitable {
+        display: block;
+        overflow-x: auto;
+      }
+
+      blockquote {
+        margin: 0.8em 1.2em;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<article class="wiki-article">
+
+  <header class="wiki-page-header">
+    <div class="first-heading-row">
+      <h1>詭弁</h1>
+      <p class="wiki-tagline">議論において、誤った推論をさも正しいかのように意図的に行うこと</p>
+      <div class="wiki-languages">
+        <a href="#"><span class="wiki-languages-icon">文A</span>言語を追加</a>
+      </div>
+    </div>
+    <div class="wiki-mobile-toolbar">
+      <span class="toolbar-left" aria-label="言語">
+        <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M11 2H9v2H3v2h8.9c-.4 1.7-1.3 3.2-2.4 4.5-.7-.8-1.3-1.7-1.8-2.7H5.5c.6 1.5 1.5 2.9 2.6 4.1L4 16l1.4 1.4 4.1-4.1 2.6 2.6.9-2.1-2.1-2.1c1.4-1.6 2.4-3.5 2.9-5.7H17V4h-6V2z"/></svg>
+      </span>
+      <span class="toolbar-right">
+        <span aria-label="ウォッチリスト">
+          <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 1.5l2.6 5.3 5.9.9-4.2 4.1 1 5.8-5.3-2.8-5.3 2.8 1-5.8L1.5 7.7l5.9-.9L10 1.5zm0 4.5L8.5 9.1l-3.4.5 2.5 2.4-.6 3.4L10 13.8l3 1.6-.6-3.4 2.5-2.4-3.4-.5L10 6z"/></svg>
+        </span>
+        <span aria-label="編集">
+          <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M16.8 2c-.4 0-.8.2-1.1.5l-1.2 1.2 3.8 3.8 1.2-1.2c.6-.6.6-1.6 0-2.2l-1.6-1.6c-.3-.3-.7-.5-1.1-.5zM13.4 4.8L3 15.2V19h3.8L17.2 8.6l-3.8-3.8z"/></svg>
+        </span>
+      </span>
+    </div>
+    <div class="wiki-tabs">
+      <div class="wiki-tabs-left">
+        <span class="wiki-tab active">ページ</span>
+        <a class="wiki-tab" href="#">ノート</a>
+      </div>
+      <div class="wiki-tabs-right">
+        <span class="wiki-tab active">閲覧</span>
+        <a class="wiki-tab" href="#">編集</a>
+        <a class="wiki-tab" href="#">履歴を表示</a>
+        <a class="wiki-tab wiki-tab-tools" href="#">ツール</a>
+      </div>
+    </div>
+    <p class="wiki-source">出典: オンライン百科事典</p>
+  </header>
+
+  <div class="lead-wrap">
+
+    <p><strong>詭弁</strong>（詭辯、きべん、<span class="wikilink">古希</span>: σόφῐσμᾰ、<span class="wikilink">古代ギリシア語ラテン翻字</span>: sóphĭsmă）とは、<span class="wikilink">議論</span>において、誤った<span class="wikilink">推論</span>をさも正しいかのように意図的に行うことである。<span class="wikilink">誤謬</span>のうち、意図的に行われるものをさす。主に、<span class="wikilink">説得</span>を目的とする。奇弁、危弁とも書く。</p>
+
+  </div>
+
+  <h2>意味<span class="editsection"><a href="#">[編集]</a></span></h2>
+
+  <p>日本語で日常的に使われる「詭弁」とは、「故意に行われる虚偽の議論<sup class="cn"><span class="wikilink">[1]</span></sup>」、「道理に合わないことを強引に正当化しようとする弁論、<span class="wikilink">論理学</span>で外見・形式をもっともらしく見せかけた虚偽の論法<sup class="cn"><span class="wikilink">[2]</span></sup>」、「実質において論理上虚偽あるいは誤謬でありながら、故意に誤りのある論理展開を用いて、間違った命題を正しいかのように装い、思考の混乱や欺瞞を目的としておこなう謬論<sup class="cn"><span class="wikilink">[3]</span></sup>」、「命題や推理に関する論理的操作によって生ずる、一見もっともらしい推論（ないしはその結論）で、何らかの誤謬を含むと疑われるもの。相手をあざむいたり、困らせる議論の中で使われる<sup class="cn"><span class="wikilink">[4]</span></sup>」を指す。発言者の「欺く意志」があってこその「詭弁」であり<sup class="cn"><span class="wikilink">[要出典]</span></sup>、必ずしも意図的にではなく導かれる<span class="wikilink">誤謬</span>とは区別される。日本では「詭」が<span class="wikilink">漢字制限</span>により<span class="wikilink">当用漢字</span>・<span class="wikilink">常用漢字</span>に含まれないため、新聞などでは奇弁、<span class="wikilink">論理学</span>などでは危弁と書かれることもある。</p>
+
+  <p>英語では sophism 「詭弁、こじつけ、詭弁法」<sup class="cn"><span class="wikilink">[5]</span></sup>「詭弁、こじつけ、へ理屈、詭弁法」<sup class="cn"><span class="wikilink">[6]</span></sup>を指す。sophistryとも言う。</p>
+
+  <h2>解説<span class="editsection"><a href="#">[編集]</a></span></h2>
+
+  <p>詭弁には、論理展開が明らかに誤っている場合もあれば一見正しいように見える場合もある。そして論理展開が正しいように見える場合、論理的には違反しており、誤った結論でも説得力が増してしまう。上記の現象は不完全な<span class="wikilink">数学的帰納法</span>による、この記事においても以降で解説される<span class="wikilink">早まった一般化</span>や<span class="wikilink">前後即因果の誤謬</span>によって起こりやすい。協働関係や社会的合意においては、論理的推論の整合性よりも話者が対象とする聞き手や大衆に対しての言説上の説得（説明）力（<span class="wikilink">ヒューリスティクス</span>を用いた<span class="wikilink">限定合理性</span>への対応）がしばしば効果的であり、このため、<span class="wikilink">説得</span>や<span class="wikilink">交渉</span>、<span class="wikilink">プロパガンダ</span>や<span class="wikilink">マインドコントロール</span>のテクニックとして用いられることがある。</p>
+
+  <h2>歴史<span class="editsection"><a href="#">[編集]</a></span></h2>
+
+  <p>「詭弁」という語は、『<span class="wikilink">史記</span>』に見ることができる。「屈原賈生列伝」で「設詭辯於懐王之寵姫鄭袖（詭弁を懐王の寵姫鄭袖に設く）」との用例がある<sup class="cn"><span class="wikilink">[7]</span></sup>。「五宗世家」で「好法律持詭辯以中人（法律を好み詭弁を持して、以て人に中つ）」との用例があり<sup class="cn"><span class="wikilink">[8]</span></sup>、『<span class="wikilink">史記索隠</span>』は詭弁の語義について「詭誑ノ弁」（あざむき、たぶらかす言葉）と注している。中国の<span class="wikilink">諸子百家</span>のうち「詭弁」を学問に発展させたのが<span class="wikilink">恵施</span>や<span class="wikilink">公孫竜</span>などの<span class="wikilink">名家</span>である<sup class="cn"><span class="wikilink">[9]</span></sup>。</p>
+
+  <p>古代ギリシャの時代においても詭弁が飛躍的に発展し後世の論理学の発展へとつながっていった<sup class="cn"><span class="wikilink">[10]</span></sup>。この時代は、弁舌に長じた哲学者達を多く輩出し、日本語で「詭弁家」とも称される<span class="wikilink">ソフィスト</span>を生んだ。ゼノンやプロタゴラスは紀元前400年以前の<span class="wikilink">ギリシア</span>の<span class="wikilink">アテナイ</span>などで活躍し、哲学の分類では名家やソフィストなどを含めて詭弁学派と呼ぶことがある。</p>
+
+  <p><span class="wikilink">ピタゴラス</span>は、4と10という数字に神秘性を感じており、弟子のひとりに、両手の指を、1本、2本、3本、4本と回数ごとに1本ずつ多く曲げさせてゆき、最後に4本曲げたところで10本すべての指が曲がると「お前が4だと思ったのは実は10だった」と説いたというエピソードがある。これは典型的な詭弁とされる<sup class="cn"><span class="wikilink">[11]</span></sup>。</p>
+
+  <p>ギリシャ、ローマの時代では、為政者、立候補者が高い地位につくために、人心を得る演説をする必要があった。そのためには、正当な弁論術よりも、詭弁、強弁、争論が有用であったため、ソフィストが台頭することとなった<sup class="cn"><span class="wikilink">[12]</span></sup>。</p>
+
+  <h2>古典的な詭弁<span class="editsection"><a href="#">[編集]</a></span></h2>
+
+  <p>古典的な詭弁の例として、古代中国の思想家<span class="wikilink">公孫竜</span>による「堅白異同」<sup class="cn"><span class="wikilink">[3]</span></sup>や「<span class="wikilink">白馬は馬に非ず</span>」がある。公孫竜の「白馬非馬」の論法を以下に示す（詳細は<span class="wikilink">公孫竜</span>を参照）。これは論点のすり替え、連続性の虚偽と誤った二分法を含んでいる。</p>
+
+  <blockquote>
+    <p>「白馬」という概念は、「白」という色についての概念と「馬」という形についての概念とが合わさったものであるから、もはや純粋な形の概念である「馬」とは異なる。したがって白馬は馬ではない。</p>
+  </blockquote>
+
+  <p>この種の詭弁は単に言説上の遊びとして軽んじられることがあるが、法（文字）による社会規範を重視する社会では重要であり、例えば「国民は納税の義務を負う」の場合、国民の定義があいまいであれば法の合意や実効力は極端に阻害される。公孫竜の話題では、例えば馬1頭あたりに税を課する場合、白馬は馬ではないとの論証に対して馬の定義があいまいであれば、その論証は有効である可能性がある<sup class="cn"><span class="wikilink">[注 1]</span></sup>。奴隷や小作、未成年や女性は「人頭」ではないとすれば<span class="wikilink">人頭税</span>の及ぶ範囲は極端に制限されるかもしれない。</p>
+
+  <h2>例<span class="editsection"><a href="#">[編集]</a></span></h2>
+
+  <p>詭弁の例としては、以下のような例や、<span class="wikilink">誤謬</span>で示されるような例がある。</p>
+
+  <p>詭弁とは意識的に誤謬を扱うことを言うともされるが、無意識的であったとしても、相手を言いくるめる目的で誤謬を扱った場合、詭弁と呼ばれることがある。</p>
+
+  <p>→「<span class="wikilink">誤謬 § 形式的誤謬の例</span>」、および「<span class="wikilink">誤謬 § 非形式的誤謬の例</span>」も参照</p>
+
+  <h3>対偶を使う詭弁<span class="editsection"><a href="#">[編集]</a></span></h3>
+
+  <p>真の命題の<span class="wikilink">対偶</span>は真である、という形式を使う詭弁</p>
+
+  <ul>
+    <li>「犯罪が起きれば、警察は出動する」は真である。このため、対偶の「警察が出動しなければ、犯罪は起きない」は真である。</li>
+    <li>「他国が軍事侵略すれば、自衛隊は防衛する」は真である。このため、対偶の「自衛隊が防衛しなければ、他国は軍事侵略しない」は真である。</li>
+    <li>「１等の宝くじが当たれば、１億円もらえる」は真である。このため、対偶の「１億円もらえなければ、１等の宝くじが当たらない」は真である。</li>
+  </ul>
+
+  <p>これらの推論は正しく、対偶も正しく作られており、論理的な誤りはない<sup class="cn"><span class="wikilink">[13]</span></sup>。結論は奇異に見えるが、正しい。「逆」や「裏」を使う粗雑な詭弁は、論理的誤りがすぐに見つかるのに対し、「対偶」を使う詭弁は論理的誤りがないため、強固である。</p>
+
+  <p>これらの推論に関わる詭弁は、対偶を作る際に適切な語を採用しないため、日常語としてのニュアンスがずれることを利用している。「p ならば q である」場合、日常語では p を原因、q を結果と解釈してしまうが、論理的にはそのような関係になく<span class="wikilink">包含関係</span>を与えているに過ぎない。対偶の「q でないならば p でない」も、「q でない」を原因、「p でない」を結果と解釈してしまうが、論理的には「q でない」ことを根拠として「p でない」ことが言えるという意味である。</p>
+
+  <p>「犯罪が起きているならば、警察が出動する」⇔「警察が出動していないならば、犯罪が起きていない」</p>
+  <p>「他国が軍事侵略していれば、自衛隊が防衛する」⇔「自衛隊が防衛していないならば、他国が軍事侵略していない」</p>
+  <p>「１等の宝くじが当たっていれば、１億円がもらえる」⇔「1億円がもらえないならば、１等の宝くじが当たっていない」</p>
+
+  <p>とすれば、理解しやすい。</p>
+
+  <h3>含みのある言葉 (loaded language)<span class="editsection"><a href="#">[編集]</a></span></h3>
+
+  <ul>
+    <li>A「私達は、罪なき善良な社会的弱者により一層の苦痛と不幸を強いるだけのB知事の冷酷で残酷で無慈悲で恥知らずな政策に、知性と良識ある善人なら当然そうするように反対の意を表明しました。」</li>
+    <li>B「今般の軍事作戦により、我が国はかつての海外領土を回復した。なんと素晴らしい事ではないか！」</li>
+    <li>C「現状の国難を打開するには大人の成熟した判断が必要とされる」</li>
+  </ul>
+
+  <p><span class="wikilink">論点先取</span>の一種で、読み手（聞き手）に話題・論題への先験的な感情を惹起させようとする文章を言う。論理性ではなく「語調」に頼った主張を、loaded language（または emotionally charged words）と呼ぶ。必ずしも例Aのように感情的・攻撃的・侮蔑的な形容句で装飾された文章のみを指すものではなく、常用語を用いた文章も含む。たとえば例Bは「獲得・征服」ではなく「回復」という言葉で獲得した領土が本来自国に帰属するものだったと思わせようとしており、例Cでは「大人・成熟」という術語を用いることで根拠なく「反対者は子供っぽい意見の持ち主だ」と先験的な価値判断（ラベル・レッテル）を貼っている。このタイプの詭弁は、<span class="wikilink">情報操作</span>や<span class="wikilink">プロパガンダ</span>の手法として使われる<sup class="cn"><span class="wikilink">[注 2]</span></sup>。受け手の感情や価値判断を暗黙に刺激するkey word（キーワード）を文中にひそませ、ちりばめることで論理によらずに受け手を操作する。論点回避の一つ。</p>
+
+  <p>→「<span class="wikilink">DHMO</span>」、「<span class="wikilink">ポリティカル・コレクトネス</span>」、および「<span class="wikilink">ニュースピーク</span>」も参照</p>
+
+  <h3>経験則の否定<span class="editsection"><a href="#">[編集]</a></span></h3>
+
+  <p>→「<span class="wikilink">自然の斉一性</span>」も参照</p>
+
+  <ul>
+    <li>「人は皆死ぬ」とは言えない。そう主張する人は、単に「過去死んだ人は、皆死んだ」と同義反復しているだけで、今生きている人について何も証明していない。</li>
+    <li>「海水は塩辛い」とは限らない。そう主張する人は、単に「過去海水を舐めたとき塩辛かった」と言っているだけで、現在および将来の海水の味について何も証明していない。</li>
+  </ul>
+
+  <p>この詭弁は、論理的誤りを含まず、ある意味「正しい」批判とも言える。同様の手法で、どのような経験則も否定することができる。</p>
+
+  <p>これが詭弁となる理由は、むしろ経験則の側にある。現実世界の経験則（物理学、化学、生物学などの法則）は、完全な証明が不可能であり、それでも繰り返しの実験、検証と、その有用性により法則として通用しているものである。完全な証明がないことを理由に経験則を否定すると、その有用性も否定することになる。</p>
+
+  <h3>連続性の虚偽 (Continuum fallacy)<span class="editsection"><a href="#">[編集]</a></span></h3>
+
+  <ul>
+    <li>A「砂山から砂粒を一つ取り出しても、砂山のままである。さらにもう一粒取り出しても砂山である。したがって砂山からいくら砂粒を取り出しても砂山は砂山である。」</li>
+    <li>B「建築契約には高額の追加費用の発生の際には事前に承認を求めよとあるが、10万円は高額ではない。」</li>
+  </ul>
+
+  <p>術語の曖昧性から生じる<span class="wikilink">砂山のパラドックス</span>を利用した<span class="wikilink">弁証法</span>。ハゲのパラドックス（fallacy of the bald）、あごひげのパラドックス（fallacy of the beard）または<span class="wikilink">テセウスの船</span>（Ship of Theseus）とも。Aは「砂山」の定義が、Bは「高額」の定義が、その量に関して曖昧であるため詭弁が成立する。閑散とした食堂を「繁盛店」と広告する（何人の客が入っていれば繁盛と呼べるのか不明確）などこの種の弁論は容易であり、社会生活上しばしば見られる。</p>
+
+  <h3>決疑論（Casuistry）<span class="editsection"><a href="#">[編集]</a></span></h3>
+
+  <p><span class="wikilink">道徳</span>概念等を理由として責任を回避する<span class="wikilink">決疑論</span>がある。そのためイエスズ会の時代には、「例外的な事例」に基づいて一般法を定めるといった悪慣行も生じた。<span class="wikilink">功利主義</span>（特に集団的・<span class="wikilink">選好功利主義</span>）や<span class="wikilink">プラグマティズム</span>といった<span class="wikilink">倫理</span><span class="wikilink">哲学</span>も、決疑論を使用しているという見方がある。<span class="wikilink">全体主義</span>に肯定的な理論。</p>
+
+  <h2>詭弁とパラドックス<span class="editsection"><a href="#">[編集]</a></span></h2>
+
+  <p>詭弁と似たものに<span class="wikilink">パラドックス</span>がある。パラドックスは詭弁に比べて、より正確で厳密な推論を進めることに特徴がある。パラドックスの例としては、<span class="wikilink">ゼノンのパラドックス</span>のように論理展開が正しいように見えて結論が誤っているものや、<span class="wikilink">双子のパラドックス</span>や<span class="wikilink">誕生日のパラドックス</span>のように結論が誤っているように見えるが正しいもの、<span class="wikilink">自己言及のパラドックス</span>のように<span class="wikilink">矛盾</span>に関連したものなどがある。</p>
+
+  <div class="section-hidden">
+  <h2>脚注<span class="editsection"><a href="#">[編集]</a></span></h2>
+
+  <p>［<span class="wikilink">脚注の使い方</span>］</p>
+
+  <h3>注釈</h3>
+  <div class="reflist">
+    <p><span class="ref-label">1.</span> <span class="wikilink">韓非子</span>外儲説にこれにもとづく説話がある</p>
+    <p><span class="ref-label">2.</span> その他にもたとえば一時的に引き上げられていた課税率を下げることを「減税」と呼ぶ、臨時の減税措置を解除することを「増税」と呼ぶような場合、あるいは販売予定価格に割り増した額を最初に提示し「今日は特別に値引きします」などと提案する場合、それぞれ「減税」「増税」「値引き」などがloaded languageである。</p>
+  </div>
+
+  <h3>出典</h3>
+  <div class="reflist">
+    <p><span class="ref-label">1.</span> ブリタニカ国際大百科事典小項目事典</p>
+    <p><span class="ref-label">2.</span> 小学館デジタル大辞泉</p>
+    <p><span class="ref-label">3.</span> 平凡社 編『大辞典』 七、平凡社〈大辞典〉、1936年、620頁。</p>
+    <p><span class="ref-label">4.</span> <span class="wikilink">新村出</span> 編『<span class="wikilink">広辞苑</span>』（第七版）<span class="wikilink">岩波書店</span>。</p>
+    <p><span class="ref-label">5.</span> 研究社新英和中辞典"sophism"</p>
+    <p><span class="ref-label">6.</span> Eゲイト英和辞典"sophism"</p>
+    <p><span class="ref-label">7.</span> 国民文庫刊行会 編「国訳史記列伝 上巻 屈原賈生列伝第二十四」『国訳漢文大成 経子史部 第15巻』 上巻、箭内亘訳註（4版）、国民文庫刊行会〈国訳漢文大成〉、1924年、373頁。「【四○】詭弁。詐術。」</p>
+    <p><span class="ref-label">8.</span> <span class="wikilink">司馬遷</span>「五宗世家第二十九」『史記 第3至5』 第12〔3〕、有朋堂〈漢文叢書〉、1927年、555頁。</p>
+    <p><span class="ref-label">9.</span> <span class="wikilink">野崎昭弘 1976</span>, p. 62.</p>
+    <p><span class="ref-label">10.</span> <span class="wikilink">野崎昭弘 1976</span>, p. 58.</p>
+    <p><span class="ref-label">11.</span> <span class="wikilink">野崎昭弘 1976</span>, p. 60.</p>
+    <p><span class="ref-label">12.</span> <span class="wikilink">野崎昭弘 1976</span>, p. 61.</p>
+    <p><span class="ref-label">13.</span> 石谷 茂『∀と∃に泣く』現代数学社。<span class="wikilink">ISBN</span> <span class="wikilink">978-4-7687-0365-6</span>。「対偶漫談」の章を参照</p>
+  </div>
+  </div>
+
+  <h2>参考文献<span class="editsection"><a href="#">[編集]</a></span></h2>
+
+  <ul>
+    <li>小野田博一『正論なのに説得力のない人 ムチャクチャでも絶対に議論に勝つ人-正々堂々の詭弁術』日本実業出版社、2004年。<span class="wikilink">ISBN</span> <span class="wikilink">9784534038128</span>。</li>
+    <li>野崎昭弘『詭弁論理学』中央公論新社〈中公新書〉、1976年。<span class="wikilink">ISBN</span> <span class="wikilink">9784121004482</span>。</li>
+    <li>三浦俊彦『論理学がわかる事典』日本実業出版社、2004年。<span class="wikilink">ISBN</span> <span class="wikilink">9784534037107</span>。</li>
+    <li>Pigden, Charles (2018). "No-Ought-From-Is, the Naturalistic Fallacy, and the Fact/Value Distinction: The History of a Mistake" (英語). The Naturalistic Fallacy （<span class="wikilink">Cambridge University Press</span>）: 73-95.</li>
+  </ul>
+
+  <h2>文献情報<span class="editsection"><a href="#">[編集]</a></span></h2>
+
+  <ul>
+    <li>香西秀信『論理病をなおす!-処方箋としての詭弁』筑摩書房〈ちくま新書〉、2009年。<span class="wikilink">ISBN</span> <span class="wikilink">9784480065162</span>。</li>
+    <li>辻埜匠 (2013年1月8日). "<span class="wikilink">錯誤論：論理的/科学的に正しい推論/判断を妨げるもの</span>" (PDF). TuZino Taqumi. 2013年4月30日閲覧。</li>
+  </ul>
+
+  <h2>関連項目<span class="editsection"><a href="#">[編集]</a></span></h2>
+
+  <p><span class="wikilink">ウィクショナリー</span>に関連の辞書項目があります。<br>
+  <span class="wikilink">詭弁</span>、<span class="wikilink">こじつけ</span>、<span class="wikilink">牽強付会</span><br>
+  <span class="wikilink">英語版ウィクショナリー</span>に関連辞書項目があります。<br>
+  <span class="wikilink">sophism</span></p>
+
+  <ul class="seealso-list">
+    <li><span class="wikilink">レトリック</span></li>
+    <li><span class="wikilink">修辞技法</span></li>
+    <li><span class="wikilink">修辞学</span></li>
+    <li><span class="wikilink">議論学</span></li>
+    <li><span class="wikilink">嘘</span></li>
+    <li><span class="wikilink">マキャヴェリズム</span></li>
+    <li><span class="wikilink">パラドックス</span></li>
+    <li><span class="wikilink">偽装</span></li>
+    <li><span class="wikilink">論理学</span></li>
+    <li><span class="wikilink">利権</span></li>
+    <li><span class="wikilink">権謀術数</span></li>
+    <li><span class="wikilink">御用学者</span></li>
+    <li><span class="wikilink">誤謬</span></li>
+    <li><span class="wikilink">認知の歪み</span></li>
+    <li><span class="wikilink">東大話法</span></li>
+    <li><span class="wikilink">お役所言葉</span></li>
+    <li><span class="wikilink">ポジショントーク</span></li>
+    <li><span class="wikilink">ご飯論法</span></li>
+    <li><span class="wikilink">二重規範</span></li>
+    <li><span class="wikilink">偽善</span></li>
+    <li><span class="wikilink">情報の非対称性</span></li>
+    <li><span class="wikilink">ファリサイ派</span></li>
+  </ul>
+
+</article>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var article = document.querySelector('.wiki-article');
+    var headings = Array.prototype.filter.call(article.children, function (el) {
+      return el.tagName === 'H2';
+    });
+
+    headings.forEach(function (h2) {
+      var body = document.createElement('div');
+      body.className = 'section-body collapsed';
+
+      var next = h2.nextElementSibling;
+      while (next && next.tagName !== 'H2') {
+        var current = next;
+        next = next.nextElementSibling;
+        body.appendChild(current);
+      }
+      article.insertBefore(body, next);
+
+      var chevron = document.createElement('span');
+      chevron.className = 'section-chevron';
+      chevron.setAttribute('aria-hidden', 'true');
+      h2.insertBefore(chevron, h2.firstChild);
+
+      h2.classList.add('collapsible-heading');
+      h2.setAttribute('aria-expanded', 'false');
+      h2.setAttribute('role', 'button');
+      h2.setAttribute('tabindex', '0');
+
+      function toggle() {
+        var expanded = h2.getAttribute('aria-expanded') === 'true';
+        h2.setAttribute('aria-expanded', String(!expanded));
+        body.classList.toggle('collapsed', expanded);
+      }
+
+      h2.addEventListener('click', toggle);
+      h2.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toggle();
+        }
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
