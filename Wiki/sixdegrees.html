@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>六次の隔たり</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: #f6f6f6;
+      color: #202122;
+      font-family: sans-serif, "Helvetica Neue", "Hiragino Kaku Gothic ProN", "Meiryo", "MS PGothic", sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .wiki-article {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1.5em 1.5em 3em;
+      background: #fff;
+      border-left: 1px solid #a7d7f9;
+      border-right: 1px solid #a7d7f9;
+      min-height: 100vh;
+    }
+
+    h1 {
+      font-family: sans-serif, "Helvetica Neue", "Hiragino Kaku Gothic ProN", "Meiryo", "MS PGothic", sans-serif;
+      font-size: 1.75em;
+      font-weight: normal;
+      border-bottom: none;
+      margin: 0;
+      padding: 0;
+      line-height: 1.2;
+    }
+
+    .wiki-page-header {
+      margin-bottom: 0.5em;
+    }
+
+    .first-heading-row {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 1em;
+      padding-bottom: 0.35em;
+      border-bottom: 1px solid #a2a9b1;
+    }
+
+    .wiki-languages {
+      flex-shrink: 0;
+      font-size: 0.85em;
+      padding-bottom: 0.15em;
+    }
+
+    .wiki-languages a {
+      color: #36c;
+    }
+
+    .wiki-languages-icon {
+      display: inline-block;
+      width: 1.1em;
+      height: 1.1em;
+      margin-right: 0.15em;
+      vertical-align: -0.15em;
+      border: 1px solid #72777d;
+      border-radius: 2px;
+      font-size: 0.65em;
+      line-height: 1.1em;
+      text-align: center;
+      color: #72777d;
+      font-weight: bold;
+    }
+
+    .wiki-tabs {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 1em;
+      border-bottom: 1px solid #a2a9b1;
+      margin-top: 0;
+    }
+
+    .wiki-tabs-left,
+    .wiki-tabs-right {
+      display: flex;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 0;
+    }
+
+    .wiki-tab {
+      display: inline-block;
+      padding: 0.45em 0.65em 0.35em;
+      font-size: 0.85em;
+      color: #36c;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      white-space: nowrap;
+    }
+
+    .wiki-tab.active {
+      color: #202122;
+      border-bottom-color: #202122;
+      font-weight: normal;
+    }
+
+    .wiki-tab-tools::after {
+      content: "▾";
+      font-size: 0.75em;
+      margin-left: 0.15em;
+    }
+
+    .wiki-source {
+      margin: 0.6em 0 0.8em;
+      font-size: 0.85em;
+      color: #202122;
+    }
+
+    h2 {
+      font-family: sans-serif, "Helvetica Neue", "Hiragino Kaku Gothic ProN", "Meiryo", "MS PGothic", sans-serif;
+      font-size: 1.5em;
+      font-weight: normal;
+      border-bottom: 1px solid #a2a9b1;
+      margin: 1em 0 0.5em;
+      padding-bottom: 0.15em;
+      overflow: hidden;
+    }
+
+    h3 {
+      font-family: sans-serif, "Helvetica Neue", "Hiragino Kaku Gothic ProN", "Meiryo", "MS PGothic", sans-serif;
+      font-size: 1.2em;
+      font-weight: bold;
+      margin: 0.8em 0 0.4em;
+    }
+
+    h4 {
+      font-family: sans-serif, "Helvetica Neue", "Hiragino Kaku Gothic ProN", "Meiryo", "MS PGothic", sans-serif;
+      font-size: 1.02em;
+      font-weight: bold;
+      margin: 0.7em 0 0.3em;
+    }
+
+    .incident-block {
+      margin: 1em 0 1.5em;
+      padding-top: 0.2em;
+    }
+
+    .incident-block + .incident-block {
+      border-top: 1px solid #eaecf0;
+      padding-top: 1em;
+    }
+
+    p { margin: 0.5em 0; }
+
+    .editsection {
+      font-family: sans-serif, "Helvetica Neue", "Hiragino Kaku Gothic ProN", "Meiryo", "MS PGothic", sans-serif;
+      font-size: 0.65em;
+      font-weight: normal;
+      margin-left: 0.4em;
+    }
+
+    .editsection a {
+      color: #36c;
+      text-decoration: none;
+    }
+
+    .editsection a:hover { text-decoration: underline; }
+
+    .section-hidden {
+      display: none;
+    }
+
+    .ambox-inner {
+      display: flex;
+      align-items: center;
+    }
+
+    .ambox-image {
+      flex-shrink: 0;
+      width: 56px;
+      padding: 0.45em 0.35em 0.45em 0.5em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      align-self: stretch;
+    }
+
+    .ambox-image svg {
+      display: block;
+      width: 44px;
+      height: 44px;
+    }
+
+    .ambox-text {
+      flex: 1;
+      min-width: 0;
+      padding: 0.55em 0.85em 0.55em 0.15em;
+    }
+
+    .ambox-text p {
+      margin: 0;
+    }
+
+    .ambox-group {
+      border: 1px solid #a2a9b1;
+      border-left: 10px solid #f28500;
+      background: #fff;
+      margin: 0.5em 7% 0.8em;
+      font-size: 0.875em;
+      line-height: 1.55;
+      overflow: hidden;
+      clear: both;
+    }
+
+    .ambox-group .ambox-inner {
+      align-items: flex-start;
+    }
+
+    .ambox-group .ambox-inner + .ambox-inner {
+      border-top: 1px solid #a2a9b1;
+    }
+
+    .ambox-group .ambox-image {
+      padding-top: 0.6em;
+    }
+
+    .ambox-issues ul {
+      margin: 0.3em 0 0.5em;
+      padding-left: 1.3em;
+    }
+
+    .ambox-issues li {
+      margin: 0.15em 0;
+    }
+
+    .ambox-issues .issue-date {
+      color: #54595d;
+      white-space: nowrap;
+    }
+
+    .ambox-searchlist {
+      margin-top: 0.4em;
+      font-size: 0.92em;
+      color: #202122;
+    }
+
+    .infobox {
+      float: right;
+      clear: right;
+      width: 22em;
+      margin: 0 0 1em 1.2em;
+      border: 1px solid #a2a9b1;
+      border-collapse: collapse;
+      border-spacing: 0;
+      background: #fff;
+      font-size: 88%;
+      line-height: 1.4;
+      color: #202122;
+    }
+
+    .infobox-above {
+      padding: 0.4em 0.6em;
+      font-size: 125%;
+      font-weight: bold;
+      text-align: center;
+      background: #eaecf0;
+      border-bottom: 1px solid #a2a9b1;
+    }
+
+    .infobox-above .infobox-sub {
+      display: block;
+      font-size: 80%;
+      font-weight: bold;
+      margin-top: 0.15em;
+    }
+
+    .infobox-image {
+      padding: 0.8em 1.4em;
+      text-align: center;
+      background: #fff;
+      border-bottom: 1px solid #a2a9b1;
+    }
+
+    .infobox-image svg {
+      display: block;
+      width: 100%;
+      max-width: 160px;
+      height: auto;
+      margin: 0 auto;
+    }
+
+    .infobox-caption {
+      margin-top: 0.35em;
+      font-size: 88%;
+      line-height: 1.35;
+      text-align: center;
+      color: #202122;
+    }
+
+    .infobox-header {
+      padding: 0.25em 0.4em;
+      font-weight: bold;
+      text-align: center;
+      background: #cedff2;
+      border-top: 1px solid #a2a9b1;
+      border-bottom: 1px solid #a2a9b1;
+    }
+
+    .infobox-office {
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .infobox th,
+    .infobox td {
+      border-top: 1px solid #a2a9b1;
+      padding: 0.2em 0.4em;
+      vertical-align: top;
+    }
+
+    .infobox th[scope="row"] {
+      width: 35%;
+      text-align: left;
+      font-weight: bold;
+      background: transparent;
+    }
+
+    .infobox td {
+      background: transparent;
+    }
+
+    .infobox a {
+      color: #36c;
+    }
+
+    blockquote {
+      margin: 0.8em 2.5em;
+      padding: 0;
+      border: none;
+      font-style: normal;
+    }
+
+    .wikitable {
+      border-collapse: collapse;
+      border: 1px solid #a2a9b1;
+      margin: 0.8em 0;
+      font-size: 0.95em;
+      width: 100%;
+      background: #fff;
+    }
+
+    .wikitable th,
+    .wikitable td {
+      border: 1px solid #a2a9b1;
+      padding: 8px 12px;
+      vertical-align: middle;
+    }
+
+    .wikitable th {
+      background: #eaecf0;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .wikitable td {
+      background: #f8f9fa;
+      text-align: left;
+    }
+
+    ul { margin: 0.4em 0; padding-left: 1.6em; }
+
+    ul li { margin: 0.2em 0; }
+
+    .works-list li,
+    .seealso-list li {
+      list-style: none;
+      margin-left: -1em;
+    }
+
+    .works-list li::before { content: "－ "; }
+
+    .seealso-list li::before { content: "・"; margin-right: 0.2em; }
+
+    .works-list em { font-style: italic; }
+
+    .incident-list dt {
+      font-weight: bold;
+      margin-top: 0.7em;
+    }
+
+    .incident-list dd {
+      margin: 0.2em 0 0;
+    }
+
+    .reflist {
+      font-size: 0.9em;
+      margin: 0.5em 0;
+    }
+
+    .reflist .ref-label {
+      font-weight: bold;
+      margin-right: 0.3em;
+    }
+
+    .cn {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 1;
+    }
+
+    .cn a,
+    .cn .wikilink {
+      color: #36c;
+    }
+
+    a { color: #36c; text-decoration: none; }
+
+    .wikilink {
+      color: #36c;
+      cursor: default;
+    }
+    a:hover { text-decoration: underline; }
+    a:visited { color: #36c; }
+
+    /* ---- 画像サムネイル ---- */
+    .thumb {
+      float: right;
+      clear: right;
+      width: 240px;
+      margin: 0 0 1em 1.2em;
+      padding: 3px;
+      border: 1px solid #c8ccd1;
+      background: #f8f9fa;
+      text-align: center;
+    }
+
+    .thumb svg {
+      display: block;
+      width: 100%;
+      height: auto;
+      background: #fff;
+      border: 1px solid #eaecf0;
+    }
+
+    .thumb-caption {
+      margin: 0.4em 0.2em 0.2em;
+      font-size: 0.85em;
+      line-height: 1.4;
+      text-align: left;
+      color: #202122;
+    }
+
+    /* ---- モバイル用ヘッダー要素（デスクトップでは非表示） ---- */
+    .wiki-tagline {
+      display: none;
+      margin: 0.15em 0 0;
+      font-size: 0.85em;
+      color: #54595d;
+    }
+
+    .wiki-mobile-toolbar {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 0.5em;
+      padding: 0.4em 0;
+      border-top: 1px solid #eaecf0;
+      border-bottom: 1px solid #eaecf0;
+      color: #54595d;
+    }
+
+    .wiki-mobile-toolbar .toolbar-right {
+      display: flex;
+      gap: 1.2em;
+    }
+
+    .wiki-mobile-toolbar svg {
+      display: block;
+      width: 20px;
+      height: 20px;
+      fill: #54595d;
+    }
+
+    /* ---- 開閉セクション ---- */
+    h2.collapsible-heading {
+      position: relative;
+    }
+
+    .section-chevron {
+      display: none;
+      flex-shrink: 0;
+      width: 0.5em;
+      height: 0.5em;
+      margin: -0.25em 0.75em 0 0.1em;
+      border-right: 1.5px solid #54595d;
+      border-bottom: 1.5px solid #54595d;
+      transition: transform 0.15s ease;
+      transform: rotate(45deg);
+    }
+
+    @media (max-width: 720px) {
+      body {
+        background: #fff;
+        font-size: 15px;
+      }
+
+      .wiki-article {
+        border: none;
+        padding: 1em 1em 3em;
+      }
+
+      .first-heading-row {
+        display: block;
+        border-bottom: none;
+        padding-bottom: 0;
+      }
+
+      h1 {
+        font-family: "Linux Libertine", "Georgia", "Times", "Hiragino Mincho ProN", "Yu Mincho", serif;
+        font-size: 1.7em;
+      }
+
+      .wiki-languages { display: none; }
+      .wiki-tabs { display: none; }
+      .wiki-source { display: none; }
+
+      .wiki-tagline { display: block; }
+      .wiki-mobile-toolbar { display: flex; }
+
+      .ambox-group {
+        margin: 0 0 0.6em;
+        font-size: 0.8em;
+        line-height: 1.5;
+        border: 1px solid #eaecf0;
+        border-top: 4px solid #c8ccd1;
+        border-left-width: 10px;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+      }
+
+      .ambox-image {
+        width: 52px;
+        padding: 0.8em 0.4em 0.8em 0.8em;
+      }
+
+      .ambox-image svg {
+        width: 32px;
+        height: 32px;
+      }
+
+      .ambox-text {
+        padding: 0.8em 0.6em 0.8em 0.3em;
+      }
+
+      .lead-wrap {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .lead-wrap p { order: 0; }
+      .lead-wrap p:first-of-type { order: -2; }
+
+      .infobox {
+        order: -1;
+        float: none;
+        width: 100%;
+        margin: 0.8em 0 1em;
+      }
+
+      .thumb {
+        float: none;
+        width: 100%;
+        margin: 0.8em 0 1em;
+      }
+
+      h2 {
+        font-family: "Linux Libertine", "Georgia", "Times", "Hiragino Mincho ProN", "Yu Mincho", serif;
+      }
+
+      h2.collapsible-heading {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        border-bottom: 1px solid #c8ccd1;
+        padding: 0.55em 0;
+        margin: 0;
+        font-size: 1.55em;
+        font-weight: normal;
+        line-height: 1.35;
+        -webkit-tap-highlight-color: transparent;
+        user-select: none;
+      }
+
+      h2.collapsible-heading .editsection { display: none; }
+
+      .section-chevron { display: inline-block; }
+
+      h2.collapsible-heading[aria-expanded="true"] .section-chevron {
+        transform: rotate(225deg);
+        margin-top: 0.15em;
+      }
+
+      .section-body.collapsed { display: none; }
+
+      .section-body {
+        padding-bottom: 0.5em;
+      }
+
+      .wikitable {
+        display: block;
+        overflow-x: auto;
+      }
+
+      blockquote {
+        margin: 0.8em 1.2em;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<article class="wiki-article">
+
+  <header class="wiki-page-header">
+    <div class="first-heading-row">
+      <h1>六次の隔たり</h1>
+      <p class="wiki-tagline">全ての人や物事が6ステップ以内で繋がっているとする仮説</p>
+      <div class="wiki-languages">
+        <a href="#"><span class="wiki-languages-icon">文A</span>言語を追加</a>
+      </div>
+    </div>
+    <div class="wiki-mobile-toolbar">
+      <span class="toolbar-left" aria-label="言語">
+        <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M11 2H9v2H3v2h8.9c-.4 1.7-1.3 3.2-2.4 4.5-.7-.8-1.3-1.7-1.8-2.7H5.5c.6 1.5 1.5 2.9 2.6 4.1L4 16l1.4 1.4 4.1-4.1 2.6 2.6.9-2.1-2.1-2.1c1.4-1.6 2.4-3.5 2.9-5.7H17V4h-6V2z"/></svg>
+      </span>
+      <span class="toolbar-right">
+        <span aria-label="ウォッチリスト">
+          <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 1.5l2.6 5.3 5.9.9-4.2 4.1 1 5.8-5.3-2.8-5.3 2.8 1-5.8L1.5 7.7l5.9-.9L10 1.5zm0 4.5L8.5 9.1l-3.4.5 2.5 2.4-.6 3.4L10 13.8l3 1.6-.6-3.4 2.5-2.4-3.4-.5L10 6z"/></svg>
+        </span>
+        <span aria-label="編集">
+          <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M16.8 2c-.4 0-.8.2-1.1.5l-1.2 1.2 3.8 3.8 1.2-1.2c.6-.6.6-1.6 0-2.2l-1.6-1.6c-.3-.3-.7-.5-1.1-.5zM13.4 4.8L3 15.2V19h3.8L17.2 8.6l-3.8-3.8z"/></svg>
+        </span>
+      </span>
+    </div>
+    <div class="wiki-tabs">
+      <div class="wiki-tabs-left">
+        <span class="wiki-tab active">ページ</span>
+        <a class="wiki-tab" href="#">ノート</a>
+      </div>
+      <div class="wiki-tabs-right">
+        <span class="wiki-tab active">閲覧</span>
+        <a class="wiki-tab" href="#">編集</a>
+        <a class="wiki-tab" href="#">履歴を表示</a>
+        <a class="wiki-tab wiki-tab-tools" href="#">ツール</a>
+      </div>
+    </div>
+    <p class="wiki-source">出典: オンライン百科事典</p>
+  </header>
+
+  <p>六次の隔たり（ろくじのへだたり、Six Degrees of Separation）とは、全ての人や物事は6ステップ以内で繋がっていて、<span class="wikilink">友達の友達</span>…を介して世界中の人々と間接的な知り合いになることができる、という仮説。多くの人数からなる世界が比較的少ない人数を介して繋がる<span class="wikilink">スモール・ワールド現象</span>の一例とされる。<span class="wikilink">SNS</span>に代表されるいくつかのネットワークサービスはこの仮説が下地になっている。</p>
+
+  <p>この仮説は、後述の<span class="wikilink">スタンレー・ミルグラム</span>の実験を裏づけとして大きく広まったが、それ以前から文学作品などを通じて知られていた。この仮説を描いた最古の作品は<span class="wikilink">ハンガリー</span>の文学者<span class="wikilink">カリンティ・フリジェシュ</span>による1929年の小説『鎖』とされているが<sup class="cn"><a href="#cite_note-1">[1]</a></sup>、「六次の隔たり」という名称は、劇作家ジョン・グエアの戯曲に由来する。この戯曲は後に『<span class="wikilink">私に近い6人の他人</span>』（原題：Six Degrees of Separation）として映画化された。</p>
+
+  <p>「六次理論」として<span class="wikilink">井上ひさし</span>も<span class="wikilink">2005年</span>5月23日の<span class="wikilink">日本ペンクラブ</span>の会長再任の時にひとりひとりが30人くらいの友だちがいるとすると、これを6回たどっていくというように説明して「<span class="wikilink">言論の自由</span>」を守ろうと語った<sup class="cn"><a href="#cite_note-2">[2]</a></sup>。</p>
+
+  <h2>六次の隔たりの簡単な計算例<span class="editsection"><a href="#">[編集]</a></span></h2>
+
+  <div class="thumb">
+    <svg viewBox="0 0 240 200" xmlns="http://www.w3.org/2000/svg" role="img">
+      <circle cx="120" cy="30" r="8" fill="#36c"/>
+      <text x="120" y="18" font-size="10" text-anchor="middle" fill="#202122">A</text>
+      <circle cx="60" cy="80" r="6" fill="#54595d"/>
+      <circle cx="120" cy="80" r="6" fill="#54595d"/>
+      <circle cx="180" cy="80" r="6" fill="#54595d"/>
+      <circle cx="30" cy="130" r="5" fill="#a2a9b1"/>
+      <circle cx="65" cy="130" r="5" fill="#a2a9b1"/>
+      <circle cx="100" cy="130" r="5" fill="#a2a9b1"/>
+      <circle cx="140" cy="130" r="5" fill="#a2a9b1"/>
+      <circle cx="175" cy="130" r="5" fill="#a2a9b1"/>
+      <circle cx="210" cy="130" r="5" fill="#a2a9b1"/>
+      <g stroke="#a2a9b1" stroke-width="1.2">
+        <line x1="120" y1="30" x2="60" y2="80"/>
+        <line x1="120" y1="30" x2="120" y2="80"/>
+        <line x1="120" y1="30" x2="180" y2="80"/>
+        <line x1="60" y1="80" x2="30" y2="130"/>
+        <line x1="60" y1="80" x2="65" y2="130"/>
+        <line x1="120" y1="80" x2="100" y2="130"/>
+        <line x1="120" y1="80" x2="140" y2="130"/>
+        <line x1="180" y1="80" x2="175" y2="130"/>
+        <line x1="180" y1="80" x2="210" y2="130"/>
+      </g>
+      <g fill="#a2a9b1" opacity="0.6">
+        <circle cx="15" cy="170" r="3"/>
+        <circle cx="45" cy="175" r="3"/>
+        <circle cx="80" cy="172" r="3"/>
+        <circle cx="120" cy="178" r="3"/>
+        <circle cx="160" cy="172" r="3"/>
+        <circle cx="195" cy="175" r="3"/>
+        <circle cx="225" cy="170" r="3"/>
+      </g>
+      <text x="120" y="195" font-size="9" text-anchor="middle" fill="#54595d">以下、同様に枝分かれが続く</text>
+    </svg>
+    <p class="thumb-caption">六次の隔たりのイメージ画</p>
+  </div>
+
+  <p>例えば、ある人物Aが50人の知り合いを持つとし、Aの知り合いであるBら50人が、Aとも互いにも重複しない知り合いを50人もち、Bらの知り合いであるCらがAともBらとも互いにも重複しない知り合いを50人もつ、と続ける。その場合、Aの6次以内の間接的な知り合いは50<sup>6</sup>より156億2500万人となり、<span class="wikilink">世界人口</span>を上回る。つまり、Aは知り合いを6人たどることで、もっとも遠い距離にいる任意の人物とも知り合いになることができる。このような関係の一部を単純化して表したものが右の図である。ただし、実際にはBの知り合いがAの知り合いである可能性もあるため、単純に平均の知り合いの数をもってこの計算を正当化することはできないことに注意が必要である。</p>
+
+  <p>また、同様に、Aたちが持つ「重複しない知り合いの数」が23人であるとすると、23<sup>6</sup>=148,035,889人となり、日本の総人口128,057,352人（2010年<span class="wikilink">国勢調査</span>に基づく2010年10月1日現在の確定値<sup class="cn"><a href="#cite_note-3">[3]</a></sup>）を上回る。</p>
+
+  <h2>最短仲介数<span class="editsection"><a href="#">[編集]</a></span></h2>
+
+  <p>上の例における「1」などの数字は、その人からAさんまで最短で何人たどればよいかを表しており、この数字を最短仲介数という。最短仲介数を現実の世界で求めるには大変な手間を要するが、一部の狭い世界ではこの最短距離を求めようとする遊びが存在する。代表的な例として、数学界での<span class="wikilink">エルデシュ数</span>、映画界での<span class="wikilink">ケヴィン・ベーコン数</span>や<span class="wikilink">モニカ・ルインスキー</span>数などが挙げられる。</p>
+
+  <h2>平均仲介数<span class="editsection"><a href="#">[編集]</a></span></h2>
+
+  <p>ある集団の中で起点とする人間0番を選び、0番と友人関係にある人たちを1番のグループ、1番に属する人と友人関係にあり0番ではない人たちを2番のグループ、2番に属する人と友人関係にあり0から1のグループに属さない人を3番のグループ、・・・といった手順で人々をグループ分けする。0番からはどう辿ってもたどり着けない人たちは∞番のグループに属するものとする。n番のグループに属する人の数をx<sub>n</sub>と表記すると、0番から集団のメンバーへの最短仲介数の平均y<sub>0</sub>が</p>
+
+  <blockquote>
+    <p>y<sub>0</sub>=(x<sub>1</sub>×1+x<sub>2</sub>×2+……+x<sub>n</sub>×n+……)/総人口</p>
+  </blockquote>
+
+  <p>と表せる。このy<sub>0</sub>を0番さんの平均仲介数という。</p>
+
+  <h2>実験<span class="editsection"><a href="#">[編集]</a></span></h2>
+
+  <p>一般に六次の隔たりを語る上で多く言及されるのが、<span class="wikilink">イェール大学</span>の<span class="wikilink">心理学者</span><span class="wikilink">スタンレー・ミルグラム</span>教授によって1967年に行われた<span class="wikilink">スモールワールド実験</span>である。</p>
+
+  <p>この実験では<span class="wikilink">ネブラスカ州</span><span class="wikilink">オマハ</span>の住人160人を無作為に選び、「同封した写真の人物は<span class="wikilink">ボストン</span>在住の株式仲買人です。この顔と名前の人物をご存知でしたらその人の元へこの手紙をお送り下さい。この人を知らない場合は貴方の住所氏名を書き加えた上で、貴方の友人の中で知っていそうな人にこの手紙を送って下さい」という文面の手紙をそれぞれに送った。その結果42通（26.25%）が実際に届き、42通が届くまでに経た人数の平均は5.83人であった。この実験は六次の隔たりの実証実験としてよく引き合いに出されるが、前述の26.25%という割合、世界中ではなく<span class="wikilink">アメリカ</span>国内に限っている点、追試に失敗した点などに触れられないまま、6というマジックナンバーや世界中といった誤解と共に言及されている場合が多い。</p>
+
+  <p>日本の<span class="wikilink">社会学者</span>も同様の実験を行った。九州を起点として「北海道の知人を紹介してください。もしいなければ、北海道に知人がいそうな人を紹介してください」と人々に尋ね回った。その結果北海道の人間に辿り着くまでの平均人数は7人であった。<span class="wikilink">コロンビア大学</span>の教授ダンカン・ワッツらが<span class="wikilink">電子メール</span>で同様の実験を行った際は、到達率2%、理論的な仲介人数は5 - 7人であった。</p>
+
+  <p><span class="wikilink">探偵!ナイトスクープ</span>で、「<span class="wikilink">与那国島</span>の日本最西端の地で最初に出会った人に友人を紹介してもらい、何人目で<span class="wikilink">明石家さんま</span>に辿り着くか」という企画が行われ、その結果は7人であった。</p>
+
+  <p>また2014年8月27日放送分の「<span class="wikilink">水曜日のダウンタウン</span>」において「数珠つなぎ6人で誰の電話番号にでもたどり着ける説」として六次の隔たりが紹介された。番組内では例として、道ゆく人に<span class="wikilink">ダウンタウン</span>の<span class="wikilink">松本人志</span>の電話番号を知っていそうな友人に電話をかけてもらい、何人で辿り着くかを検証したところ、結果は4人であった。その後も2023年8月2日放送分にも「どんな業界でも底辺から頂点まで3人介せば辿り着ける説」にて5つのジャンルで行い、1つ目は<span class="wikilink">サッカー選手</span>で底辺は小学生のアマチュアサッカー選手、頂点は<span class="wikilink">橋岡大樹</span>で行い、間2人で到達して説立証した。2つ目は<span class="wikilink">ミュージシャン</span>で底辺は路上歴半年のミュージシャン、頂点は<span class="wikilink">布袋寅泰</span>で行い、そもそも底辺ミュージシャンは布袋のことを知らなかったが、間4人で到達し、説立証とはならなかった。3つ目は<span class="wikilink">アパレル</span>で底辺は古着店のアルバイト店員、頂点は<span class="wikilink">NIGO</span>で行い、間2人で到達した。4つ目は<span class="wikilink">Youtuber</span>で底辺は<span class="wikilink">渋谷</span>で探した底辺Youtuber、頂点は<span class="wikilink">HIKAKIN</span>で行い、間4人で到達した。5つ目は<span class="wikilink">芸人</span>で底辺は当時1年目だった鯱鉾ダイナソーの足立、頂点は松本で行い、間4人で到達した。</p>
+
+  <h2>ソーシャル・ネットワーキング・サービスとの関係<span class="editsection"><a href="#">[編集]</a></span></h2>
+
+  <p><span class="wikilink">ソーシャル・ネットワーキング・サービス</span>の理論的下地の1つであり、1997年から2001年まで運営されていた<span class="wikilink">SixDegrees.com</span>や<span class="wikilink">日本</span>で2004年から運営されている<span class="wikilink">GREE</span><sup class="cn"><a href="#cite_note-4">[4]</a></sup>の名称の由来である。</p>
+
+  <p>2008年、日本国内最大のSNSコミュニティ<span class="wikilink">mixi</span>について、同社のエンジニアによって<span class="wikilink">スモールワールド性</span>の検証記事が書かれ、6人目で全体の95%以上の人数に到達できることが明らかにされた<sup class="cn"><a href="#cite_note-5">[5]</a></sup>。2011年には、<span class="wikilink">Facebook</span>と<span class="wikilink">ミラノ大学</span>による共同調査の結果、世界中のFacebookユーザーのうち任意の2人を隔てる人の数は平均4.74人であることが発表された<sup class="cn"><a href="#cite_note-6">[6]</a></sup>。</p>
+
+  <div class="section-hidden">
+  <h2>脚注<span class="editsection"><a href="#">[編集]</a></span></h2>
+
+  <div class="reflist">
+    <p id="cite_note-1"><span class="ref-label">1.</span> アルバート＝ラズロ・バラバシ著　青木薫訳『新ネットワーク思考―世界の仕組みを読み解く』NHK出版、2002年</p>
+    <p id="cite_note-2"><span class="ref-label">2.</span> <span class="wikilink">笹沢信</span>『ひさし伝』（<span class="wikilink">新潮社</span> <span class="wikilink">2012年</span>）p410f。</p>
+    <p id="cite_note-3"><span class="ref-label">3.</span> “<span class="wikilink">平成22年国勢調査</span>”. <span class="wikilink">総務省統計局</span>. 2013年5月14日閲覧。</p>
+    <p id="cite_note-4"><span class="ref-label">4.</span> “<span class="wikilink">始まりと由来</span>”. <span class="wikilink">グリー株式会社</span>. 2013年5月14日閲覧。</p>
+    <p id="cite_note-5"><span class="ref-label">5.</span> “<span class="wikilink">mixiのスモールワールド性の検証</span>”. <span class="wikilink">株式会社ミクシィ</span>. 2013年5月14日閲覧。</p>
+    <p id="cite_note-6"><span class="ref-label">6.</span> <span class="wikilink">“Facebookでは4.74人を介せば全ユーザーとつながることが判明”</span>. <span class="wikilink">Impress Watch</span>. 2011年11月24日。</p>
+  </div>
+  </div>
+
+  <h2>関連項目<span class="editsection"><a href="#">[編集]</a></span></h2>
+
+  <ul class="seealso-list">
+    <li><span class="wikilink">Wikipedia:Six degrees of Wikipedia</span></li>
+  </ul>
+
+</article>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var article = document.querySelector('.wiki-article');
+    var headings = Array.prototype.filter.call(article.children, function (el) {
+      return el.tagName === 'H2';
+    });
+
+    headings.forEach(function (h2) {
+      var body = document.createElement('div');
+      body.className = 'section-body collapsed';
+
+      var next = h2.nextElementSibling;
+      while (next && next.tagName !== 'H2') {
+        var current = next;
+        next = next.nextElementSibling;
+        body.appendChild(current);
+      }
+      article.insertBefore(body, next);
+
+      var chevron = document.createElement('span');
+      chevron.className = 'section-chevron';
+      chevron.setAttribute('aria-hidden', 'true');
+      h2.insertBefore(chevron, h2.firstChild);
+
+      h2.classList.add('collapsible-heading');
+      h2.setAttribute('aria-expanded', 'false');
+      h2.setAttribute('role', 'button');
+      h2.setAttribute('tabindex', '0');
+
+      function toggle() {
+        var expanded = h2.getAttribute('aria-expanded') === 'true';
+        h2.setAttribute('aria-expanded', String(!expanded));
+        body.classList.toggle('collapsed', expanded);
+      }
+
+      h2.addEventListener('click', toggle);
+      h2.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toggle();
+        }
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
