@@ -784,7 +784,7 @@ img{ max-width:100%; display:block; }
     </article>
     <article data-cut>
       <p class="s-line">……あぁ、やっとオチを見つけた。</p>
-      <p class="s-line"><span class="s-type" id="typeReveal1" data-text="あんまりキミがしつこいから、コレも今書いてるんだよ。"></span></p>
+      <p class="s-line"><span class="s-type" id="typeReveal1" data-type-chunks='[["anmari","あんまり"],["kimi","キミ"],["ga","が"],["shitsukoi","しつこい"],["kara","から"],["","、"],["kore","コレ"],["mo","も"],["ima","今"],["kaiteru","書いてる"],["ndayo","んだよ"],["","。"]]'></span></p>
       <p class="s-gap">　</p>
     </article>
     <article data-cut>
@@ -905,30 +905,64 @@ img{ max-width:100%; display:block; }
     });
   }
 
-  /* ─── Scroll-triggered typing animation ─── */
+  /* ─── Scroll-triggered typing animation (IME-style: romaji, then conversion) ─── */
   var typeIO = null;
   function initTypeReveal(){
     if (typeIO) typeIO.disconnect();
-    var targets = spread.querySelectorAll('.s-type[data-text]');
+    var targets = spread.querySelectorAll('.s-type[data-type-chunks]');
     if (!targets.length) return;
     typeIO = new IntersectionObserver(function(entries){
       entries.forEach(function(entry){
         if (!entry.isIntersecting) return;
         typeIO.unobserve(entry.target);
-        typeText(entry.target, entry.target.getAttribute('data-text'));
+        var chunks;
+        try { chunks = JSON.parse(entry.target.getAttribute('data-type-chunks')); }
+        catch (e) { chunks = null; }
+        if (chunks) typeChunks(entry.target, chunks);
       });
     }, { root: canvas, threshold: 0.6 });
     targets.forEach(function(t){ typeIO.observe(t); });
   }
 
-  function typeText(target, text){
+  function jitter(base, spread){
+    return base + Math.floor(Math.random() * spread);
+  }
+
+  function typeChunks(target, chunks){
     target.textContent = '';
-    var i = 0;
-    var timer = setInterval(function(){
-      i++;
-      target.textContent = text.slice(0, i);
-      if (i >= text.length) clearInterval(timer);
-    }, 90);
+    var settled = '';
+    var ci = 0;
+
+    function nextChunk(){
+      if (ci >= chunks.length) return;
+      var romaji = chunks[ci][0];
+      var kana   = chunks[ci][1];
+
+      if (!romaji) {
+        settled += kana;
+        target.textContent = settled;
+        ci++;
+        setTimeout(nextChunk, jitter(70, 60));
+        return;
+      }
+
+      var ri = 0;
+      (function typeRomaji(){
+        ri++;
+        target.textContent = settled + romaji.slice(0, ri);
+        if (ri < romaji.length) {
+          setTimeout(typeRomaji, jitter(45, 55));
+        } else {
+          setTimeout(function(){
+            settled += kana;
+            target.textContent = settled;
+            ci++;
+            setTimeout(nextChunk, jitter(70, 60));
+          }, jitter(120, 100));
+        }
+      })();
+    }
+    nextChunk();
   }
 
   function applyRevisionChrome(ds, id){
