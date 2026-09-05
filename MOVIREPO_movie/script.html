@@ -307,6 +307,8 @@ img{ max-width:100%; display:block; }
 .cmt-tip .tip-author{ font-weight:700; font-size:12px; color:#bfe6da; }
 .cmt-tip .tip-time{ font-size:10px; color:#93a39d; }
 .cmt-tip .tip-text{ color:#eef3f1; }
+.cmt-tip .tip-link{ color:#8fd6ff; text-decoration:underline; word-break:break-all; }
+.cmt-tip .tip-link:hover{ color:#b8e6ff; }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━
    Delete-script confirmation modal
@@ -792,22 +794,23 @@ img{ max-width:100%; display:block; }
       <p class="s-gap">　</p>
       <p class="s-line">劇的な出会いのうちの<span class="tcu">95</span>％は途中で途切れて、ひそかに失敗に終わる。</p>
       <p class="s-gap">　</p>
-      <p class="s-line">その脆い連鎖を実際に繋げてしまえるのが、<span class="s-glitch" style="animation-delay:-1.8s">█</span>である。</p>
+      <p class="s-line">その<span class="cmt" data-cmt="c11" tabindex="0" role="button" aria-haspopup="true">実際に繋げてしまえる</span>のが、<span class="s-glitch" style="animation-delay:-1.8s">█</span>である。</p>
       <p class="s-gap">　</p>
-      <p class="s-line"><span class="s-glitch" style="animation-delay:-3.2s">キミ</span>と、<span class="s-glitch" style="animation-delay:0s">キミ</span>の望む世界を、より確実で、より幸せな方向へと繋げることができる。</p>
+      <p class="s-line"><span class="s-glitch" style="animation-delay:-3.2s">キミ</span>と、<span class="cmt" data-cmt="c12" tabindex="0" role="button" aria-haspopup="true"><span class="s-glitch" style="animation-delay:0s">キミ</span>の望む世界</span>を、より確実で、より<span class="cmt" data-cmt="c13" tabindex="0" role="button" aria-haspopup="true">幸せな方向</span>へと繋げることができる。</p>
+      <p class="s-gap">　</p>
     </article>
     <article data-cut>
-      <p class="s-line"><span class="s-glitch" style="animation-delay:-0.6s">█</span>の欲望は、その生温い絶望や不変を平穏と呼ぶことを許さない。</p>
+      <p class="s-line"><span class="s-glitch" style="animation-delay:-0.6s">█</span>の欲望は、その<span class="cmt" data-cmt="c14" tabindex="0" role="button" aria-haspopup="true">生温い絶望や不変を平穏と呼ぶことを許さない。</span></p>
       <p class="s-gap">　</p>
-      <p class="s-line"><span class="s-glitch" style="animation-delay:-1.8s">█</span>以外の人間が不幸に沈み、傷付く様に納得がいかない。</p>
+      <p class="s-line"><span class="cmt" data-cmt="c15" tabindex="0" role="button" aria-haspopup="true"><span class="s-glitch" style="animation-delay:-1.8s">█</span>以外の人間が不幸に沈み、傷付く様に納得がいかない。</span></p>
       <p class="s-gap">　</p>
-      <p class="s-line">なりたい姿になれる、見たかった景色に救われる、誰かの選択が世界を変える。</p>
+      <p class="s-line"><span class="cmt" data-cmt="c16" tabindex="0" role="button" aria-haspopup="true">なりたい姿になれる</span>、<span class="cmt" data-cmt="c17" tabindex="0" role="button" aria-haspopup="true">見たかった景色に救われる</span>、<span class="cmt" data-cmt="c18" tabindex="0" role="button" aria-haspopup="true">誰かの選択が世界を変える</span>。</p>
       <p class="s-gap">　</p>
-      <p class="s-line">現実がどうだかは知らないが、物事は常にハッピーエンドであるべきだ。</p>
+      <p class="s-line">現実がどうだかは知らないが、物事は常に<span class="cmt" data-cmt="c19" tabindex="0" role="button" aria-haspopup="true">ハッピーエンド</span>であるべきだ。</p>
     </article>
     <article data-cut>
       <p class="s-gap">　</p>
-      <p class="s-line">それが<span class="s-glitch" style="animation-delay:-3.2s">█</span>の持論。もちろんオチはお察しの通り。</p>
+      <p class="s-line">それが<span class="s-glitch" style="animation-delay:-3.2s">█</span>の持論。もちろんオチは<span class="cmt" data-cmt="c20" tabindex="0" role="button" aria-haspopup="true">お察しの通り</span>。</p>
       <p class="s-gap">　</p>
       <p class="s-line"><span class="s-glitch" style="animation-delay:0s">█</span>はこの詭弁を<span class="s-glitch" style="animation-delay:-0.6s">█</span>の動機として、物好きな<span class="s-glitch" style="animation-delay:-1.8s">キミ</span>に手向けよう。</p>
     </article>
@@ -839,7 +842,17 @@ img{ max-width:100%; display:block; }
     c7: { author:'獅子王千暁', time:'2026/09/05 09:14', text:'嘘。あの人らにそれは無理。向いてないことを強要するのは酷だ。' },
     c8: { author:'獅子王千暁', time:'2026/09/05 09:16', text:'嘘。戸籍は自分で捨てた。さすがに母さんたちも相当驚いたらしいね。やり方は内緒。話が長くなるから。' },
     c9: { author:'獅子王千暁', time:'2026/09/05 09:16', text:'もっと嘘。橋の下から拾われたらしい。' },
-    c10: { author:'獅子王千暁', time:'2026/09/05 09:20', text:'さて。さすがにオチは言わずとも分かるよね？' }
+    c10: { author:'獅子王千暁', time:'2026/09/05 09:20', text:'さて。さすがにオチは言わずとも分かるよね？' },
+    c11: { author:'獅子王千暁', time:'2026/09/05 09:25', url:'https://arg-440.vercel.app/Wiki/sophism.html' },
+    c12: { author:'獅子王千暁', time:'2026/09/05 09:25', url:'https://arg-440.vercel.app/Wiki/sophism.html' },
+    c13: { author:'獅子王千暁', time:'2026/09/05 09:26', url:'https://arg-440.vercel.app/Wiki/sophism.html' },
+    c14: { author:'獅子王千暁', time:'2026/09/05 09:26', url:'https://arg-440.vercel.app/Wiki/sophism.html' },
+    c15: { author:'獅子王千暁', time:'2026/09/05 09:27', url:'https://arg-440.vercel.app/Wiki/sophism.html' },
+    c16: { author:'獅子王千暁', time:'2026/09/05 09:27', url:'https://arg-440.vercel.app/Wiki/sophism.html' },
+    c17: { author:'獅子王千暁', time:'2026/09/05 09:28', url:'https://arg-440.vercel.app/Wiki/sophism.html' },
+    c18: { author:'獅子王千暁', time:'2026/09/05 09:28', url:'https://arg-440.vercel.app/Wiki/sophism.html' },
+    c19: { author:'獅子王千暁', time:'2026/09/05 09:29', url:'https://arg-440.vercel.app/Wiki/sophism.html' },
+    c20: { author:'獅子王千暁', time:'2026/09/05 09:30', url:'https://ja.wikipedia.org/wiki/%E5%98%98' }
   };
 
   var REV_ORDER = ['necrogame-v1', 'necrogame-v0', 'necrogame-v2', 'necrogame-v3', 'necrogame-v4'];
@@ -1118,7 +1131,17 @@ img{ max-width:100%; display:block; }
       head.appendChild(author);
       head.appendChild(time);
       var text = el('div', 'tip-text');
-      text.textContent = c.text;
+      if (c.url) {
+        var link = document.createElement('a');
+        link.className = 'tip-link';
+        link.href = c.url;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.textContent = c.url;
+        text.appendChild(link);
+      } else {
+        text.textContent = c.text;
+      }
       item.appendChild(head);
       item.appendChild(text);
       tipList.appendChild(item);
