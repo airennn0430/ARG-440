@@ -242,21 +242,19 @@ img{ max-width:100%; display:block; }
 .s-line-cont{ padding-inline-start:var(--col-w); }
 .s-gap{ color:transparent; }
 .s-glitch{ display:inline-block; animation:tlGlitch 4.5s infinite steps(1, end); }
-.s-delete-line{
-  writing-mode:horizontal-tb;
-  display:flex; align-items:center; justify-content:center;
-}
+.s-delete-line{ position:relative; }
 .s-delete-btn{
   writing-mode:horizontal-tb;
-  width:24px; height:24px;
+  position:absolute; left:50%; bottom:14px; transform:translateX(-50%);
+  width:34px; height:34px;
   display:flex; align-items:center; justify-content:center;
-  background:transparent; border:1px solid var(--tl-ink-dim); border-radius:4px;
+  background:rgba(210,69,69,.10); border:1.5px solid var(--tl-red); border-radius:6px;
   color:var(--tl-red);
   cursor:pointer;
-  opacity:.75;
+  opacity:.9;
   transition:opacity .15s, background .15s;
 }
-.s-delete-btn:hover{ opacity:1; background:rgba(210,69,69,.08); }
+.s-delete-btn:hover{ opacity:1; background:rgba(210,69,69,.18); }
 
 .s-cover-title{ font-weight:700; letter-spacing:.06em; }
 .s-cover-sub{ padding-inline-start:.4em; color:var(--tl-ink-soft); }
@@ -305,7 +303,6 @@ img{ max-width:100%; display:block; }
 .cmt-tip .tip-item + .tip-item{ margin-top:8px; padding-top:8px; border-top:1px solid rgba(255,255,255,.14); }
 .cmt-tip .tip-head{ display:flex; align-items:baseline; gap:6px; margin-bottom:4px; }
 .cmt-tip .tip-author{ font-weight:700; font-size:12px; color:#bfe6da; }
-.cmt-tip .tip-time{ font-size:10px; color:#93a39d; }
 .cmt-tip .tip-text{ color:#eef3f1; }
 .cmt-tip .tip-link{ color:#8fd6ff; text-decoration:underline; word-break:break-all; }
 .cmt-tip .tip-link:hover{ color:#b8e6ff; }
@@ -414,7 +411,7 @@ img{ max-width:100%; display:block; }
 <!-- ═══ REVISION SOURCE TEMPLATES (fake / hardcoded — swapped by JS only) ═══ -->
 
 <!-- 最新版 -->
-<template id="rev-necrogame-v1" data-label="最新版" data-date="2026/9/2" data-author="獅子王千暁" data-note="最新台本" data-current="1">
+<template id="rev-necrogame-v1" data-label="最新版" data-author="獅子王千暁" data-note="最新台本" data-current="1">
   <section data-panel data-min-cols="9">
     <article data-cut>
       <p class="s-name">伏見 瀬人</p>
@@ -667,7 +664,7 @@ img{ max-width:100%; display:block; }
 <template id="rev-necrogame-v0" data-label="ひとつめ" data-author="獅子王千暁" data-note="削除済み原稿" data-glitch="1">
   <section data-panel data-min-cols="9">
     <article data-cut>
-      <p class="s-line">"六次の隔たり"という仮説を知っている？</p>
+      <p class="s-line">「六次の隔たり」という仮説を知っている？</p>
       <p class="s-gap">　</p>
       <p class="s-line">友達の友達、そのまた友達…と他人を広く伝っていけば、<span class="tcu">6</span>人目で世界中の誰とでも繋がりを持てるという仮説の話。</p>
       <p class="s-gap">　</p>
@@ -681,7 +678,7 @@ img{ max-width:100%; display:block; }
       <p class="s-gap">　</p>
       <p class="s-line">もっと言うなら、これは少し昔のお話。</p>
       <p class="s-gap">　</p>
-      <p class="s-line">インターネットやら<span class="tcu">SNS</span>やらが皆のものになった今では、この"隔たり"は<span class="tcu">3</span>回になったとまで言われている。</p>
+      <p class="s-line">インターネットやら<span class="tcu">SNS</span>やらが皆のものになった今では、この「隔たり」は<span class="tcu">3</span>回になったとまで言われている。</p>
     </article>
     <article data-cut>
       <p class="s-line">それはとても素晴らしいことだと<span class="s-glitch" style="animation-delay:0s">█</span>は思う。</p>
@@ -709,11 +706,11 @@ img{ max-width:100%; display:block; }
 <template id="rev-necrogame-v2" data-label="ふたつめ" data-author="獅子王千暁" data-note="削除済み原稿" data-glitch="1">
   <section data-panel data-min-cols="9">
     <article data-cut>
-      <p class="s-line">実を言うと、”六次の隔たり”の実験データには、更にちょっとした裏話がある。</p>
+      <p class="s-line">実を言うと、「六次の隔たり」の実験データには、更にちょっとした裏話がある。</p>
       <p class="s-gap">　</p>
       <p class="s-line">「<span class="tcu">6</span>人を介せば全世界が繋がれる」という仮説を裏付けるための実験データは、都合よく改ざんされたものだった、という話。</p>
       <p class="s-gap">　</p>
-      <p class="s-line">つまり、<span class="s-glitch" style="animation-delay:-3.2s">キミ</span>たちが嫌いな”嘘”である。</p>
+      <p class="s-line">つまり、<span class="s-glitch" style="animation-delay:-3.2s">キミ</span>たちが嫌いな「嘘」である。</p>
       <p class="s-gap">　</p>
       <p class="s-line">実際には、つながりの<span class="tcu">95</span>％は途中で途切れて、ひそかに失敗に終わったというデータが意図的に伏せられていた。</p>
       <p class="s-gap">　</p>
@@ -721,7 +718,7 @@ img{ max-width:100%; display:block; }
       <p class="s-gap">　</p>
       <p class="s-line"><span class="s-glitch" style="animation-delay:0s">キミ</span>から始まった繋がりが無限に広がっていくなんて、やっぱり机上の空論に過ぎない。</p>
       <p class="s-gap">　</p>
-      <p class="s-line">だけどその”嘘”がバレても尚、”六次の隔たり”という仮説は人々から絶大な支持を得ている。</p>
+      <p class="s-line">だけどその「嘘」がバレても尚、「六次の隔たり」という仮説は人々から絶大な支持を得ている。</p>
       <p class="s-gap">　</p>
       <p class="s-line">それはきっと、この仮説には夢があるからだと<span class="s-glitch" style="animation-delay:-1.8s">█</span>は思う。</p>
       <p class="s-gap">　</p>
@@ -775,7 +772,7 @@ img{ max-width:100%; display:block; }
       <p class="s-gap">　</p>
       <p class="s-line"><span class="cmt" data-cmt="c8|c9" tabindex="0" role="button" aria-haspopup="true">元から詐欺に使う道具として産んだだけの子供だったとも知らずに、健気に働き続けた。</span></p>
       <p class="s-gap">　</p>
-      <p class="s-line"><span class="cmt" data-cmt="c10" tabindex="0" role="button" aria-haspopup="true">それが<span class="s-glitch" style="animation-delay:-1.8s">█</span>。お望みの”可哀想な生い立ち”だ。</span></p>
+      <p class="s-line"><span class="cmt" data-cmt="c10" tabindex="0" role="button" aria-haspopup="true">それが<span class="s-glitch" style="animation-delay:-1.8s">█</span>。お望みの「可哀想な生い立ち」だ。</span></p>
       <p class="s-gap">　</p>
     </article>
     <article data-cut>
@@ -790,7 +787,7 @@ img{ max-width:100%; display:block; }
       <p class="s-gap">　</p>
     </article>
     <article data-cut>
-      <p class="s-line">とどのつまり、“きっかけ”も”繋がり”もそれだけ単純なもので、結実するものはほんの一握り。</p>
+      <p class="s-line">とどのつまり、「きっかけ」も「繋がり」もそれだけ単純なもので、結実するものはほんの一握り。</p>
       <p class="s-gap">　</p>
       <p class="s-line">劇的な出会いのうちの<span class="tcu">95</span>％は途中で途切れて、ひそかに失敗に終わる。</p>
       <p class="s-gap">　</p>
@@ -820,7 +817,7 @@ img{ max-width:100%; display:block; }
       <p class="s-gap">　</p>
       <p class="s-delete-line">
         <button type="button" class="s-delete-btn" id="scriptDeleteBtn" aria-label="この原稿を削除">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"></path></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"></path></svg>
         </button>
       </p>
     </article>
@@ -833,26 +830,26 @@ img{ max-width:100%; display:block; }
 
   /* ─── Comment content (hardcoded, mock feature — not user editable) ─── */
   var COMMENTS = {
-    c1: { author:'獅子王千暁', time:'2026/09/02 10:14', text:'ここで伏見が割って入って自然に喧嘩を終わらせる構成に変更。ゲーム説明に移行したい。' },
-    c2: { author:'獅子王千暁', time:'2026/09/02 10:16', text:'この間に場面転換装置用意できる？という意図で追加。不要なら喧嘩シーンごとカット。' },
-    c3: { author:'獅子王千暁', time:'2026/09/02 10:22', text:'舞台消灯。投票箱の設置。' },
-    c4: { author:'獅子王千暁', time:'2026/09/02 10:28', text:'解説追加' },
-    c5: { author:'獅子王千暁', time:'2026/09/05 09:10', text:'嘘。元から█という生き物はこうだった。' },
-    c6: { author:'獅子王千暁', time:'2026/09/05 09:12', text:'嘘。三流詐欺師のママとパパを調教してた。あまりにも杜撰だったから。' },
-    c7: { author:'獅子王千暁', time:'2026/09/05 09:14', text:'嘘。あの人らにそれは無理。向いてないことを強要するのは酷だ。' },
-    c8: { author:'獅子王千暁', time:'2026/09/05 09:16', text:'嘘。戸籍は自分で捨てた。さすがに母さんたちも相当驚いたらしいね。やり方は内緒。話が長くなるから。' },
-    c9: { author:'獅子王千暁', time:'2026/09/05 09:16', text:'もっと嘘。橋の下から拾われたらしい。' },
-    c10: { author:'獅子王千暁', time:'2026/09/05 09:20', text:'さて。さすがにオチは言わずとも分かるよね？' },
-    c11: { author:'獅子王千暁', time:'2026/09/05 09:25', url:'https://arg-440.vercel.app/Wiki/sophism.html' },
-    c12: { author:'獅子王千暁', time:'2026/09/05 09:25', url:'https://arg-440.vercel.app/Wiki/sophism.html' },
-    c13: { author:'獅子王千暁', time:'2026/09/05 09:26', url:'https://arg-440.vercel.app/Wiki/sophism.html' },
-    c14: { author:'獅子王千暁', time:'2026/09/05 09:26', url:'https://arg-440.vercel.app/Wiki/sophism.html' },
-    c15: { author:'獅子王千暁', time:'2026/09/05 09:27', url:'https://arg-440.vercel.app/Wiki/sophism.html' },
-    c16: { author:'獅子王千暁', time:'2026/09/05 09:27', url:'https://arg-440.vercel.app/Wiki/sophism.html' },
-    c17: { author:'獅子王千暁', time:'2026/09/05 09:28', url:'https://arg-440.vercel.app/Wiki/sophism.html' },
-    c18: { author:'獅子王千暁', time:'2026/09/05 09:28', url:'https://arg-440.vercel.app/Wiki/sophism.html' },
-    c19: { author:'獅子王千暁', time:'2026/09/05 09:29', url:'https://arg-440.vercel.app/Wiki/sophism.html' },
-    c20: { author:'獅子王千暁', time:'2026/09/05 09:30', url:'https://ja.wikipedia.org/wiki/%E5%98%98' }
+    c1: { author:'獅子王千暁', text:'ここで伏見が割って入って自然に喧嘩を終わらせる構成に変更。ゲーム説明に移行したい。' },
+    c2: { author:'獅子王千暁', text:'この間に場面転換装置用意できる？という意図で追加。不要なら喧嘩シーンごとカット。' },
+    c3: { author:'獅子王千暁', text:'舞台消灯。投票箱の設置。' },
+    c4: { author:'獅子王千暁', text:'解説追加' },
+    c5: { author:'獅子王千暁', text:'嘘。元から█という生き物はこうだった。' },
+    c6: { author:'獅子王千暁', text:'嘘。三流詐欺師のママとパパを調教してた。あまりにも杜撰だったから。' },
+    c7: { author:'獅子王千暁', text:'嘘。あの人らにそれは無理。向いてないことを強要するのは酷だ。' },
+    c8: { author:'獅子王千暁', text:'嘘。戸籍は自分で捨てた。さすがに母さんたちも相当驚いたらしいね。やり方は内緒。話が長くなるから。' },
+    c9: { author:'獅子王千暁', text:'もっと嘘。橋の下から拾われたらしい。' },
+    c10: { author:'獅子王千暁', text:'さて。さすがにオチは言わずとも分かるよね？' },
+    c11: { author:'獅子王千暁', url:'https://arg-440.vercel.app/Wiki/sophism.html' },
+    c12: { author:'獅子王千暁', url:'https://arg-440.vercel.app/Wiki/sophism.html' },
+    c13: { author:'獅子王千暁', url:'https://arg-440.vercel.app/Wiki/sophism.html' },
+    c14: { author:'獅子王千暁', url:'https://arg-440.vercel.app/Wiki/sophism.html' },
+    c15: { author:'獅子王千暁', url:'https://arg-440.vercel.app/Wiki/sophism.html' },
+    c16: { author:'獅子王千暁', url:'https://arg-440.vercel.app/Wiki/sophism.html' },
+    c17: { author:'獅子王千暁', url:'https://arg-440.vercel.app/Wiki/sophism.html' },
+    c18: { author:'獅子王千暁', url:'https://arg-440.vercel.app/Wiki/sophism.html' },
+    c19: { author:'獅子王千暁', url:'https://arg-440.vercel.app/Wiki/sophism.html' },
+    c20: { author:'獅子王千暁', url:'https://ja.wikipedia.org/wiki/%E5%98%98' }
   };
 
   var REV_ORDER = ['necrogame-v1', 'necrogame-v0', 'necrogame-v2', 'necrogame-v3', 'necrogame-v4'];
@@ -1052,7 +1049,7 @@ img{ max-width:100%; display:block; }
 
       var row1 = el('div', 'tl-hist-row1');
       var dot = el('span', 'tl-hist-dot');
-      var labelText = ds.date ? (ds.label + '（' + ds.date + '）') : ds.label;
+      var labelText = ds.label;
       var label;
       if (ds.glitch === '1') {
         label = el('span', 'tl-hist-glitch');
@@ -1126,10 +1123,7 @@ img{ max-width:100%; display:block; }
       var head = el('div', 'tip-head');
       var author = el('span', 'tip-author');
       author.textContent = c.author;
-      var time = el('span', 'tip-time');
-      time.textContent = c.time;
       head.appendChild(author);
-      head.appendChild(time);
       var text = el('div', 'tip-text');
       if (c.url) {
         var link = document.createElement('a');
