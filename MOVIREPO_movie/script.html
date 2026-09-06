@@ -242,7 +242,7 @@ img{ max-width:100%; display:block; }
 .s-line-cont{ padding-inline-start:var(--col-w); }
 .s-gap{ color:transparent; }
 .s-glitch{ display:inline-block; animation:tlGlitch 4.5s infinite steps(1, end); }
-.s-delete-line{ position:relative; }
+.s-delete-line{ position:relative; width:var(--col-w); }
 .s-delete-btn{
   writing-mode:horizontal-tb;
   position:absolute; left:50%; bottom:14px; transform:translateX(-50%);
@@ -664,7 +664,7 @@ img{ max-width:100%; display:block; }
 <template id="rev-necrogame-v0" data-label="ひとつめ" data-author="獅子王千暁" data-note="削除済み原稿" data-glitch="1">
   <section data-panel data-min-cols="9">
     <article data-cut>
-      <p class="s-line">「六次の隔たり」という仮説を知っている？</p>
+      <p class="s-line">「<span class="cmt" data-cmt="c21" tabindex="0" role="button" aria-haspopup="true">六次の隔たり</span>」という仮説を知っている？</p>
       <p class="s-gap">　</p>
       <p class="s-line">友達の友達、そのまた友達…と他人を広く伝っていけば、<span class="tcu">6</span>人目で世界中の誰とでも繋がりを持てるという仮説の話。</p>
       <p class="s-gap">　</p>
@@ -849,7 +849,8 @@ img{ max-width:100%; display:block; }
     c17: { author:'獅子王千暁', url:'https://arg-440.vercel.app/Wiki/sophism.html' },
     c18: { author:'獅子王千暁', url:'https://arg-440.vercel.app/Wiki/sophism.html' },
     c19: { author:'獅子王千暁', url:'https://arg-440.vercel.app/Wiki/sophism.html' },
-    c20: { author:'獅子王千暁', url:'https://ja.wikipedia.org/wiki/%E5%98%98' }
+    c20: { author:'獅子王千暁', url:'https://ja.wikipedia.org/wiki/%E5%98%98' },
+    c21: { author:'獅子王千暁', url:'https://arg-440.vercel.app/Wiki/sixdegrees.html' }
   };
 
   var REV_ORDER = ['necrogame-v1', 'necrogame-v0', 'necrogame-v2', 'necrogame-v3', 'necrogame-v4'];
