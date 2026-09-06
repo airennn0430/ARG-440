@@ -1,21 +1,25 @@
-// =========================================
-// main.js
-// =========================================
-
 const puzzles = {
 
   1: {
-    answers: ['幽霊ビル事件']
+    hashes: ['795d9959543ee4a98ed3256cf02e10788b20fb2998e31813242ab8f89da87bb3']
   },
 
   2: {
     combo: true,
-    answer: { a: '潤田組', b: '金銭', c: '盗まれた' }
+    hash: {
+      a: 'f06b7e80902e2a5ce6f94a9ed357bd3497d845c5370e569ac766e4fb7ef6b02e',
+      b: '86aaae061536321b69e226cfdbda5ba34421858d6ef430fc09b6b6ec2ac1d49c',
+      c: 'a1986be50da13a8f6a81eb500ced953c1b5bd8cd32113d184453a2be89be4e82'
+    }
   },
 
   3: {
     combo: true,
-    answer: { a: '息子', b: '夫婦', c: '騙した' }
+    hash: {
+      a: '2f66779862f408a9aa9f5ea7380b983f10e6cf7358dad6a2b861f34d277f217c',
+      b: '3360a52193c91011e3bb0ba9290f399726634a887fe3d35df7f3875f710f9654',
+      c: 'e4bc95fe5e2185610f2d0241192399dec6b815778c3368ff78cf8a224589fe5d'
+    }
   },
 
   final: {
@@ -24,9 +28,13 @@ const puzzles = {
 
 };
 
-// =========================================
-// 初期化
-// =========================================
+async function sha256Hex(text) {
+  const enc = new TextEncoder().encode(text);
+  const buf = await crypto.subtle.digest('SHA-256', enc);
+  return Array.from(new Uint8Array(buf))
+    .map(b => b.toString(16).padStart(2, '0'))
+    .join('');
+}
 
 window.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.mail-card').forEach(setMailDate);
@@ -45,10 +53,6 @@ function setMailDate(cardEl) {
     String(d.getHours()).padStart(2, '0') + ':' +
     String(d.getMinutes()).padStart(2, '0');
 }
-
-// =========================================
-// 次のメールを同じページに読み込む
-// =========================================
 
 async function loadNextMail(url) {
   if (!url) return;
@@ -79,11 +83,7 @@ async function loadNextMail(url) {
   nextArticle.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-// =========================================
-// 回答チェック
-// =========================================
-
-function checkAnswer(num, buttonEl) {
+async function checkAnswer(num, buttonEl) {
 
   const cardEl  = buttonEl.closest('.mail-card');
   const msgEl   = cardEl.querySelector('.mail-message');
@@ -104,10 +104,16 @@ function checkAnswer(num, buttonEl) {
       return;
     }
 
+    const [aHash, bHash, cHash] = await Promise.all([
+      sha256Hex(aEl.value),
+      sha256Hex(bEl.value),
+      sha256Hex(cEl.value)
+    ]);
+
     isCorrect =
-      aEl.value === puzzle.answer.a &&
-      bEl.value === puzzle.answer.b &&
-      cEl.value === puzzle.answer.c;
+      aHash === puzzle.hash.a &&
+      bHash === puzzle.hash.b &&
+      cHash === puzzle.hash.c;
 
     allInputs = [aEl, bEl, cEl];
 
@@ -115,7 +121,8 @@ function checkAnswer(num, buttonEl) {
 
     const inputEl = document.getElementById('input-' + num);
     const userInput = inputEl.value.trim().toLowerCase();
-    isCorrect = puzzle.answers.includes(userInput);
+    const userHash = await sha256Hex(userInput);
+    isCorrect = puzzle.hashes.includes(userHash);
     allInputs = [inputEl];
 
   }
@@ -148,10 +155,6 @@ function checkAnswer(num, buttonEl) {
 
 }
 
-// =========================================
-// エンド分岐
-// =========================================
-
 function submitFinalDecision(btnEl) {
 
   const cardEl   = btnEl.closest('.mail-card');
@@ -176,18 +179,10 @@ function submitFinalDecision(btnEl) {
 
 }
 
-// =========================================
-// アコーディオン
-// =========================================
-
 function toggleAccordion(id) {
   const el = document.getElementById(id);
   el.classList.toggle('open');
 }
-
-// =========================================
-// メール受信演出
-// =========================================
 
 function playMailEffect() {
   document.body.classList.add('mail-arrived');
@@ -195,10 +190,6 @@ function playMailEffect() {
     document.body.classList.remove('mail-arrived');
   }, 500);
 }
-
-// =========================================
-// シェイク演出
-// =========================================
 
 function shakeElement(el) {
   el.animate(
@@ -212,10 +203,6 @@ function shakeElement(el) {
     { duration: 300 }
   );
 }
-
-// =========================================
-// アンリード件数更新
-// =========================================
 
 function updateUnreadCount() {
   const badge = document.getElementById('unread-count');

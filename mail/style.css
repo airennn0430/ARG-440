@@ -1,7 +1,3 @@
-/* =========================================
-   Gmail風 style.css — ライトモード縦スクロール
-========================================= */
-
 :root {
   --topbar-h:  64px;
   --sidebar-w: 230px;
@@ -32,10 +28,6 @@ body {
   font-size: 14px;
   min-height: 100vh;
 }
-
-/* =========================================
-   トップバー
-========================================= */
 
 .topbar {
   position: fixed;
@@ -105,19 +97,11 @@ body {
   flex-shrink: 0;
 }
 
-/* =========================================
-   ページ本体
-========================================= */
-
 .page-body {
   display: flex;
   padding-top: var(--topbar-h);
   min-height: 100vh;
 }
-
-/* =========================================
-   サイドバー
-========================================= */
 
 .sidebar {
   width: var(--sidebar-w);
@@ -224,10 +208,6 @@ body {
   text-transform: uppercase;
 }
 
-/* =========================================
-   メインペイン
-========================================= */
-
 .main-pane {
   margin-left: var(--sidebar-w);
   flex: 1;
@@ -249,10 +229,6 @@ body {
   color: var(--text);
   letter-spacing: -0.2px;
 }
-
-/* =========================================
-   メールカード
-========================================= */
 
 .mail-card {
   background: var(--panel);
@@ -277,10 +253,6 @@ body {
 .mail-card.solved {
   border-left: 4px solid var(--success);
 }
-
-/* =========================================
-   メールヘッダ
-========================================= */
 
 .mail-header {
   display: flex;
@@ -328,10 +300,6 @@ body {
   white-space: nowrap;
 }
 
-/* =========================================
-   件名
-========================================= */
-
 .mail-subject {
   padding: 20px 22px 8px;
   font-size: 22px;
@@ -340,10 +308,6 @@ body {
   color: var(--text);
   border-bottom: 1px solid var(--line);
 }
-
-/* =========================================
-   本文
-========================================= */
 
 .mail-body {
   padding: 18px 22px 24px;
@@ -355,10 +319,6 @@ body {
 .mail-body strong { color: var(--text); }
 .mail-body a { color: var(--accent); }
 .mail-body p { margin: 0; }
-
-/* =========================================
-   返信欄
-========================================= */
 
 .reply-area {
   margin-top: 24px;
@@ -396,10 +356,6 @@ body {
   box-shadow: 0 0 0 3px rgba(26,115,232,0.12);
 }
 
-/* =========================================
-   カスタム select
-========================================= */
-
 .reply-select,
 .answer-select {
   width: 100%;
@@ -433,10 +389,6 @@ body {
   cursor: not-allowed;
 }
 
-/* =========================================
-   コンボ文章（puzzle3）
-========================================= */
-
 .combo-sentence {
   display: flex;
   align-items: center;
@@ -455,10 +407,6 @@ body {
   color: var(--sub);
   white-space: nowrap;
 }
-
-/* =========================================
-   ボタン
-========================================= */
 
 .reply-area button,
 .answer-area button {
@@ -492,19 +440,11 @@ body {
   box-shadow: none;
 }
 
-/* =========================================
-   メッセージ
-========================================= */
-
 .mail-message {
   min-height: 22px;
   font-size: 13px;
   font-weight: 700;
 }
-
-/* =========================================
-   アコーディオン
-========================================= */
 
 .accordion {
   margin-top: 18px;
@@ -556,10 +496,6 @@ body {
   text-align: center;
 }
 
-/* =========================================
-   FINAL CHOICE カード
-========================================= */
-
 .puzzle-card {
   background: var(--panel);
   border: 1px solid var(--line);
@@ -596,10 +532,6 @@ body {
   flex-direction: column;
   gap: 12px;
 }
-
-/* =========================================
-   エンドカード
-========================================= */
 
 .end-result {
   animation: mailAppear 0.5s ease;
@@ -653,22 +585,14 @@ body {
   line-height: 2.0;
 }
 
-/* =========================================
-   アニメーション
-========================================= */
-
 @keyframes mailAppear {
   from { opacity: 0; transform: translateY(16px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* =========================================
-   スマホ対応（768px以下）
-========================================= */
 
 @media (max-width: 768px) {
 
-  /* トップバー */
   :root {
     --topbar-h: 56px;
   }
@@ -678,25 +602,22 @@ body {
   }
 
   .topbar-search {
-    display: none; /* 検索バーは非表示（デザイン上不要） */
+    display: none;
   }
 
   .logo-text {
     font-size: 17px;
   }
 
-  /* サイドバーを非表示 */
   .sidebar {
     display: none;
   }
 
-  /* メインペインをフル幅に */
   .main-pane {
     margin-left: 0;
     padding: 12px 12px 60px;
   }
 
-  /* メールカード */
   .mail-header {
     flex-wrap: wrap;
     gap: 8px;
@@ -720,7 +641,6 @@ body {
     line-height: 1.9;
   }
 
-  /* 返信欄 */
   .reply-area {
     margin-top: 16px;
     padding-top: 14px;
@@ -728,12 +648,11 @@ body {
 
   .reply-area button,
   .answer-area button {
-    width: 100%;        /* スマホではボタンをフル幅に */
+    width: 100%;
     text-align: center;
     align-self: stretch;
   }
 
-  /* パズルカード */
   .puzzle-header {
     padding: 12px 14px;
     font-size: 10px;
@@ -744,7 +663,6 @@ body {
     font-size: 13px;
   }
 
-  /* コンボ文章（puzzle3） */
   .combo-sentence {
     flex-direction: column;
     align-items: stretch;
@@ -759,7 +677,6 @@ body {
     font-size: 13px;
   }
 
-  /* エンドカード */
   .end-card-header {
     flex-wrap: wrap;
     gap: 8px;
@@ -774,7 +691,6 @@ body {
     font-size: 20px;
   }
 
-  /* アコーディオン */
   .accordion-body {
     padding: 12px;
   }
@@ -786,10 +702,6 @@ body {
     border-radius: 6px;
   }
 }
-
-/* =========================================
-   超小型端末（380px以下）
-========================================= */
 
 @media (max-width: 380px) {
   .mail-subject {
