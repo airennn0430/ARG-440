@@ -862,6 +862,7 @@ img{ max-width:100%; display:block; }
 
   var baseTitle = 'ネクロゲーム_最新版';
   var currentId = null;
+  var maxUnlockedIndex = 1;
 
   function el(tag, cls){
     var n = document.createElement(tag);
@@ -907,6 +908,10 @@ img{ max-width:100%; display:block; }
 
     spread.replaceChildren(frag);
     currentId = id;
+    var idx = REV_ORDER.indexOf(id);
+    if (idx !== -1) {
+      maxUnlockedIndex = Math.max(maxUnlockedIndex, Math.min(idx + 1, REV_ORDER.length - 1));
+    }
     applyRevisionChrome(tpl.dataset, id);
     buildHistList();
     initTypeReveal();
@@ -1036,7 +1041,7 @@ img{ max-width:100%; display:block; }
     var list = document.getElementById('tlHistList');
     if (!list) return;
     list.innerHTML = '';
-    REV_ORDER.forEach(function(id){
+    REV_ORDER.slice(0, Math.min(maxUnlockedIndex, REV_ORDER.length - 1) + 1).forEach(function(id){
       var tpl = document.getElementById('rev-' + id);
       if (!tpl) return;
       var ds = tpl.dataset;
@@ -1222,6 +1227,7 @@ img{ max-width:100%; display:block; }
   });
   deleteConfirmBtn.addEventListener('click', function(){
     REV_ORDER = REV_ORDER.filter(function(id){ return id === 'necrogame-v1'; });
+    maxUnlockedIndex = 0;
     closeDeleteModal();
     closeAllPops();
     renderRevision('necrogame-v1');
