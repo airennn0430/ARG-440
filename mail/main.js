@@ -94,9 +94,14 @@ async function checkAnswer(num, buttonEl) {
 
   if (puzzle.combo) {
 
-    const aEl = document.getElementById('input-' + num + 'a');
-    const bEl = document.getElementById('input-' + num + 'b');
-    const cEl = document.getElementById('input-' + num + 'c');
+    const aEl = cardEl.querySelector('#input-' + num + 'a');
+    const bEl = cardEl.querySelector('#input-' + num + 'b');
+    const cEl = cardEl.querySelector('#input-' + num + 'c');
+
+    if (!aEl || !bEl || !cEl) {
+      console.error('checkAnswer: 入力要素が見つかりません（id: input-' + num + 'a/b/c）。');
+      return;
+    }
 
     if (!aEl.value || !bEl.value || !cEl.value) {
       msgEl.textContent = 'すべての項目を選択してください。';
@@ -119,7 +124,11 @@ async function checkAnswer(num, buttonEl) {
 
   } else {
 
-    const inputEl = document.getElementById('input-' + num);
+    const inputEl = cardEl.querySelector('#input-' + num);
+    if (!inputEl) {
+      console.error('checkAnswer: 入力要素が見つかりません（id: input-' + num + '）。');
+      return;
+    }
     const userInput = inputEl.value.trim().toLowerCase();
     const userHash = await sha256Hex(userInput);
     isCorrect = puzzle.hashes.includes(userHash);
