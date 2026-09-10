@@ -86,9 +86,8 @@ body {
 
     const fromQuery = new URLSearchParams(location.search).get('return');
     if (fromQuery) {
-      const decoded = decodeURIComponent(fromQuery);
-      if (isSafeReturn(decoded)) {
-        link.href = decoded;
+      if (isSafeReturn(fromQuery)) {
+        link.href = fromQuery;
         return;
       }
     }

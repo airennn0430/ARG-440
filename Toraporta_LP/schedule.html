@@ -1237,6 +1237,15 @@ footer {
     });
   });
 
+  /* 画面回転・リサイズ時に開いているパネルの高さを再計算 */
+  window.addEventListener('resize', function() {
+    entries.forEach(function(entry) {
+      if (!entry.classList.contains('open')) return;
+      var panel = entry.querySelector('.episodes');
+      if (panel) panel.style.maxHeight = panel.scrollHeight + 'px';
+    });
+  });
+
   /* ── フィルター ── */
   var filterBtns = document.querySelectorAll('.filter-btn');
   var itemCount  = document.getElementById('item-count');
