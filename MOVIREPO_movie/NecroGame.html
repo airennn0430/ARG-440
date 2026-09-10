@@ -873,6 +873,7 @@ button { font-family: inherit; }
 }
 </style>
 <link rel="stylesheet" href="../shared/anime-redact.css">
+<noscript><style>.fi { opacity: 1 !important; animation: none !important; }</style></noscript>
 </head>
 <body>
 
@@ -1227,6 +1228,29 @@ button { font-family: inherit; }
 </dialog>
 
 <script>
+/* Fade-in on scroll（最優先で実行。IntersectionObserver未対応・例外発生時は即時表示するフォールバック付き） */
+(() => {
+  try {
+    if (!('IntersectionObserver' in window)) {
+      document.querySelectorAll('.fi').forEach(el => el.classList.add('vis'));
+      return;
+    }
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          e.target.style.animationDelay = (i * 0.04) + 's';
+          e.target.classList.add('vis');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.08 });
+
+    document.querySelectorAll('.fi').forEach(el => io.observe(el));
+  } catch (err) {
+    document.querySelectorAll('.fi').forEach(el => el.classList.add('vis'));
+  }
+})();
+
 /* Back to top */
 (() => {
   const btn = document.getElementById('backToTop');
@@ -1245,21 +1269,6 @@ button { font-family: inherit; }
   btn.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
-})();
-
-/* Fade-in on scroll */
-(() => {
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach((e, i) => {
-      if (e.isIntersecting) {
-        e.target.style.animationDelay = (i * 0.04) + 's';
-        e.target.classList.add('vis');
-        io.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.08 });
-
-  document.querySelectorAll('.fi').forEach(el => io.observe(el));
 })();
 
 /* レビュー「もっと読む」→ 会員限定ダイアログ */

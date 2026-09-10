@@ -740,6 +740,7 @@
       '})'
     ];
 
+    var lastLayout = null;
     function drawBackground(){
       var w = hero.clientWidth, h = hero.clientHeight;
       bgCanvas.width = Math.round(w * DPR);
@@ -785,7 +786,6 @@
       drawRulesCode(bctx, false);
     }
 
-    var lastLayout = null;
     function drawRulesCode(ctx, bold){
       var w = lastLayout.w, h = lastLayout.h;
       var bandTop = lastLayout.bandTop, bandBot = lastLayout.bandBot;

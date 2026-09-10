@@ -818,12 +818,15 @@ function bgmPlay(opts) {
   bgmAudio = new Audio(opts.src);
   bgmAudio.loop = opts.loop !== undefined ? opts.loop : true;
   bgmAudio.volume = opts.volume !== undefined ? opts.volume : 0.5;
-  bgmAudio.play().catch(() => {
+  const target = bgmAudio;
+  target.play().catch(() => {
     // iOS autoplay restriction — retry on next tap
     const retry = () => {
-      bgmAudio.play().catch(() => {});
       document.removeEventListener('touchstart', retry);
       document.removeEventListener('click', retry);
+      if (bgmAudio === target) {
+        target.play().catch(() => {});
+      }
     };
     document.addEventListener('touchstart', retry, { once: true });
     document.addEventListener('click', retry, { once: true });
