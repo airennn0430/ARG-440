@@ -103,6 +103,7 @@
   var IMAGE_REDACT_RULES = [
     { pathSuffix: '/rienta_article/article/440.html', matches: ['shishio.jpg', 'img_6091.webp'] },
     { pathSuffix: '/toraporta_lp/toraporta.html', matches: ['shishio.jpg'] },
+    { pathSuffix: '/chat/chat.html', matches: ['kakushidori.webp'] },
   ];
 
   var ERROR_ICON_SVG_MARKUP =
