@@ -4133,8 +4133,15 @@ function revealInSidebar(viewId, channelName) {
 
     // 3秒後に未読バッジ表示
     setTimeout(() => {
-      showUnreadBadge();
       dmSequenceReady = true;
+      // 既に黒木凪DM画面を開いたまま（＝これ以上 switchView が呼ばれない）場合は
+      // ここで直接演出を開始する。そうでなければバッジを表示し、後続の switchView で発火させる。
+      const alreadyOnNagi = document.getElementById('view-dm-nagi')?.classList.contains('active');
+      if (alreadyOnNagi) {
+        startDmSequence();
+      } else {
+        showUnreadBadge();
+      }
     }, 3000);
   }
 
