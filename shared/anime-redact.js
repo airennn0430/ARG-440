@@ -98,6 +98,63 @@
     node.parentNode.replaceChild(frag, node);
   }
 
+  /* ページごとの画像伏字対象。src に部分一致した <img> をエラーアイコン表示に差し替える。
+     pathSuffix はページの pathname（小文字）の末尾一致で判定。 */
+  var IMAGE_REDACT_RULES = [
+    { pathSuffix: '/rienta_article/article/440.html', matches: ['shishio.jpg', 'img_6091.webp'] },
+    { pathSuffix: '/toraporta_lp/toraporta.html', matches: ['shishio.jpg'] },
+  ];
+
+  var ERROR_ICON_SVG_MARKUP =
+    '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" ' +
+    'fill="none" stroke="#9a95ab" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">' +
+    '<rect x="2" y="2" width="20" height="20" rx="2"/>' +
+    '<circle cx="8.5" cy="8.5" r="1.5"/>' +
+    '<path d="m21 15-5-5L5 21"/>' +
+    '<line x1="3" y1="3" x2="21" y2="21"/>' +
+    '</svg>';
+  var ERROR_ICON_SRC = 'data:image/svg+xml,' + encodeURIComponent(ERROR_ICON_SVG_MARKUP);
+
+  function getImageRedactMatches() {
+    try {
+      var path = (window.location.pathname || '').replace(/\\/g, '/').toLowerCase();
+      for (var i = 0; i < IMAGE_REDACT_RULES.length; i++) {
+        if (path.indexOf(IMAGE_REDACT_RULES[i].pathSuffix) !== -1) {
+          return IMAGE_REDACT_RULES[i].matches;
+        }
+      }
+    } catch (e) {}
+    return null;
+  }
+
+  function isRedactImageSrc(src, matches) {
+    if (!src) return false;
+    var lower = src.toLowerCase();
+    for (var i = 0; i < matches.length; i++) {
+      if (lower.indexOf(matches[i]) !== -1) return true;
+    }
+    return false;
+  }
+
+  function replaceImageWithErrorIcon(img) {
+    if (!img || img.getAttribute('data-ar-img-redacted') === '1') return;
+    img.setAttribute('data-ar-img-redacted', '1');
+    img.src = ERROR_ICON_SRC;
+    img.alt = '画像を表示できません';
+    img.classList.add('ar-img-error');
+  }
+
+  function applyImageRedact(root) {
+    var matches = getImageRedactMatches();
+    if (!matches || !root || !root.querySelectorAll) return;
+    var imgs = root.querySelectorAll('img');
+    for (var i = 0; i < imgs.length; i++) {
+      if (isRedactImageSrc(imgs[i].getAttribute('src'), matches)) {
+        replaceImageWithErrorIcon(imgs[i]);
+      }
+    }
+  }
+
   function glitchTextNeedsRedact(text) {
     if (!text) return false;
     for (var i = 0; i < PHRASES.length; i++) {
@@ -128,6 +185,7 @@
     if (isTruthHtmlPage() || !isActive() || !root) return;
 
     redactGlitchTextElements(root);
+    applyImageRedact(root);
 
     var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
     var nodes = [];
