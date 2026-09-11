@@ -1,3 +1,10 @@
+/* Anime 通話終了到達後、指定画像をエラーアイコン表示に差し替え（object-fit:none でアイコンを中央固定表示） */
+.ar-img-error {
+  object-fit: none !important;
+  object-position: center !important;
+  background: #ececef;
+}
+
 /* Anime 通話終了到達後の伏字（Chat .glitch と同型・既定は inherit で親＝本文色に合わせる） */
 .ar-glitch {
   position: relative;
