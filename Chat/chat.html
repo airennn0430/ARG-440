@@ -881,6 +881,27 @@ button.dm-directory-row:hover {
   color: #9dd4ff;
 }
 .msg-text strong { color: var(--text-on); font-weight: 700; }
+.msg-image {
+  display: block;
+  max-width: 280px;
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  margin-top: 6px;
+}
+.msg-avatar img,
+.pinned-msg-avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 6px;
+  object-fit: cover;
+}
+.dm-directory-avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  object-fit: cover;
+}
 .msg-text mark {
   background: var(--highlight);
   color: var(--highlight-text);
@@ -1497,7 +1518,7 @@ button.dm-directory-row:hover {
             <span class="pinned-block-count">1件</span>
           </div>
           <div class="pinned-msg">
-            <div class="pinned-msg-avatar">凪</div>
+            <div class="pinned-msg-avatar"><img src="kuroki.webp" alt="黒木 凪"></div>
             <div style="flex:1;">
               <div class="pinned-msg-meta">
                 <span class="pinned-msg-author">黒木 凪</span>
@@ -1715,7 +1736,7 @@ button.dm-directory-row:hover {
         </div>
 
         <div class="msg" data-channel="勤怠管理チャット" data-author="黒木 凪" data-time="2025年5月6日 09:10">
-          <div class="msg-avatar">凪</div>
+          <div class="msg-avatar"><img src="kuroki.webp" alt="黒木 凪"></div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">09:10</span></div>
             <p class="msg-text">おはようございます。本日もよろしくお願いします。</p>
@@ -1814,7 +1835,7 @@ button.dm-directory-row:hover {
         </div>
 
         <div class="msg" data-channel="勤怠管理チャット" data-author="黒木 凪" data-time="2025年5月7日 09:11">
-          <div class="msg-avatar">凪</div>
+          <div class="msg-avatar"><img src="kuroki.webp" alt="黒木 凪"></div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">09:11</span></div>
             <p class="msg-text">おはようございます。本日もよろしくお願いします。</p>
@@ -1905,7 +1926,7 @@ button.dm-directory-row:hover {
         </div>
 
         <div class="msg" data-channel="勤怠管理チャット" data-author="黒木 凪" data-time="2025年5月8日 09:10">
-          <div class="msg-avatar">凪</div>
+          <div class="msg-avatar"><img src="kuroki.webp" alt="黒木 凪"></div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">09:10</span></div>
             <p class="msg-text">おはようございます。本日もよろしくお願いします。</p>
@@ -1996,7 +2017,7 @@ button.dm-directory-row:hover {
         </div>
 
         <div class="msg" data-channel="勤怠管理チャット" data-author="黒木 凪" data-time="2025年5月9日 09:10">
-          <div class="msg-avatar">凪</div>
+          <div class="msg-avatar"><img src="kuroki.webp" alt="黒木 凪"></div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">09:10</span></div>
             <p class="msg-text">おはようございます。本日もよろしくお願いします。</p>
@@ -2095,7 +2116,7 @@ button.dm-directory-row:hover {
         </div>
 
         <div class="msg" data-channel="勤怠管理チャット" data-author="黒木 凪" data-time="2025年5月12日 09:10">
-          <div class="msg-avatar">凪</div>
+          <div class="msg-avatar"><img src="kuroki.webp" alt="黒木 凪"></div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">09:10</span></div>
             <p class="msg-text">おはようございます。本日もよろしくお願いします。</p>
@@ -2132,7 +2153,7 @@ button.dm-directory-row:hover {
         <div class="date-divider"><span>2025年4月7日</span></div>
 
         <div class="msg" data-channel="編集部" data-author="黒木 凪" data-time="2025年4月7日 09:02">
-          <div class="msg-avatar">凪</div>
+          <div class="msg-avatar"><img src="kuroki.webp" alt="黒木 凪"></div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">09:02</span></div>
             <p class="msg-text">今週のタスクを整理します。<br><br>・田村：医療カテゴリ特集の構成案（本日中）<br>・沢渡：起業カテゴリ記事の最終確認、週次報告作成<br>・三上：取材先候補リストの更新（水曜まで）<br>・神谷：先週入稿分の校正（午前中に完了）<br>・小西：サムネイル案3パターン（17時まで）<br>・白石：SNS投稿文の草案（明日午前中）<br>・長谷川：過去記事リライト、優先度高い3本から着手<br>・家入：<span class="glitch" data-text="トラポルタ">トラポルタ</span>企画書の作成（今週中）<br><br>進捗はこのスレッドに随時報告してください。</p>
@@ -2188,7 +2209,7 @@ button.dm-directory-row:hover {
         </div>
 
         <div class="msg" data-channel="編集部" data-author="黒木 凪" data-time="2025年4月7日 18:05">
-          <div class="msg-avatar">凪</div>
+          <div class="msg-avatar"><img src="kuroki.webp" alt="黒木 凪"></div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">18:05</span></div>
             <p class="msg-text">確認しました。<br>導入部分の順番を変えてください。<br>読者が状況を把握する前に結論が来ています。<br>背景→課題→結論の順に組み直してください。</p>
@@ -2215,7 +2236,7 @@ button.dm-directory-row:hover {
         </div>
 
         <div class="msg" data-channel="編集部" data-author="黒木 凪" data-time="2025年4月10日 14:24">
-          <div class="msg-avatar">凪</div>
+          <div class="msg-avatar"><img src="kuroki.webp" alt="黒木 凪"></div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">14:24</span></div>
             <p class="msg-text">リライトのスコープを確認してください。<br>今回の目的は検索順位の改善です。<br>網羅性の差が順位に影響しているなら加筆する、していないなら触らない。<br>その判断はSERPsを見れば出ます。</p>
@@ -2239,7 +2260,7 @@ button.dm-directory-row:hover {
         </div>
 
         <div class="msg" data-channel="編集部" data-author="黒木 凪" data-time="2025年4月10日 16:48">
-          <div class="msg-avatar">凪</div>
+          <div class="msg-avatar"><img src="kuroki.webp" alt="黒木 凪"></div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">16:48</span></div>
             <p class="msg-text">了解です。</p>
@@ -2250,7 +2271,7 @@ button.dm-directory-row:hover {
         <div class="date-divider"><span>2025年4月14日</span></div>
 
         <div class="msg" data-channel="編集部" data-author="黒木 凪" data-time="2025年4月14日 09:05">
-          <div class="msg-avatar">凪</div>
+          <div class="msg-avatar"><img src="kuroki.webp" alt="黒木 凪"></div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">09:05</span></div>
             <p class="msg-text">今週のタスクを整理します。<br><br>・田村：医療カテゴリ特集、修正稿の入稿（火曜まで）<br>・沢渡：新規カテゴリの記事構成案2本（木曜まで）<br>・三上：取材先候補リスト、先週分の追加漏れ確認<br>・神谷：今週入稿予定分の校正（各入稿日前日まで）<br>・小西：サムネイル修正対応、田村案件と連携<br>・白石：先週のSNS投稿の数値確認、レポート共有<br>・長谷川：リライト残り1本、今週中に完了<br>・家入：<span class="glitch" data-text="トラポルタ">トラポルタ</span>取材準備（質問リスト作成、小西に確認依頼）<br><br>進捗はこのスレッドに随時報告してください。</p>
@@ -2301,7 +2322,7 @@ button.dm-directory-row:hover {
         </div>
 
         <div class="msg" data-channel="編集部" data-author="黒木 凪" data-time="2025年5月1日 17:51">
-          <div class="msg-avatar">凪</div>
+          <div class="msg-avatar"><img src="kuroki.webp" alt="黒木 凪"></div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">17:51</span></div>
             <p class="msg-text">すみませんが同席はできません。<br>その時間、別の会議が入っています。</p>
@@ -2317,7 +2338,7 @@ button.dm-directory-row:hover {
         </div>
 
         <div class="msg" data-channel="編集部" data-author="黒木 凪" data-time="2025年5月1日 17:58">
-          <div class="msg-avatar">凪</div>
+          <div class="msg-avatar"><img src="kuroki.webp" alt="黒木 凪"></div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">17:58</span></div>
             <p class="msg-text">質問リストも企画書も、十分な水準に仕上がっています。<br>一人のファンとして楽しむくらいの心持で行ってきてください。</p>
@@ -2556,7 +2577,7 @@ button.dm-directory-row:hover {
         </div>
 
         <div class="msg" data-channel="雑談" data-author="黒木 凪" data-time="2025年4月16日 12:24">
-          <div class="msg-avatar">凪</div>
+          <div class="msg-avatar"><img src="kuroki.webp" alt="黒木 凪"></div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">12:24</span></div>
             <p class="msg-text">お疲れ様でした。</p>
@@ -2849,7 +2870,7 @@ button.dm-directory-row:hover {
         </div>
 
         <div class="msg" data-channel="記事企画_株式会社トラポルタ" data-author="黒木 凪" data-time="2025年4月3日 10:51">
-          <div class="msg-avatar">凪</div>
+          <div class="msg-avatar"><img src="kuroki.webp" alt="黒木 凪"></div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">10:51</span></div>
             <p class="msg-text">進めていいです。<br>ただ整理しておいてください。<br><br>話題の人物と旬のイベントはフックにはなります。<br>ただしそれだけでは「読まれる記事」にはなりません。<br>バズには構造が必要です。<br><br>具体的には以下の3点です。<br>・どこにも出ていない独自の情報があるか<br>・読者が今まさに知りたいことに答えられているか<br>・なぜ今このタイミングで出す必要があるか<br><br>「注目されている人だから読まれる」は理由ではなく期待です。<br>企画書ではこの3点を言語化してください。</p>
@@ -2900,7 +2921,7 @@ button.dm-directory-row:hover {
         </div>
 
         <div class="msg" data-channel="記事企画_株式会社トラポルタ" data-author="黒木 凪" data-time="2025年4月10日 16:08">
-          <div class="msg-avatar">凪</div>
+          <div class="msg-avatar"><img src="kuroki.webp" alt="黒木 凪"></div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">16:08</span></div>
             <p class="msg-text">確認しました。<br><br>読者設定が広すぎます。<br>「イベントに興味がある人」では絞れていません。<br>誰が読んで、何が変わるのかを一つに絞ってください。<br><br>独自情報の部分も弱いです。<br>「制作の裏側」は切り口であって、独自情報ではありません。<br><span class="glitch" data-text="トラポルタ">トラポルタ</span>でしか聞けないこと、<span class="glitch" data-text="獅子王">獅子王</span>さんにしか答えられないことを明確にしてください。<br><br>修正版を出してください。</p>
@@ -2943,7 +2964,7 @@ button.dm-directory-row:hover {
         </div>
 
         <div class="msg" data-channel="記事企画_株式会社トラポルタ" data-author="黒木 凪" data-time="2025年4月14日 13:22">
-          <div class="msg-avatar">凪</div>
+          <div class="msg-avatar"><img src="kuroki.webp" alt="黒木 凪"></div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">13:22</span></div>
             <p class="msg-text">読者設定は通ります。<br><br>独自情報の軸はこれで進めていいです。<br>ただ「没になった案をどう扱うか」は取材で引き出せるかどうか先方次第です。<br>取れなかった場合の代替を用意しておいてください。<br><br>以上を踏まえて取材に進んでいいです。</p>
@@ -2986,7 +3007,7 @@ button.dm-directory-row:hover {
         </div>
 
         <div class="msg" data-channel="記事企画_株式会社トラポルタ" data-author="黒木 凪" data-time="2025年5月7日 18:44">
-          <div class="msg-avatar">凪</div>
+          <div class="msg-avatar"><img src="kuroki.webp" alt="黒木 凪"></div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">18:44</span></div>
             <p class="msg-text">確認しました。<br><br>取材で得た情報の密度は十分です。<br>ただ現状は「取材した順番」で並んでいます。<br>読者が理解する順番に組み直してください。<br><br>結論を先に出す。その後に判断基準と具体事例を置く。<br>この順番で再構成してください。<br><br>見出しの役割も曖昧です。<br>各見出しで何を理解させるのかを一つに絞ってから、文章を当てはめてください。</p>
@@ -3029,7 +3050,7 @@ button.dm-directory-row:hover {
         </div>
 
         <div class="msg" data-channel="記事企画_株式会社トラポルタ" data-author="黒木 凪" data-time="2025年5月12日 17:02">
-          <div class="msg-avatar">凪</div>
+          <div class="msg-avatar"><img src="kuroki.webp" alt="黒木 凪"></div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">17:02</span></div>
             <p class="msg-text">読みました。<br><br>構成は整理されています。<br>見出しの役割も機能しています。<br><br>一点だけ。<br>冒頭の結論が少し説明的です。<br>読者に「続きを読みたい」と思わせる一文に絞ってください。<br>それ以外は公開準備に進んで問題ありません。</p>
@@ -3053,7 +3074,7 @@ button.dm-directory-row:hover {
         </div>
 
         <div class="msg" data-channel="記事企画_株式会社トラポルタ" data-author="黒木 凪" data-time="2025年5月12日 18:51">
-          <div class="msg-avatar">凪</div>
+          <div class="msg-avatar"><img src="kuroki.webp" alt="黒木 凪"></div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">18:51</span></div>
             <p class="msg-text">いいですね。公開準備に移ってください。</p>
@@ -3187,7 +3208,7 @@ button.dm-directory-row:hover {
         </div>
 
         <div class="msg" data-channel="記事企画_編集長インタビュー" data-author="黒木 凪" data-time="2021年2月8日 15:20">
-          <div class="msg-avatar">凪</div>
+          <div class="msg-avatar"><img src="kuroki.webp" alt="黒木 凪"></div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">15:20</span></div>
             <p class="msg-text">これで進めてください。</p>
@@ -3254,7 +3275,7 @@ button.dm-directory-row:hover {
         </div>
 
         <div class="msg" data-channel="記事企画_編集長インタビュー" data-author="黒木 凪" data-time="2021年3月1日 10:31">
-          <div class="msg-avatar">凪</div>
+          <div class="msg-avatar"><img src="kuroki.webp" alt="黒木 凪"></div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">10:31</span></div>
             <p class="msg-text">お疲れ様でした。</p>
@@ -3282,7 +3303,7 @@ button.dm-directory-row:hover {
         <p class="dm-directory-lead">メッセージを送る相手を選択してください。</p>
         <div class="dm-directory" role="list">
           <button type="button" class="dm-directory-row" onclick="openDmConversation('dm-nagi','DM:黒木凪')">
-            <div class="dm-directory-avatar" style="background:#0d5a8e;">凪</div>
+            <div class="dm-directory-avatar"><img src="kuroki.webp" alt="黒木 凪"></div>
             <div class="dm-directory-info">
               <span class="dm-directory-name">黒木 凪</span>
               <span class="dm-directory-role">編集長</span>
@@ -3328,7 +3349,7 @@ button.dm-directory-row:hover {
         </div>
 
         <div class="msg" data-channel="DM:黒木凪" data-author="黒木 凪" data-time="2025年4月6日 19:31">
-          <div class="msg-avatar">凪</div>
+          <div class="msg-avatar"><img src="kuroki.webp" alt="黒木 凪"></div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">19:31</span></div>
             <p class="msg-text"><span class="glitch" data-text="トラポルタ">トラポルタ</span>とはどんな会社ですか。</p>
@@ -3344,7 +3365,7 @@ button.dm-directory-row:hover {
         </div>
 
         <div class="msg" data-channel="DM:黒木凪" data-author="黒木 凪" data-time="2025年4月6日 19:44">
-          <div class="msg-avatar">凪</div>
+          <div class="msg-avatar"><img src="kuroki.webp" alt="黒木 凪"></div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">19:44</span></div>
             <p class="msg-text">分かりました。進めましょう。<br>ただ企画書を出す前に、3つ自分で答えられる状態にしてください。<br><br>誰に読ませるのか。<br>読み終わったあと、その人の何が変わるのか。<br>なぜ<span class="glitch" data-text="獅子王">獅子王</span>さんでないといけないのか。<br><br>「面白いと思ったから」は理由になりません。<br>その3点が言語化できた時点で持ってきてください。</p>
@@ -3360,7 +3381,7 @@ button.dm-directory-row:hover {
         </div>
 
         <div class="msg" data-channel="DM:黒木凪" data-author="黒木 凪" data-time="2025年4月6日 19:58">
-          <div class="msg-avatar">凪</div>
+          <div class="msg-avatar"><img src="kuroki.webp" alt="黒木 凪"></div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">19:58</span></div>
             <p class="msg-text">あと一点。<br>「インタビューで何を聞くか」より先に、「何を引き出したいか」を決めてください。<br>質問は手段です。目的が曖昧だと全部浅くなります。</p>
@@ -3386,7 +3407,7 @@ button.dm-directory-row:hover {
         </div>
 
         <div class="msg" data-channel="DM:黒木凪" data-author="黒木 凪" data-time="2025年4月11日 18:41">
-          <div class="msg-avatar">凪</div>
+          <div class="msg-avatar"><img src="kuroki.webp" alt="黒木 凪"></div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">18:41</span></div>
             <p class="msg-text">「取材で聞く順番」と「読ませる順番」は別物です。<br>取材は素材を集める作業で、構成はその素材を読者のために並べ直す作業です。<br><br>まずこの一文を作ってください。<br>「この記事を読んだ〇〇は、△△を理解する」<br><br>その一文が決まれば、何を先に置くべきかが自然に決まります。</p>
@@ -3402,7 +3423,7 @@ button.dm-directory-row:hover {
         </div>
 
         <div class="msg" data-channel="DM:黒木凪" data-author="黒木 凪" data-time="2025年4月11日 19:01">
-          <div class="msg-avatar">凪</div>
+          <div class="msg-avatar"><img src="kuroki.webp" alt="黒木 凪"></div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">黒木 凪</span><span class="msg-time">19:01</span></div>
             <p class="msg-text">そうです。<br>取材の流れに引っ張られると、読者ではなく自分の理解の順番で並べることになります。<br>読者が何を知らない状態で記事を開くのか、そこから逆算してください。<br><br>構成の組み方は小西さんが得意なので、一度直接聞いてみてください。</p>
@@ -3560,7 +3581,8 @@ button.dm-directory-row:hover {
           <div class="msg-avatar" style="background:#2a6e5a;">田</div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">田村 恵</span><span class="msg-time">21:35</span></div>
-            <p class="msg-text">それはそんなに変わらなかった。<br>ただ話してたら、好きなお笑い芸人が一緒で、めちゃくちゃ盛り上がった笑</p>
+            <p class="msg-text">それはそんなに変わらなかった。<br>見た目こんな感じ。</p>
+            <img class="msg-image" src="kakushidori.webp" alt="黒木さんの写真">
           </div>
         </div>
 
@@ -3568,7 +3590,7 @@ button.dm-directory-row:hover {
           <div class="msg-avatar" style="background:#9b59b6;">家</div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">家入 ユウ</span><span class="msg-time">21:37</span></div>
-            <p class="msg-text">お笑い芸人って、恵くんのスマホに挟んでるあのステッカーの人？</p>
+            <p class="msg-text">うわ若 タメくらいじゃない？</p>
           </div>
         </div>
 
@@ -3576,7 +3598,7 @@ button.dm-directory-row:hover {
           <div class="msg-avatar" style="background:#2a6e5a;">田</div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">田村 恵</span><span class="msg-time">21:39</span></div>
-            <p class="msg-text">そうそう。まさにそれ見て「お好きなんですか」って話題振ってくれて。</p>
+            <p class="msg-text">ほんとそれ笑 好きなお笑い芸人が一緒で、めちゃくちゃ盛り上がった笑</p>
           </div>
         </div>
 
@@ -3592,7 +3614,7 @@ button.dm-directory-row:hover {
           <div class="msg-avatar" style="background:#2a6e5a;">田</div>
           <div class="msg-body">
             <div class="msg-header"><span class="msg-author">田村 恵</span><span class="msg-time">21:43</span></div>
-            <p class="msg-text">あのステッカー見て分かるってことは、相当なファンだよ。限定ものだし、売れ出す前のグッズだもん。</p>
+            <p class="msg-text">食いつき方が尋常じゃなかったよ笑　結構コアなファンっぽい。</p>
           </div>
         </div>
 
@@ -4199,7 +4221,7 @@ function revealInSidebar(viewId, channelName) {
         msg.dataset.author = '黒木 凪';
         msg.dataset.time = '今日';
         msg.innerHTML = `
-          <div class="msg-avatar">凪</div>
+          <div class="msg-avatar"><img src="kuroki.webp" alt="黒木 凪"></div>
           <div class="msg-body">
             <div class="msg-header">
               <span class="msg-author">黒木 凪</span>
